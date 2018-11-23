@@ -11,6 +11,12 @@ def on_start(container):
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
 
+    # call 'domain_reputation_1' block
+    domain_reputation_1(container=container)
+
+    # call 'file_reputation_1' block
+    file_reputation_1(container=container)
+
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -30,15 +36,13 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_2, name="geolocate_ip_1")
 
     return
 
 def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('domain_reputation_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
+
     # collect data for 'domain_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
 
@@ -53,15 +57,13 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("domain reputation", parameters=parameters, assets=['virus total'], callback=join_decision_1, name="domain_reputation_1")
+    phantom.act("domain reputation", parameters=parameters, assets=['virus total'], callback=join_decision_2, name="domain_reputation_1")
 
     return
 
 def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('file_reputation_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
+
     # collect data for 'file_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fileHash', 'artifact:*.id'])
 
@@ -76,7 +78,7 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("file reputation", parameters=parameters, assets=['virus total'], callback=join_decision_1, name="file_reputation_1")
+    phantom.act("file reputation", parameters=parameters, assets=['virus total'], callback=join_decision_2, name="file_reputation_1")
 
     return
 
@@ -99,17 +101,6 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks for 'else' condition 2
     format_1(action=action, success=success, container=container, results=results, handle=handle)
 
-    return
-
-def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_1() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1' ]):
-        
-        # call connected block "decision_1"
-        decision_1(container=container, handle=handle)
-    
     return
 
 def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -136,7 +127,7 @@ def join_Notify_IT(action=None, success=None, container=None, results=None, hand
     phantom.debug('join_Notify_IT() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1', 'geolocate_ip_1' ]):
+    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):
         
         # call connected block "Notify_IT"
         Notify_IT(container=container, handle=handle)
@@ -210,9 +201,19 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    domain_reputation_1(action=action, success=success, container=container, results=results, handle=handle)
-    file_reputation_1(action=action, success=success, container=container, results=results, handle=handle)
+    decision_1(action=action, success=success, container=container, results=results, handle=handle)
 
+    return
+
+def join_decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_decision_2() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):
+        
+        # call connected block "decision_2"
+        decision_2(container=container, handle=handle)
+    
     return
 
 def on_finish(container, summary):
