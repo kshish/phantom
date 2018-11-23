@@ -137,8 +137,8 @@ def join_Notify_IT(action=None, success=None, container=None, results=None, hand
 def Promote_to_case(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('Promote_to_case() called')
     
-    # call playbook "local/Case Promotion Lab", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("local/Case Promotion Lab", container=container)
+    # call playbook "kshish/Case Promotion Lab", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("kshish/Case Promotion Lab", container=container)
 
     return
 
