@@ -11,12 +11,6 @@ def on_start(container):
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
 
-    # call 'domain_reputation_1' block
-    domain_reputation_1(container=container)
-
-    # call 'file_reputation_1' block
-    file_reputation_1(container=container)
-
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -42,7 +36,9 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
 def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('domain_reputation_1() called')
-
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
     # collect data for 'domain_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
 
@@ -63,7 +59,9 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
 
 def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('file_reputation_1() called')
-
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
     # collect data for 'file_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fileHash', 'artifact:*.id'])
 
@@ -107,7 +105,7 @@ def join_decision_1(action=None, success=None, container=None, results=None, han
     phantom.debug('join_decision_1() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1', 'geolocate_ip_1' ]):
+    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1' ]):
         
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
@@ -212,7 +210,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    join_decision_1(action=action, success=success, container=container, results=results, handle=handle)
+    domain_reputation_1(action=action, success=success, container=container, results=results, handle=handle)
+    file_reputation_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
