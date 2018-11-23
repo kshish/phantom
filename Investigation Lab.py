@@ -36,7 +36,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
 
     return
 
@@ -95,7 +95,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
+        join_Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -107,7 +107,7 @@ def join_decision_1(action=None, success=None, container=None, results=None, han
     phantom.debug('join_decision_1() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'domain_reputation_1', 'geolocate_ip_1', 'file_reputation_1' ]):
+    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1', 'geolocate_ip_1' ]):
         
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
@@ -132,6 +132,17 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", options=options, callback=Promote_to_case)
 
+    return
+
+def join_Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_Notify_IT() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'domain_reputation_1', 'file_reputation_1', 'geolocate_ip_1' ]):
+        
+        # call connected block "Notify_IT"
+        Notify_IT(container=container, handle=handle)
+    
     return
 
 def Promote_to_case(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -181,6 +192,27 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     results_item_1_0 = [item[0] for item in results_data_1]
 
     phantom.comment(container=container, comment=results_item_1_0)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "in", "custom_list:Banned Countries"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        join_Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    join_decision_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
