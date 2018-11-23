@@ -95,7 +95,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        join_Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
+        join_add_list_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -121,17 +121,6 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", options=options, callback=Promote_to_case)
 
-    return
-
-def join_Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_Notify_IT() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):
-        
-        # call connected block "Notify_IT"
-        Notify_IT(container=container, handle=handle)
-    
     return
 
 def Promote_to_case(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -197,7 +186,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        join_Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
+        join_add_list_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -213,6 +202,29 @@ def join_decision_2(action=None, success=None, container=None, results=None, han
         
         # call connected block "decision_2"
         decision_2(container=container, handle=handle)
+    
+    return
+
+def add_list_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_list_3() called')
+
+    inputs_data_1 = phantom.collect2(container=container, datapath=['file_reputation_1:artifact:*.cef.fileHash'], action_results=results)
+
+    inputs_item_1_0 = [item[0] for item in inputs_data_1]
+
+    phantom.add_list("Bad file hashes", inputs_item_1_0)
+    Notify_IT(container=container)
+
+    return
+
+def join_add_list_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_add_list_3() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):
+        
+        # call connected block "add_list_3"
+        add_list_3(container=container, handle=handle)
     
     return
 
