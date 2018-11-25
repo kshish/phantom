@@ -35,7 +35,7 @@ Source URL:{3}"""
         "container:url",
         "container:name",
         "container:description",
-        "artifact:*.cef.sourceDnsDomain",
+        "filtered-data:filter_1:condition_1:artifact:*.cef.sourceDnsDomain",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Format_email_body")
