@@ -17,7 +17,7 @@ def promote_to_case_1(action=None, success=None, container=None, results=None, h
     phantom.debug('promote_to_case_1() called')
 
     phantom.promote(container=container, template="Response Template 1")
-    Format_email_body(container=container)
+    filter_1(container=container)
 
     return
 
@@ -54,17 +54,34 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     
     # build parameters list for 'send_email_1' call
     parameters.append({
+        'body': formatted_data_1,
         'from': "edu-tech@splunk.com ",
+        'attachments': "",
         'to': "churyn@splunk.com",
         'cc': "",
         'bcc': "",
-        'subject': "New Case Created",
-        'body': formatted_data_1,
-        'attachments': "",
         'headers': "",
+        'subject': "New Case Created",
     })
 
     phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1")
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["artifact:*.cef.sourceDnsDomain", "!=", None],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Format_email_body(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
