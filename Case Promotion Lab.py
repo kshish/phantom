@@ -75,7 +75,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["artifact:*.cef.sourceDnsDomain", "==", ""],
+            ["artifact:*.cef.sourceDnsDomain", "!=", None],
         ],
         name="filter_1:condition_1")
 
