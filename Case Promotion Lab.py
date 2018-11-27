@@ -116,6 +116,7 @@ def Extract_email_address(action=None, success=None, container=None, results=Non
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Extract_email_address")
+    phantom.debug("Chris wuz here")
     phantom.debug(parameters)
 
     return
