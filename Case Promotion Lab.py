@@ -40,13 +40,15 @@ Source URL:{3}"""
 
     phantom.format(container=container, template=template, parameters=parameters, name="Format_email_body")
 
-    send_email_1(container=container)
+    get_data_1(container=container)
 
     return
 
 def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('send_email_1() called')
-
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
     # collect data for 'send_email_1' call
     formatted_data_1 = phantom.get_format_data(name='Format_email_body')
 
@@ -64,7 +66,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
         'subject': "New Case Created",
     })
 
-    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1")
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
 
     return
 
@@ -82,6 +84,39 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Format_email_body(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def get_data_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('get_data_1() called')
+
+    # collect data for 'get_data_1' call
+
+    parameters = []
+    
+    # build parameters list for 'get_data_1' call
+    parameters.append({
+        'location': "/rest/ph_user/?_filter_username=%22{}%22",
+        'verify_certificate': False,
+        'headers': "",
+    })
+
+    phantom.act("get data", parameters=parameters, assets=['local'], callback=Extract_email_address, name="get_data_1")
+
+    return
+
+def Extract_email_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Extract_email_address() called')
+    
+    template = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "get_data_1:action_result.data.*.parsed_response_body",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="Extract_email_address")
+    phantom.debug(parameters)
 
     return
 
