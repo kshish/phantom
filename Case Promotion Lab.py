@@ -108,17 +108,40 @@ def get_data_1(action=None, success=None, container=None, results=None, handle=N
 def Extract_email_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('Extract_email_address() called')
     
-    template = """{0}"""
+    template = """parsed data {0}
+status {1}
+response {2}
+summary status {3}
+message {4}"""
 
     # parameter list for template variable replacement
     parameters = [
         "get_data_1:action_result.data.*.parsed_response_body",
+        "get_data_1:action_result.status",
+        "get_data_1:action_result.data.*.response_body",
+        "get_data_1:action_result.summary.status_code",
+        "get_data_1:action_result.message",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Extract_email_address")
-    phantom.debug("Chris wuz here")
-    phantom.debug(parameters)
 
+    format_3(container=container)
+
+    return
+
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_3() called')
+    
+    template = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "Extract_email_address:formatted_data",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+    phantom.debug("formated data from email extract")
+    phantom.debug(parameters)
     return
 
 def on_finish(container, summary):

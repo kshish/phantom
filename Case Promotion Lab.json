@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "16ca43720f084d619e4eec810f901267ee20e676",
+            "hash": "d4c188702e275638c118b4cf2705398b6bb3341e",
             "joint": {
                 "cells": [
                     {
@@ -217,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 137,
-                        "line_start": 124,
+                        "line_end": 160,
+                        "line_start": 147,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 8,
+                        "order": 9,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -277,8 +277,8 @@
                             }
                         },
                         "position": {
-                            "x": 1360,
-                            "y": 100
+                            "x": 1820,
+                            "y": 240
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -868,47 +868,6 @@
                         "z": 37
                     },
                     {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "6c664618-6bc0-43a8-ba14-993ac9591229",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "a31fbf59-06f8-4f1d-bfbf-b3a01aa71d42",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "faefcb90-869b-4024-8597-66a28841576d",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 44
-                    },
-                    {
                         "action": "send email",
                         "action_type": "generic",
                         "active": false,
@@ -1274,8 +1233,8 @@
                             }
                         },
                         "position": {
-                            "x": 1220,
-                            "y": 140
+                            "x": 1500,
+                            "y": 220
                         },
                         "previous_function": "",
                         "previous_name": "send_email_1",
@@ -1826,7 +1785,47 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 50
+                        "z": 58
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "5cbabda8-3a6c-49f4-bf89-5423e6c410b8",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "a31fbf59-06f8-4f1d-bfbf-b3a01aa71d42",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "41f0ed1e-c60d-4c8e-bda8-0b8e35664470",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 60
                     },
                     {
                         "active": false,
@@ -1834,7 +1833,7 @@
                         "attrs": {
                             ".background": {
                                 "fill": "#000000",
-                                "stroke": "#E6984E"
+                                "stroke": "#5C6773"
                             },
                             ".color-band": {
                                 "fill": "#3C444D"
@@ -1870,14 +1869,13 @@
                                 "text": "format"
                             },
                             "g.code image": {
-                                "opacity": 1,
-                                "xlink:href": "/inc/coa/img/block_icon_code_dark_on.svg"
+                                "opacity": 1
                             },
                             "g.delete": {
                                 "display": "none"
                             },
                             "g.error": {
-                                "opacity": 1
+                                "opacity": 0
                             },
                             "g.error image": {
                                 "xlink:href": "/inc/coa/img/block_icon_warn.svg"
@@ -1889,7 +1887,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "# read-only block view not available",
+                        "block_code": "def Extract_email_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Extract_email_address() called')\n    \n    template = \"\"\"parsed data {0}\nstatus {1}\nresponse {2}\nsummary status {3}\nmessage {4}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"get_data_1:action_result.data.*.parsed_response_body\",\n        \"get_data_1:action_result.status\",\n        \"get_data_1:action_result.data.*.response_body\",\n        \"get_data_1:action_result.summary.status_code\",\n        \"get_data_1:action_result.message\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Extract_email_address\")\n\n    format_3(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1897,13 +1895,13 @@
                         "connection_name": "get data",
                         "connection_type": "action",
                         "custom_callback": "",
-                        "custom_code": "def Extract_email_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Extract_email_address() called')\n    \n    template = \"\"\"{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"get_data_1:action_result.data.*.parsed_response_body\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Extract_email_address\")\n    phantom.debug(\"Chris wuz here\")\n    phantom.debug(parameters)\n\n    return",
+                        "custom_code": "",
                         "custom_join": "",
                         "custom_name": "Extract email address",
                         "description": "",
                         "format": "format",
                         "has_custom": true,
-                        "has_custom_block": true,
+                        "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
                         "id": "a31fbf59-06f8-4f1d-bfbf-b3a01aa71d42",
@@ -1913,7 +1911,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 124,
+                        "line_end": 132,
                         "line_start": 108,
                         "message": "Configuring now",
                         "name": "format",
@@ -1928,6 +1926,26 @@
                                 "position": 0,
                                 "type": "",
                                 "value": "get_data_1:action_result.data.*.parsed_response_body"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "get_data_1:action_result.status"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "get_data_1:action_result.data.*.response_body"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "get_data_1:action_result.summary.status_code"
+                            },
+                            {
+                                "position": 4,
+                                "type": "",
+                                "value": "get_data_1:action_result.message"
                             }
                         ],
                         "ports": {
@@ -1994,12 +2012,223 @@
                             "width": 180
                         },
                         "state": "format",
+                        "status": "",
+                        "template": "parsed data {0}\nstatus {1}\nresponse {2}\nsummary status {3}\nmessage {4}",
+                        "title": "format",
+                        "type": "coa.Format",
+                        "warn": false,
+                        "z": 63
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#E6984E"
+                            },
+                            ".color-band": {
+                                "fill": "#3C444D"
+                            },
+                            ".format": {
+                                "text": "format 3"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out-1": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out-1>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "format"
+                            },
+                            "g.code image": {
+                                "opacity": 1,
+                                "xlink:href": "/inc/coa/img/block_icon_code_dark_on.svg"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 1
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "# read-only block view not available",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "get data",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_3() called')\n    \n    template = \"\"\"{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"Extract_email_address:formatted_data\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_3\")\n    phantom.debug(\"formated data from email extract\")\n    phantom.debug(parameters)\n    return",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "format": "format",
+                        "has_custom": false,
+                        "has_custom_block": true,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "41f0ed1e-c60d-4c8e-bda8-0b8e35664470",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 147,
+                        "line_start": 132,
+                        "message": "Configuring now",
+                        "name": "format",
+                        "notes": "",
+                        "number": 3,
+                        "order": 8,
+                        "outPorts": [
+                            "out-1"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "Extract_email_address:formatted_data"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 1040,
+                            "y": 320
+                        },
+                        "previous_function": "",
+                        "previous_name": "format_3",
+                        "show_number": true,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "format",
                         "status": "warn",
                         "template": "{0}",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 51
+                        "z": 64
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "b235b824-2fa4-4a94-b5cf-f0aa20533d35",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "41f0ed1e-c60d-4c8e-bda8-0b8e35664470",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "faefcb90-869b-4024-8597-66a28841576d",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 65
                     }
                 ]
             },
@@ -2008,7 +2237,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2018-11-27T03:07:55.496039+00:00",
+    "create_time": "2018-11-27T03:34:00.444928+00:00",
     "draft_mode": false,
     "labels": [
         "events"
