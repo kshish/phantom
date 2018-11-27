@@ -66,7 +66,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
         'subject': "New Case Created",
     })
 
-    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1")
 
     return
 
@@ -96,9 +96,9 @@ def get_data_1(action=None, success=None, container=None, results=None, handle=N
     
     # build parameters list for 'get_data_1' call
     parameters.append({
-        'location': "/rest/ph_user/?_filter_username=%22{}%22",
-        'verify_certificate': False,
         'headers': "",
+        'location': "/rest/ph_user/1",
+        'verify_certificate': False,
     })
 
     phantom.act("get data", parameters=parameters, assets=['local'], callback=Extract_email_address, name="get_data_1")
