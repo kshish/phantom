@@ -125,7 +125,7 @@ message {4}"""
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Extract_email_address")
-
+    phantom.debug(container)
     format_3(container=container)
 
     return
