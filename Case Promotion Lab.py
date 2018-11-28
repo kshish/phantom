@@ -102,6 +102,7 @@ def get_data_1(action=None, success=None, container=None, results=None, handle=N
     })
 
     phantom.act("get data", parameters=parameters, assets=['local'], callback=Extract_email_address, name="get_data_1")
+    phantom.debug("inside get data rest api")
 
     return
 
