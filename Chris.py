@@ -1,4 +1,5 @@
 """
+My Comments about this playbook would go here
 """
 
 import phantom.rules as phantom
@@ -30,12 +31,15 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=decision_1, name="whois_ip_1")
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=Decide_bad_country, name="whois_ip_1")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
+"""
+This is a comment specific to the block
+"""
+def Decide_bad_country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Decide_bad_country() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -47,13 +51,25 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        decision_2(action=action, success=success, container=container, results=results, handle=handle)
+        my_other_decision(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_2() called')
+def my_other_decision(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_other_decision() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["whois_ip_1:action_result.data.*.asn_country_code", "in", "custom_list:countries"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        return
 
     return
 
