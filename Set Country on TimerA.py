@@ -17,15 +17,13 @@ def on_start(container):
 def add_country_code(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_country_code() called')
 
-    artifact_count_value = container.get('artifact_count', None)
-
     # collect data for 'add_country_code' call
 
     parameters = []
     
     # build parameters list for 'add_country_code' call
     parameters.append({
-        'container_id': artifact_count_value,
+        'container_id': "",
         'name': "Country",
         'contains': "",
         'source_data_identifier': "chris",
