@@ -144,6 +144,7 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_3")
     phantom.debug("formated data from email extract")
     phantom.debug(parameters)
+    send_email_1(container=container)
     return
 
 def on_finish(container, summary):
