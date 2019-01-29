@@ -14,6 +14,9 @@ def on_start(container):
     # call 'whois_domain_1' block
     whois_domain_1(container=container)
 
+    # call 'format_3' block
+    format_3(container=container)
+
     return
 
 def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -53,6 +56,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
+    join_send_email_1(container=container)
+
     return
 
 def whois_domain_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -72,7 +77,87 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("whois domain", parameters=parameters, assets=['whois'], name="whois_domain_1")
+    phantom.act("whois domain", parameters=parameters, assets=['whois'], callback=set_label_1, name="whois_domain_1")
+
+    return
+
+def set_label_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_label_1() called')
+
+    phantom.set_label(container, "events")
+    join_send_email_1(container=container)
+
+    return
+
+def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('send_email_1() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    parameters = []
+
+    phantom.act("send email", parameters=parameters, callback=format_2, name="send_email_1")
+
+    return
+
+def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_send_email_1() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'whois_domain_1', 'whois_ip_1' ]):
+        
+        # call connected block "send_email_1"
+        send_email_1(container=container, handle=handle)
+    
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """{0}{1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.cn2Label",
+        "artifact:*.cef.cs1Label",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    decision_1(container=container)
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["format_2:formatted_data", "==", ""],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        return
+
+    return
+
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_3() called')
+    
+    template = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:hash",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+
+    join_send_email_1(container=container)
 
     return
 
