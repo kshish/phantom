@@ -148,17 +148,6 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def action_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('action_0() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    parameters = []
-
-    phantom.act("<undefined>", parameters=parameters, name="action_0")
-
-    return
-
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
