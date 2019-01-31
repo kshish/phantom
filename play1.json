@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "My Comments go here",
-            "hash": "66433579df91c86db6a8ace25c9999bff5a42b62",
+            "hash": "cef37e93399c14d251ac3182dd12a18cf5865a28",
             "joint": {
                 "cells": [
                     {
@@ -200,7 +200,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "geolocate ip",
+                        "connection_name": "prompt 1",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -218,12 +218,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 51,
-                        "line_start": 38,
+                        "line_end": 79,
+                        "line_start": 66,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 3,
+                        "order": 4,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -278,7 +278,7 @@
                             }
                         },
                         "position": {
-                            "x": 740,
+                            "x": 840,
                             "y": 100
                         },
                         "previous_function": "",
@@ -526,7 +526,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=prompt_1, name=\"geolocate_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -633,7 +633,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 6
+                        "z": 8
                     },
                     {
                         "attrs": {
@@ -656,7 +656,7 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "a9d83ee2-5572-4b20-a0df-1b8fe439b274",
+                        "id": "b90d9008-771d-4340-88fa-9c61029344e3",
                         "router": {
                             "name": "metro"
                         },
@@ -669,12 +669,240 @@
                             "right"
                         ],
                         "target": {
+                            "id": "6f1cb5bf-09ed-4002-aa5d-13e399bd1a89",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 9
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "56c0a83e-6755-4228-b55b-f2538827a7a4",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "6f1cb5bf-09ed-4002-aa5d-13e399bd1a89",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
                             "id": "a1fa46e2-e787-41ee-9965-6f3ce893ee85",
                             "port": null,
                             "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
                         },
                         "type": "link",
-                        "z": 7
+                        "z": 11
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "Administrator",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#E6984E"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 1
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"status: {6}\nmessage {5}\n{4}\n{3}\n{2}\n{1}\nPostal Code {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.postal_code\",\n        \"geolocate_ip_1:action_result.message\",\n        \"geolocate_ip_1:action_result.data.*.continent_name\",\n        \"geolocate_ip_1:action_result.data.*.latitude\",\n        \"geolocate_ip_1:action_result.data.*.longitude\",\n        \"geolocate_ip_1:action_result.data.*.longitude\",\n        \"geolocate_ip_1:action_result.status\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "6f1cb5bf-09ed-4002-aa5d-13e399bd1a89",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 66,
+                        "line_start": 38,
+                        "message": "status: {6}\nmessage {5}\n{4}\n{3}\n{2}\n{1}\nPostal Code {0}",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.postal_code"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.message"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.continent_name"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.latitude"
+                            },
+                            {
+                                "position": 4,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.longitude"
+                            },
+                            {
+                                "position": 5,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.longitude"
+                            },
+                            {
+                                "position": 6,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.status"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 640,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "prompt_1",
+                        "respond_in": "30",
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "message",
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 13
                     }
                 ]
             },
@@ -683,7 +911,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-01-31T19:50:11.406263+00:00",
+    "create_time": "2019-01-31T19:54:45.978126+00:00",
     "draft_mode": false,
     "labels": [
         "sample"

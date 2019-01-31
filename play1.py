@@ -31,7 +31,35 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="geolocate_ip_1")
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "Administrator"
+    message = """status: {6}
+message {5}
+{4}
+{3}
+{2}
+{1}
+Postal Code {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_ip_1:action_result.data.*.postal_code",
+        "geolocate_ip_1:action_result.message",
+        "geolocate_ip_1:action_result.data.*.continent_name",
+        "geolocate_ip_1:action_result.data.*.latitude",
+        "geolocate_ip_1:action_result.data.*.longitude",
+        "geolocate_ip_1:action_result.data.*.longitude",
+        "geolocate_ip_1:action_result.status",
+    ]
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
 
     return
 
