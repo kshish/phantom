@@ -18,7 +18,7 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
     phantom.debug('whois_ip_1() called')
 
     # collect data for 'whois_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
 
     parameters = []
     
