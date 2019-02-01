@@ -71,25 +71,14 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         action_results=results,
         conditions=[
             ["geolocate_ip_1:action_result.data.*.city_name", "!=", None],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None],
         ],
+        logical_operator='and',
         name="filter_1:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    # collect filtered artifact ids for 'if' condition 2
-    matched_artifacts_2, matched_results_2 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None],
-        ],
-        name="filter_1:condition_2")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_2 or matched_results_2:
-        pass
 
     return
 
