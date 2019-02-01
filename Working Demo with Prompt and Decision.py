@@ -71,9 +71,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         action_results=results,
         conditions=[
             ["geolocate_ip_1:action_result.data.*.city_name", "!=", None],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None],
         ],
-        logical_operator='and',
         name="filter_1:condition_1")
 
     # call connected blocks if filtered artifacts or results
