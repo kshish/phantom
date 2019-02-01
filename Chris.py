@@ -31,7 +31,56 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1")
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=format_1, name="whois_ip_1")
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """City: {0}
+Country: {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "whois_ip_1:action_result.data.*.nets.*.city",
+        "whois_ip_1:action_result.data.*.nets.*.country",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "format_1:formatted_data",
+    ]
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, callback=format_2)
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """{0}{1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "format_1:formatted_data",
+        "prompt_1:action_result.summary.response",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     return
 
