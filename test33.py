@@ -47,25 +47,20 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Geolocate reports county locations as: {0}
-City: {1}
-from ip: {2}
-Please respond weather to block ip."""
+    message = """These IP: {2} from this country: {1} from these cities: {0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geo_locate:action_result.data.*.country_name",
         "my_geo_locate:action_result.data.*.city_name",
+        "my_geo_locate:action_result.data.*.country_name",
         "artifact:*.cef.destinationAddress",
     ]
 
     # response options
     options = {
-        "type": "list",
-        "choices": [
-            "Yes",
-            "No",
-        ]
+        "type": "range",
+        "min": 1,
+        "max": 10,
     }
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_block_IP", parameters=parameters, options=options, callback=decision_2)
@@ -80,7 +75,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["Prompt_block_IP:action_result.summary.response", "==", "Yes"],
+            ["Prompt_block_IP:action_result.summary.response", "==", "yes"],
         ])
 
     # call connected blocks if condition 1 matched
