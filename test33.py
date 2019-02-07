@@ -38,8 +38,8 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
     # calculate start time using delay of 1 minutes
     start_time = datetime.now() + timedelta(minutes=1)
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], start_time=start_time, name="my_geo_locate")
-    phantom.debug(parameters)
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Prompt_block_IP, start_time=start_time, name="my_geo_locate")
+
     return
 
 def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
