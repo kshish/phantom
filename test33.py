@@ -11,7 +11,7 @@ def on_start(container):
     
     # call 'my_geo_locate' block
     my_geo_locate(container=container)
-
+    phantom.debug("zed wuz here")
     # call 'whois_ip_1' block
     whois_ip_1(container=container)
 
