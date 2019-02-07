@@ -13,7 +13,6 @@ def on_start(container):
     my_geo_locate(container=container)
     phantom.debug("zed wuz here")
     # call 'whois_ip_1' block
-    whois_ip_1(container=container)
 
     return
 
@@ -43,24 +42,81 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
     phantom.debug(parameters)
     return
 
-def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('whois_ip_1() called')
+def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Prompt_block_IP() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "Administrator"
+    message = """Geolocate reports county locations as: {0}
+City: {1}
+from ip: {2}
+Please respond weather to block ip."""
 
-    # collect data for 'whois_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geo_locate:action_result.data.*.country_name",
+        "my_geo_locate:action_result.data.*.city_name",
+        "artifact:*.cef.destinationAddress",
+    ]
+
+    # response options
+    options = {
+        "type": "list",
+        "choices": [
+            "Yes",
+            "No",
+        ]
+    }
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_block_IP", parameters=parameters, options=options, callback=decision_2)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Prompt_block_IP:action_result.summary.response", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        block_ip_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+
+    return
+
+def block_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('block_ip_1() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'block_ip_1' call
+    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geo_locate:artifact:*.cef.destinationAddress', 'my_geo_locate:artifact:*.id'], action_results=results)
 
     parameters = []
     
-    # build parameters list for 'whois_ip_1' call
-    for container_item in container_data:
-        if container_item[0]:
+    # build parameters list for 'block_ip_1' call
+    for inputs_item_1 in inputs_data_1:
+        if inputs_item_1[0]:
             parameters.append({
-                'ip': container_item[0],
+                'ip_hostname': inputs_item_1[0],
+                'remote_ip': "",
+                'remote_port': "",
+                'protocol': "asdf",
+                'direction': "asdf",
+                'comment': "",
                 # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
+                'context': {'artifact_id': inputs_item_1[1]},
             })
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1")
+    phantom.act("block ip", parameters=parameters, assets=['my local phantom'], name="block_ip_1")
 
     return
 

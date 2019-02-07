@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "0af32c8ecfb5823b8aa3662b78e44badda726c23",
+            "hash": "7b2d6835fca4882103a44c1f7fa9a2316b6c98dd",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "my geo locate, whois ip",
+                        "connection_name": "block ip, Prompt block IP",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -73,12 +73,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 80,
-                        "line_start": 67,
+                        "line_end": 136,
+                        "line_start": 123,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 4,
+                        "order": 6,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -133,8 +133,8 @@
                             }
                         },
                         "position": {
-                            "x": 1040,
-                            "y": 40
+                            "x": 1360,
+                            "y": 100
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -210,12 +210,12 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "5485cb19-7809-4b43-96f0-636f5ca25147",
+                        "id": "645063d4-8c46-43ad-a9f6-1bf563219de8",
                         "router": {
                             "name": "metro"
                         },
                         "source": {
-                            "id": "749a2ef6-68ff-4600-8c97-43cd2d48174d",
+                            "id": "1892fd3d-ae47-4d59-a803-833e7d1a489f",
                             "port": null,
                             "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
                         },
@@ -223,228 +223,445 @@
                             "right"
                         ],
                         "target": {
-                            "id": "87b2007d-dd0d-449d-a0af-99048f624e59",
+                            "id": "cf104562-c2e8-4d32-b085-e4119546f312",
                             "selector": ".port-body[type=\"input\"]"
                         },
                         "type": "link",
-                        "z": 13
+                        "z": 36
                     },
                     {
-                        "action": "whois ip",
-                        "action_type": "investigate",
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "50b91b2c-9f05-45b8-b902-6aab3a7bfed9",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "cf104562-c2e8-4d32-b085-e4119546f312",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b31c0678-ac6f-481b-917c-1ed2b762a7e5",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 38
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "Administrator",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"Geolocate reports county locations as: {0}\nCity: {1}\nfrom ip: {2}\nPlease respond weather to block ip.\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"artifact:*.cef.destinationAddress\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "my geo locate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Prompt block IP",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "cf104562-c2e8-4d32-b085-e4119546f312",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 75,
+                        "line_start": 45,
+                        "message": "Geolocate reports county locations as: {0}\nCity: {1}\nfrom ip: {2}\nPlease respond weather to block ip.",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "my_geo_locate:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "my_geo_locate:action_result.data.*.city_name"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "artifact:*.cef.destinationAddress"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 620,
+                            "y": 40
+                        },
+                        "previous_function": "",
+                        "previous_name": "Prompt_block_IP",
+                        "respond_in": "30",
+                        "response_key": "Yes/No",
+                        "response_options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "response_type": "list",
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 40
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "9e906264-3269-4ece-b0fb-e590c3bcb6bf",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "b31c0678-ac6f-481b-917c-1ed2b762a7e5",
+                            "port": "out-1",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b3e85ba0-70cc-4eb1-aedc-444464f2cdd8",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 42
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "b457a5ee-9caf-4acd-99ff-6bb1f306fe6c",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "b3e85ba0-70cc-4eb1-aedc-444464f2cdd8",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 44
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "5beb0264-944a-416b-8913-af16bd1a85b9",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "b31c0678-ac6f-481b-917c-1ed2b762a7e5",
+                            "port": "out-2",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(2) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 46
+                    },
+                    {
+                        "action": "block ip",
+                        "action_type": "contain",
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "ip": "artifact:*.cef.destinationAddress"
+                            "comment": "",
+                            "direction": "asdf",
+                            "ip_hostname": "my_geo_locate:artifact:*.cef.destinationAddress",
+                            "protocol": "asdf",
+                            "remote_ip": "",
+                            "remote_port": ""
                         },
                         "angle": 0,
-                        "app": "WHOIS",
-                        "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "app": "SSH",
+                        "appid": "d37aa7fe-c973-44ee-a164-2ca5bf321b1f",
                         "approver": "",
                         "assets": [
                             {
-                                "action": "whois ip",
+                                "action": "block ip",
                                 "actions": [
-                                    "whois ip",
-                                    "whois domain"
+                                    "put file",
+                                    "get file",
+                                    "get memory usage",
+                                    "get disk usage",
+                                    "list processes",
+                                    "logoff user",
+                                    "terminate process",
+                                    "shutdown system",
+                                    "reboot system",
+                                    "delete firewall rule",
+                                    "list firewall rules",
+                                    "block ip",
+                                    "list connections",
+                                    "execute program",
+                                    "test connectivity"
                                 ],
                                 "active": true,
-                                "app_name": "WHOIS",
-                                "app_version": "1.2.31",
-                                "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
-                                "asset_name": "whois",
+                                "app_name": "SSH",
+                                "app_version": "1.0.42",
+                                "appid": "d37aa7fe-c973-44ee-a164-2ca5bf321b1f",
+                                "asset_name": "my local phantom",
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "ip": "artifact:*.cef.destinationAddress"
+                                    "comment": "",
+                                    "direction": "asdf",
+                                    "ip_hostname": "my_geo_locate:artifact:*.cef.destinationAddress",
+                                    "protocol": "asdf",
+                                    "remote_ip": "",
+                                    "remote_port": ""
                                 },
                                 "has_app": true,
-                                "id": 3,
+                                "id": 12,
                                 "loaded": false,
                                 "missing": false,
-                                "name": "whois",
+                                "name": "my local phantom",
                                 "output": [
                                     {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.parameter.comment",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.parameter.direction",
+                                        "data_type": "string"
+                                    },
+                                    {
                                         "contains": [
-                                            "ip"
+                                            "ip",
+                                            "host name"
                                         ],
-                                        "data_path": "action_result.parameter.ip",
+                                        "data_path": "action_result.parameter.ip_hostname",
                                         "data_type": "string"
                                     },
                                     {
-                                        "column_name": "Asn",
-                                        "column_order": 2,
-                                        "data_path": "action_result.data.*.asn",
+                                        "data_path": "action_result.parameter.protocol",
                                         "data_type": "string"
                                     },
                                     {
-                                        "column_name": "Asn Cidr",
-                                        "column_order": 3,
-                                        "data_path": "action_result.data.*.asn_cidr",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Asn Country Code",
-                                        "column_order": 4,
-                                        "data_path": "action_result.data.*.asn_country_code",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Asn Date",
-                                        "column_order": 5,
-                                        "data_path": "action_result.data.*.asn_date",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Asn Registry",
-                                        "column_order": 6,
-                                        "data_path": "action_result.data.*.asn_registry",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Abuse Emails",
-                                        "column_order": 7,
                                         "contains": [
-                                            "email"
+                                            "ip",
+                                            "host name"
                                         ],
-                                        "data_path": "action_result.data.*.nets.*.abuse_emails",
+                                        "data_path": "action_result.parameter.remote_ip",
                                         "data_type": "string"
                                     },
                                     {
-                                        "column_name": "Address",
-                                        "column_order": 8,
-                                        "data_path": "action_result.data.*.nets.*.address",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Cidr",
-                                        "column_order": 9,
-                                        "data_path": "action_result.data.*.nets.*.cidr",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "City",
-                                        "column_order": 10,
-                                        "data_path": "action_result.data.*.nets.*.city",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Country",
-                                        "column_order": 11,
-                                        "data_path": "action_result.data.*.nets.*.country",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Created",
-                                        "column_order": 12,
-                                        "data_path": "action_result.data.*.nets.*.created",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Description",
-                                        "column_order": 13,
-                                        "data_path": "action_result.data.*.nets.*.description",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_order": 7,
                                         "contains": [
-                                            "email"
+                                            "port"
                                         ],
-                                        "data_path": "action_result.data.*.nets.*.emails",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.data.*.nets.*.handle",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Name",
-                                        "column_order": 14,
-                                        "data_path": "action_result.data.*.nets.*.name",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Postal Code",
-                                        "column_order": 15,
-                                        "data_path": "action_result.data.*.nets.*.postal_code",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Range",
-                                        "column_order": 16,
-                                        "data_path": "action_result.data.*.nets.*.range",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "State",
-                                        "column_order": 17,
-                                        "data_path": "action_result.data.*.nets.*.state",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Tech Emails",
-                                        "column_order": 18,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.data.*.nets.*.tech_emails",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Updated",
-                                        "column_order": 19,
-                                        "data_path": "action_result.data.*.nets.*.updated",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.data.*.query",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "IP",
-                                        "column_order": 0,
-                                        "contains": [
-                                            "ip"
-                                        ],
-                                        "data_path": "action_result.parameter.ip",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Misc Emails",
-                                        "column_order": 20,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.data.*.nets.*.misc_emails",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary.asn",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary.country_code",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary.nets.*.address",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary.nets.*.range",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary.registry",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "summary.total_objects",
+                                        "data_path": "action_result.parameter.remote_port",
                                         "data_type": "numeric"
                                     },
                                     {
-                                        "data_path": "action_result.status",
+                                        "data_path": "action_result.data.*.output",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary",
                                         "data_type": "string"
                                     },
                                     {
@@ -452,33 +669,104 @@
                                         "data_type": "string"
                                     },
                                     {
+                                        "data_path": "summary.exit_status",
+                                        "data_type": "numeric"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric"
+                                    },
+                                    {
                                         "data_path": "summary.total_objects_successful",
                                         "data_type": "numeric"
                                     }
                                 ],
                                 "parameters": {
-                                    "ip": {
+                                    "comment": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Leave a comment",
+                                        "key": "comment",
+                                        "order": 5,
+                                        "required": false
+                                    },
+                                    "direction": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Inbound or outbound",
+                                        "key": "direction",
+                                        "order": 4,
+                                        "required": true,
+                                        "value_list": [
+                                            "In",
+                                            "Out"
+                                        ]
+                                    },
+                                    "ip_hostname": {
                                         "contains": [
-                                            "ip"
+                                            "ip",
+                                            "host name"
                                         ],
                                         "data_type": "string",
                                         "default": null,
-                                        "description": "IP to query",
-                                        "key": "ip",
+                                        "description": "Hostname/IP to add firewall rule to",
+                                        "key": "ip_hostname",
                                         "order": 0,
                                         "primary": true,
                                         "required": true
+                                    },
+                                    "protocol": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Protocol to block. tcp, udp, etc",
+                                        "key": "protocol",
+                                        "order": 3,
+                                        "required": true,
+                                        "value_list": [
+                                            "all",
+                                            "tcp",
+                                            "udp",
+                                            "udplite",
+                                            "icmp",
+                                            "esp",
+                                            "ah",
+                                            "setp"
+                                        ]
+                                    },
+                                    "remote_ip": {
+                                        "contains": [
+                                            "ip",
+                                            "host name"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Remote IP to block",
+                                        "key": "remote_ip",
+                                        "order": 1,
+                                        "primary": true,
+                                        "required": false
+                                    },
+                                    "remote_port": {
+                                        "contains": [
+                                            "port"
+                                        ],
+                                        "data_type": "numeric",
+                                        "default": null,
+                                        "description": "Remote port to block (allows multiple ports)",
+                                        "key": "remote_port",
+                                        "order": 2,
+                                        "required": false
                                     }
                                 },
-                                "product_name": "Whois",
+                                "product_name": "SSH",
                                 "product_vendor": "Generic",
-                                "targets": "3",
-                                "type": "information"
+                                "targets": "12",
+                                "type": "endpoint"
                             }
                         ],
                         "attrs": {
                             ".action": {
-                                "text": "whois ip"
+                                "text": "block ip"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -514,7 +802,7 @@
                                 }
                             },
                             ".title": {
-                                "text": "Investigate"
+                                "text": "Contain"
                             },
                             "g.delete": {
                                 "display": "none"
@@ -523,20 +811,20 @@
                                 "opacity": 0
                             },
                             "g.icon image": {
-                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                                "xlink:href": "/inc/coa/img/block_icon_contain.svg"
                             },
                             "g.notes": {
                                 "display": "block"
                             }
                         },
-                        "block_code": "def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('whois_ip_1() called')\n\n    # collect data for 'whois_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'whois_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"whois ip\", parameters=parameters, assets=['whois'], name=\"whois_ip_1\")\n\n    return",
+                        "block_code": "def block_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('block_ip_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'block_ip_1' call\n    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geo_locate:artifact:*.cef.destinationAddress', 'my_geo_locate:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'block_ip_1' call\n    for inputs_item_1 in inputs_data_1:\n        if inputs_item_1[0]:\n            parameters.append({\n                'ip_hostname': inputs_item_1[0],\n                'remote_ip': \"\",\n                'remote_port': \"\",\n                'protocol': \"asdf\",\n                'direction': \"asdf\",\n                'comment': \"\",\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': inputs_item_1[1]},\n            })\n\n    phantom.act(\"block ip\", parameters=parameters, assets=['my local phantom'], name=\"block_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
                         "color": "",
                         "connected_to_start": true,
-                        "connection_name": "",
-                        "connection_type": "",
+                        "connection_name": "Prompt block IP",
+                        "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
@@ -547,20 +835,20 @@
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "87b2007d-dd0d-449d-a0af-99048f624e59",
+                        "id": "b3e85ba0-70cc-4eb1-aedc-444464f2cdd8",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 67,
-                        "line_start": 46,
+                        "line_end": 123,
+                        "line_start": 95,
                         "message": "Configuring now",
-                        "name": "whois ip",
+                        "name": "block ip",
                         "notes": "",
                         "number": 1,
-                        "order": 3,
+                        "order": 5,
                         "outPorts": [
                             "out"
                         ],
@@ -617,13 +905,15 @@
                             }
                         },
                         "position": {
-                            "x": 340,
-                            "y": 240
+                            "x": 1000,
+                            "y": 40
                         },
                         "previous_function": "",
-                        "previous_name": "whois_ip_1",
+                        "previous_name": "block_ip_1",
                         "required_params": {
-                            "ip": true
+                            "direction": true,
+                            "ip_hostname": true,
+                            "protocol": true
                         },
                         "reviewer": "",
                         "show_number": false,
@@ -633,92 +923,200 @@
                         },
                         "state": "app_action_assets",
                         "status": "",
-                        "title": "Investigate",
+                        "title": "Contain",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 14
+                        "z": 49
                     },
                     {
+                        "active": false,
+                        "angle": 0,
                         "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#637282",
+                                "transform": "rotate(45 30 70)"
                             },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 2
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".outPorts>.port-1": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                },
+                                "ref-x": 41,
+                                "ref-y": 82
+                            },
+                            ".outPorts>.port-1>.port-body": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
                             }
                         },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
+                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Prompt_block_IP:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        block_ip_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "Prompt block IP",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "hasElse": true,
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "b31c0678-ac6f-481b-917c-1ed2b762a7e5",
+                        "inPorts": [
+                            "in"
                         ],
-                        "id": "a50d8c91-fbba-4b13-9a96-cd86170adba3",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "1892fd3d-ae47-4d59-a803-833e7d1a489f",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 95,
+                        "line_start": 75,
+                        "name": "decision",
+                        "notes": "",
+                        "number": 2,
+                        "order": 4,
+                        "outPorts": [
+                            "out-1",
+                            "out-2"
                         ],
-                        "target": {
-                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 31
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "Prompt_block_IP:action_result.summary.response",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
                             },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
                             }
                         },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
+                        "position": {
+                            "x": 800,
+                            "y": 40
                         },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "0c3ba16d-6858-42d0-979f-66ec078180ba",
-                        "router": {
-                            "name": "metro"
+                        "previous_function": "",
+                        "previous_name": "decision_2",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
                         },
-                        "source": {
-                            "id": "87b2007d-dd0d-449d-a0af-99048f624e59",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 32
+                        "state": "decision",
+                        "status": "",
+                        "type": "coa.Decision",
+                        "warn": "",
+                        "z": 50
                     },
                     {
                         "action": "geolocate ip",
@@ -954,8 +1352,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 46,
-                        "line_start": 23,
+                        "line_end": 45,
+                        "line_start": 22,
                         "message": "Configuring now",
                         "name": "geolocate ip",
                         "notes": "This code retrieves geographic  location information from an ip address",
@@ -1037,7 +1435,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 34
+                        "z": 51
                     },
                     {
                         "0": "S",
@@ -1079,6 +1477,9 @@
                             "g.error": {
                                 "opacity": 0
                             },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_error.svg"
+                            },
                             "g.icon image": {
                                 "ref-x": 13,
                                 "xlink:href": "/inc/coa/img/block_icon_start.svg"
@@ -1095,7 +1496,7 @@
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
-                        "custom_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'my_geo_locate' block\n    my_geo_locate(container=container)\n    phantom.debug(\"zed wuz here\")\n    # call 'whois_ip_1' block\n    whois_ip_1(container=container)\n\n    return",
+                        "custom_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'my_geo_locate' block\n    my_geo_locate(container=container)\n    phantom.debug(\"zed wuz here\")\n    # call 'whois_ip_1' block\n\n    return",
                         "custom_join": "",
                         "custom_name": "",
                         "description": "",
@@ -1108,7 +1509,7 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 20,
+                        "line_end": 19,
                         "line_start": 9,
                         "name": "",
                         "notes": "",
@@ -1184,7 +1585,7 @@
                         "title": "START",
                         "type": "coa.StartEnd",
                         "warn": false,
-                        "z": 35
+                        "z": 53
                     }
                 ]
             },
@@ -1193,7 +1594,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-07T20:50:45.607144+00:00",
+    "create_time": "2019-02-07T21:20:31.478266+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
