@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "3c463b4851a2e4713def7654e085866db2298059",
+            "hash": "014c9df73bf654c51be44be441c3b61fe49206b8",
             "joint": {
                 "cells": [
                     {
@@ -783,6 +783,88 @@
                         "z": 14
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "a50d8c91-fbba-4b13-9a96-cd86170adba3",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "1892fd3d-ae47-4d59-a803-833e7d1a489f",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 31
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "0c3ba16d-6858-42d0-979f-66ec078180ba",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "87b2007d-dd0d-449d-a0af-99048f624e59",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 32
+                    },
+                    {
                         "action": "geolocate ip",
                         "action_type": "investigate",
                         "active": false,
@@ -964,7 +1046,8 @@
                                 "opacity": 1
                             },
                             "g.code image": {
-                                "opacity": 1
+                                "opacity": 1,
+                                "xlink:href": "/inc/coa/img/block_icon_code_dark_on.svg"
                             },
                             "g.delete": {
                                 "display": "none"
@@ -999,13 +1082,13 @@
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
-                        "custom_code": "",
+                        "custom_code": "def my_geo_locate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geo_locate() called')\n\n    # collect data for 'my_geo_locate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geo_locate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n    # calculate start time using delay of 1 minutes\n    start_time = datetime.now() + timedelta(minutes=1)\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], start_time=start_time, name=\"my_geo_locate\")\n    phantom.debug(parameters)\n    return",
                         "custom_join": "",
                         "custom_name": "my geo locate",
                         "delay": "1",
                         "description": "This code retrieves geographic  location information from an ip address",
                         "has_custom": false,
-                        "has_custom_block": false,
+                        "has_custom_block": true,
                         "has_custom_callback": false,
                         "has_custom_join": false,
                         "id": "1892fd3d-ae47-4d59-a803-833e7d1a489f",
@@ -1097,90 +1180,8 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
-                        "z": 30
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "a50d8c91-fbba-4b13-9a96-cd86170adba3",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "1892fd3d-ae47-4d59-a803-833e7d1a489f",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 31
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "0c3ba16d-6858-42d0-979f-66ec078180ba",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "87b2007d-dd0d-449d-a0af-99048f624e59",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 32
+                        "warn": false,
+                        "z": 33
                     }
                 ]
             },
@@ -1189,7 +1190,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-07T20:13:54.629382+00:00",
+    "create_time": "2019-02-07T20:17:17.404884+00:00",
     "draft_mode": false,
     "labels": [
         "sample"

@@ -40,7 +40,7 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
     start_time = datetime.now() + timedelta(minutes=1)
 
     phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], start_time=start_time, name="my_geo_locate")
-
+    phantom.debug(parameters)
     return
 
 def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
