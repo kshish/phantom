@@ -58,9 +58,11 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
 
     # response options
     options = {
-        "type": "range",
-        "min": 1,
-        "max": 10,
+        "type": "list",
+        "choices": [
+            "Yes",
+            "No",
+        ]
     }
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_block_IP", parameters=parameters, options=options, callback=decision_2)
@@ -77,7 +79,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         conditions=[
             ["Prompt_block_IP:action_result.summary.response", "==", "yes"],
         ])
-
+    phantom.debug("Prompt_block_IP:action_result.summary.response")
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
         block_ip_1(action=action, success=success, container=container, results=results, handle=handle)
@@ -101,12 +103,12 @@ def block_ip_1(action=None, success=None, container=None, results=None, handle=N
     for inputs_item_1 in inputs_data_1:
         if inputs_item_1[0]:
             parameters.append({
+                'comment': "",
+                'direction': "asdf",
+                'protocol': "asdf",
+                'remote_port': "",
                 'ip_hostname': inputs_item_1[0],
                 'remote_ip': "",
-                'remote_port': "",
-                'protocol': "asdf",
-                'direction': "asdf",
-                'comment': "",
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': inputs_item_1[1]},
             })
