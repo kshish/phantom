@@ -36,7 +36,7 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Prompt_Message, name="my_geo_locate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Prompt_block_IP, name="my_geo_locate")
 
     return
 
@@ -45,11 +45,15 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """{0}"""
+    message = """ip: {0}
+City: {1}
+Country: {2}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "Prompt_Message:formatted_data",
+        "my_geo_locate:action_result.parameter.ip",
+        "my_geo_locate:action_result.data.*.city_name",
+        "my_geo_locate:action_result.data.*.country_name",
     ]
 
     # response options
@@ -111,30 +115,6 @@ def block_ip_1(action=None, success=None, container=None, results=None, handle=N
             })
 
     phantom.act("block ip", parameters=parameters, assets=['my local phantom'], name="block_ip_1")
-
-    return
-
-def Prompt_Message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Prompt_Message() called')
-    
-    template = """The following is the IP/Country geolocation information we looked up:
-
-%%
-IP: {2}
-City: {0}
-Country: {1}
-%%"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "my_geo_locate:action_result.data.city_name",
-        "my_geo_locate:action_result.data.country_name",
-        "my_geo_locate:action_result.parameter.ip",
-    ]
-
-    phantom.format(container=container, template=template, parameters=parameters, name="Prompt_Message")
-
-    Prompt_block_IP(container=container)
 
     return
 
