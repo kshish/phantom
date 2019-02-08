@@ -53,7 +53,7 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     parameters = [
         "my_geo_locate:action_result.data.*.city_name",
         "my_geo_locate:action_result.data.*.country_name",
-        "artifact:*.cef.destinationAddress",
+        "artifact:*.cef.destinationAddress.1",
     ]
 
     # response options
