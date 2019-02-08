@@ -139,7 +139,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_list_1() called')
 
-    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name"])
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.1.country_name"])
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
