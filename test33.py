@@ -51,9 +51,9 @@ Country: {2}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geo_locate:action_result.parameter.ip",
-        "my_geo_locate:action_result.data.*.city_name",
-        "my_geo_locate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
     ]
 
     # response options
