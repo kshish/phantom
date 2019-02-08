@@ -48,7 +48,7 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     message = """These IP:  from this country: {1} from these cities: {0}
 {2}"""
     
-    phantom.debug(phantom.collect2(container=container, datapath=["artifact:1.cef.destionationAddress"]))
+    phantom.debug(phantom.collect2(container=container, datapath=["artifact:0.cef.destionationAddress"]))
     
     # parameter list for template variable replacement
     parameters = [
