@@ -129,7 +129,7 @@ Country: {1}
     parameters = [
         "my_geo_locate:action_result.data.0.city_name",
         "my_geo_locate:action_result.data.0.country_name",
-        "my_geo_locate:action_result.parameter.ip",
+        "my_geo_locate:action_result.parameter.ip.0",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Prompt_Message")
