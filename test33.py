@@ -45,14 +45,19 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """These IP:  from this country: {1} from these cities: {0}
-{2}"""
+    message = """The following is the IP/Country geolocation information we looked up:
+
+%%
+IP: {2}
+City: {0}
+Country: {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
         "my_geo_locate:action_result.data.*.city_name",
         "my_geo_locate:action_result.data.*.country_name",
-        "artifact:1.cef.destinationAddress",
+        "my_geo_locate:action_result.parameter.ip",
     ]
 
     # response options
