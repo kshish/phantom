@@ -79,7 +79,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         conditions=[
             ["Prompt_block_IP:action_result.summary.response", "==", "Yes"],
         ])
-
+    phantom.debug(results)
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
         block_ip_1(action=action, success=success, container=container, results=results, handle=handle)

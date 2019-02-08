@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "b7946551afe1805967b18d8cfe283cec2ab94eaa",
+            "hash": "e5c50d0000b330c948e736ea44f2321bb9e9c3dc",
             "joint": {
                 "cells": [
                     {
@@ -1409,7 +1409,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 65
+                        "z": 69
                     },
                     {
                         "active": false,
@@ -1464,7 +1464,7 @@
                                 "opacity": 0
                             },
                             "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                                "xlink:href": "/inc/coa/img/block_icon_error.svg"
                             },
                             "g.notes": {
                                 "display": "block"
@@ -1481,13 +1481,13 @@
                         "connection_name": "Prompt block IP",
                         "connection_type": "action",
                         "custom_callback": "",
-                        "custom_code": "",
+                        "custom_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Prompt_block_IP:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n    phantom.debug(results)\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        block_ip_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n\n    return",
                         "custom_join": "",
                         "custom_name": "",
                         "description": "",
                         "hasElse": true,
                         "has_custom": false,
-                        "has_custom_block": false,
+                        "has_custom_block": true,
                         "has_custom_callback": false,
                         "has_custom_join": false,
                         "id": "b31c0678-ac6f-481b-917c-1ed2b762a7e5",
@@ -1602,7 +1602,7 @@
                         "status": "",
                         "type": "coa.Decision",
                         "warn": false,
-                        "z": 67
+                        "z": 70
                     }
                 ]
             },
@@ -1611,7 +1611,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-08T03:23:57.556115+00:00",
+    "create_time": "2019-02-08T03:40:42.929098+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
