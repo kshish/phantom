@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "cb93bf2a793b910ff8a3fc4aaa50760bd008147b",
+            "hash": "33c3d9719473b055828d422728602acbe40f2c02",
             "joint": {
                 "cells": [
                     {
@@ -1478,7 +1478,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"These IP: {2} from this country: {1} from these cities: {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"artifact:0.cef.destinationAddress\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
+                        "block_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"These IP: {2} from this country: {1} from these cities: {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"artifact:*.cef.destinationAddress.0\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1525,7 +1525,7 @@
                             {
                                 "position": 2,
                                 "type": "",
-                                "value": "artifact:0.cef.destinationAddress"
+                                "value": "artifact:*.cef.destinationAddress.0"
                             }
                         ],
                         "ports": {
@@ -1602,7 +1602,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 76
+                        "z": 78
                     }
                 ]
             },
@@ -1611,7 +1611,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-08T14:44:21.730607+00:00",
+    "create_time": "2019-02-08T14:48:18.229007+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
