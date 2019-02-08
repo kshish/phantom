@@ -114,7 +114,7 @@ def block_ip_1(action=None, success=None, container=None, results=None, handle=N
                 'context': {'artifact_id': inputs_item_1[1]},
             })
 
-    phantom.act("block ip", parameters=parameters, assets=['my local phantom'], callback=add_listitem_1, name="block_ip_1")
+    phantom.act("block ip", parameters=parameters, assets=['my local phantom'], callback=add_list_1, name="block_ip_1")
 
     return
 
@@ -136,28 +136,14 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def add_listitem_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('add_listitem_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'add_listitem_1' call
-    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name", "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.context.artifact_id"])
+def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_list_1() called')
 
-    parameters = []
-    
-    # build parameters list for 'add_listitem_1' call
-    for filtered_results_item_1 in filtered_results_data_1:
-        if filtered_results_item_1[0]:
-            parameters.append({
-                'list': "countries",
-                'new_row': filtered_results_item_1[0],
-                'create': False,
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': filtered_results_item_1[1]},
-            })
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name"])
 
-    phantom.act("add listitem", parameters=parameters, assets=['local phantom'], name="add_listitem_1", parent_action=action)
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.add_list("countries", filtered_results_item_1_0)
 
     return
 
