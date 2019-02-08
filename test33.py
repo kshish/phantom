@@ -127,9 +127,9 @@ Country: {1}
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geo_locate:action_result.data.0.city_name",
-        "my_geo_locate:action_result.data.0.country_name",
-        "my_geo_locate:action_result.parameter.ip.0",
+        "my_geo_locate:action_result.data.city_name",
+        "my_geo_locate:action_result.data.country_name",
+        "my_geo_locate:action_result.parameter.ip",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Prompt_Message")

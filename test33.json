@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "a8cc481352f7bf055bda11f869ec310b5c947bf4",
+            "hash": "b205b41bb6b2165911184609265c678a457b0e4c",
             "joint": {
                 "cells": [
                     {
@@ -1688,7 +1688,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Prompt_Message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_Message() called')\n    \n    template = \"\"\"The following is the IP/Country geolocation information we looked up:\n\n%%\nIP: {2}\nCity: {0}\nCountry: {1}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.0.city_name\",\n        \"my_geo_locate:action_result.data.0.country_name\",\n        \"my_geo_locate:action_result.parameter.ip.0\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Prompt_Message\")\n\n    Prompt_block_IP(container=container)\n\n    return",
+                        "block_code": "def Prompt_Message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_Message() called')\n    \n    template = \"\"\"The following is the IP/Country geolocation information we looked up:\n\n%%\nIP: {2}\nCity: {0}\nCountry: {1}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.city_name\",\n        \"my_geo_locate:action_result.data.country_name\",\n        \"my_geo_locate:action_result.parameter.ip\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Prompt_Message\")\n\n    Prompt_block_IP(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1726,17 +1726,17 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "my_geo_locate:action_result.data.0.city_name"
+                                "value": "my_geo_locate:action_result.data.city_name"
                             },
                             {
                                 "position": 1,
                                 "type": "",
-                                "value": "my_geo_locate:action_result.data.0.country_name"
+                                "value": "my_geo_locate:action_result.data.country_name"
                             },
                             {
                                 "position": 2,
                                 "type": "",
-                                "value": "my_geo_locate:action_result.parameter.ip.0"
+                                "value": "my_geo_locate:action_result.parameter.ip"
                             }
                         ],
                         "ports": {
@@ -1808,7 +1808,7 @@
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 101
+                        "z": 102
                     }
                 ]
             },
@@ -1817,7 +1817,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-08T15:53:37.410991+00:00",
+    "create_time": "2019-02-08T15:54:33.338284+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
