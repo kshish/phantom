@@ -47,9 +47,7 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     user = "Administrator"
     message = """These IP:  from this country: {1} from these cities: {0}
 {2}"""
-    
-    phantom.debug(phantom.collect2(container=container, datapath=["artifact:0.cef.destionationAddress"]))
-    
+
     # parameter list for template variable replacement
     parameters = [
         "my_geo_locate:action_result.data.*.city_name",
@@ -66,7 +64,7 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
         ]
     }
 
-    #phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_block_IP", parameters=parameters, options=options, callback=decision_2)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_block_IP", parameters=parameters, options=options, callback=decision_2)
 
     return
 

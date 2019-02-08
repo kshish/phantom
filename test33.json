@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "1e565aa018dd52a8e523cf08cb06e5dfee0cad63",
+            "hash": "b01b387703a03008cb6d2ccaf4685901df6580e9",
             "joint": {
                 "cells": [
                     {
@@ -73,8 +73,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 135,
-                        "line_start": 122,
+                        "line_end": 133,
+                        "line_start": 120,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -833,8 +833,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 122,
-                        "line_start": 94,
+                        "line_end": 120,
+                        "line_start": 92,
                         "message": "Configuring now",
                         "name": "block ip",
                         "notes": "",
@@ -1005,8 +1005,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 94,
-                        "line_start": 73,
+                        "line_end": 92,
+                        "line_start": 71,
                         "name": "decision",
                         "notes": "",
                         "number": 2,
@@ -1477,7 +1477,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"These IP: {2} from this country: {1} from these cities: {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"artifact:1.cef.destinationAddress\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
+                        "block_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"These IP:  from this country: {1} from these cities: {0}\n{2}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"artifact:1.cef.destinationAddress\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1485,12 +1485,12 @@
                         "connection_name": "my geo locate",
                         "connection_type": "action",
                         "custom_callback": "",
-                        "custom_code": "def Prompt_block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_block_IP() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"These IP:  from this country: {1} from these cities: {0}\n{2}\"\"\"\n    \n    phantom.debug(phantom.collect2(container=container, datapath=[\"artifact:0.cef.destionationAddress\"]))\n    \n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geo_locate:action_result.data.*.city_name\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n        \"artifact:1.cef.destinationAddress\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    #phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_block_IP\", parameters=parameters, options=options, callback=decision_2)\n\n    return",
+                        "custom_code": "",
                         "custom_join": "",
                         "custom_name": "Prompt block IP",
                         "description": "",
                         "has_custom": false,
-                        "has_custom_block": true,
+                        "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
                         "id": "cf104562-c2e8-4d32-b085-e4119546f312",
@@ -1500,7 +1500,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 73,
+                        "line_end": 71,
                         "line_start": 43,
                         "message": "These IP:  from this country: {1} from these cities: {0}\n{2}",
                         "name": "prompt",
@@ -1601,7 +1601,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 89
+                        "z": 90
                     }
                 ]
             },
@@ -1610,7 +1610,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-08T15:45:14.044104+00:00",
+    "create_time": "2019-02-08T15:45:59.620170+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
