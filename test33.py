@@ -152,7 +152,7 @@ def add_listitem_1(action=None, success=None, container=None, results=None, hand
             parameters.append({
                 'list': "countries",
                 'new_row': filtered_results_item_1[0],
-                'create': True,
+                'create': False,
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': filtered_results_item_1[1]},
             })

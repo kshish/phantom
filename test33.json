@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "d0d8c4dbd405181decc555549aa78195dba06d11",
+            "hash": "60a3c4f0178e5121a26a3b7ed4642f810a0521fa",
             "joint": {
                 "cells": [
                     {
@@ -1811,12 +1811,53 @@
                         "z": 110
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "8700a691-9020-47ca-a06d-d531fc705226",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "e8afd3f5-fd44-49f9-b946-33b30938febd",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 113
+                    },
+                    {
                         "action": "add listitem",
                         "action_type": "investigate",
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "create": "True",
+                            "create": "False",
                             "list": "countries",
                             "new_row": "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name"
                         },
@@ -1849,7 +1890,7 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "create": "True",
+                                    "create": "False",
                                     "list": "countries",
                                     "new_row": "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name"
                                 },
@@ -1992,7 +2033,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def add_listitem_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_listitem_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'add_listitem_1' call\n    filtered_results_data_1 = phantom.collect2(container=container, datapath=[\"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name\", \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.context.artifact_id\"])\n\n    parameters = []\n    \n    # build parameters list for 'add_listitem_1' call\n    for filtered_results_item_1 in filtered_results_data_1:\n        if filtered_results_item_1[0]:\n            parameters.append({\n                'list': \"countries\",\n                'new_row': filtered_results_item_1[0],\n                'create': True,\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': filtered_results_item_1[1]},\n            })\n\n    phantom.act(\"add listitem\", parameters=parameters, assets=['local phantom'], name=\"add_listitem_1\", parent_action=action)\n\n    return",
+                        "block_code": "def add_listitem_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_listitem_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'add_listitem_1' call\n    filtered_results_data_1 = phantom.collect2(container=container, datapath=[\"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name\", \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.context.artifact_id\"])\n\n    parameters = []\n    \n    # build parameters list for 'add_listitem_1' call\n    for filtered_results_item_1 in filtered_results_data_1:\n        if filtered_results_item_1[0]:\n            parameters.append({\n                'list': \"countries\",\n                'new_row': filtered_results_item_1[0],\n                'create': False,\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': filtered_results_item_1[1]},\n            })\n\n    phantom.act(\"add listitem\", parameters=parameters, assets=['local phantom'], name=\"add_listitem_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -2100,48 +2141,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 112
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "8700a691-9020-47ca-a06d-d531fc705226",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "e8afd3f5-fd44-49f9-b946-33b30938febd",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "b7dd1741-4dbc-4a02-8be2-29d0e1327358",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 113
+                        "z": 114
                     }
                 ]
             },
@@ -2150,7 +2150,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-08T20:09:31.863675+00:00",
+    "create_time": "2019-02-08T20:11:09.385199+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
