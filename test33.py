@@ -35,10 +35,8 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    # calculate start time using delay of 1 minutes
-    start_time = datetime.now() + timedelta(minutes=1)
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Prompt_block_IP, start_time=start_time, name="my_geo_locate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Prompt_block_IP, name="my_geo_locate")
 
     return
 
