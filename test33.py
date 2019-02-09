@@ -6,6 +6,14 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -132,7 +140,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Prompt_block_IP(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -144,6 +152,30 @@ def add_list_1(action=None, success=None, container=None, results=None, handle=N
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
     phantom.add_list("countries", filtered_results_item_1_0)
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """The following is the IP/Country geolocation information we looked up:
+
+%%
+IP: {0}
+City: {1}
+Country: {2}
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    Prompt_block_IP(container=container)
 
     return
 
