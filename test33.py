@@ -6,14 +6,6 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
-##############################
-# Start - Global Code Block
-
-import mymodule
-
-# End - Global Code block
-##############################
-
 def on_start(container):
     phantom.debug('on_start() called')
     
