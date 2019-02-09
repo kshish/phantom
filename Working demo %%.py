@@ -45,15 +45,11 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """ip: {0}
-City: {1}
-Country: {2}"""
+    message = """{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
+        "format_2:formatted_data",
     ]
 
     # response options
