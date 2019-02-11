@@ -157,8 +157,8 @@ Country: {2}
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.1.city_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.1.country_name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
