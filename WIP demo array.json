@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "7b44925115b67bd92d7134e402eb0c75542c0fa9",
+            "hash": "2bd7f16e056d0ff0e3df090d2642f53de032d68f",
             "joint": {
                 "cells": [
                     {
@@ -2123,7 +2123,7 @@
                         "connection_name": "my geo locate",
                         "connection_type": "action",
                         "custom_callback": "",
-                        "custom_code": "def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_2() called')\n    \n    template = \"\"\"The following is the IP/Country geolocation information we looked up:\n\n%%\nIP: {0}\nCity: {1}\nCountry: {2}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.1.city_name\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.1.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_2\")\n\n    Prompt_block_IP(container=container)\n\n    return",
+                        "custom_code": "def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_2() called')\n    \n    template = \"\"\"The following is the IP/Country geolocation information we looked up:\n\n%%\nIP: {0}\nCity: {1}\nCountry: {2}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.[1].city_name\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.[1].country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_2\")\n\n    Prompt_block_IP(container=container)\n\n    return",
                         "custom_join": "",
                         "custom_name": "",
                         "description": "",
@@ -2235,7 +2235,7 @@
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 135
+                        "z": 136
                     }
                 ]
             },
@@ -2244,7 +2244,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-11T06:51:56.826948+00:00",
+    "create_time": "2019-02-11T06:53:19.252062+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
