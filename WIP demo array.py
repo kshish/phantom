@@ -51,7 +51,9 @@ def Prompt_block_IP(action=None, success=None, container=None, results=None, han
     parameters = [
         "format_2:formatted_data",
     ]
-
+    
+    phantom.debug("Params at prompt:")
+    phantom.debug(parameters)
     # response options
     options = {
         "type": "list",
