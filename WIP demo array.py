@@ -160,7 +160,9 @@ Country: {2}
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.[1].city_name",
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.[1].country_name",
     ]
-
+    
+    phantom.debug("params:")
+    phantom.debug(parameters)
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     Prompt_block_IP(container=container)
