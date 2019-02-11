@@ -7,7 +7,6 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook will blah blah blah",
-            "hash": "098e7597fbd29598c9e9ec1584c5ce75698cb68a",
             "joint": {
                 "cells": [
                     {
@@ -1798,7 +1797,7 @@
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
-                        "connected_to_start": false,
+                        "connected_to_start": true,
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
@@ -1934,6 +1933,9 @@
                             ".title": {
                                 "text": "format"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -1942,6 +1944,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_2() called')\n    \n    template = \"\"\"The following is the IP/Country geolocation information we looked up:\n\n%%\nIP: {0}\nCity: {1}\nCountry: {2}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name\",\n        \"filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_2\")\n\n    Prompt_block_IP(container=container)\n\n    return",
