@@ -87,7 +87,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_comment_1() called')
 
-    phantom.comment(container=container, comment="ip blocked")
+    phantom.comment(container=container, comment="ip blocked again")
 
     return
 
