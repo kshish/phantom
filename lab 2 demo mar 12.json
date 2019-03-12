@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "020a5bfe995b9f730e6154d9563129aa84c35233",
+            "hash": "78a973cd8fb5914a2a2ebea7dbd17108b1edb5cd",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n\n    return",
+                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'whois_domain_1' block\n    whois_domain_1(container=container)\n\n    return",
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
@@ -76,7 +76,7 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 13,
+                        "line_end": 16,
                         "line_start": 8,
                         "name": "",
                         "notes": "",
@@ -200,8 +200,8 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "",
-                        "connection_type": "",
+                        "connection_name": "whois domain",
+                        "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
@@ -218,12 +218,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 26,
-                        "line_start": 13,
+                        "line_end": 50,
+                        "line_start": 37,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 2,
+                        "order": 3,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -278,7 +278,7 @@
                             }
                         },
                         "position": {
-                            "x": 640,
+                            "x": 800,
                             "y": 100
                         },
                         "previous_function": "",
@@ -296,13 +296,428 @@
                         "z": 2
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "909f7d20-8cbc-4146-b00e-f073dbc6708f",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "7fa3e1b1-94f4-4048-956c-5426f1581dbc",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "e7d3b5cc-6a06-414b-a53d-02d40d72ff42",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 3
+                    },
+                    {
+                        "action": "whois domain",
+                        "action_type": "investigate",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "domain": "artifact:*.cef.destinationDnsDomain"
+                        },
                         "angle": 0,
-                        "attrs": {},
+                        "app": "WHOIS",
+                        "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "whois domain",
+                                "actions": [
+                                    "whois ip",
+                                    "whois domain"
+                                ],
+                                "active": true,
+                                "app_name": "WHOIS",
+                                "app_version": "1.2.31",
+                                "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                                "asset_name": "whois",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "domain": "artifact:*.cef.destinationDnsDomain"
+                                },
+                                "has_app": true,
+                                "id": 3,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "whois",
+                                "output": [
+                                    {
+                                        "contains": [
+                                            "domain",
+                                            "url"
+                                        ],
+                                        "data_path": "action_result.parameter.domain",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.id",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Admin City",
+                                        "column_order": 3,
+                                        "data_path": "action_result.data.*.contacts.admin.city",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Admin Country",
+                                        "column_order": 4,
+                                        "data_path": "action_result.data.*.contacts.admin.country",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Admin Email",
+                                        "column_order": 5,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.contacts.admin.email",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Admin Name",
+                                        "column_order": 6,
+                                        "data_path": "action_result.data.*.contacts.admin.name",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Admin Organization",
+                                        "column_order": 7,
+                                        "data_path": "action_result.data.*.contacts.admin.organization",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.admin.phone",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.admin.postalcode",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.admin.state",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.admin.street",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.admin.fax",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant City",
+                                        "column_order": 8,
+                                        "data_path": "action_result.data.*.contacts.registrant.city",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant Country",
+                                        "column_order": 9,
+                                        "data_path": "action_result.data.*.contacts.registrant.country",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant Email",
+                                        "column_order": 10,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.contacts.registrant.email",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant Name",
+                                        "column_order": 11,
+                                        "data_path": "action_result.data.*.contacts.registrant.name",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant Organization",
+                                        "column_order": 12,
+                                        "data_path": "action_result.data.*.contacts.registrant.organization",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Registrant Phone",
+                                        "column_order": 13,
+                                        "data_path": "action_result.data.*.contacts.registrant.phone",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.registrant.fax",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.registrant.postalcode",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.registrant.state",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.registrant.street",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.city",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.country",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.contacts.tech.email",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.fax",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.name",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.organization",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.phone",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.postalcode",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.state",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.contacts.tech.street",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.creation_date",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.expiration_date",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.nameservers",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.raw",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.registrar",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.updated_date",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.whois_server",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.city",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.organization",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.country",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "domain",
+                                        "column_order": 0,
+                                        "data_path": "action_result.summary.domain",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "status message",
+                                        "column_order": 1,
+                                        "data_path": "action_result.message",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric"
+                                    }
+                                ],
+                                "parameters": {
+                                    "domain": {
+                                        "contains": [
+                                            "domain",
+                                            "url"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Domain to query",
+                                        "key": "domain",
+                                        "order": 0,
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "Whois",
+                                "product_vendor": "Generic",
+                                "targets": "3",
+                                "type": "information"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "whois domain"
+                            },
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".color-band": {
+                                "fill": "#3C444D"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Investigate"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def whois_domain_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('whois_domain_1() called')\n\n    # collect data for 'whois_domain_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationDnsDomain', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'whois_domain_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'domain': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"whois domain\", parameters=parameters, assets=['whois'], name=\"whois_domain_1\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
                         "connection_name": "",
                         "connection_type": "",
-                        "id": "859d956c-61ac-4424-a6d0-97b40fecbdd2",
-                        "inPorts": [],
-                        "outPorts": [],
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "e7d3b5cc-6a06-414b-a53d-02d40d72ff42",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 37,
+                        "line_start": 16,
+                        "message": "Configuring now",
+                        "name": "whois domain",
+                        "notes": "",
+                        "number": 1,
+                        "order": 2,
+                        "outPorts": [
+                            "out"
+                        ],
                         "ports": {
                             "groups": {
                                 "in": {
@@ -356,15 +771,67 @@
                             }
                         },
                         "position": {
-                            "x": 220,
-                            "y": 60
+                            "x": 300,
+                            "y": 80
                         },
+                        "previous_function": "",
+                        "previous_name": "whois_domain_1",
+                        "required_params": {
+                            "domain": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
                         "size": {
-                            "height": 108,
-                            "width": 294
+                            "height": 100,
+                            "width": 180
                         },
-                        "type": "coa.Intro",
-                        "z": 3
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Investigate",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 6
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "ac76f175-d2e4-4893-bcde-fe409cc7563a",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "e7d3b5cc-6a06-414b-a53d-02d40d72ff42",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "31a5c0fa-f4b6-4067-97c8-f20098e8cf4f",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 7
                     }
                 ]
             },
@@ -373,7 +840,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-03-12T18:08:46.159171+00:00",
+    "create_time": "2019-03-12T18:15:07.909446+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
