@@ -71,7 +71,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.response", "==", "yes"],
+            ["prompt_1:action_result.summary.response", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
