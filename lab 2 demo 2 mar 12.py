@@ -64,9 +64,9 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
-    # summary of all the action and/or aadsfasdfasdf actions 
+    # summary osdafasdfasdfasdfll the action and/or aadsfasdfasdf actions 
     # can be collected here.
-
+    phantom.debug("chris wuz here")
     # summary_json = phantom.get_summary()
     # if 'result' in summary_json:
         # for action_result in summary_json['result']:
