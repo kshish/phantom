@@ -7,6 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
+            "hash": "5c5564298e39c800dcddd08463865e9883d5e0a7",
             "joint": {
                 "cells": [
                     {
@@ -147,7 +148,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "start",
                         "status": "",
                         "title": "START",
                         "type": "coa.StartEnd",
@@ -199,7 +199,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt 1, prompt 1",
+                        "connection_name": "prompt 1, prompt 1, task 1",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -217,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 114,
-                        "line_start": 101,
+                        "line_end": 133,
+                        "line_start": 120,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 7,
+                        "order": 8,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -287,7 +287,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "end",
                         "status": "",
                         "title": "END",
                         "type": "coa.StartEnd",
@@ -552,6 +551,12 @@
                             ".title": {
                                 "text": "Investigate"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -563,11 +568,17 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            },
+                            "g.timer image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def geolocate_IP_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_IP_address() called')\n\n    # collect data for 'geolocate_IP_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_IP_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=prompt_1, name=\"geolocate_IP_address\")\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
+                        "block_code": "def geolocate_IP_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_IP_address() called')\n\n    # collect data for 'geolocate_IP_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_IP_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=geolocate_IP_address_callback, name=\"geolocate_IP_address\")\n\n    return",
+                        "callback_code": "def geolocate_IP_address_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_IP_address_callback() called')\n    \n    prompt_1(action=action, success=success, container=container, results=results, handle=handle)\n    task_1(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "callback_start": 37,
                         "callsback": true,
                         "color": "",
                         "connected_to_start": true,
@@ -590,7 +601,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 37,
+                        "line_end": 45,
                         "line_start": 16,
                         "message": "Configuring now",
                         "name": "geolocate ip",
@@ -671,7 +682,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 9
                     },
                     {
@@ -928,6 +939,13 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes code": {
+                                "opacity": 1,
+                                "xlink:href": "/inc/coa/img/block_icon_code_dark_off.svg"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_comment_1() called')\n\n    phantom.comment(container=container, comment=\"ip blocked again\")\n\n    return",
@@ -960,8 +978,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 94,
-                        "line_start": 87,
+                        "line_end": 102,
+                        "line_start": 95,
                         "message": "Configuring now",
                         "name": "add comment",
                         "notes": "",
@@ -1083,6 +1101,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip address is from {0}, {1}.\n\nDo you want to block this ip:  ?{2}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_IP_address:action_result.data.*.city_name\",\n        \"geolocate_IP_address:action_result.data.*.country_name\",\n        \"geolocate_IP_address:action_result.parameter.ip\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=2, name=\"prompt_1\", parameters=parameters, options=options, callback=decision_1)\n\n    return",
@@ -1108,8 +1129,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 66,
-                        "line_start": 37,
+                        "line_end": 74,
+                        "line_start": 45,
                         "message": "The ip address is from {0}, {1}.\n\nDo you want to block this ip:  ?{2}",
                         "name": "prompt",
                         "notes": "",
@@ -1258,7 +1279,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1268,6 +1289,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_1() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        add_comment_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n    add_comment_2(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
@@ -1294,8 +1318,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 87,
-                        "line_start": 66,
+                        "line_end": 95,
+                        "line_start": 74,
                         "name": "decision",
                         "notes": "",
                         "number": 1,
@@ -1453,6 +1477,13 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes code": {
+                                "opacity": 1,
+                                "xlink:href": "/inc/coa/img/block_icon_code_dark_off.svg"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def add_comment_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_comment_2() called')\n\n    phantom.comment(container=container, comment=\"not blocked\")\n\n    return",
@@ -1485,8 +1516,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 101,
-                        "line_start": 94,
+                        "line_end": 109,
+                        "line_start": 102,
                         "message": "Configuring now",
                         "name": "add comment",
                         "notes": "",
@@ -1564,6 +1595,235 @@
                         "type": "coa.API",
                         "warn": false,
                         "z": 34
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "ec5c01f9-eb4c-49cf-8abb-ff87af67fabd",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "7ede6c51-ef28-4095-894a-c5bb371b368a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "dadff113-cdbc-43de-bb14-83ccfbd8111e",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 35
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "b0e66f65-ee48-4a99-91f0-abc8b3bb8021",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "dadff113-cdbc-43de-bb14-83ccfbd8111e",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "36ea1228-ee1a-4aa3-8cb7-a34809cfc3a3",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 37
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def task_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('task_1() called')\n    \n    # set user and message variables for phantom.task call\n    user = \"admin\"\n    message = \"Please review this\"\n\n    phantom.task(user=user, message=message, respond_in_mins=30, name=\"task_1\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate IP address",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "dadff113-cdbc-43de-bb14-83ccfbd8111e",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 120,
+                        "line_start": 109,
+                        "message": "Please review this",
+                        "name": "task",
+                        "notes": "",
+                        "number": 1,
+                        "order": 7,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 580,
+                            "y": 400
+                        },
+                        "previous_function": "",
+                        "previous_name": "task_1",
+                        "respond_in": "30",
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "task",
+                        "status": "",
+                        "type": "coa.Task",
+                        "warn": false,
+                        "z": 38
                     }
                 ]
             },
@@ -1572,7 +1832,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-03-12T19:59:19.474396+00:00",
+    "create_time": "2019-03-12T20:08:22.434441+00:00",
     "draft_mode": false,
     "labels": [
         "sample"

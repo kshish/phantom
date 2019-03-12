@@ -30,7 +30,15 @@ def geolocate_IP_address(action=None, success=None, container=None, results=None
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="geolocate_IP_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_IP_address_callback, name="geolocate_IP_address")
+
+    return
+
+def geolocate_IP_address_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_IP_address_callback() called')
+    
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    task_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -95,6 +103,17 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     phantom.debug('add_comment_2() called')
 
     phantom.comment(container=container, comment="not blocked")
+
+    return
+
+def task_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('task_1() called')
+    
+    # set user and message variables for phantom.task call
+    user = "admin"
+    message = "Please review this"
+
+    phantom.task(user=user, message=message, respond_in_mins=30, name="task_1")
 
     return
 
