@@ -1010,7 +1010,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1189,6 +1189,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"possible threat from ip: {0}, {1}\n\nAdd IP to threat list?{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"geolocate_ip_1:action_result.data.*.city_name\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_2\", parameters=parameters, options=options, callback=filter_1)\n\n    return",
@@ -1323,6 +1326,7 @@
     "draft_mode": false,
     "labels": [
         "sample",
-        "events"
+        "events",
+        "investigate"
     ]
 }
