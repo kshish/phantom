@@ -119,7 +119,7 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", options=options, callback=Promote_to_case)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", options=options, callback=decision_3)
 
     return
 
@@ -226,6 +226,26 @@ def join_add_list_3(action=None, success=None, container=None, results=None, han
         # call connected block "add_list_3"
         add_list_3(container=container, handle=handle)
     
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Notify_IT:action_result.summary.response", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        Promote_to_case(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+
     return
 
 def on_finish(container, summary):
