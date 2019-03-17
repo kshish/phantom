@@ -108,7 +108,20 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """A bad file has been detected. Notify IT team?"""
+    message = """A bad file has been detected. Notify IT team?
+Country: {0}
+Message: {1} {2}
+Alexa rank: {3}
+Alexa whois {4}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_ip_1:action_result.data.*.country_name",
+        "file_reputation_1:action_result.message",
+        "file_reputation_1:action_result.data.*.response_code",
+        "domain_reputation_1:action_result.data.*.Alexa rank",
+        "domain_reputation_1:action_result.data.*.whois",
+    ]
 
     # response options
     options = {
@@ -119,15 +132,15 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", options=options, callback=decision_3)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", parameters=parameters, options=options, callback=decision_3)
 
     return
 
 def Promote_to_case(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('Promote_to_case() called')
     
-    # call playbook "Chris/Case Promotion Lab", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("Chris/Case Promotion Lab", container=container)
+    # call playbook "Chris/Case Promotion Lab get action results", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/Case Promotion Lab get action results", container=container)
 
     return
 
