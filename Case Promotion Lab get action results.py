@@ -8,9 +8,6 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'promote_to_case_1' block
-    promote_to_case_1(container=container)
-
     # call 'no_op_1' block
     no_op_1(container=container)
 
@@ -79,6 +76,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
+        action_results=results,
         conditions=[
             ["artifact:*.cef.sourceDnsDomain", "!=", None],
         ],
@@ -153,13 +151,20 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
 def no_op_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('no_op_1() called')
 
-    parameters = []
+    # collect data for 'no_op_1' call
 
-    phantom.act("no op", parameters=parameters, name="no_op_1")
+    parameters = []
+    
+    # build parameters list for 'no_op_1' call
+    parameters.append({
+        'sleep_seconds': "1",
+    })
+
+    phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
     
     action_results = phantom.get_action_results(
-                              
-                              result_data=False, flatten=False)
+                        
+                        result_data=False, flatten=False)
     phantom.debug(action_results)
 
     return
