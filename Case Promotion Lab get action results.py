@@ -11,6 +11,9 @@ def on_start(container):
     # call 'promote_to_case_1' block
     promote_to_case_1(container=container)
 
+    # call 'no_op_1' block
+    no_op_1(container=container)
+
     return
 
 def promote_to_case_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -145,6 +148,20 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug("formated data from email extract")
     phantom.debug(parameters)
     send_email_1(container=container)
+    return
+
+def no_op_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('no_op_1() called')
+
+    parameters = []
+
+    phantom.act("no op", parameters=parameters, name="no_op_1")
+    
+    action_results = phantom.get_action_results(
+                              
+                              result_data=False, flatten=False)
+    phantom.debug(action_results)
+
     return
 
 def on_finish(container, summary):
