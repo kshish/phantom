@@ -162,7 +162,7 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
 
     phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
     
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.message'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['*'], action_results=results)
 
     phantom.debug(results_data_1)
 
