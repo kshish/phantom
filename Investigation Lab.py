@@ -108,11 +108,11 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """A bad file has been detected. Notify IT team?
+    message = """A bad file has been detected, mmmmkay. Notify IT team?
 Country: {0}
 Message: {1} {2}
 Alexa rank: {3}
-Alexa whois {4}"""
+__________"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -120,7 +120,6 @@ Alexa whois {4}"""
         "file_reputation_1:action_result.message",
         "file_reputation_1:action_result.data.*.response_code",
         "domain_reputation_1:action_result.data.*.Alexa rank",
-        "domain_reputation_1:action_result.data.*.whois",
     ]
 
     # response options

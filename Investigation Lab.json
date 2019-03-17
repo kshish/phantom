@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "5366690c3285517c87fac3e563cf4d7cd0433150",
+            "hash": "70c8ac8257e1285c2bc2ce6731ed5d0f41d16780",
             "joint": {
                 "cells": [
                     {
@@ -725,8 +725,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 178,
-                        "line_start": 168,
+                        "line_end": 177,
+                        "line_start": 167,
                         "message": "Configuring now",
                         "name": "pin",
                         "notes": "",
@@ -939,8 +939,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 189,
-                        "line_start": 178,
+                        "line_end": 188,
+                        "line_start": 177,
                         "message": "Configuring now",
                         "name": "add comment",
                         "notes": "",
@@ -1954,9 +1954,9 @@
                         ],
                         "join_code": "def join_add_list_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_add_list_3() called')\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):\n        \n        # call connected block \"add_list_3\"\n        add_list_3(container=container, handle=handle)\n    \n    return",
                         "join_optional": [],
-                        "join_start": 233,
-                        "line_end": 244,
-                        "line_start": 221,
+                        "join_start": 232,
+                        "line_end": 243,
+                        "line_start": 220,
                         "message": "Configuring now",
                         "name": "add list",
                         "notes": "",
@@ -2158,8 +2158,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 264,
-                        "line_start": 244,
+                        "line_end": 263,
+                        "line_start": 243,
                         "name": "decision",
                         "notes": "",
                         "number": 3,
@@ -2787,9 +2787,9 @@
                         ],
                         "join_code": "def join_decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_decision_2() called')\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'geolocate_ip_1', 'file_reputation_1', 'domain_reputation_1' ]):\n        \n        # call connected block \"decision_2\"\n        decision_2(container=container, handle=handle)\n    \n    return",
                         "join_optional": [],
-                        "join_start": 210,
-                        "line_end": 221,
-                        "line_start": 189,
+                        "join_start": 209,
+                        "line_end": 220,
+                        "line_start": 188,
                         "name": "decision",
                         "notes": "",
                         "number": 2,
@@ -3172,8 +3172,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 168,
-                        "line_start": 147,
+                        "line_end": 167,
+                        "line_start": 146,
                         "message": "Configuring now",
                         "name": "format",
                         "notes": "",
@@ -3271,190 +3271,6 @@
                         "z": 106
                     },
                     {
-                        "active": false,
-                        "angle": 0,
-                        "approver": "admin",
-                        "attrs": {
-                            ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Notify_IT() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"A bad file has been detected. Notify IT team?\nCountry: {0}\nMessage: {1} {2}\nAlexa rank: {3}\nAlexa whois {4}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"file_reputation_1:action_result.message\",\n        \"file_reputation_1:action_result.data.*.response_code\",\n        \"domain_reputation_1:action_result.data.*.Alexa rank\",\n        \"domain_reputation_1:action_result.data.*.whois\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Notify_IT\", parameters=parameters, options=options, callback=decision_3)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": true,
-                        "connected_to_start": true,
-                        "connection_name": "geolocate ip, file reputation, domain reputation, geolocate ip, file reputation, domain reputation",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "Notify IT",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "2aa9b8ef-e6ef-4071-868d-a31f16570f72",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 126,
-                        "line_end": 139,
-                        "line_start": 106,
-                        "message": "A bad file has been detected. Notify IT team?\nCountry: {0}\nMessage: {1} {2}\nAlexa rank: {3}\nAlexa whois {4}",
-                        "name": "prompt",
-                        "notes": "",
-                        "number": 1,
-                        "order": 6,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "parameters": [
-                            {
-                                "position": 0,
-                                "type": "",
-                                "value": "geolocate_ip_1:action_result.data.*.country_name"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
-                                "value": "file_reputation_1:action_result.message"
-                            },
-                            {
-                                "position": 2,
-                                "type": "",
-                                "value": "file_reputation_1:action_result.data.*.response_code"
-                            },
-                            {
-                                "position": 3,
-                                "type": "",
-                                "value": "domain_reputation_1:action_result.data.*.Alexa rank"
-                            },
-                            {
-                                "position": 4,
-                                "type": "",
-                                "value": "domain_reputation_1:action_result.data.*.whois"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 1180,
-                            "y": 320
-                        },
-                        "previous_function": "",
-                        "previous_name": "Notify_IT",
-                        "respond_in": "30",
-                        "response_key": "Yes/No",
-                        "response_options": [
-                            "Yes",
-                            "No"
-                        ],
-                        "response_type": "list",
-                        "show_number": true,
-                        "size": {
-                            "height": 80,
-                            "width": 80
-                        },
-                        "state": "prompt",
-                        "status": "",
-                        "type": "coa.Prompt",
-                        "warn": false,
-                        "z": 108
-                    },
-                    {
                         "0": "E",
                         "1": "N",
                         "2": "D",
@@ -3520,8 +3336,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 277,
-                        "line_start": 264,
+                        "line_end": 276,
+                        "line_start": 263,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -3681,8 +3497,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 147,
-                        "line_start": 139,
+                        "line_end": 146,
+                        "line_start": 138,
                         "message": "Configuring now",
                         "name": "Chris/Case Promotion Lab",
                         "notes": "",
@@ -3761,6 +3577,185 @@
                         "type": "coa.CallPlaybook",
                         "warn": false,
                         "z": 111
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Notify_IT() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"A bad file has been detected, mmmmkay. Notify IT team?\nCountry: {0}\nMessage: {1} {2}\nAlexa rank: {3}\n__________\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"file_reputation_1:action_result.message\",\n        \"file_reputation_1:action_result.data.*.response_code\",\n        \"domain_reputation_1:action_result.data.*.Alexa rank\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Notify_IT\", parameters=parameters, options=options, callback=decision_3)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip, file reputation, domain reputation, geolocate ip, file reputation, domain reputation",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Notify IT",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "2aa9b8ef-e6ef-4071-868d-a31f16570f72",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 126,
+                        "line_end": 138,
+                        "line_start": 106,
+                        "message": "A bad file has been detected, mmmmkay. Notify IT team?\nCountry: {0}\nMessage: {1} {2}\nAlexa rank: {3}\n__________",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 6,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "file_reputation_1:action_result.message"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "file_reputation_1:action_result.data.*.response_code"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "domain_reputation_1:action_result.data.*.Alexa rank"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 1180,
+                            "y": 320
+                        },
+                        "previous_function": "",
+                        "previous_name": "Notify_IT",
+                        "respond_in": "30",
+                        "response_key": "Yes/No",
+                        "response_options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "response_type": "list",
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 112
                     }
                 ]
             },
@@ -3769,7 +3764,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-03-17T03:11:37.861998+00:00",
+    "create_time": "2019-03-17T03:19:52.338615+00:00",
     "draft_mode": false,
     "labels": [
         "*"
