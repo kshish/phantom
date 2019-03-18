@@ -153,7 +153,7 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
 
     phantom.debug(results_data_1)
     
-    data=phantom.collect2(action_results=results_data_1,datapath="geolocate_ip_1:action_result.data.*.country_name")
+    data=phantom.collect2(action_results=results_data_1,datapath="action_result.data.*.country_name")
     phantom.debug("data from collect2:")
     phantom.debug(data)
     
