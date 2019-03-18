@@ -152,6 +152,8 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
     phantom.debug('no_op_1() called')
 
     # collect data for 'no_op_1' call
+    my_action_run_id=233;
+    my_playbook_run_id=180;
 
     parameters = []
     
@@ -162,8 +164,8 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
 
     phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
     
-    results_data_1 = phantom.get_action_results(action_run_id=233,
-                           playbook_run_id="180"
+    results_data_1 = phantom.get_action_results(action_run_id=my_action_run_id,
+                           playbook_run_id=my_playbook_run_id
                            )
 
     phantom.debug(results_data_1)
