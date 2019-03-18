@@ -143,9 +143,9 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
     parameters = []
     
     # build parameters list for 'no_op_1' call
-    #parameters.append({
-    #    'sleep_seconds': "1",
-    #})
+    parameters.append({
+        'sleep_seconds': "1",
+    })
     results_data_1 = phantom.get_action_results(action_run_id=my_action_run_id,
                            
                            flatten=False
