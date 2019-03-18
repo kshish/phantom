@@ -28,7 +28,9 @@ def Format_email_body(action=None, success=None, container=None, results=None, h
 
 Event Name: {1}
 Description: {2}
-Source URL:{3}"""
+Source URL:{3}
+noop action results: {4}
+noop msg:{5}"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -36,11 +38,13 @@ Source URL:{3}"""
         "container:name",
         "container:description",
         "filtered-data:filter_1:condition_1:artifact:*.cef.sourceDnsDomain",
+        "no_op_1:action_result.data",
+        "no_op_1:action_result.message",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="Format_email_body")
 
-    get_data_1(container=container)
+    Extract_email_address(container=container)
 
     return
 
@@ -85,25 +89,6 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Format_email_body(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-def get_data_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('get_data_1() called')
-
-    # collect data for 'get_data_1' call
-
-    parameters = []
-    
-    # build parameters list for 'get_data_1' call
-    parameters.append({
-        'headers': "",
-        'location': "/rest/ph_user/1",
-        'verify_certificate': False,
-    })
-
-    phantom.act("get data", parameters=parameters, assets=['local'], callback=Extract_email_address, name="get_data_1")
-    phantom.debug("inside get data rest api")
 
     return
 
@@ -158,17 +143,16 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
     parameters = []
     
     # build parameters list for 'no_op_1' call
-    parameters.append({
-        'sleep_seconds': "1",
-    })
-
-    phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
-    
+    #parameters.append({
+    #    'sleep_seconds': "1",
+    #})
     results_data_1 = phantom.get_action_results(action_run_id=my_action_run_id,
                            playbook_run_id=my_playbook_run_id
                            )
 
     phantom.debug(results_data_1)
+    
+    phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
 
     return
 
