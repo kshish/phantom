@@ -147,7 +147,7 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
     #    'sleep_seconds': "1",
     #})
     results_data_1 = phantom.get_action_results(action_run_id=my_action_run_id,
-                           playbook_run_id=my_playbook_run_id,
+                           
                            flatten=False
                            )
 
