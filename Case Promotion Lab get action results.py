@@ -153,7 +153,7 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
 
     phantom.debug(results_data_1)
     
-    data=phantom.collect2(results_data_1,"action_results.data.*.country_name")
+    data=phantom.collect2(results_data_1,"action_result.*")
     phantom.debug("data from collect2:")
     phantom.debug(data)
     
