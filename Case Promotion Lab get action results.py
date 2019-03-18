@@ -153,6 +153,10 @@ def no_op_1(action=None, success=None, container=None, results=None, handle=None
 
     phantom.debug(results_data_1)
     
+    data=phantom.collect2(results_data_1,"geolocate_ip_1:action_result.data.*.country_name")
+    phantom.debug("data from collect2:")
+    phantom.debug(data)
+    
     phantom.act("no op", parameters=parameters, assets=['phantom extra actions'], callback=promote_to_case_1, name="no_op_1")
 
     return
