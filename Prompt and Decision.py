@@ -56,9 +56,8 @@ some more info: {3}"""
     options = {
         "type": "list",
         "choices": [
-            "Green",
-            "Yellow",
-            "Red",
+            "Yes",
+            "No",
         ]
     }
 
