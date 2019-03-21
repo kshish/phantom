@@ -30,44 +30,39 @@ def geolocate_IP_address(action=None, success=None, container=None, results=None
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_IP_address_callback, name="geolocate_IP_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Block_IP, name="geolocate_IP_address")
 
     return
 
-def geolocate_IP_address_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_IP_address_callback() called')
-    
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
-    task_1(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
+def Block_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Block_IP() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip address is from {0}, {1}.
+    message = """The ip address is from  {3} {0}, {1}.
 
-Do you want to block this ip:  ?{2}"""
+Do you want to block this ip:  ?{2}
+some more info: {3}"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_IP_address:action_result.data.*.city_name",
         "geolocate_IP_address:action_result.data.*.country_name",
         "geolocate_IP_address:action_result.parameter.ip",
+        "geolocate_IP_address:action_result.data.*.continent_name",
     ]
 
     # response options
     options = {
         "type": "list",
         "choices": [
-            "Yes",
-            "No",
+            "Green",
+            "Yellow",
+            "Red",
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=2, name="prompt_1", parameters=parameters, options=options, callback=decision_1)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=2, name="Block_IP", parameters=parameters, options=options, callback=decision_1)
 
     return
 
@@ -103,17 +98,6 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     phantom.debug('add_comment_2() called')
 
     phantom.comment(container=container, comment="not blocked")
-
-    return
-
-def task_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('task_1() called')
-    
-    # set user and message variables for phantom.task call
-    user = "admin"
-    message = "Please review this"
-
-    phantom.task(user=user, message=message, respond_in_mins=30, name="task_1")
 
     return
 
