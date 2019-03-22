@@ -39,14 +39,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """possible threat from ip: {0}, {1}
+    message = """possible threat from ip: {0}, 
 
 Add IP to threat list?"""
 
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.city_name",
     ]
 
     # response options
@@ -70,10 +69,8 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.city_name", "!=", None],
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", None],
         ],
-        logical_operator='or',
         name="filter_1:condition_1")
 
     # call connected blocks if filtered artifacts or results
@@ -87,14 +84,14 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """possible threat from ip: {0}, {1}
+    message = """possible threat from ip: {0}, 
 
-Add IP to threat list?{0}"""
+Add IP {1}  to threat list?"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_ip_1:action_result.data.*.country_name",
-        "geolocate_ip_1:action_result.data.*.city_name",
+        "geolocate_ip_1:action_result.parameter.ip",
     ]
 
     # response options
