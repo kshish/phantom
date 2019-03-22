@@ -40,6 +40,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         prompt_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    add_list_1(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -59,6 +62,17 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     }
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", options=options)
+
+    return
+
+def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_list_1() called')
+
+    results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.response'], action_results=results)
+
+    results_item_1_0 = [item[0] for item in results_data_1]
+
+    phantom.add_list("my list", results_item_1_0)
 
     return
 
