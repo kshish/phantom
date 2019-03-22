@@ -83,6 +83,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks for 'else' condition 2
     add_comment_2(action=action, success=success, container=container, results=results, handle=handle)
+    pin_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -97,6 +98,17 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     phantom.debug('add_comment_2() called')
 
     phantom.comment(container=container, comment="not blocked")
+
+    return
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_3() called')
+
+    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_IP_address:action_result.data.*.country_name'], action_results=results)
+
+    results_item_1_0 = [item[0] for item in results_data_1]
+
+    phantom.pin(container=container, message="IP Not blocked", data=results_item_1_0, pin_type="card_small", pin_style="white")
 
     return
 
