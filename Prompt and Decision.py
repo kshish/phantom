@@ -42,7 +42,7 @@ def Block_IP(action=None, success=None, container=None, results=None, handle=Non
     message = """The ip address is from  {3} {0}, {1}.
 
 Do you want to block this ip:  ?{2}
-some more info: {3}"""
+some more info: {3} in timezone {4}"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -50,6 +50,7 @@ some more info: {3}"""
         "geolocate_IP_address:action_result.data.*.country_name",
         "geolocate_IP_address:action_result.parameter.ip",
         "geolocate_IP_address:action_result.data.*.continent_name",
+        "geolocate_IP_address:action_result.data.*.time_zone",
     ]
 
     # response options
