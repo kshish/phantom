@@ -41,11 +41,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     user = "Administrator"
     message = """possible threat from ip: {0}, 
 
-Add IP to threat list?"""
+Add IP {1}to threat list?"""
 
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "geolocate_ip_1:action_result.parameter.ip",
     ]
 
     # response options
