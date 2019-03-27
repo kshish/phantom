@@ -30,7 +30,15 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_2, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_ip_1_callback, name="geolocate_ip_1")
+
+    return
+
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_ip_1_callback() called')
+    
+    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -104,7 +112,7 @@ Add IP {1}  to threat list?"""
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, options=options, callback=filter_1)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, options=options)
 
     return
 
