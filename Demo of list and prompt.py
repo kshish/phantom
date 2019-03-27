@@ -18,7 +18,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Please type in an item"""
+    message = """Please type in a country name"""
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", callback=decision_1)
 
@@ -32,7 +32,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.response", "in", "custom_list:my list"],
+            ["prompt_1:action_result.summary.response", "in", "custom_list:Banned Countries"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -72,7 +72,7 @@ def add_list_1(action=None, success=None, container=None, results=None, handle=N
 
     results_item_1_0 = [item[0] for item in results_data_1]
 
-    phantom.add_list("my list", results_item_1_0)
+    phantom.add_list("Banned Countries", results_item_1_0)
 
     return
 
