@@ -33,7 +33,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=run_query_1, name="geolocate_ip_1")
 
     return
 
@@ -55,6 +55,26 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
             })
 
     phantom.act("whois domain", parameters=parameters, assets=['whois'], name="whois_domain_1")
+
+    return
+
+def run_query_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('run_query_1() called')
+    phantom.debug('chris wuz here')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'run_query_1' call
+
+    parameters = []
+    
+    # build parameters list for 'run_query_1' call
+    parameters.append({
+        'query': "search index=main error | stats count",
+        'display': "",
+    })
+
+    phantom.act("run query", parameters=parameters, assets=['splunk'], name="run_query_1", parent_action=action)
 
     return
 
