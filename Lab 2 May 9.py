@@ -11,6 +11,9 @@ def on_start(container):
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
 
+    # call 'whois_domain_1' block
+    whois_domain_1(container=container)
+
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -31,6 +34,27 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
             })
 
     phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+
+    return
+
+def whois_domain_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_domain_1() called')
+
+    # collect data for 'whois_domain_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'whois_domain_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'domain': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois domain", parameters=parameters, assets=['whois'], name="whois_domain_1")
 
     return
 
