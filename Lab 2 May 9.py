@@ -65,7 +65,7 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
     phantom.act("whois domain", parameters=parameters, assets=['whois'], name="whois_domain_1")
 
     return
-    phantom.debug('chris wuz here')
+
 """
 This block will run a SPL query in Splunk looking for errors
 """

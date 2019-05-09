@@ -4,10 +4,10 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
-            "clean": false,
+            "clean": true,
             "code_block": "import mymodule",
             "description": "",
-            "hash": "55709c06f564d1304dfde020fd33c1f577fdd19d",
+            "hash": "006d5720b3c4989aaf3e8254343c1baf62be3c21",
             "joint": {
                 "cells": [
                     {
@@ -1145,7 +1145,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=run_query_1, name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=run_splunk_query, name=\"geolocate_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 40,
                         "callsback": true,
@@ -1482,7 +1482,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "# read-only block view not available",
+                        "block_code": "def run_splunk_query(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('run_splunk_query() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'run_splunk_query' call\n\n    parameters = []\n    \n    # build parameters list for 'run_splunk_query' call\n    parameters.append({\n        'query': \"search index=main error | stats count\",\n        'display': \"\",\n    })\n\n    phantom.act(\"run query\", parameters=parameters, assets=['splunk'], name=\"run_splunk_query\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1598,7 +1598,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-09T18:50:51.162439+00:00",
+    "create_time": "2019-05-09T18:51:22.691778+00:00",
     "draft_mode": false,
     "labels": [
         "*"
