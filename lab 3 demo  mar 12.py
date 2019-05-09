@@ -17,7 +17,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
@@ -39,7 +39,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """ip is from {0}, {1}.
+    message = """From container {3} owned by {4}
+ip is from {0}, {1}.
 
 Do you want to block  this ip: {2}"""
 
@@ -48,6 +49,8 @@ Do you want to block  this ip: {2}"""
         "geolocate_ip_1:action_result.data.*.city_name",
         "geolocate_ip_1:action_result.data.*.country_name",
         "geolocate_ip_1:action_result.parameter.ip",
+        "container:name",
+        "container:owner",
     ]
 
     # response options
@@ -59,7 +62,7 @@ Do you want to block  this ip: {2}"""
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, options=options, callback=decision_2)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=3, name="prompt_1", parameters=parameters, options=options, callback=decision_2)
 
     return
 
