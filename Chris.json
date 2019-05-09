@@ -7,7 +7,6 @@
             "clean": true,
             "code_block": "",
             "description": "My Comments about this playbook would go here",
-            "hash": "d463c4f5b91cf6a47befb06412a41e553df5da4d",
             "joint": {
                 "cells": [
                     {
@@ -494,6 +493,9 @@
                             ".title": {
                                 "text": "format"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -505,6 +507,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_2() called')\n    \n    template = \"\"\"{0}{1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"format_1:formatted_data\",\n        \"prompt_1:action_result.summary.response\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_2\")\n\n    return",
@@ -665,6 +670,9 @@
                             ".title": {
                                 "text": "format"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -676,6 +684,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_1() called')\n    \n    template = \"\"\"City: {0}\nCountry: {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"whois_ip_1:action_result.data.*.nets.*.city\",\n        \"whois_ip_1:action_result.data.*.nets.*.country\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_1\")\n\n    prompt_1(container=container)\n\n    return",
@@ -879,6 +890,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"format_1:formatted_data\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, callback=format_2)\n\n    return",
@@ -1412,7 +1426,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 42
                     }
                 ]
@@ -1422,9 +1436,9 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-02-01T17:25:03.947207+00:00",
+    "create_time": "2019-02-01T17:25:04+00:00",
     "draft_mode": false,
     "labels": [
-        "sample"
+        "*"
     ]
 }
