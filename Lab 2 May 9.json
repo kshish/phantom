@@ -4,10 +4,10 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
-            "clean": true,
-            "code_block": "",
+            "clean": false,
+            "code_block": "import mymodule",
             "description": "",
-            "hash": "e605e9af31c62a63be6ca01a27d0c1556066f1e9",
+            "hash": "55709c06f564d1304dfde020fd33c1f577fdd19d",
             "joint": {
                 "cells": [
                     {
@@ -76,8 +76,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 19,
-                        "line_start": 8,
+                        "line_end": 27,
+                        "line_start": 16,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -321,7 +321,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "whois domain, run query",
+                        "connection_name": "whois domain, run splunk query",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -339,8 +339,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 94,
-                        "line_start": 81,
+                        "line_end": 104,
+                        "line_start": 91,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -833,7 +833,7 @@
                                 "text": "Investigate"
                             },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -870,8 +870,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 61,
-                        "line_start": 40,
+                        "line_end": 69,
+                        "line_start": 48,
                         "message": "Configuring now",
                         "name": "whois domain",
                         "notes": "",
@@ -952,7 +952,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 22
+                        "z": 33
                     },
                     {
                         "action": "geolocate ip",
@@ -1170,8 +1170,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 40,
-                        "line_start": 19,
+                        "line_end": 48,
+                        "line_start": 27,
                         "message": "Configuring now",
                         "name": "geolocate ip",
                         "notes": "",
@@ -1252,7 +1252,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 23
+                        "z": 34
                     },
                     {
                         "action": "run query",
@@ -1428,7 +1428,7 @@
                         ],
                         "attrs": {
                             ".action": {
-                                "text": "run query"
+                                "text": "run splunk query"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -1467,8 +1467,7 @@
                                 "text": "Investigate"
                             },
                             "g.code image": {
-                                "opacity": 1,
-                                "xlink:href": "/inc/coa/img/block_icon_code_dark_on.svg"
+                                "opacity": 1
                             },
                             "g.delete": {
                                 "display": "none"
@@ -1492,13 +1491,13 @@
                         "connection_name": "geolocate ip",
                         "connection_type": "action",
                         "custom_callback": "",
-                        "custom_code": "def run_query_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('run_query_1() called')\n    phantom.debug('chris wuz here')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'run_query_1' call\n\n    parameters = []\n    \n    # build parameters list for 'run_query_1' call\n    parameters.append({\n        'query': \"search index=main error | stats count\",\n        'display': \"\",\n    })\n\n    phantom.act(\"run query\", parameters=parameters, assets=['splunk'], name=\"run_query_1\", parent_action=action)\n\n    return",
+                        "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "run splunk query",
                         "delay": 0,
-                        "description": "",
+                        "description": "This block will run a SPL query in Splunk looking for errors",
                         "has_custom": false,
-                        "has_custom_block": true,
+                        "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
                         "id": "2bd9e814-af00-4513-b6a0-ed799b93bfc7",
@@ -1508,8 +1507,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 81,
-                        "line_start": 61,
+                        "line_end": 91,
+                        "line_start": 72,
                         "message": "Configuring now",
                         "name": "run query",
                         "notes": "",
@@ -1575,7 +1574,7 @@
                             "y": 60
                         },
                         "previous_function": "",
-                        "previous_name": "run_query_1",
+                        "previous_name": "run_splunk_query",
                         "required_params": {
                             "query": true
                         },
@@ -1590,7 +1589,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 24
+                        "z": 36
                     }
                 ]
             },
@@ -1599,7 +1598,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-09T18:34:57.465688+00:00",
+    "create_time": "2019-05-09T18:50:51.162439+00:00",
     "draft_mode": false,
     "labels": [
         "*"
