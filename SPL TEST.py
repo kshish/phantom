@@ -25,7 +25,7 @@ def run_Splunk_SPL(action=None, success=None, container=None, results=None, hand
     
     # build parameters list for 'run_Splunk_SPL' call
     parameters.append({
-        'query': "search index=* OR index=_* error | stats count | fields count",
+        'query': "search index=* OR index=_* error | stats count ",
         'display': "count",
     })
 
