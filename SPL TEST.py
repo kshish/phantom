@@ -51,7 +51,35 @@ raw {2}
         "run_Splunk_SPL:artifact:*.cef.deviceProcessName",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, callback=format_1)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """THe analyst typed in this message {0}
+
+The answer from SPL is: {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "prompt_1:action_result.parameter.message",
+        "run_Splunk_SPL:action_result.message",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    add_comment_1(container=container)
+
+    return
+
+def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_comment_1() called')
+
+    formatted_data_1 = phantom.get_format_data(name='format_1')
+
+    phantom.comment(container=container, comment=formatted_data_1)
 
     return
 
