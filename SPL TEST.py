@@ -77,9 +77,11 @@ The answer from SPL is: {1}"""
 def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_comment_1() called')
 
-    formatted_data_1 = phantom.get_format_data(name='format_1')
+    results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.response'], action_results=results)
 
-    phantom.comment(container=container, comment=formatted_data_1)
+    results_item_1_0 = [item[0] for item in results_data_1]
+
+    phantom.comment(container=container, comment=results_item_1_0)
 
     return
 
