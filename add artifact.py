@@ -25,9 +25,9 @@ def add_artifact_1(action=None, success=None, container=None, results=None, hand
         'name': "User created artifact",
         'container_id': "",
         'label': "event",
-        'source_data_identifier': "chris",
+        'source_data_identifier': "phantom class",
         'cef_name': "deviceCustomString2",
-        'cef_value': "chris was here",
+        'cef_value': "phantom class demo",
         'cef_dictionary': "",
         'contains': "",
     })
