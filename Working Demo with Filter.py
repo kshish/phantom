@@ -30,15 +30,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_ip_1_callback, name="geolocate_ip_1")
-
-    return
-
-def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1_callback() called')
-    
-    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
-    filter_1(action=action, success=success, container=container, results=results, handle=handle)
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_2, name="geolocate_ip_1")
 
     return
 
@@ -47,14 +39,11 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """possible threat from ip: {0}, 
-
-Add IP {1}to threat list?"""
+    message = """possible threat from ip: {0},"""
 
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-        "geolocate_ip_1:action_result.parameter.ip",
     ]
 
     # response options
@@ -93,26 +82,14 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """possible threat from ip: {0}, 
-
-Add IP {1}  to threat list?"""
+    message = """{0}"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_ip_1:action_result.data.*.country_name",
-        "geolocate_ip_1:action_result.parameter.ip",
     ]
 
-    # response options
-    options = {
-        "type": "list",
-        "choices": [
-            "Yes",
-            "No",
-        ]
-    }
-
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, options=options)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, callback=filter_1)
 
     return
 
