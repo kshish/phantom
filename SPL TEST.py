@@ -25,7 +25,7 @@ def run_Splunk_SPL(action=None, success=None, container=None, results=None, hand
     
     # build parameters list for 'run_Splunk_SPL' call
     parameters.append({
-        'query': "index=* OR index=_* error | stats count",
+        'query': "search index=* OR index=_* error | stats count",
         'display': "",
     })
 
@@ -41,14 +41,16 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     message = """status {0}
 message {1}
 raw {2}
-{3}"""
+total events {3}
+param query {4}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "run_Splunk_SPL:action_result.message",
+        "run_Splunk_SPL:action_result.status",
         "run_Splunk_SPL:action_result.message",
         "run_Splunk_SPL:action_result.data.*._raw",
-        "run_Splunk_SPL:artifact:*.cef.deviceProcessName",
+        "run_Splunk_SPL:action_result.summary.total_events",
+        "run_Splunk_SPL:action_result.parameter.query",
     ]
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, callback=format_1)
@@ -60,12 +62,14 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     
     template = """THe analyst typed in this message {0}
 
-The answer from SPL is: {1}"""
+The answer from SPL is: {1}
+{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "prompt_1:action_result.parameter.message",
         "run_Splunk_SPL:action_result.message",
+        "",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
@@ -77,11 +81,9 @@ The answer from SPL is: {1}"""
 def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_comment_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.response'], action_results=results)
+    formatted_data_1 = phantom.get_format_data(name='format_1')
 
-    results_item_1_0 = [item[0] for item in results_data_1]
-
-    phantom.comment(container=container, comment=results_item_1_0)
+    phantom.comment(container=container, comment=formatted_data_1)
 
     return
 
