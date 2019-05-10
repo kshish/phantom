@@ -72,7 +72,7 @@ def add_list_1(action=None, success=None, container=None, results=None, handle=N
 
     results_item_1_0 = [item[0] for item in results_data_1]
 
-    phantom.add_list("Banned Countries", results_item_1_0)
+    phantom.add_list("Valid Colors", results_item_1_0)
 
     return
 
