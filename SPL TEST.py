@@ -25,8 +25,8 @@ def run_Splunk_SPL(action=None, success=None, container=None, results=None, hand
     
     # build parameters list for 'run_Splunk_SPL' call
     parameters.append({
-        'query': "search index=* OR index=_* error | stats count",
-        'display': "",
+        'query': "search index=* OR index=_* error | stats count | fields counts",
+        'display': "count",
     })
 
     phantom.act("run query", parameters=parameters, assets=['splunk'], callback=prompt_1, name="run_Splunk_SPL")
@@ -42,7 +42,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 message {1}
 raw {2}
 total events {3}
-param query {4}"""
+param query {4}
+{5}"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -51,6 +52,7 @@ param query {4}"""
         "run_Splunk_SPL:action_result.data.*._raw",
         "run_Splunk_SPL:action_result.summary.total_events",
         "run_Splunk_SPL:action_result.parameter.query",
+        "run_Splunk_SPL:action_result.parameter.display",
     ]
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, callback=format_1)

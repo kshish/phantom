@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "77cbdb42882684d9f02b6e3f1ef651dae3022a25",
+            "hash": "6884dd0b17afe7c9530fde33b67c1131af54f81d",
             "joint": {
                 "cells": [
                     {
@@ -218,8 +218,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 103,
-                        "line_start": 90,
+                        "line_end": 105,
+                        "line_start": 92,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -583,8 +583,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 90,
-                        "line_start": 81,
+                        "line_end": 92,
+                        "line_start": 83,
                         "message": "Configuring now",
                         "name": "add comment",
                         "notes": "",
@@ -741,8 +741,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 87,
-                        "line_end": 81,
-                        "line_start": 60,
+                        "line_end": 83,
+                        "line_start": 62,
                         "message": "Configuring now",
                         "name": "format",
                         "notes": "",
@@ -840,13 +840,196 @@
                         "z": 29
                     },
                     {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"status {0}\nmessage {1}\nraw {2}\ntotal events {3}\nparam query {4}\n{5}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"run_Splunk_SPL:action_result.status\",\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.data.*._raw\",\n        \"run_Splunk_SPL:action_result.summary.total_events\",\n        \"run_Splunk_SPL:action_result.parameter.query\",\n        \"run_Splunk_SPL:action_result.parameter.display\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, callback=format_1)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "run Splunk SPL",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "a11981cb-9f64-4752-8826-4daf2e31a46d",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 62,
+                        "line_start": 36,
+                        "message": "status {0}\nmessage {1}\nraw {2}\ntotal events {3}\nparam query {4}\n{5}",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.status"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.message"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.data.*._raw"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.summary.total_events"
+                            },
+                            {
+                                "position": 4,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.parameter.query"
+                            },
+                            {
+                                "position": 5,
+                                "type": "",
+                                "value": "run_Splunk_SPL:action_result.parameter.display"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 660,
+                            "y": 100
+                        },
+                        "previous_function": "",
+                        "previous_name": "prompt_1",
+                        "respond_in": "30",
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "message",
+                        "show_number": false,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 34
+                    },
+                    {
                         "action": "run query",
                         "action_type": "investigate",
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "display": "",
-                            "query": "search index=* OR index=_* error | stats count"
+                            "display": "count",
+                            "query": "search index=* OR index=_* error | stats count | fields counts"
                         },
                         "angle": 0,
                         "app": "Splunk",
@@ -871,8 +1054,8 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "display": "",
-                                    "query": "search index=* OR index=_* error | stats count"
+                                    "display": "count",
+                                    "query": "search index=* OR index=_* error | stats count | fields counts"
                                 },
                                 "has_app": true,
                                 "id": 14,
@@ -1068,7 +1251,7 @@
                                 "xlink:href": "/inc/coa/img/block_icon_note_dark_on.svg"
                             }
                         },
-                        "block_code": "def run_Splunk_SPL(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('run_Splunk_SPL() called')\n\n    # collect data for 'run_Splunk_SPL' call\n\n    parameters = []\n    \n    # build parameters list for 'run_Splunk_SPL' call\n    parameters.append({\n        'query': \"search index=* OR index=_* error | stats count\",\n        'display': \"\",\n    })\n\n    phantom.act(\"run query\", parameters=parameters, assets=['splunk'], callback=prompt_1, name=\"run_Splunk_SPL\")\n\n    return",
+                        "block_code": "def run_Splunk_SPL(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('run_Splunk_SPL() called')\n\n    # collect data for 'run_Splunk_SPL' call\n\n    parameters = []\n    \n    # build parameters list for 'run_Splunk_SPL' call\n    parameters.append({\n        'query': \"search index=* OR index=_* error | stats count | fields counts\",\n        'display': \"count\",\n    })\n\n    phantom.act(\"run query\", parameters=parameters, assets=['splunk'], callback=prompt_1, name=\"run_Splunk_SPL\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 36,
                         "callsback": true,
@@ -1157,7 +1340,7 @@
                         },
                         "position": {
                             "x": 340,
-                            "y": 80
+                            "y": 60
                         },
                         "previous_function": "",
                         "previous_name": "run_Splunk_SPL",
@@ -1175,185 +1358,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 30
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "approver": "admin",
-                        "attrs": {
-                            ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            }
-                        },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"status {0}\nmessage {1}\nraw {2}\ntotal events {3}\nparam query {4}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"run_Splunk_SPL:action_result.status\",\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.data.*._raw\",\n        \"run_Splunk_SPL:action_result.summary.total_events\",\n        \"run_Splunk_SPL:action_result.parameter.query\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, callback=format_1)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": true,
-                        "connected_to_start": true,
-                        "connection_name": "run Splunk SPL",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "a11981cb-9f64-4752-8826-4daf2e31a46d",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 60,
-                        "line_start": 36,
-                        "message": "status {0}\nmessage {1}\nraw {2}\ntotal events {3}\nparam query {4}",
-                        "name": "prompt",
-                        "notes": "",
-                        "number": 1,
-                        "order": 3,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "parameters": [
-                            {
-                                "position": 0,
-                                "type": "",
-                                "value": "run_Splunk_SPL:action_result.status"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
-                                "value": "run_Splunk_SPL:action_result.message"
-                            },
-                            {
-                                "position": 2,
-                                "type": "",
-                                "value": "run_Splunk_SPL:action_result.data.*._raw"
-                            },
-                            {
-                                "position": 3,
-                                "type": "",
-                                "value": "run_Splunk_SPL:action_result.summary.total_events"
-                            },
-                            {
-                                "position": 4,
-                                "type": "",
-                                "value": "run_Splunk_SPL:action_result.parameter.query"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 660,
-                            "y": 100
-                        },
-                        "previous_function": "",
-                        "previous_name": "prompt_1",
-                        "respond_in": "30",
-                        "response_key": "Message",
-                        "response_options": [],
-                        "response_type": "message",
-                        "show_number": false,
-                        "size": {
-                            "height": 80,
-                            "width": 80
-                        },
-                        "state": "prompt",
-                        "status": "",
-                        "type": "coa.Prompt",
-                        "warn": false,
-                        "z": 31
+                        "z": 35
                     }
                 ]
             },
@@ -1362,7 +1367,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-10T16:49:04.341897+00:00",
+    "create_time": "2019-05-10T16:54:35.037043+00:00",
     "draft_mode": false,
     "labels": [
         "*"
