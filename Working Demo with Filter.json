@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "da51571d72b719d077e09d74341a3a782b2ea016",
+            "hash": "8a7435b4110ec1957fde57f49a2c0f9cdcfaeb98",
             "joint": {
                 "cells": [
                     {
@@ -199,7 +199,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt",
+                        "connection_name": "second prompt",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -618,7 +618,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=prompt_2, name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=First_prompt, name=\"geolocate_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 37,
                         "callsback": true,
@@ -768,9 +768,50 @@
                         "z": 45
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "57bab152-9aab-46e1-90c4-b880021d335b",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "fe6b7713-d5c8-42b7-8066-15027e7df9e6",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "419740e7-6b28-4a3a-ad35-2890354dd4db",
+                            "port": "in",
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 48
+                    },
+                    {
                         "active": false,
                         "angle": 0,
-                        "approver": "admin",
+                        "approver": "Administrator",
                         "attrs": {
                             ".background": {
                                 "fill": "#000000",
@@ -787,7 +828,7 @@
                                 }
                             },
                             ".number": {
-                                "text": 2
+                                "text": 1
                             },
                             ".outPorts>.port-out": {
                                 "ref": ".background",
@@ -805,40 +846,46 @@
                             "g.error": {
                                 "opacity": 0
                             },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_2\", parameters=parameters, callback=filter_1)\n\n    return",
+                        "block_code": "def second_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('second_prompt() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"possible threat from ip: {0},\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"second_prompt\", parameters=parameters, options=options)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
                         "connected_to_start": true,
-                        "connection_name": "geolocate ip",
+                        "connection_name": "First prompt",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "second prompt",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "fe6b7713-d5c8-42b7-8066-15027e7df9e6",
+                        "id": "f243527f-2a2a-4f78-98d5-7fc6d733d309",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 96,
-                        "line_start": 80,
-                        "message": "{0}",
+                        "line_end": 62,
+                        "line_start": 37,
+                        "message": "possible threat from ip: {0},",
                         "name": "prompt",
                         "notes": "",
-                        "number": 2,
-                        "order": 5,
+                        "number": 1,
+                        "order": 3,
                         "outPorts": [
                             "out"
                         ],
@@ -846,7 +893,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "geolocate_ip_1:action_result.data.*.country_name"
+                                "value": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                             }
                         ],
                         "ports": {
@@ -902,16 +949,19 @@
                             }
                         },
                         "position": {
-                            "x": 580,
+                            "x": 860,
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "prompt_2",
+                        "previous_name": "second_prompt",
                         "respond_in": "30",
-                        "response_key": "Message",
-                        "response_options": [],
-                        "response_type": "message",
-                        "show_number": true,
+                        "response_key": "Yes/No",
+                        "response_options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "response_type": "list",
+                        "show_number": false,
                         "size": {
                             "height": 80,
                             "width": 80
@@ -920,48 +970,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 47
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "57bab152-9aab-46e1-90c4-b880021d335b",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "fe6b7713-d5c8-42b7-8066-15027e7df9e6",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "419740e7-6b28-4a3a-ad35-2890354dd4db",
-                            "port": "in",
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 48
+                        "z": 53
                     },
                     {
                         "active": false,
@@ -1011,12 +1020,12 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_1() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", None],\n        ],\n        name=\"filter_1:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
+                        "block_code": "def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_1() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", None],\n        ],\n        name=\"filter_1:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        second_prompt(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt 2",
+                        "connection_name": "First prompt",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -1125,12 +1134,12 @@
                         "status": "",
                         "type": "coa.Filter",
                         "warn": false,
-                        "z": 49
+                        "z": 54
                     },
                     {
                         "active": false,
                         "angle": 0,
-                        "approver": "Administrator",
+                        "approver": "admin",
                         "attrs": {
                             ".background": {
                                 "fill": "#000000",
@@ -1147,7 +1156,7 @@
                                 }
                             },
                             ".number": {
-                                "text": 1
+                                "text": 2
                             },
                             ".outPorts>.port-out": {
                                 "ref": ".background",
@@ -1165,9 +1174,6 @@
                             "g.error": {
                                 "opacity": 0
                             },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
                             "g.notes": {
                                 "display": "block"
                             },
@@ -1175,36 +1181,36 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"possible threat from ip: {0},\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, options=options)\n\n    return",
+                        "block_code": "def First_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('First_prompt() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"{0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"First_prompt\", parameters=parameters, callback=filter_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
                         "connected_to_start": true,
-                        "connection_name": "prompt 2",
+                        "connection_name": "geolocate ip",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "First prompt",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "f243527f-2a2a-4f78-98d5-7fc6d733d309",
+                        "id": "fe6b7713-d5c8-42b7-8066-15027e7df9e6",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 62,
-                        "line_start": 37,
-                        "message": "possible threat from ip: {0},",
+                        "line_end": 96,
+                        "line_start": 80,
+                        "message": "{0}",
                         "name": "prompt",
                         "notes": "",
-                        "number": 1,
-                        "order": 3,
+                        "number": 2,
+                        "order": 5,
                         "outPorts": [
                             "out"
                         ],
@@ -1212,7 +1218,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                                "value": "geolocate_ip_1:action_result.data.*.country_name"
                             }
                         ],
                         "ports": {
@@ -1268,19 +1274,16 @@
                             }
                         },
                         "position": {
-                            "x": 860,
+                            "x": 580,
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "prompt_1",
+                        "previous_name": "First_prompt",
                         "respond_in": "30",
-                        "response_key": "Yes/No",
-                        "response_options": [
-                            "Yes",
-                            "No"
-                        ],
-                        "response_type": "list",
-                        "show_number": false,
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "message",
+                        "show_number": true,
                         "size": {
                             "height": 80,
                             "width": 80
@@ -1289,7 +1292,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 51
+                        "z": 55
                     }
                 ]
             },
@@ -1298,7 +1301,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-10T17:57:21.458265+00:00",
+    "create_time": "2019-05-10T18:00:19.878522+00:00",
     "draft_mode": false,
     "labels": [
         "sample",

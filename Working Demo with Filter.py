@@ -30,12 +30,12 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_2, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=First_prompt, name="geolocate_ip_1")
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
+def second_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('second_prompt() called')
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
@@ -55,7 +55,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, options=options)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="second_prompt", parameters=parameters, options=options)
 
     return
 
@@ -73,12 +73,12 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        second_prompt(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
+def First_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('First_prompt() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
@@ -89,7 +89,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
         "geolocate_ip_1:action_result.data.*.country_name",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, callback=filter_1)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="First_prompt", parameters=parameters, callback=filter_1)
 
     return
 
