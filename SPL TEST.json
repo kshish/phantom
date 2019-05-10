@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "db2dbf4437201f11754daa7413145e5d77714a08",
+            "hash": "b5982d835cfc2315ff8e627f3b62e397ec76fa1c",
             "joint": {
                 "cells": [
                     {
@@ -376,6 +376,47 @@
                         "z": 6
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "2800f808-079d-4f43-8dc7-7158bdef5c93",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "a11981cb-9f64-4752-8826-4daf2e31a46d",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "8594cd00-4998-4aee-b7f0-5d3ed933eb9d",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 10
+                    },
+                    {
                         "action": "run query",
                         "action_type": "investigate",
                         "active": false,
@@ -711,12 +752,12 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 8
+                        "z": 11
                     },
                     {
                         "active": false,
                         "angle": 0,
-                        "approver": "",
+                        "approver": "admin",
                         "attrs": {
                             ".background": {
                                 "fill": "#000000",
@@ -758,7 +799,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"\"\n    message = \"\"\"status {0}\nmessage {1}\nraw {2}\n{3}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.data.*._raw\",\n        \"run_Splunk_SPL:artifact:*.cef.deviceProcessName\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters)\n\n    return",
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"status {0}\nmessage {1}\nraw {2}\n{3}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.message\",\n        \"run_Splunk_SPL:action_result.data.*._raw\",\n        \"run_Splunk_SPL:artifact:*.cef.deviceProcessName\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -881,51 +922,10 @@
                             "width": 80
                         },
                         "state": "prompt",
-                        "status": "warn",
+                        "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 9
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "2800f808-079d-4f43-8dc7-7158bdef5c93",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "a11981cb-9f64-4752-8826-4daf2e31a46d",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "8594cd00-4998-4aee-b7f0-5d3ed933eb9d",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 10
+                        "z": 12
                     }
                 ]
             },
@@ -934,7 +934,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-10T16:09:44.857915+00:00",
+    "create_time": "2019-05-10T16:10:54.484844+00:00",
     "draft_mode": false,
     "labels": [
         "*"
