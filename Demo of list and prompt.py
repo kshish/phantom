@@ -18,7 +18,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Please type in a country name"""
+    message = """Please type in a color name"""
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", callback=decision_1)
 
@@ -32,7 +32,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.response", "in", "custom_list:Banned Countries"],
+            ["prompt_1:action_result.summary.response", "in", "custom_list:Valid Colors"],
         ])
 
     # call connected blocks if condition 1 matched
