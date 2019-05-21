@@ -6,6 +6,14 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -25,8 +33,7 @@ def My_Geolocate(action=None, success=None, container=None, results=None, handle
 
     # collect data for 'My_Geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-    phantom.debug(container_data)
-    
+
     parameters = []
     
     # build parameters list for 'My_Geolocate' call
@@ -38,7 +45,7 @@ def My_Geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="My_Geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="My_Geolocate")
 
     return
 
@@ -60,6 +67,49 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
             })
 
     phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1")
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["My_Geolocate:action_result.data.*.country_name", "==", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip is from United States"""
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1")
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """Not from United States"""
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2")
 
     return
 
