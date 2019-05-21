@@ -21,18 +21,13 @@ def My_Geolocate(action=None, success=None, container=None, results=None, handle
     phantom.debug('My_Geolocate() called')
 
     # collect data for 'My_Geolocate' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
     # build parameters list for 'My_Geolocate' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
+    parameters.append({
+        'ip': "222.222.222.222",
+    })
 
     phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Analyst_decide_something, name="My_Geolocate")
 
