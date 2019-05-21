@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This playbook collects intel on artifacts in container",
-            "hash": "5429b121b25bcde2c3ff5ae98355f95abfd5fad7",
+            "hash": "4f49204624ed28b5cee2d07afba83e31dc601efd",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'geolocate_ip_1' block\n    geolocate_ip_1(container=container)\n\n    return",
+                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'My_Geolocate' block\n    My_Geolocate(container=container)\n\n    # call 'whois_ip_1' block\n    whois_ip_1(container=container)\n\n    return",
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
@@ -76,7 +76,7 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 17,
+                        "line_end": 20,
                         "line_start": 9,
                         "name": "",
                         "notes": "",
@@ -200,7 +200,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "geolocate ip",
+                        "connection_name": "My Geolocate, whois ip",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -218,12 +218,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 54,
-                        "line_start": 41,
+                        "line_end": 78,
+                        "line_start": 65,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 3,
+                        "order": 4,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -334,6 +334,47 @@
                         },
                         "type": "link",
                         "z": 4
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "d18c62dd-8e08-4b2a-9226-64e5baf755a5",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "3aa4546f-643d-4deb-ae74-76eead93b6dd",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "84dcd77b-a799-4f4e-9243-879cad6046a3",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 7
                     },
                     {
                         "action": "geolocate ip",
@@ -475,7 +516,7 @@
                         ],
                         "attrs": {
                             ".action": {
-                                "text": "geolocate ip"
+                                "text": "My Geolocate"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -533,7 +574,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def My_Geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('My_Geolocate() called')\n\n    # collect data for 'My_Geolocate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'My_Geolocate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"My_Geolocate\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -544,7 +585,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "My Geolocate",
                         "delay": "0",
                         "description": "This block will look up geo location of ip.",
                         "has_custom": false,
@@ -558,8 +599,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 41,
-                        "line_start": 20,
+                        "line_end": 44,
+                        "line_start": 23,
                         "message": "Configuring now",
                         "name": "geolocate ip",
                         "notes": "Geo Locate ip using maxmind",
@@ -625,7 +666,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "add_tag_1",
+                        "previous_name": "My_Geolocate",
                         "required_params": {
                             "ip": true
                         },
@@ -640,7 +681,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 6
+                        "z": 11
                     },
                     {
                         "attrs": {
@@ -663,12 +704,461 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "d18c62dd-8e08-4b2a-9226-64e5baf755a5",
+                        "id": "1d9ba143-4dfc-4fe0-8efe-df39cb6605c7",
                         "router": {
                             "name": "metro"
                         },
                         "source": {
-                            "id": "3aa4546f-643d-4deb-ae74-76eead93b6dd",
+                            "id": "41fd44b9-02f3-48a7-b090-52a30139653d",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "afa018e5-642a-4560-8132-c6d42c5d69f7",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 12
+                    },
+                    {
+                        "action": "whois ip",
+                        "action_type": "investigate",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "ip": "artifact:*.cef.sourceAddress"
+                        },
+                        "angle": 0,
+                        "app": "WHOIS",
+                        "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "whois ip",
+                                "actions": [
+                                    "whois ip",
+                                    "whois domain"
+                                ],
+                                "active": true,
+                                "app_name": "WHOIS",
+                                "app_version": "1.2.31",
+                                "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                                "asset_name": "whois",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "ip": "artifact:*.cef.sourceAddress"
+                                },
+                                "has_app": true,
+                                "id": 3,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "whois",
+                                "output": [
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.parameter.ip",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Asn",
+                                        "column_order": 2,
+                                        "data_path": "action_result.data.*.asn",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Asn Cidr",
+                                        "column_order": 3,
+                                        "data_path": "action_result.data.*.asn_cidr",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Asn Country Code",
+                                        "column_order": 4,
+                                        "data_path": "action_result.data.*.asn_country_code",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Asn Date",
+                                        "column_order": 5,
+                                        "data_path": "action_result.data.*.asn_date",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Asn Registry",
+                                        "column_order": 6,
+                                        "data_path": "action_result.data.*.asn_registry",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Abuse Emails",
+                                        "column_order": 7,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.abuse_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Address",
+                                        "column_order": 8,
+                                        "data_path": "action_result.data.*.nets.*.address",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Cidr",
+                                        "column_order": 9,
+                                        "data_path": "action_result.data.*.nets.*.cidr",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "City",
+                                        "column_order": 10,
+                                        "data_path": "action_result.data.*.nets.*.city",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Country",
+                                        "column_order": 11,
+                                        "data_path": "action_result.data.*.nets.*.country",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Created",
+                                        "column_order": 12,
+                                        "data_path": "action_result.data.*.nets.*.created",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Description",
+                                        "column_order": 13,
+                                        "data_path": "action_result.data.*.nets.*.description",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_order": 7,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.nets.*.handle",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Name",
+                                        "column_order": 14,
+                                        "data_path": "action_result.data.*.nets.*.name",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Postal Code",
+                                        "column_order": 15,
+                                        "data_path": "action_result.data.*.nets.*.postal_code",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Range",
+                                        "column_order": 16,
+                                        "data_path": "action_result.data.*.nets.*.range",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "State",
+                                        "column_order": 17,
+                                        "data_path": "action_result.data.*.nets.*.state",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Tech Emails",
+                                        "column_order": 18,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.tech_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Updated",
+                                        "column_order": 19,
+                                        "data_path": "action_result.data.*.nets.*.updated",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.query",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "IP",
+                                        "column_order": 0,
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.parameter.ip",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Misc Emails",
+                                        "column_order": 20,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.misc_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.asn",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.country_code",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.nets.*.address",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.nets.*.range",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.registry",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric"
+                                    },
+                                    {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.message",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric"
+                                    }
+                                ],
+                                "parameters": {
+                                    "ip": {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "IP to query",
+                                        "key": "ip",
+                                        "order": 0,
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "Whois",
+                                "product_vendor": "Generic",
+                                "targets": "3",
+                                "type": "information"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "whois ip"
+                            },
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".color-band": {
+                                "fill": "#3C444D"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Investigate"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('whois_ip_1() called')\n\n    # collect data for 'whois_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'whois_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"whois ip\", parameters=parameters, assets=['whois'], name=\"whois_ip_1\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
+                        "connection_name": "",
+                        "connection_type": "",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "afa018e5-642a-4560-8132-c6d42c5d69f7",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 65,
+                        "line_start": 44,
+                        "message": "Configuring now",
+                        "name": "whois ip",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 360,
+                            "y": 320
+                        },
+                        "previous_function": "",
+                        "previous_name": "whois_ip_1",
+                        "required_params": {
+                            "ip": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Investigate",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 13
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "5cfcae0a-b508-4c00-950c-e00d5eb7e962",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "afa018e5-642a-4560-8132-c6d42c5d69f7",
                             "port": null,
                             "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
                         },
@@ -681,7 +1171,7 @@
                             "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
                         },
                         "type": "link",
-                        "z": 7
+                        "z": 14
                     }
                 ]
             },
@@ -690,7 +1180,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-21T17:55:40.993746+00:00",
+    "create_time": "2019-05-21T18:01:45.554119+00:00",
     "draft_mode": false,
     "labels": [
         "*"
