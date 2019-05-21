@@ -25,7 +25,8 @@ def My_Geolocate(action=None, success=None, container=None, results=None, handle
 
     # collect data for 'My_Geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
+    phantom.debug(container_data)
+    
     parameters = []
     
     # build parameters list for 'My_Geolocate' call
