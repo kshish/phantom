@@ -39,11 +39,13 @@ def second_prompt(action=None, success=None, container=None, results=None, handl
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """possible threat from ip: {0},"""
+    message = """possible threat from ip: {0},
+unfiltered list is: {1}"""
 
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     # response options
