@@ -30,7 +30,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=First_prompt, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="geolocate_ip_1")
 
     return
 
@@ -76,22 +76,6 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         second_prompt(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-def First_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('First_prompt() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = "admin"
-    message = """{0}"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "geolocate_ip_1:action_result.data.*.country_name",
-    ]
-
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="First_prompt", parameters=parameters, callback=filter_1)
 
     return
 
