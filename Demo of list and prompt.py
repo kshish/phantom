@@ -68,15 +68,14 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 def add_list_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_list_pin_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.response', 'Prompt_for_color:action_result.status', 'Prompt_for_color:action_result.parameter.message'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.response', 'Prompt_for_color:action_result.status'], action_results=results)
 
     results_item_1_0 = [item[0] for item in results_data_1]
     results_item_1_1 = [item[1] for item in results_data_1]
-    results_item_1_2 = [item[2] for item in results_data_1]
 
-    phantom.add_list("Valid Colors", results_item_1_0)
+    phantom.add_list("favorite colors", results_item_1_0)
 
-    phantom.pin(container=container, message=results_item_1_2, data=results_item_1_1, pin_type="card_small", pin_style="purple")
+    phantom.pin(container=container, message=results_item_1_0, data=results_item_1_1, pin_type="card_small", pin_style="purple")
 
     return
 
