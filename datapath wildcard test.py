@@ -41,7 +41,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_ip_1:action_result.data.*",
+        "geolocate_ip_1:action_result.data",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
