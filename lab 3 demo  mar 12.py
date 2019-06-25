@@ -62,7 +62,7 @@ Do you want to block  this ip: {2}"""
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=3, name="prompt_1", parameters=parameters, options=options, callback=decision_2)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, options=options, callback=decision_2)
 
     return
 
