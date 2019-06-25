@@ -5,6 +5,14 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -13,6 +21,9 @@ def on_start(container):
 
     # call 'My_Whois_IP_lookup' block
     My_Whois_IP_lookup(container=container)
+
+    # call 'url_reputation_1' block
+    url_reputation_1(container=container)
 
     return
 
@@ -62,7 +73,7 @@ def join_decision_1(action=None, success=None, container=None, results=None, han
     phantom.debug('join_decision_1() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'My_Geolocate_of_IP', 'My_Whois_IP_lookup' ]):
+    if phantom.actions_done([ 'My_Geolocate_of_IP', 'My_Whois_IP_lookup', 'url_reputation_1' ]):
         
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
@@ -87,7 +98,17 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     user = "admin"
     message = """This outside USA"""
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2")
+    # response options
+    options = {
+        "type": "list",
+        "choices": [
+            "Yes",
+            "No",
+            "Maybe",
+        ]
+    }
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", options=options)
 
     return
 
@@ -110,6 +131,27 @@ def My_Whois_IP_lookup(action=None, success=None, container=None, results=None, 
     phantom.debug(container_data)
 
     phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_1, name="My_Whois_IP_lookup")
+
+    return
+
+def url_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('url_reputation_1() called')
+
+    # collect data for 'url_reputation_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.requestURL', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'url_reputation_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'url': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("url reputation", parameters=parameters, assets=['phishtank'], callback=join_decision_1, name="url_reputation_1")
 
     return
 
