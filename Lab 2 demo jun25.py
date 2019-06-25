@@ -8,20 +8,23 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'My_Geolocate_of_IP' block
+    My_Geolocate_of_IP(container=container)
+
+    # call 'My_Whois_IP_lookup' block
+    My_Whois_IP_lookup(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+def My_Geolocate_of_IP(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('My_Geolocate_of_IP() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'My_Geolocate_of_IP' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'My_Geolocate_of_IP' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,7 +33,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="My_Geolocate_of_IP")
 
     return
 
@@ -42,7 +45,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["My_Geolocate_of_IP:action_result.data.*.country_name", "==", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -53,6 +56,17 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks for 'else' condition 2
     prompt_2(action=action, success=success, container=container, results=results, handle=handle)
 
+    return
+
+def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_decision_1() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'My_Geolocate_of_IP', 'My_Whois_IP_lookup' ]):
+        
+        # call connected block "decision_1"
+        decision_1(container=container, handle=handle)
+    
     return
 
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -74,6 +88,27 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     message = """This outside USA"""
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2")
+
+    return
+
+def My_Whois_IP_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('My_Whois_IP_lookup() called')
+
+    # collect data for 'My_Whois_IP_lookup' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'My_Whois_IP_lookup' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_1, name="My_Whois_IP_lookup")
 
     return
 
