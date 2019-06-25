@@ -107,6 +107,7 @@ def My_Whois_IP_lookup(action=None, success=None, container=None, results=None, 
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
+    phantom.debug(container_data)
 
     phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_1, name="My_Whois_IP_lookup")
 
