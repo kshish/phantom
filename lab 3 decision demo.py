@@ -26,53 +26,27 @@ def Make_a_decision(action=None, success=None, container=None, results=None, han
         "choices": [
             "Yes",
             "No",
+            "Maybe",
         ]
     }
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Make_a_decision", options=options, callback=decision_1)
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Make_a_decision", options=options, callback=prompt_2)
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
-
-    # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["Make_a_decision:action_result.summary.response", "==", "Yes"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        task_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # call connected blocks for 'else' condition 2
-    task_2(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-def task_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('task_1() called')
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
     
-    # set user and message variables for phantom.task call
+    # set user and message variables for phantom.prompt call
     user = "admin"
-    message = "The decision is Yes"
+    message = """The answer from prior prompt is: {0}"""
 
-    phantom.task(user=user, message=message, respond_in_mins=30, name="task_1")
+    # parameter list for template variable replacement
+    parameters = [
+        "Make_a_decision:action_result.summary.response",
+    ]
 
-    return
-
-def task_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('task_2() called')
-    
-    # set user and message variables for phantom.task call
-    user = "admin"
-    message = "The decision is not yes"
-
-    phantom.task(user=user, message=message, respond_in_mins=30, name="task_2")
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
 
     return
 
