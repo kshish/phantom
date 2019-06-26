@@ -45,14 +45,24 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}"""
+    message = """{0} 
+Would you like to call that child playbook."""
 
     # parameter list for template variable replacement
     parameters = [
         "Format_my_msg:formatted_data",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
+    # response options
+    options = {
+        "type": "list",
+        "choices": [
+            "Yes",
+            "No",
+        ]
+    }
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, options=options, callback=decision_2)
 
     return
 
@@ -101,13 +111,12 @@ def url_reputation_1(action=None, success=None, container=None, results=None, ha
 def Format_my_msg(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('Format_my_msg() called')
     
-    template = """The container {0} owned by {1} and ownername {2} it is from {3}, {4}, {5}"""
+    template = """The container {0} owned by {1} and it is from {2}, {3}, {4}."""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:owner",
-        "container:owner_name",
         "My_Geolocate_of_IP:action_result.data.*.city_name",
         "My_Geolocate_of_IP:action_result.data.*.state_name",
         "My_Geolocate_of_IP:action_result.data.*.country_name",
@@ -128,6 +137,32 @@ def join_Format_my_msg(action=None, success=None, container=None, results=None, 
         # call connected block "Format_my_msg"
         Format_my_msg(container=container, handle=handle)
     
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.response", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        playbook_chris_Chris_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def playbook_chris_Chris_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_chris_Chris_1() called')
+    
+    # call playbook "chris/Chris", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/Chris", container=container)
+
     return
 
 def on_finish(container, summary):
