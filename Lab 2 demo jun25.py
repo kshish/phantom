@@ -194,6 +194,14 @@ def set_status_pin_add_comment_1(action=None, success=None, container=None, resu
     phantom.pin(container=container, message=formatted_data_1, data="MSG", pin_type="card_medium", pin_style="red")
 
     phantom.comment(container=container, comment=formatted_data_1)
+    set_label_3(container=container)
+
+    return
+
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_label_3() called')
+
+    phantom.set_label(container, "events")
 
     return
 
