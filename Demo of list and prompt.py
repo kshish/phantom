@@ -32,7 +32,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["Prompt_for_color:action_result.summary.response", "in", "custom_list:favorite colors"],
+            ["Prompt_for_color:action_result.summary.response", "in", "custom_list:colors"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -73,7 +73,7 @@ def add_list_pin_1(action=None, success=None, container=None, results=None, hand
     results_item_1_0 = [item[0] for item in results_data_1]
     results_item_1_1 = [item[1] for item in results_data_1]
 
-    phantom.add_list("favorite colors", results_item_1_0)
+    phantom.add_list("colors", results_item_1_0)
 
     phantom.pin(container=container, message=results_item_1_0, data=results_item_1_1, pin_type="card_small", pin_style="purple")
 

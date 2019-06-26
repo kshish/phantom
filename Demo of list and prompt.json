@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "19281af9ecf8f46e424053cc221a857bad3d18b2",
+            "hash": "8f13f83e7313f23e2f95ec4a05e5950ff3dae398",
             "joint": {
                 "cells": [
                     {
@@ -555,6 +555,158 @@
                                 }
                             },
                             ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def Prompt_for_color(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_for_color() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"Please type in a color name\"\"\"\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_for_color\", callback=decision_1)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "",
+                        "connection_type": "",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Prompt for color",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "f7534e7c-c809-4085-b29e-26d6e5432768",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 27,
+                        "line_start": 16,
+                        "message": "Please type in a color name",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 2,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 360,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "Prompt_for_color",
+                        "respond_in": "30",
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "message",
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 48
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "Administrator",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
                                 "text": 2
                             },
                             ".outPorts>.port-out": {
@@ -688,7 +840,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 42
+                        "z": 50
                     },
                     {
                         "active": false,
@@ -749,7 +901,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_1() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Prompt_for_color:action_result.summary.response\", \"in\", \"custom_list:favorite colors\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        prompt_2(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n    add_list_pin_1(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "block_code": "def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_1() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Prompt_for_color:action_result.summary.response\", \"in\", \"custom_list:colors\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        prompt_2(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n    add_list_pin_1(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -790,7 +942,7 @@
                                         "comparison": "in",
                                         "data_type": "",
                                         "param": "Prompt_for_color:action_result.summary.response",
-                                        "value": "custom_list:favorite colors"
+                                        "value": "custom_list:colors"
                                     }
                                 ],
                                 "display": "If",
@@ -878,159 +1030,7 @@
                         "status": "",
                         "type": "coa.Decision",
                         "warn": "",
-                        "z": 43
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "approver": "Administrator",
-                        "attrs": {
-                            ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def Prompt_for_color(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Prompt_for_color() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"Please type in a color name\"\"\"\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"Prompt_for_color\", callback=decision_1)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": true,
-                        "connected_to_start": true,
-                        "connection_name": "",
-                        "connection_type": "",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "Prompt for color",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "f7534e7c-c809-4085-b29e-26d6e5432768",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 27,
-                        "line_start": 16,
-                        "message": "Please type in a color name",
-                        "name": "prompt",
-                        "notes": "",
-                        "number": 1,
-                        "order": 2,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "parameters": [],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 360,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "Prompt_for_color",
-                        "respond_in": "30",
-                        "response_key": "Message",
-                        "response_options": [],
-                        "response_type": "message",
-                        "show_number": true,
-                        "size": {
-                            "height": 80,
-                            "width": 80
-                        },
-                        "state": "prompt",
-                        "status": "",
-                        "type": "coa.Prompt",
-                        "warn": false,
-                        "z": 45
+                        "z": 51
                     },
                     {
                         "active": false,
@@ -1093,7 +1093,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def add_list_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_list_pin_1() called')\n\n    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.response', 'Prompt_for_color:action_result.status'], action_results=results)\n\n    results_item_1_0 = [item[0] for item in results_data_1]\n    results_item_1_1 = [item[1] for item in results_data_1]\n\n    phantom.add_list(\"favorite colors\", results_item_1_0)\n\n    phantom.pin(container=container, message=results_item_1_0, data=results_item_1_1, pin_type=\"card_small\", pin_style=\"purple\")\n\n    return",
+                        "block_code": "def add_list_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('add_list_pin_1() called')\n\n    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.response', 'Prompt_for_color:action_result.status'], action_results=results)\n\n    results_item_1_0 = [item[0] for item in results_data_1]\n    results_item_1_1 = [item[1] for item in results_data_1]\n\n    phantom.add_list(\"colors\", results_item_1_0)\n\n    phantom.pin(container=container, message=results_item_1_0, data=results_item_1_1, pin_type=\"card_small\", pin_style=\"purple\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1101,7 +1101,7 @@
                         "configured": [
                             {
                                 "addListData": "Prompt_for_color:action_result.summary.response",
-                                "addListList": "favorite colors",
+                                "addListList": "colors",
                                 "key": "add-list"
                             },
                             {
@@ -1209,7 +1209,7 @@
                         "title": "API",
                         "type": "coa.API",
                         "warn": false,
-                        "z": 47
+                        "z": 52
                     }
                 ]
             },
@@ -1218,7 +1218,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-05-22T18:05:27.912690+00:00",
+    "create_time": "2019-06-26T17:55:35.509918+00:00",
     "draft_mode": false,
     "labels": [
         "*"
