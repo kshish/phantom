@@ -155,6 +155,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         playbook_chris_Child_playbook_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    format_2(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def playbook_chris_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -162,6 +165,35 @@ def playbook_chris_Child_playbook_1(action=None, success=None, container=None, r
     
     # call playbook "chris/Child playbook", returns the playbook_run_id
     playbook_run_id = phantom.playbook("chris/Child playbook", container=container)
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """This has been found harmless"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    set_status_pin_add_comment_1(container=container)
+
+    return
+
+def set_status_pin_add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_status_pin_add_comment_1() called')
+
+    formatted_data_1 = phantom.get_format_data(name='format_2')
+
+    phantom.set_status(container, "closed")
+
+    phantom.pin(container=container, message=formatted_data_1, data="MSG", pin_type="card_medium", pin_style="red")
+
+    phantom.comment(container=container, comment=formatted_data_1)
 
     return
 
