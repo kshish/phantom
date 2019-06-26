@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "8d4d74ed26ec93ac81e491e19883c56a5bae6d2e",
+            "hash": "e1c2ceaa68f6188398da9663255631c0f34edd0c",
             "joint": {
                 "cells": [
                     {
@@ -199,8 +199,8 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "",
-                        "connection_type": "",
+                        "connection_name": "prompt",
+                        "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
@@ -899,6 +899,12 @@
                             ".title": {
                                 "text": "Investigate"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -910,6 +916,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            },
+                            "g.timer image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def url_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('url_reputation_1() called')\n\n    # collect data for 'url_reputation_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.requestURL', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'url_reputation_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'url': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"url reputation\", parameters=parameters, assets=['phishtank'], callback=join_Format_my_msg, name=\"url_reputation_1\")\n\n    return",
@@ -1018,7 +1030,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 59
                     },
                     {
@@ -1514,7 +1526,7 @@
                         "custom_name": "My Whois IP lookup",
                         "delay": "0",
                         "description": "",
-                        "has_custom": true,
+                        "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
@@ -1650,6 +1662,9 @@
                             ".title": {
                                 "text": "format"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -1661,6 +1676,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def Format_my_msg(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Format_my_msg() called')\n    \n    template = \"\"\"The container {0} owned by {1} and it is from {2}, {3}, {4}.\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"container:owner\",\n        \"My_Geolocate_of_IP:action_result.data.*.city_name\",\n        \"My_Geolocate_of_IP:action_result.data.*.state_name\",\n        \"My_Geolocate_of_IP:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Format_my_msg\")\n\n    prompt_1(container=container)\n\n    return",
@@ -2039,9 +2057,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        playbook_chris_Chris_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        playbook_local_Child_playbook_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2236,10 +2257,13 @@
                                 }
                             },
                             ".playbook": {
-                                "text": "chris/Chris"
+                                "text": "local/Child playbook"
                             },
                             ".title": {
                                 "text": "Playbook"
+                            },
+                            "g.code image": {
+                                "opacity": 1
                             },
                             "g.delete": {
                                 "display": "none"
@@ -2249,9 +2273,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def playbook_chris_Chris_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('playbook_chris_Chris_1() called')\n    \n    # call playbook \"chris/Chris\", returns the playbook_run_id\n    playbook_run_id = phantom.playbook(\"chris/Chris\", container=container)\n\n    return",
+                        "block_code": "def playbook_local_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('playbook_local_Child_playbook_1() called')\n    \n    # call playbook \"local/Child playbook\", returns the playbook_run_id\n    playbook_run_id = phantom.playbook(\"local/Child playbook\", container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2277,14 +2304,14 @@
                         "line_end": 168,
                         "line_start": 160,
                         "message": "Configuring now",
-                        "name": "chris/Chris",
+                        "name": "local/Child playbook",
                         "notes": "",
                         "number": 1,
                         "order": 8,
                         "outPorts": [
                             "out"
                         ],
-                        "playbook": "chris/Chris",
+                        "playbook": "local/Child playbook",
                         "ports": {
                             "groups": {
                                 "in": {
@@ -2353,7 +2380,48 @@
                         "title": "Playbook",
                         "type": "coa.CallPlaybook",
                         "warn": false,
-                        "z": 80
+                        "z": 81
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "0afc21ff-0896-4603-af78-98611d285c52",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "656f3a22-9748-4316-9495-167d9df52fdf",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "85a2ae05-0676-4e22-b465-33adbcb38789",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 82
                     }
                 ]
             },
@@ -2362,7 +2430,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-06-26T16:24:22.092134+00:00",
+    "create_time": "2019-06-26T16:24:59.116385+00:00",
     "draft_mode": false,
     "labels": [
         "*"

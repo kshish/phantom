@@ -152,16 +152,16 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        playbook_chris_Chris_1(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_local_Child_playbook_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def playbook_chris_Chris_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('playbook_chris_Chris_1() called')
+def playbook_local_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_local_Child_playbook_1() called')
     
-    # call playbook "chris/Chris", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/Chris", container=container)
+    # call playbook "local/Child playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("local/Child playbook", container=container)
 
     return
 
