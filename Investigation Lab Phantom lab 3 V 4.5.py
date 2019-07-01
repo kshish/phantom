@@ -11,6 +11,12 @@ def on_start(container):
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
 
+    # call 'domain_reputation_1' block
+    domain_reputation_1(container=container)
+
+    # call 'file_reputation_1' block
+    file_reputation_1(container=container)
+
     return
 
 """
@@ -33,15 +39,13 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=domain_reputation_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="geolocate_ip_1")
 
     return
 
 def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('domain_reputation_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
+
     # collect data for 'domain_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
 
@@ -56,15 +60,13 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("domain reputation", parameters=parameters, assets=['virustotal'], callback=file_reputation_1, name="domain_reputation_1", parent_action=action)
+    phantom.act("domain reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="domain_reputation_1", parent_action=action)
 
     return
 
 def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('file_reputation_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
+
     # collect data for 'file_reputation_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fileHash', 'artifact:*.id'])
 
@@ -79,7 +81,68 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("file reputation", parameters=parameters, assets=['virustotal'], name="file_reputation_1", parent_action=action)
+    phantom.act("file reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="file_reputation_1", parent_action=action)
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["file_reputation_1:action_result.summary.positives", ">", 10],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        Notify_IT(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+
+    return
+
+def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_decision_1() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'domain_reputation_1', 'geolocate_ip_1', 'file_reputation_1' ]):
+        
+        # call connected block "decision_1"
+        decision_1(container=container, handle=handle)
+    
+    return
+
+def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Notify_IT() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """A potentially malicious file has been detected with IP {0} Notify IT team?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.destinationAddress",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", parameters=parameters, response_types=response_types)
 
     return
 
