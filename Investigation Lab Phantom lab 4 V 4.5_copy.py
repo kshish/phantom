@@ -101,6 +101,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         filter_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    add_comment_pin_set_status_1(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -178,6 +181,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         playbook_Chris_Case_Promotion_Lab_Phantom_V_4_5_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    pin_2(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def playbook_Chris_Case_Promotion_Lab_Phantom_V_4_5_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -185,6 +191,24 @@ def playbook_Chris_Case_Promotion_Lab_Phantom_V_4_5_1(action=None, success=None,
     
     # call playbook "Chris/Case Promotion Lab Phantom V 4.5", returns the playbook_run_id
     playbook_run_id = phantom.playbook("Chris/Case Promotion Lab Phantom V 4.5", container=container)
+
+    return
+
+def add_comment_pin_set_status_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_comment_pin_set_status_1() called')
+
+    phantom.comment(container=container, comment="Threat Level found to be low.")
+
+    phantom.pin(container=container, data="", message="Processed and found harmless", name=None)
+
+    phantom.set_status(container=container, status="Closed")
+
+    return
+
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_2() called')
+
+    phantom.pin(container=container, data="", message="Analyst chose not to promote to case", pin_type="", pin_style="", name=None)
 
     return
 
