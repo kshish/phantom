@@ -236,7 +236,7 @@ def join_Filter_Banned_Countries(action=None, success=None, container=None, resu
     phantom.debug('join_Filter_Banned_Countries() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'domain_reputation_1', 'geolocate_ip_1' ]):
+    if phantom.actions_done([ 'domain_reputation_1', 'geolocate_ip_1', 'file_reputation_1' ]):
         
         # call connected block "Filter_Banned_Countries"
         Filter_Banned_Countries(container=container, handle=handle)
@@ -262,35 +262,7 @@ def add_list_4(action=None, success=None, container=None, results=None, handle=N
     container_item_0 = [item[0] for item in container_data]
 
     phantom.add_list("Prior Hashes", container_item_0)
-    my_custom(container=container)
-
-    return
-
-"""
-chris wuz here
-"""
-def my_custom(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('my_custom() called')
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
-    results_data_1 = phantom.collect2(container=container, datapath=['file_reputation_1:action_result.parameter.hash'], action_results=results)
-    container_item_0 = [item[0] for item in container_data]
-    results_item_1_0 = [item[0] for item in results_data_1]
-
-    my_custom__myval = None
-    my_custom__myotherval = None
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.save_run_data(key='my_custom:myval', value=json.dumps(my_custom__myval))
-    phantom.save_run_data(key='my_custom:myotherval', value=json.dumps(my_custom__myotherval))
+    join_Filter_Banned_Countries(container=container)
 
     return
 
@@ -302,12 +274,16 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["artifact:*.cef.fileHash", "in", ""],
+            ["artifact:*.cef.fileHash", "not in", "custom_list:Prior Hashes"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
+        add_list_4(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    # call connected blocks for 'else' condition 2
+    join_Filter_Banned_Countries(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
