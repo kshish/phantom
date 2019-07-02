@@ -175,11 +175,11 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def playbook_Chris_Case_Promotion_Lab_Phantom_V_4_5_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('playbook_Chris_Case_Promotion_Lab_Phantom_V_4_5_1() called')
+def playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1() called')
     
-    # call playbook "Chris/Case Promotion Lab Phantom V 4.5", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("Chris/Case Promotion Lab Phantom V 4.5", container=container)
+    # call playbook "Chris/Case Promotion Lab Phantom Lab 6 V 4.5", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/Case Promotion Lab Phantom Lab 6 V 4.5", container=container)
 
     return
 
@@ -307,6 +307,7 @@ def Store_Country_Name(action=None, success=None, container=None, results=None, 
     ################################################################################
     ## Custom Code End
     ################################################################################
+    playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(container=container)
 
     return
 
