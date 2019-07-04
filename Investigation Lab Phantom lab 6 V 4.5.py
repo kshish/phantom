@@ -60,7 +60,7 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("domain reputation", parameters=parameters, assets=['virustotal'], callback=join_Filter_Banned_Countries, name="domain_reputation_1")
+    phantom.act("domain reputation", parameters=parameters, assets=['vt'], callback=join_Filter_Banned_Countries, name="domain_reputation_1")
 
     return
 
@@ -81,7 +81,7 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("file reputation", parameters=parameters, assets=['virustotal'], callback=decision_3, name="file_reputation_1")
+    phantom.act("file reputation", parameters=parameters, assets=['vt'], callback=decision_3, name="file_reputation_1")
 
     return
 
