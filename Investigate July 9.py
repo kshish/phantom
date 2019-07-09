@@ -69,7 +69,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
                     'context': {'artifact_id': results_item_1[1]},
                 })
 
-    phantom.act("send email", parameters=parameters, assets=['smtp'], callback=decision_1, name="send_email_1")
+    phantom.act("send email", parameters=parameters, assets=['smtp'], callback=prompt_1, name="send_email_1")
 
     return
 
@@ -106,46 +106,19 @@ def my_lookup(action=None, success=None, container=None, results=None, handle=No
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
-
-    # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["send_email_1:action_result.status", "==", "failed"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # call connected blocks for 'else' condition 2
-    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('prompt_1() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Send email failed"""
+    message = """Email send status: {0}"""
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1")
+    # parameter list for template variable replacement
+    parameters = [
+        "send_email_1:action_result.status",
+    ]
 
-    return
-
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = "admin"
-    message = """send email worked"""
-
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2")
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
 
     return
 
