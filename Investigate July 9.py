@@ -12,6 +12,9 @@ def on_start(container):
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
 
+    # call 'lookup_ip_1' block
+    lookup_ip_1(container=container)
+
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -31,7 +34,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="geolocate_ip_1")
 
     return
 
@@ -51,19 +54,51 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
         for inputs_item_1 in inputs_data_1:
             if results_item_1[0]:
                 parameters.append({
+                    'body': results_item_1[0],
                     'from': "churyn@splunk.com",
+                    'attachments': "",
                     'to': "churyn@splunk.com",
                     'cc': "",
                     'bcc': "",
-                    'subject': inputs_item_1[0],
-                    'body': results_item_1[0],
-                    'attachments': "",
                     'headers': "",
+                    'subject': inputs_item_1[0],
                     # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': inputs_item_1[1]},
+                    'context': {'artifact_id': results_item_1[1]},
                 })
 
     phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+
+    return
+
+def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_send_email_1() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'geolocate_ip_1', 'lookup_ip_1' ]):
+        
+        # call connected block "send_email_1"
+        send_email_1(container=container, handle=handle)
+    
+    return
+
+def lookup_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('lookup_ip_1() called')
+
+    # collect data for 'lookup_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'lookup_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name="lookup_ip_1")
 
     return
 
