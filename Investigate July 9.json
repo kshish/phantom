@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will be a comment in the python code",
-            "hash": "fc6628147a9a8946f1e35be50a538d265206e3b9",
+            "hash": "6db885be792e14027e17d9791cd139bee0cc4d14",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'geolocate_ip_1' block\n    geolocate_ip_1(container=container)\n\n    # call 'lookup_ip_1' block\n    lookup_ip_1(container=container)\n\n    return",
+                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'my_geolocate' block\n    my_geolocate(container=container)\n\n    # call 'my_lookup' block\n    my_lookup(container=container)\n\n    return",
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
@@ -217,8 +217,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 118,
-                        "line_start": 105,
+                        "line_end": 121,
+                        "line_start": 108,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -415,6 +415,87 @@
                         "z": 9
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "83cdef46-2e21-478f-b170-8a57277098dd",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "b5ec1df8-5ada-465b-9ba0-21d563648816",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 14
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "bb67d3a0-e48c-4419-811a-e3e9646533bd",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 16
+                    },
+                    {
                         "action": "geolocate ip",
                         "action_type": "investigate",
                         "active": false,
@@ -554,7 +635,7 @@
                         ],
                         "attrs": {
                             ".action": {
-                                "text": "geolocate ip"
+                                "text": "my geolocate"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -611,13 +692,14 @@
                                 "display": "block"
                             },
                             "g.notes image": {
-                                "opacity": 1
+                                "opacity": 1,
+                                "xlink:href": "/inc/coa/img/block_icon_note_dark_on.svg"
                             },
                             "g.timer image": {
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geolocate() called')\n\n    # collect data for 'my_geolocate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geolocate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name=\"my_geolocate\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -628,9 +710,9 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "my geolocate",
                         "delay": 0,
-                        "description": "",
+                        "description": "this goes out to a service and looks up the public ip information",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
@@ -642,11 +724,11 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 41,
-                        "line_start": 20,
+                        "line_end": 44,
+                        "line_start": 23,
                         "message": "Configuring now",
                         "name": "geolocate ip",
-                        "notes": "",
+                        "notes": "my lookup",
                         "number": 1,
                         "order": 2,
                         "outPorts": [
@@ -709,7 +791,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "geolocate_ip_1",
+                        "previous_name": "my_geolocate",
                         "required_params": {
                             "ip": true
                         },
@@ -724,47 +806,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 11
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "83cdef46-2e21-478f-b170-8a57277098dd",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "b5ec1df8-5ada-465b-9ba0-21d563648816",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
-                            "selector": ".port-body[type=\"input\"]"
-                        },
-                        "type": "link",
-                        "z": 14
+                        "z": 20
                     },
                     {
                         "action": "lookup ip",
@@ -875,7 +917,7 @@
                         ],
                         "attrs": {
                             ".action": {
-                                "text": "lookup ip"
+                                "text": "my lookup"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -926,7 +968,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def lookup_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('lookup_ip_1() called')\n\n    # collect data for 'lookup_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'lookup_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"lookup ip\", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name=\"lookup_ip_1\")\n\n    return",
+                        "block_code": "def my_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_lookup() called')\n\n    # collect data for 'my_lookup' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_lookup' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"lookup ip\", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name=\"my_lookup\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -937,7 +979,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "my lookup",
                         "delay": 0,
                         "description": "",
                         "has_custom": false,
@@ -951,8 +993,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 105,
-                        "line_start": 84,
+                        "line_end": 108,
+                        "line_start": 87,
                         "message": "Configuring now",
                         "name": "lookup ip",
                         "notes": "",
@@ -1018,7 +1060,7 @@
                             "y": 260
                         },
                         "previous_function": "",
-                        "previous_name": "lookup_ip_1",
+                        "previous_name": "my_lookup",
                         "required_params": {
                             "ip": true
                         },
@@ -1033,48 +1075,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 15
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "bb67d3a0-e48c-4419-811a-e3e9646533bd",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 16
+                        "z": 22
                     },
                     {
                         "action": "send email",
@@ -1112,11 +1113,11 @@
                                 "fields": {
                                     "attachments": "",
                                     "bcc": "",
-                                    "body": "geolocate_ip_1:action_result.data.*.country_name",
+                                    "body": "my_geolocate:action_result.data.*.country_name",
                                     "cc": "",
                                     "from": "churyn@splunk.com",
                                     "headers": "",
-                                    "subject": "geolocate_ip_1:artifact:*.cef.sourceAddress",
+                                    "subject": "my_geolocate:artifact:*.cef.sourceAddress",
                                     "to": "churyn@splunk.com"
                                 },
                                 "has_app": true,
@@ -1351,13 +1352,13 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if results_item_1[0]:\n                parameters.append({\n                    'body': results_item_1[0],\n                    'from': \"churyn@splunk.com\",\n                    'attachments': \"\",\n                    'to': \"churyn@splunk.com\",\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'headers': \"\",\n                    'subject': inputs_item_1[0],\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': results_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\", parent_action=action)\n\n    return",
+                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:artifact:*.cef.sourceAddress', 'my_geolocate:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if results_item_1[0]:\n                parameters.append({\n                    'body': results_item_1[0],\n                    'from': \"churyn@splunk.com\",\n                    'attachments': \"\",\n                    'to': \"churyn@splunk.com\",\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'headers': \"\",\n                    'subject': inputs_item_1[0],\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': results_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
                         "color": "",
                         "connected_to_start": true,
-                        "connection_name": "geolocate ip, lookup ip",
+                        "connection_name": "my geolocate, my lookup",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -1373,11 +1374,11 @@
                         "inPorts": [
                             "in"
                         ],
-                        "join_code": "def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_send_email_1() called')\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'geolocate_ip_1', 'lookup_ip_1' ]):\n        \n        # call connected block \"send_email_1\"\n        send_email_1(container=container, handle=handle)\n    \n    return",
+                        "join_code": "def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_send_email_1() called')\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'my_geolocate', 'my_lookup' ]):\n        \n        # call connected block \"send_email_1\"\n        send_email_1(container=container, handle=handle)\n    \n    return",
                         "join_optional": [],
-                        "join_start": 73,
-                        "line_end": 84,
-                        "line_start": 41,
+                        "join_start": 76,
+                        "line_end": 87,
+                        "line_start": 44,
                         "message": "Configuring now",
                         "name": "send email",
                         "notes": "",
@@ -1459,7 +1460,7 @@
                         "title": "Generic",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 17
+                        "z": 23
                     }
                 ]
             },
@@ -1468,7 +1469,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-07-09T18:38:31.431156+00:00",
+    "create_time": "2019-07-09T18:41:40.413134+00:00",
     "draft_mode": false,
     "labels": [
         "events"

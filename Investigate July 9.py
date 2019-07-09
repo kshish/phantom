@@ -9,23 +9,26 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
 
-    # call 'lookup_ip_1' block
-    lookup_ip_1(container=container)
+    # call 'my_lookup' block
+    my_lookup(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+"""
+this goes out to a service and looks up the public ip information
+"""
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'my_geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -34,7 +37,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="my_geolocate")
 
     return
 
@@ -44,8 +47,8 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
-    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)
+    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:artifact:*.cef.sourceAddress', 'my_geolocate:artifact:*.id'], action_results=results)
 
     parameters = []
     
@@ -74,22 +77,22 @@ def join_send_email_1(action=None, success=None, container=None, results=None, h
     phantom.debug('join_send_email_1() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_ip_1', 'lookup_ip_1' ]):
+    if phantom.actions_done([ 'my_geolocate', 'my_lookup' ]):
         
         # call connected block "send_email_1"
         send_email_1(container=container, handle=handle)
     
     return
 
-def lookup_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('lookup_ip_1() called')
+def my_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_lookup() called')
 
-    # collect data for 'lookup_ip_1' call
+    # collect data for 'my_lookup' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'lookup_ip_1' call
+    # build parameters list for 'my_lookup' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -98,7 +101,7 @@ def lookup_ip_1(action=None, success=None, container=None, results=None, handle=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name="lookup_ip_1")
+    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name="my_lookup")
 
     return
 
