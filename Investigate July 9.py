@@ -100,7 +100,8 @@ def my_lookup(action=None, success=None, container=None, results=None, handle=No
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-
+    phantom.debug("container info:")
+    phantom.debug(container)
     phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name="my_lookup")
 
     return
