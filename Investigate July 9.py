@@ -37,51 +37,8 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_Ask_analyst_to_block_ip, name="my_geolocate")
 
-    return
-
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('send_email_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)
-    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:artifact:*.cef.sourceAddress', 'my_geolocate:artifact:*.id'], action_results=results)
-
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for results_item_1 in results_data_1:
-        for inputs_item_1 in inputs_data_1:
-            if results_item_1[0]:
-                parameters.append({
-                    'body': results_item_1[0],
-                    'from': "churyn@splunk.com",
-                    'attachments': "",
-                    'to': "churyn@splunk.com",
-                    'cc': "",
-                    'bcc': "",
-                    'headers': "",
-                    'subject': inputs_item_1[0],
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': results_item_1[1]},
-                })
-
-    phantom.act("send email", parameters=parameters, assets=['smtp'], callback=prompt_1, name="send_email_1")
-
-    return
-
-def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_send_email_1() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'my_geolocate', 'my_lookup' ]):
-        
-        # call connected block "send_email_1"
-        send_email_1(container=container, handle=handle)
-    
     return
 
 def my_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -100,31 +57,78 @@ def my_lookup(action=None, success=None, container=None, results=None, handle=No
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug("container info:")
-    phantom.debug(container)
-    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name="my_lookup")
+
+    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_Ask_analyst_to_block_ip, name="my_lookup")
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
+def Ask_analyst_to_block_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_analyst_to_block_ip() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Email send status: {0}
-Geolocate IP country: {1}
-Lookup ip:{4}"""
+    message = """Geolocate of ip  {0} address is in {1} country.
+Do you want to block ip?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "send_email_1:action_result.status",
+        "my_geolocate:action_result.parameter.ip",
         "my_geolocate:action_result.data.*.country_name",
-        "",
-        "",
-        "",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
+    # response options
+    options = {
+        "type": "list",
+        "choices": [
+            "Yes",
+            "No",
+        ]
+    }
+
+    phantom.prompt(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_to_block_ip", parameters=parameters, options=options, callback=decision_4)
+
+    return
+
+def join_Ask_analyst_to_block_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_Ask_analyst_to_block_ip() called')
+    
+    # if the joined function has already been called, do nothing
+    if phantom.get_run_data(key='join_Ask_analyst_to_block_ip_called'):
+        return
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'my_geolocate' ]):
+        
+        # save the state that the joined function has now been called
+        phantom.save_run_data(key='join_Ask_analyst_to_block_ip_called', value='Ask_analyst_to_block_ip')
+        
+        # call connected block "Ask_analyst_to_block_ip"
+        Ask_analyst_to_block_ip(container=container, handle=handle)
+    
+    return
+
+def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_4() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Ask_analyst_to_block_ip:action_result.summary.response", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container, "high")
 
     return
 

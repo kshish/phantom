@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will be a comment in the python code",
-            "hash": "cc98410207fd7787f70d20ac51c2a8d0fee95b50",
+            "hash": "e6a389550ab90216b4b9464ccc64516a991a3afc",
             "joint": {
                 "cells": [
                     {
@@ -199,7 +199,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt",
+                        "connection_name": "Ask analyst to block ip",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -217,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 144,
-                        "line_start": 131,
+                        "line_end": 148,
+                        "line_start": 135,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 6,
+                        "order": 7,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -354,46 +354,6 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "cca04a92-eebb-46b4-a1e4-52600aad4eda",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "bb7c8243-b297-491b-bb45-853d25753780",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
-                            "selector": ".port-body[type=\"input\"]"
-                        },
-                        "type": "link",
-                        "z": 7
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
                         "id": "83cdef46-2e21-478f-b170-8a57277098dd",
                         "router": {
                             "name": "metro"
@@ -412,47 +372,6 @@
                         },
                         "type": "link",
                         "z": 14
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "bb67d3a0-e48c-4419-811a-e3e9646533bd",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 16
                     },
                     {
                         "action": "geolocate ip",
@@ -658,7 +577,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geolocate() called')\n\n    # collect data for 'my_geolocate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geolocate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name=\"my_geolocate\")\n\n    return",
+                        "block_code": "def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geolocate() called')\n\n    # collect data for 'my_geolocate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geolocate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_Ask_analyst_to_block_ip, name=\"my_geolocate\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -768,218 +687,345 @@
                         "z": 20
                     },
                     {
-                        "action": "send email",
-                        "action_type": "generic",
-                        "active": false,
-                        "active_keys": {},
-                        "active_values": {
-                            "attachments": "",
-                            "bcc": "",
-                            "body": "geolocate_ip_1:action_result.data.*.country_name",
-                            "cc": "",
-                            "from": "churyn@splunk.com",
-                            "headers": "",
-                            "subject": "geolocate_ip_1:artifact:*.cef.sourceAddress",
-                            "to": "churyn@splunk.com"
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
                         },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "294ba2b9-798f-482e-abe5-8360bacfdcff",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "bb7c8243-b297-491b-bb45-853d25753780",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 38
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "79b06446-deb3-479a-b3b7-f3653192e8bf",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "f87b025c-f2c5-4333-b685-b24ef3eb1c6a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 39
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "72359edb-ac82-4852-83a5-ae243cc7fc7e",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "2084f694-1d47-440d-abd2-c50a78fda829",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 42
+                    },
+                    {
+                        "active": false,
                         "angle": 0,
-                        "app": "SMTP",
-                        "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                        "approver": "",
-                        "assets": [
+                        "approver": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def Ask_analyst_to_block_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_to_block_ip() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Geolocate of ip  {0} address is in {1} country.\nDo you want to block ip?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geolocate:action_result.parameter.ip\",\n        \"my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_to_block_ip\", parameters=parameters, options=options, callback=decision_4)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "my geolocate, my lookup",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Ask analyst to block ip",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "def join_Ask_analyst_to_block_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_Ask_analyst_to_block_ip() called')\n    \n    # if the joined function has already been called, do nothing\n    if phantom.get_run_data(key='join_Ask_analyst_to_block_ip_called'):\n        return\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'my_geolocate' ]):\n        \n        # save the state that the joined function has now been called\n        phantom.save_run_data(key='join_Ask_analyst_to_block_ip_called', value='Ask_analyst_to_block_ip')\n        \n        # call connected block \"Ask_analyst_to_block_ip\"\n        Ask_analyst_to_block_ip(container=container, handle=handle)\n    \n    return",
+                        "join_optional": [
+                            "my_lookup"
+                        ],
+                        "join_start": 92,
+                        "line_end": 110,
+                        "line_start": 65,
+                        "message": "Geolocate of ip  {0} address is in {1} country.\nDo you want to block ip?",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
                             {
-                                "action": "send email",
-                                "actions": [
-                                    "send email",
-                                    "test connectivity"
-                                ],
-                                "active": true,
-                                "app_name": "SMTP",
-                                "app_version": "1.2.44",
-                                "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                                "asset_name": "smtp",
-                                "config_type": "asset",
-                                "count": 0,
-                                "fields": {
-                                    "attachments": "",
-                                    "bcc": "",
-                                    "body": "my_geolocate:action_result.data.*.country_name",
-                                    "cc": "",
-                                    "from": "churyn@splunk.com",
-                                    "headers": "",
-                                    "subject": "my_geolocate:artifact:*.cef.sourceAddress",
-                                    "to": "churyn@splunk.com"
-                                },
-                                "has_app": true,
-                                "id": 8,
-                                "loaded": false,
-                                "missing": false,
-                                "name": "smtp",
-                                "output": [
-                                    {
-                                        "column_name": "Status",
-                                        "column_order": 0,
-                                        "data_path": "action_result.status",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Message",
-                                        "column_order": 1,
-                                        "data_path": "action_result.message",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.body",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.to",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.cc",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.bcc",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.from",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "contains": [
-                                            "vault id"
-                                        ],
-                                        "data_path": "action_result.parameter.attachments",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.subject",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.headers",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "summary.total_objects",
-                                        "data_type": "numeric"
-                                    },
-                                    {
-                                        "data_path": "summary.total_objects_successful",
-                                        "data_type": "numeric"
-                                    }
-                                ],
-                                "parameters": {
-                                    "attachments": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "vault id"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Vault IDs of files to attach",
-                                        "key": "attachments",
-                                        "order": 6,
-                                        "required": false,
-                                        "verbose": "Each file that is required to be attached, needs to be in the vault. Multiple file vault ids can be specified as comma separated."
-                                    },
-                                    "bcc": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses to include on bcc line",
-                                        "key": "bcc",
-                                        "order": 3,
-                                        "required": false
-                                    },
-                                    "body": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Message body",
-                                        "key": "body",
-                                        "order": 5,
-                                        "required": true
-                                    },
-                                    "cc": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses to include on cc line",
-                                        "key": "cc",
-                                        "order": 2,
-                                        "required": false
-                                    },
-                                    "from": {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "From field",
-                                        "key": "from",
-                                        "order": 0,
-                                        "required": false
-                                    },
-                                    "headers": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Custom email headers (formatted as JSON)",
-                                        "key": "headers",
-                                        "order": 7,
-                                        "required": false
-                                    },
-                                    "subject": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Message Subject",
-                                        "key": "subject",
-                                        "order": 4,
-                                        "required": false
-                                    },
-                                    "to": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses",
-                                        "key": "to",
-                                        "order": 1,
-                                        "primary": true,
-                                        "required": true
-                                    }
-                                },
-                                "product_name": "SMTP",
-                                "product_vendor": "Generic",
-                                "targets": "8",
-                                "type": "email"
+                                "position": 2,
+                                "type": "",
+                                "value": "my_geolocate:action_result.parameter.ip"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "my_geolocate:action_result.data.*.country_name"
                             }
                         ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 640,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "Ask_analyst_to_block_ip",
+                        "respond_in": "1",
+                        "response_key": "Yes/No",
+                        "response_options": [
+                            "Yes",
+                            "No"
+                        ],
+                        "response_type": "list",
+                        "show_number": false,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 46
+                    },
+                    {
                         "attrs": {
-                            ".action": {
-                                "text": "send email"
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "b88219d5-72ea-4729-8103-7d22eb0453b3",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "2084f694-1d47-440d-abd2-c50a78fda829",
+                            "port": "out-1",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "52c6faeb-5f7c-4bc7-9a06-62df2dc5fd49",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 48
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "api": "set severity",
+                        "attrs": {
+                            ".api": {
+                                "text": "set severity"
                             },
                             ".background": {
                                 "fill": "#000000",
@@ -1015,13 +1061,7 @@
                                 }
                             },
                             ".title": {
-                                "text": "Generic"
-                            },
-                            "g.approver image": {
-                                "opacity": 1
-                            },
-                            "g.code image": {
-                                "opacity": 1
+                                "text": "API"
                             },
                             "g.delete": {
                                 "display": "none"
@@ -1029,51 +1069,50 @@
                             "g.error": {
                                 "opacity": 0
                             },
-                            "g.icon image": {
-                                "xlink:href": "/inc/coa/img/block_icon_generic.svg"
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
                             },
                             "g.notes": {
                                 "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            },
-                            "g.timer image": {
-                                "opacity": 1
                             }
                         },
-                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:artifact:*.cef.sourceAddress', 'my_geolocate:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if results_item_1[0]:\n                parameters.append({\n                    'body': results_item_1[0],\n                    'from': \"churyn@splunk.com\",\n                    'attachments': \"\",\n                    'to': \"churyn@splunk.com\",\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'headers': \"\",\n                    'subject': inputs_item_1[0],\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': results_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], callback=prompt_1, name=\"send_email_1\")\n\n    return",
+                        "block_code": "def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('set_severity_1() called')\n\n    phantom.set_severity(container, \"high\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
-                        "callsback": true,
+                        "callsback": false,
                         "color": "",
+                        "configured": [
+                            {
+                                "key": "set-severity",
+                                "setSeveritySeverity": "high"
+                            }
+                        ],
                         "connected_to_start": true,
-                        "connection_name": "my geolocate, my lookup",
+                        "connection_name": "Ask analyst to block ip",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
                         "custom_name": "",
-                        "delay": 0,
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
+                        "id": "52c6faeb-5f7c-4bc7-9a06-62df2dc5fd49",
                         "inPorts": [
                             "in"
                         ],
-                        "join_code": "def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_send_email_1() called')\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'my_geolocate', 'my_lookup' ]):\n        \n        # call connected block \"send_email_1\"\n        send_email_1(container=container, handle=handle)\n    \n    return",
+                        "join_code": "",
                         "join_optional": [],
-                        "join_start": 76,
-                        "line_end": 87,
-                        "line_start": 44,
+                        "join_start": 1,
+                        "line_end": 135,
+                        "line_start": 128,
                         "message": "Configuring now",
-                        "name": "send email",
+                        "name": "set severity",
                         "notes": "",
                         "number": 1,
-                        "order": 3,
+                        "order": 6,
                         "outPorts": [
                             "out"
                         ],
@@ -1130,27 +1169,225 @@
                             }
                         },
                         "position": {
-                            "x": 600,
+                            "x": 1020,
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "send_email_1",
-                        "required_params": {
-                            "body": true,
-                            "to": true
-                        },
-                        "reviewer": "",
+                        "previous_name": "set_severity_1",
                         "show_number": false,
                         "size": {
                             "height": 100,
                             "width": 180
                         },
-                        "state": "app_action_assets",
+                        "state": "api",
                         "status": "",
-                        "title": "Generic",
-                        "type": "coa.Action",
+                        "title": "API",
+                        "type": "coa.API",
                         "warn": false,
-                        "z": 23
+                        "z": 50
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "4a3aebe9-b319-42b6-b9b9-513f28b152f1",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "52c6faeb-5f7c-4bc7-9a06-62df2dc5fd49",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "00e32694-9052-4f52-9ed7-397697f0458e",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 51
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#637282",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 4
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_4() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Ask_analyst_to_block_ip:action_result.summary.response\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "Ask analyst to block ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "hasElse": false,
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "2084f694-1d47-440d-abd2-c50a78fda829",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 128,
+                        "line_start": 110,
+                        "name": "decision",
+                        "notes": "",
+                        "number": 4,
+                        "order": 5,
+                        "outPorts": [
+                            "out-1"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "Ask_analyst_to_block_ip:action_result.summary.response",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 840,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "decision_4",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "decision",
+                        "status": "",
+                        "type": "coa.Decision",
+                        "warn": "",
+                        "z": 53
                     },
                     {
                         "action": "lookup ip",
@@ -1312,6 +1549,9 @@
                             "g.error": {
                                 "opacity": 0
                             },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_error.svg"
+                            },
                             "g.icon image": {
                                 "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
                             },
@@ -1334,7 +1574,7 @@
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
-                        "custom_code": "def my_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_lookup() called')\n\n    # collect data for 'my_lookup' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_lookup' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n    phantom.debug(\"container info:\")\n    phantom.debug(container)\n    phantom.act(\"lookup ip\", parameters=parameters, assets=['google_dns'], callback=join_send_email_1, name=\"my_lookup\")\n\n    return",
+                        "custom_code": "def my_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_lookup() called')\n\n    # collect data for 'my_lookup' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_lookup' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"lookup ip\", parameters=parameters, assets=['google_dns'], callback=join_Ask_analyst_to_block_ip, name=\"my_lookup\")\n\n    return",
                         "custom_join": "",
                         "custom_name": "my lookup",
                         "delay": 0,
@@ -1350,13 +1590,13 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 109,
-                        "line_start": 87,
+                        "line_end": 65,
+                        "line_start": 44,
                         "message": "Configuring now",
                         "name": "lookup ip",
                         "notes": "",
                         "number": 1,
-                        "order": 4,
+                        "order": 3,
                         "outPorts": [
                             "out"
                         ],
@@ -1432,267 +1672,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 24
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "57bd9c7e-496e-4b54-b1b2-4918143806e9",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "00e32694-9052-4f52-9ed7-397697f0458e",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 30
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "13d7593f-b5da-46c6-96e2-3c0e9ba0eac1",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 35
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "approver": "admin",
-                        "attrs": {
-                            ".background": {
-                                "fill": "#000000",
-                                "stroke": "#E6984E"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 1
-                            },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            }
-                        },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Email send status: {0}\nGeolocate IP country: {1}\nLookup ip:{4}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"send_email_1:action_result.status\",\n        \"my_geolocate:action_result.data.*.country_name\",\n        \"\",\n        \"\",\n        \"\",\n    ]\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": true,
-                        "connected_to_start": true,
-                        "connection_name": "send email",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "ddfe50e5-4d22-477f-b762-8483a7ef9a4b",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 131,
-                        "line_start": 109,
-                        "message": "Email send status: {0}\nGeolocate IP country: {1}\nLookup ip:{4}",
-                        "name": "prompt",
-                        "notes": "",
-                        "number": 1,
-                        "order": 5,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "parameters": [
-                            {
-                                "position": 0,
-                                "type": "",
-                                "value": "send_email_1:action_result.status"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
-                                "value": "my_geolocate:action_result.data.*.country_name"
-                            },
-                            {
-                                "position": 2,
-                                "type": "",
-                                "value": ""
-                            },
-                            {
-                                "position": 3,
-                                "type": "",
-                                "value": ""
-                            },
-                            {
-                                "position": 4,
-                                "type": "",
-                                "value": ""
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 1080,
-                            "y": 20
-                        },
-                        "previous_function": "",
-                        "previous_name": "prompt_1",
-                        "respond_in": "30",
-                        "response_key": "Message",
-                        "response_options": [],
-                        "response_type": "message",
-                        "show_number": false,
-                        "size": {
-                            "height": 80,
-                            "width": 80
-                        },
-                        "state": "prompt",
-                        "status": "warn",
-                        "type": "coa.Prompt",
-                        "warn": false,
-                        "z": 37
+                        "z": 55
                     }
                 ]
             },
@@ -1701,7 +1681,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-07-09T19:56:56.120570+00:00",
+    "create_time": "2019-07-09T20:18:38.856713+00:00",
     "draft_mode": false,
     "labels": [
         "events"
