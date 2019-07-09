@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will be a comment in the python code",
-            "hash": "0a614bcd472ba70757897161a7bfba25a01ef7f5",
+            "hash": "83379d58a63a46d31315ba884d9c7ac4c93adf63",
             "joint": {
                 "cells": [
                     {
@@ -200,7 +200,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "geolocate ip",
+                        "connection_name": "send email",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -218,12 +218,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 51,
-                        "line_start": 38,
+                        "line_end": 83,
+                        "line_start": 70,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 3,
+                        "order": 4,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -278,8 +278,8 @@
                             }
                         },
                         "position": {
-                            "x": 660,
-                            "y": 100
+                            "x": 860,
+                            "y": 80
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -526,7 +526,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=send_email_1, name=\"geolocate_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -656,7 +656,7 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "1530f274-0d35-4941-961b-2dd3eaa4add4",
+                        "id": "cca04a92-eebb-46b4-a1e4-52600aad4eda",
                         "router": {
                             "name": "metro"
                         },
@@ -669,12 +669,425 @@
                             "right"
                         ],
                         "target": {
+                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 7
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "1ad006e8-0c5e-40db-b5cd-a70e3949e129",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
                             "id": "00e32694-9052-4f52-9ed7-397697f0458e",
                             "port": null,
                             "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
                         },
                         "type": "link",
-                        "z": 7
+                        "z": 9
+                    },
+                    {
+                        "action": "send email",
+                        "action_type": "generic",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "attachments": "",
+                            "bcc": "",
+                            "body": "geolocate_ip_1:action_result.data.*.country_name",
+                            "cc": "",
+                            "from": "churyn@splunk.com",
+                            "headers": "",
+                            "subject": "geolocate_ip_1:artifact:*.cef.sourceAddress",
+                            "to": "churyn@splunk.com"
+                        },
+                        "angle": 0,
+                        "app": "SMTP",
+                        "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "send email",
+                                "actions": [
+                                    "send email",
+                                    "test connectivity"
+                                ],
+                                "active": true,
+                                "app_name": "SMTP",
+                                "app_version": "1.2.44",
+                                "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                                "asset_name": "smtp",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "attachments": "",
+                                    "bcc": "",
+                                    "body": "geolocate_ip_1:action_result.data.*.country_name",
+                                    "cc": "",
+                                    "from": "churyn@splunk.com",
+                                    "headers": "",
+                                    "subject": "geolocate_ip_1:artifact:*.cef.sourceAddress",
+                                    "to": "churyn@splunk.com"
+                                },
+                                "has_app": true,
+                                "id": 8,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "smtp",
+                                "output": [
+                                    {
+                                        "column_name": "Status",
+                                        "column_order": 0,
+                                        "data_path": "action_result.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Message",
+                                        "column_order": 1,
+                                        "data_path": "action_result.message",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.parameter.body",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.parameter.to",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.parameter.cc",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.parameter.bcc",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.parameter.from",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "vault id"
+                                        ],
+                                        "data_path": "action_result.parameter.attachments",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.parameter.subject",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.parameter.headers",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric"
+                                    }
+                                ],
+                                "parameters": {
+                                    "attachments": {
+                                        "allow_list": true,
+                                        "contains": [
+                                            "vault id"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Vault IDs of files to attach",
+                                        "key": "attachments",
+                                        "order": 6,
+                                        "required": false,
+                                        "verbose": "Each file that is required to be attached, needs to be in the vault. Multiple file vault ids can be specified as comma separated."
+                                    },
+                                    "bcc": {
+                                        "allow_list": true,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "List of recipients email addresses to include on bcc line",
+                                        "key": "bcc",
+                                        "order": 3,
+                                        "required": false
+                                    },
+                                    "body": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Message body",
+                                        "key": "body",
+                                        "order": 5,
+                                        "required": true
+                                    },
+                                    "cc": {
+                                        "allow_list": true,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "List of recipients email addresses to include on cc line",
+                                        "key": "cc",
+                                        "order": 2,
+                                        "required": false
+                                    },
+                                    "from": {
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "From field",
+                                        "key": "from",
+                                        "order": 0,
+                                        "required": false
+                                    },
+                                    "headers": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Custom email headers (formatted as JSON)",
+                                        "key": "headers",
+                                        "order": 7,
+                                        "required": false
+                                    },
+                                    "subject": {
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "Message Subject",
+                                        "key": "subject",
+                                        "order": 4,
+                                        "required": false
+                                    },
+                                    "to": {
+                                        "allow_list": true,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "List of recipients email addresses",
+                                        "key": "to",
+                                        "order": 1,
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "SMTP",
+                                "product_vendor": "Generic",
+                                "targets": "8",
+                                "type": "email"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "send email"
+                            },
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".color-band": {
+                                "fill": "#3C444D"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Generic"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_generic.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if results_item_1[0]:\n                parameters.append({\n                    'from': \"churyn@splunk.com\",\n                    'to': \"churyn@splunk.com\",\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'subject': inputs_item_1[0],\n                    'body': results_item_1[0],\n                    'attachments': \"\",\n                    'headers': \"\",\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': inputs_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\", parent_action=action)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "dcef2b13-16f6-4432-a95c-ece62766498e",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 70,
+                        "line_start": 38,
+                        "message": "Configuring now",
+                        "name": "send email",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 600,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "send_email_1",
+                        "required_params": {
+                            "body": true,
+                            "to": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Generic",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 10
                     }
                 ]
             },
@@ -683,7 +1096,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-07-09T18:19:39.544505+00:00",
+    "create_time": "2019-07-09T18:30:08.155095+00:00",
     "draft_mode": false,
     "labels": [
         "events"
