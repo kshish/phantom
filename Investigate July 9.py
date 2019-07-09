@@ -111,11 +111,17 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Email send status: {0}"""
+    message = """Email send status: {0}
+Geolocate IP country: {1}
+Lookup ip:{4}"""
 
     # parameter list for template variable replacement
     parameters = [
         "send_email_1:action_result.status",
+        "my_geolocate:action_result.data.*.country_name",
+        "",
+        "",
+        "",
     ]
 
     phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
