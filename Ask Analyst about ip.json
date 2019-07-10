@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "0e47b955ba3215dde2ccac8c7b0c5e92d0b73fd6",
+            "hash": "4295ff7414389642798a6395a1f8d49c185865e0",
             "joint": {
                 "cells": [
                     {
@@ -1075,6 +1075,47 @@
                         "z": 15
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#6C7A89",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#6a6c8a",
+                                "stroke": "#6a6c8a"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "0d6e46bb-81d5-444b-87f7-9b955ee0726e",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "8ec6380c-bfde-48d4-b58a-d173fcdb6723",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "2a41834d-93ab-48f7-b627-0b73061f8b7c",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 17
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
@@ -1125,7 +1166,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Format_Analyst_Response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Format_Analyst_Response() called')\n    \n    template = \"\"\"message{0}\nresponse{1}\nstatus{2}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"Ask_Analyst_for_advice:action_result.parameter.message\",\n        \"Ask_Analyst_for_advice:action_result.summary.response\",\n        \"Ask_Analyst_for_advice:action_result.status\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Format_Analyst_Response\")\n\n    add_comment_1(container=container)\n\n    return",
+                        "block_code": "def Format_Analyst_Response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Format_Analyst_Response() called')\n    \n    template = \"\"\"message {0}\nresponse {1}\nstatus: {2}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"Ask_Analyst_for_advice:action_result.parameter.message\",\n        \"Ask_Analyst_for_advice:action_result.summary.response\",\n        \"Ask_Analyst_for_advice:action_result.status\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Format_Analyst_Response\")\n\n    add_comment_1(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1241,52 +1282,11 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "message{0}\nresponse{1}\nstatus{2}",
+                        "template": "message {0}\nresponse {1}\nstatus: {2}",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 16
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#6C7A89",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#6a6c8a",
-                                "stroke": "#6a6c8a"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "0d6e46bb-81d5-444b-87f7-9b955ee0726e",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "8ec6380c-bfde-48d4-b58a-d173fcdb6723",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "2a41834d-93ab-48f7-b627-0b73061f8b7c",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 17
+                        "z": 18
                     }
                 ]
             },
@@ -1295,7 +1295,7 @@
         "schema": 3,
         "version": "4.1.94"
     },
-    "create_time": "2019-07-10T16:26:04.677927+00:00",
+    "create_time": "2019-07-10T16:27:56.016683+00:00",
     "draft_mode": false,
     "labels": [
         "*"

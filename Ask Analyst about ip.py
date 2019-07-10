@@ -54,9 +54,9 @@ Tell us what ya think."""
 def Format_Analyst_Response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('Format_Analyst_Response() called')
     
-    template = """message{0}
-response{1}
-status{2}"""
+    template = """message {0}
+response {1}
+status: {2}"""
 
     # parameter list for template variable replacement
     parameters = [
