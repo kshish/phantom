@@ -58,7 +58,7 @@ def geolocate_destination_address(action=None, success=None, container=None, res
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_2, name="geolocate_destination_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_destination_address")
 
     return
 
@@ -83,35 +83,28 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def join_decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_2() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_source_address', 'geolocate_destination_address' ]):
-        
-        # call connected block "decision_2"
-        decision_2(container=container, handle=handle)
-    
-    return
-
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('prompt_1() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The source ip is in United States"""
+    message = """The source ip is in United States do you want to change severity to high?"""
 
     #responses:
     response_types = [
         {
             "prompt": "",
             "options": {
-                "type": "message",
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
             },
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types, callback=decision_3)
 
     return
 
@@ -138,6 +131,31 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="High")
 
     return
 
