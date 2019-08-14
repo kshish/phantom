@@ -78,6 +78,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def join_decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -109,6 +112,32 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types)
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """Country name: {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_source_address:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
 
     return
 
