@@ -8,20 +8,27 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'geolocate_source_address' block
+    geolocate_source_address(container=container)
+
+    # call 'geolocate_destination_address' block
+    geolocate_destination_address(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+"""
+This would be technical comment for the developer
+"""
+def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_source_address() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'geolocate_source_address' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
-    
-    # build parameters list for 'geolocate_ip_1' call
+    phantom.debug('chris wuz here')
+    phantom.debug(container_data)
+    # build parameters list for 'geolocate_source_address' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,7 +37,28 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_source_address")
+
+    return
+
+def geolocate_destination_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_destination_address() called')
+
+    # collect data for 'geolocate_destination_address' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'geolocate_destination_address' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_destination_address")
 
     return
 
