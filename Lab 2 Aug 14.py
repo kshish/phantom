@@ -26,8 +26,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
-    phantom.debug('chris wuz here')
-    phantom.debug(container_data)
+    
     # build parameters list for 'geolocate_source_address' call
     for container_item in container_data:
         if container_item[0]:
@@ -37,7 +36,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_source_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_source_address")
 
     return
 
