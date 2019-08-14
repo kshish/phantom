@@ -39,44 +39,55 @@ def Ask_Analyst_for_advice(action=None, success=None, container=None, results=No
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Whatdayathink of this ip: {0}
-Tell us what ya think."""
+    message = """do you want to set severity to high on this ip: {0}
+it is from: {1}"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Ask_Analyst_for_advice", parameters=parameters, callback=Format_Analyst_Response)
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_Analyst_for_advice", parameters=parameters, response_types=response_types, callback=decision_1)
 
     return
 
-def Format_Analyst_Response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Format_Analyst_Response() called')
-    
-    template = """message {0}
-response {1}
-status: {2}"""
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
 
-    # parameter list for template variable replacement
-    parameters = [
-        "Ask_Analyst_for_advice:action_result.parameter.message",
-        "Ask_Analyst_for_advice:action_result.summary.response",
-        "Ask_Analyst_for_advice:action_result.status",
-    ]
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Ask_Analyst_for_advice:action_result.summary.responses.0", "==", "Yes"],
+        ])
 
-    phantom.format(container=container, template=template, parameters=parameters, name="Format_Analyst_Response")
-
-    add_comment_1(container=container)
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
-def add_comment_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('add_comment_1() called')
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_2() called')
 
-    formatted_data_1 = phantom.get_format_data(name='Format_Analyst_Response')
-
-    phantom.comment(container=container, comment=formatted_data_1)
+    phantom.set_severity(container=container, severity="High")
 
     return
 
