@@ -40,24 +40,29 @@ def second_prompt(action=None, success=None, container=None, results=None, handl
     # set user and message variables for phantom.prompt call
     user = "Administrator"
     message = """possible threat from ip: {0},
-unfiltered list is: {1}"""
+filtered list is:{1}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
         "geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
-    # response options
-    options = {
-        "type": "list",
-        "choices": [
-            "Yes",
-            "No",
-        ]
-    }
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="second_prompt", parameters=parameters, options=options)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="second_prompt", parameters=parameters, response_types=response_types)
 
     return
 
