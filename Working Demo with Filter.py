@@ -39,13 +39,11 @@ def prompt_analyst(action=None, success=None, container=None, results=None, hand
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """possible threat from ip: {0},
-filtered list is:{1}"""
+    message = """{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_ip_1:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "Format_message_to_analyst:formatted_data.*",
     ]
 
     #responses:
@@ -80,7 +78,25 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_analyst(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        Format_message_to_analyst(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def Format_message_to_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Format_message_to_analyst() called')
+    
+    template = """The ip is from {0}
+The unfiltered ip list is from: {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="Format_message_to_analyst")
+
+    prompt_analyst(container=container)
 
     return
 
