@@ -34,8 +34,8 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     return
 
-def second_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('second_prompt() called')
+def prompt_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_analyst() called')
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
@@ -62,7 +62,7 @@ filtered list is:{1}"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="second_prompt", parameters=parameters, response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_analyst", parameters=parameters, response_types=response_types)
 
     return
 
@@ -80,7 +80,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        second_prompt(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        prompt_analyst(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
