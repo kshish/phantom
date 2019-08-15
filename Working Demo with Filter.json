@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "ed67c61980299b5b0aff182e96e1c28801197489",
+            "hash": "f7b181aaf5f4997d81ea80e3b602fce182cd2ab7",
             "joint": {
                 "cells": [
                     {
@@ -1107,6 +1107,47 @@
                         "z": 87
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "72399785-9d22-4af5-81dc-bd37b298dd69",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "f243527f-2a2a-4f78-98d5-7fc6d733d309",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "c6cdb28f-b295-41e3-b646-71293d78b0ad",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 89
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
@@ -1160,7 +1201,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Format_message_to_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Format_message_to_analyst() called')\n    \n    template = \"\"\"The ip is from {0}\nThe unfiltered ip list is from: {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Format_message_to_analyst\")\n\n    prompt_analyst(container=container)\n\n    return",
+                        "block_code": "def Format_message_to_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Format_message_to_analyst() called')\n    \n    template = \"\"\"The ip is from {0}\nThe unfiltered ip list is from: {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"Format_message_to_analyst\")\n\n    prompt_analyst(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1198,7 +1239,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                                "value": "geolocate_ip_1:action_result.data.*.country_name"
                             },
                             {
                                 "position": 1,
@@ -1275,48 +1316,7 @@
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 88
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "72399785-9d22-4af5-81dc-bd37b298dd69",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "f243527f-2a2a-4f78-98d5-7fc6d733d309",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "c6cdb28f-b295-41e3-b646-71293d78b0ad",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 89
+                        "z": 90
                     }
                 ]
             },
@@ -1325,7 +1325,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-08-15T13:34:06.831098+00:00",
+    "create_time": "2019-08-15T13:35:34.987179+00:00",
     "draft_mode": false,
     "labels": [
         "*"
