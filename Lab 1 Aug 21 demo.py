@@ -60,9 +60,16 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
 def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('join_decision_1() called')
+    
+    # if the joined function has already been called, do nothing
+    if phantom.get_run_data(key='join_decision_1_called'):
+        return
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'lookup_ip_1', 'geolocate_ip_1' ]):
+    if phantom.actions_done([ 'geolocate_ip_1' ]):
+        
+        # save the state that the joined function has now been called
+        phantom.save_run_data(key='join_decision_1_called', value='decision_1')
         
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
