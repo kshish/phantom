@@ -74,7 +74,14 @@ def Ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The source_ip is not in United States. Would you like to set severity to high?"""
+    message = """The source_ip: {0} is not in United States. The ip is from {2}, {1}. Would you like to set severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.sourceAddress",
+        "my_geolocate:action_result.data.*.country_name",
+        "my_geolocate:action_result.data.*.city_name",
+    ]
 
     #responses:
     response_types = [
@@ -90,7 +97,7 @@ def Ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_to_set_severity_to_high", response_types=response_types, callback=decision_3)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_to_set_severity_to_high", parameters=parameters, response_types=response_types, callback=decision_3)
 
     return
 
