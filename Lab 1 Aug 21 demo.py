@@ -5,41 +5,20 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'My_lookup_ip' block
-    My_lookup_ip(container=container)
-
     # call 'my_geolocate' block
     my_geolocate(container=container)
-
-    # call 'whois_ip_1' block
-    whois_ip_1(container=container)
-
-    return
-
-"""
-This code does a lookup of the ip address in artifacts with source_address key/value pair
-"""
-def My_lookup_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('My_lookup_ip() called')
-
-    # collect data for 'My_lookup_ip' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'My_lookup_ip' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-
-    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_decision_1, name="My_lookup_ip")
 
     return
 
@@ -51,35 +30,17 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "artifact:*.cef.deviceCustomString1"],
+            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        Set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
-    set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+    Ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
 
-    return
-
-def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_1() called')
-    
-    # if the joined function has already been called, do nothing
-    if phantom.get_run_data(key='join_decision_1_called'):
-        return
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'My_lookup_ip', 'my_geolocate', 'whois_ip_1' ]):
-        
-        # save the state that the joined function has now been called
-        phantom.save_run_data(key='join_decision_1_called', value='decision_1')
-        
-        # call connected block "decision_1"
-        decision_1(container=container, handle=handle)
-    
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -99,43 +60,64 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="my_geolocate")
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_1() called')
-    phantom.debug(container)
+def Set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
 
     return
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_2() called')
+def Set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
     return
 
-def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('whois_ip_1() called')
-
-    # collect data for 'whois_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
-    parameters = []
+def Ask_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_analyst_to_set_severity_to_high() called')
     
-    # build parameters list for 'whois_ip_1' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The source_ip is not in United States. Would you like to set severity to high?"""
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_1, name="whois_ip_1")
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_to_set_severity_to_high", response_types=response_types, callback=decision_3)
+
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Ask_analyst_to_set_severity_to_high:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        Set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
