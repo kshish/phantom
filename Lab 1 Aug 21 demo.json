@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "369defcf3431b5c97511a5336b89066618170841",
+            "hash": "da871a6c9a3b72d2d78d7181fd26bbdc06796009",
             "joint": {
                 "cells": [
                     {
@@ -1855,7 +1855,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Ask_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_to_set_severity_to_high() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The source_ip: {0} is not in United States. The ip is from {2}, {1}. Would you like to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"artifact:*.cef.sourceAddress\",\n        \"filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.city_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_to_set_severity_to_high\", parameters=parameters, response_types=response_types, callback=decision_3)\n\n    return",
+                        "block_code": "def Ask_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_to_set_severity_to_high() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The source_ip: {0} is not in United States. The ip is from {2}, {1}. Would you like to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.city_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_to_set_severity_to_high\", parameters=parameters, response_types=response_types, callback=decision_3)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1892,7 +1892,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "artifact:*.cef.sourceAddress"
+                                "value": "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip"
                             },
                             {
                                 "position": 1,
@@ -1986,7 +1986,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 76
+                        "z": 77
                     }
                 ]
             },
@@ -1995,7 +1995,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-08-21T20:16:27.740703+00:00",
+    "create_time": "2019-08-21T20:17:24.656658+00:00",
     "draft_mode": false,
     "labels": [
         "*"
