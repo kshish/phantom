@@ -8,23 +8,29 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'lookup_ip_1' block
-    lookup_ip_1(container=container)
+    # call 'My_lookup_ip' block
+    My_lookup_ip(container=container)
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
+
+    # call 'whois_ip_1' block
+    whois_ip_1(container=container)
 
     return
 
-def lookup_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('lookup_ip_1() called')
+"""
+This code does a lookup of the ip address in artifacts with source_address key/value pair
+"""
+def My_lookup_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('My_lookup_ip() called')
 
-    # collect data for 'lookup_ip_1' call
+    # collect data for 'My_lookup_ip' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'lookup_ip_1' call
+    # build parameters list for 'My_lookup_ip' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -33,7 +39,7 @@ def lookup_ip_1(action=None, success=None, container=None, results=None, handle=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_decision_1, name="lookup_ip_1")
+    phantom.act("lookup ip", parameters=parameters, assets=['google_dns'], callback=join_decision_1, name="My_lookup_ip")
 
     return
 
@@ -45,7 +51,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "artifact:*.cef.deviceCustomString1"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -66,7 +72,7 @@ def join_decision_1(action=None, success=None, container=None, results=None, han
         return
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_ip_1' ]):
+    if phantom.actions_done([ 'My_lookup_ip', 'my_geolocate', 'whois_ip_1' ]):
         
         # save the state that the joined function has now been called
         phantom.save_run_data(key='join_decision_1_called', value='decision_1')
@@ -76,15 +82,15 @@ def join_decision_1(action=None, success=None, container=None, results=None, han
     
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'my_geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -93,12 +99,13 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="my_geolocate")
 
     return
 
 def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('set_severity_1() called')
+    phantom.debug(container)
 
     phantom.set_severity(container=container, severity="High")
 
@@ -108,6 +115,27 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_2() called')
 
     phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_ip_1() called')
+
+    # collect data for 'whois_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'whois_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_1, name="whois_ip_1")
 
     return
 
