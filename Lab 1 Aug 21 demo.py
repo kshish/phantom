@@ -26,7 +26,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+        Set_a_bunch_of_container_meta_fields(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -62,10 +62,15 @@ def Set_high_severity(action=None, success=None, container=None, results=None, h
 
     return
 
-def Set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Set_low_severity() called')
+def Set_a_bunch_of_container_meta_fields(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Set_a_bunch_of_container_meta_fields() called')
 
     phantom.set_severity(container=container, severity="Low")
+
+    phantom.set_label(container=container, label="sample")
+
+    phantom.set_sensitivity(container=container, sensitivity="green")
+    playbook_playbook_0(container=container)
 
     return
 
@@ -134,6 +139,14 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def playbook_playbook_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_playbook_0() called')
+    
+    # call playbook "playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("playbook", container=container, name="playbook_playbook_0")
 
     return
 
