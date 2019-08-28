@@ -20,8 +20,8 @@ def geolocate_source_address(action=None, success=None, container=None, results=
     phantom.debug('geolocate_source_address() called')
 
     # collect data for 'geolocate_source_address' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])
-    phantom.debug(container_data)
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
     parameters = []
     
     # build parameters list for 'geolocate_source_address' call
@@ -33,7 +33,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_source_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_source_address")
 
     return
 
