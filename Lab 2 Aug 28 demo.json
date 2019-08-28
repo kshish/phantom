@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "361891cdbc7de648e35daf62e422cf6f8a214779",
+            "hash": "906d456db3473651d24b8cd959d3d151309fceed",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "geolocate source address, geolocate destination address",
+                        "connection_name": "geolocate destination address, geolocate source address",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -133,8 +133,8 @@
                             }
                         },
                         "position": {
-                            "x": 1100,
-                            "y": 80
+                            "x": 680,
+                            "y": -20
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -372,47 +372,6 @@
                         "type": "coa.StartEnd",
                         "warn": false,
                         "z": 48
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "9c9928f6-2d0c-431e-9f51-5fcf6c57fc9b",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "8fd7e02f-c1fa-4277-968e-24364cd2168c",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "e3e54a38-c85e-481a-b368-0a53b4ac51c6",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 50
                     },
                     {
                         "attrs": {
@@ -762,7 +721,48 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 53
+                        "z": 56
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "2cb2961d-2b6e-4e60-a30e-e0c9accf25ca",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "8fd7e02f-c1fa-4277-968e-24364cd2168c",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "e3e54a38-c85e-481a-b368-0a53b4ac51c6",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 70
                     },
                     {
                         "action": "geolocate ip",
@@ -955,6 +955,9 @@
                             "g.error": {
                                 "opacity": 0
                             },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_error.svg"
+                            },
                             "g.icon image": {
                                 "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
                             },
@@ -977,7 +980,7 @@
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
-                        "custom_code": "def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_source_address() called')\n\n    # collect data for 'geolocate_source_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])\n    \n    parameters = []\n    \n    # build parameters list for 'geolocate_source_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_source_address\")\n\n    return",
+                        "custom_code": "def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_source_address() called')\n\n    # collect data for 'geolocate_source_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])\n    phantom.debug(container_data)\n    parameters = []\n    \n    # build parameters list for 'geolocate_source_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_source_address\")\n\n    return",
                         "custom_join": "",
                         "custom_name": "geolocate source address",
                         "delay": 0,
@@ -1075,7 +1078,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 54
+                        "z": 71
                     }
                 ]
             },
@@ -1084,7 +1087,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-08-28T18:42:07.349726+00:00",
+    "create_time": "2019-08-28T18:47:24.741603+00:00",
     "draft_mode": false,
     "labels": [
         "*"

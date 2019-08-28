@@ -24,7 +24,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
 
     # collect data for 'geolocate_source_address' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])
-    
+    phantom.debug(container_data)
     parameters = []
     
     # build parameters list for 'geolocate_source_address' call
