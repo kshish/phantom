@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "963bf9fdd207238e6987e9a2044675ebc6bf8d8f",
+            "hash": "75b1c1d4106560d9a5e1289250504f32f4a07f16",
             "joint": {
                 "cells": [
                     {
@@ -1105,7 +1105,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1734,7 +1734,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_1() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_source_address:action_result.data.*.country_name\", \"!=\", \"\"],\n        ],\n        name=\"filter_1:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
+                        "block_code": "def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_1() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_source_address:action_result.data.*.country_name\", \"!=\", None],\n        ],\n        name=\"filter_1:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1773,7 +1773,7 @@
                                         "comparison": "!=",
                                         "data_type": "",
                                         "param": "geolocate_source_address:action_result.data.*.country_name",
-                                        "value": ""
+                                        "value": "None"
                                     }
                                 ],
                                 "display": "If",
@@ -1848,7 +1848,7 @@
                         "status": "",
                         "type": "coa.Filter",
                         "warn": "",
-                        "z": 109
+                        "z": 111
                     }
                 ]
             },
@@ -1857,7 +1857,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-08-28T20:15:56.500860+00:00",
+    "create_time": "2019-08-28T20:17:00.922383+00:00",
     "draft_mode": false,
     "labels": [
         "*"
