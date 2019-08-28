@@ -67,8 +67,8 @@ Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_source_address:action_result.parameter.ip",
-        "geolocate_source_address:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.country_name",
     ]
 
     #responses:
