@@ -76,16 +76,20 @@ Would you like to set severity to high?"""
         {
             "prompt": "",
             "options": {
-                "type": "list",
-                "choices": [
-                    "Yes",
-                    "No",
-                ]
+                "type": "message",
             },
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_4)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_to_change_severity", parameters=parameters, response_types=response_types, callback=Ask_analyst_to_change_severity_callback)
+
+    return
+
+def Ask_analyst_to_change_severity_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_analyst_to_change_severity_callback() called')
+    
+    decision_4(action=action, success=success, container=container, results=results, handle=handle)
+    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -113,6 +117,32 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_1() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """the prior prompt response was: {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "Ask_analyst_to_change_severity:action_result.summary.responses.0",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
 
     return
 
