@@ -53,7 +53,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    Ask_analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -76,20 +76,16 @@ Would you like to set severity to high?"""
         {
             "prompt": "",
             "options": {
-                "type": "message",
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
             },
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_to_change_severity", parameters=parameters, response_types=response_types, callback=Ask_analyst_to_change_severity_callback)
-
-    return
-
-def Ask_analyst_to_change_severity_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Ask_analyst_to_change_severity_callback() called')
-    
-    decision_4(action=action, success=success, container=container, results=results, handle=handle)
-    prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_4)
 
     return
 
@@ -120,29 +116,21 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = "admin"
-    message = """the prior prompt response was: {0}"""
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
 
-    # parameter list for template variable replacement
-    parameters = [
-        "Ask_analyst_to_change_severity:action_result.summary.responses.0",
-    ]
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_source_address:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
 
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Ask_analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
