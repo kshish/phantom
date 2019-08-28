@@ -7,6 +7,53 @@ from datetime import datetime, timedelta
 
 def on_start(container):
     phantom.debug('on_start() called')
+    
+    # call 'geolocate_ip_1' block
+    geolocate_ip_1(container=container)
+
+    return
+
+def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_ip_1() called')
+
+    # collect data for 'geolocate_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'geolocate_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=whois_ip_1, name="geolocate_ip_1")
+
+    return
+
+def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_ip_1() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'whois_ip_1' call
+    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+
+    parameters = []
+    
+    # build parameters list for 'whois_ip_1' call
+    for inputs_item_1 in inputs_data_1:
+        if inputs_item_1[0]:
+            parameters.append({
+                'ip': inputs_item_1[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': inputs_item_1[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1", parent_action=action)
 
     return
 

@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "020a5bfe995b9f730e6154d9563129aa84c35233",
+            "hash": "1551ef45e7a285bdd74683f89e12ae97e51c15e7",
             "joint": {
                 "cells": [
                     {
@@ -55,7 +55,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n\n    return",
+                        "block_code": "def on_start(container):\n    phantom.debug('on_start() called')\n    \n    # call 'geolocate_ip_1' block\n    geolocate_ip_1(container=container)\n\n    return",
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
@@ -76,7 +76,7 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 13,
+                        "line_end": 16,
                         "line_start": 8,
                         "name": "",
                         "notes": "",
@@ -200,8 +200,8 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "",
-                        "connection_type": "",
+                        "connection_name": "whois ip",
+                        "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
@@ -218,12 +218,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 26,
-                        "line_start": 13,
+                        "line_end": 73,
+                        "line_start": 60,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 2,
+                        "order": 4,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -316,7 +316,7 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "93300c55-2818-4729-937d-82836abe07b9",
+                        "id": "d6b78e34-417d-48b8-9abb-317dee95179b",
                         "router": {
                             "name": "metro"
                         },
@@ -329,27 +329,899 @@
                             "right"
                         ],
                         "target": {
-                            "id": "7bd22414-3265-4d2b-b191-82d119b43264"
+                            "id": "8fd7e02f-c1fa-4277-968e-24364cd2168c",
+                            "selector": ".port-body[type=\"input\"]"
                         },
                         "type": "link",
                         "z": 3
                     },
                     {
+                        "action": "geolocate ip",
+                        "action_type": "investigate",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "ip": "artifact:*.cef.sourceAddress"
+                        },
                         "angle": 0,
-                        "attrs": {},
+                        "app": "MaxMind",
+                        "appid": "c566e153-3118-4033-abda-14dd9748c91a",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "geolocate ip",
+                                "actions": [
+                                    "geolocate ip"
+                                ],
+                                "active": true,
+                                "app_name": "MaxMind",
+                                "app_version": "1.2.22",
+                                "appid": "c566e153-3118-4033-abda-14dd9748c91a",
+                                "asset_name": "maxmind",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "ip": "artifact:*.cef.sourceAddress"
+                                },
+                                "has_app": true,
+                                "id": 2,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "maxmind",
+                                "output": [
+                                    {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.message",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.continent_name",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.country_iso_code",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.country_name",
+                                        "data_type": "string",
+                                        "map_info": "Country"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.latitude",
+                                        "data_type": "numeric",
+                                        "map_info": "latitude"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.longitude",
+                                        "data_type": "numeric",
+                                        "map_info": "longitude"
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.parameter.ip",
+                                        "data_type": "string",
+                                        "map_info": "IP Address"
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.parameter.ip",
+                                        "data_type": "string",
+                                        "map_info": "name"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.city_name",
+                                        "data_type": "string",
+                                        "map_info": "City"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.postal_code",
+                                        "data_type": "string",
+                                        "map_info": "Postal Code"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.as_org",
+                                        "data_type": "string",
+                                        "map_info": "Organization"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.state_iso_code",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.state_name",
+                                        "data_type": "string",
+                                        "map_info": "State/Province"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.time_zone",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric"
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric"
+                                    }
+                                ],
+                                "parameters": {
+                                    "ip": {
+                                        "allow_list": true,
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "IP to geolocate",
+                                        "key": "ip",
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "GeoIP2",
+                                "product_vendor": "MaxMind",
+                                "targets": "2",
+                                "type": "information"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "geolocate ip"
+                            },
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Investigate"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=whois_ip_1, name=\"geolocate_ip_1\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
                         "connection_name": "",
                         "connection_type": "",
-                        "id": "7bd22414-3265-4d2b-b191-82d119b43264",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "8fd7e02f-c1fa-4277-968e-24364cd2168c",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 37,
+                        "line_start": 16,
+                        "message": "Configuring now",
+                        "name": "geolocate ip",
+                        "notes": "",
+                        "number": 1,
+                        "order": 2,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
                         "position": {
-                            "x": 980,
-                            "y": 140
+                            "x": 300,
+                            "y": 80
                         },
+                        "previous_function": "",
+                        "previous_name": "geolocate_ip_1",
+                        "required_params": {
+                            "ip": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
                         "size": {
-                            "height": 40,
-                            "width": 40
+                            "height": 100,
+                            "width": 180
                         },
-                        "type": "coa.Selector",
-                        "z": 5
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Investigate",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 6
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "f4eb42d6-920f-45f7-abb6-a8307cf136a6",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "8fd7e02f-c1fa-4277-968e-24364cd2168c",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "33a57ace-5917-4aca-ad9d-d98115033316",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 7
+                    },
+                    {
+                        "action": "whois ip",
+                        "action_type": "investigate",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "ip": "geolocate_ip_1:artifact:*.cef.sourceAddress"
+                        },
+                        "angle": 0,
+                        "app": "WHOIS",
+                        "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "whois ip",
+                                "actions": [
+                                    "whois domain",
+                                    "whois ip"
+                                ],
+                                "active": true,
+                                "app_name": "WHOIS",
+                                "app_version": "1.2.38",
+                                "appid": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                                "asset_name": "whois",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "ip": "geolocate_ip_1:artifact:*.cef.sourceAddress"
+                                },
+                                "has_app": true,
+                                "id": 3,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "whois",
+                                "output": [
+                                    {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "success"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "IP",
+                                        "column_order": 0,
+                                        "contains": [
+                                            "ip",
+                                            "ipv6"
+                                        ],
+                                        "data_path": "action_result.parameter.ip",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.139.34"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Asn",
+                                        "column_order": 2,
+                                        "data_path": "action_result.data.*.asn",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "18207"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Asn Cidr",
+                                        "column_order": 3,
+                                        "data_path": "action_result.data.*.asn_cidr",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.139.0/24"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Asn Country Code",
+                                        "column_order": 4,
+                                        "data_path": "action_result.data.*.asn_country_code",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "US"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Asn Date",
+                                        "column_order": 5,
+                                        "data_path": "action_result.data.*.asn_date",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2000-04-27"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Asn Registry",
+                                        "column_order": 6,
+                                        "data_path": "action_result.data.*.asn_registry",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "apnic"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Abuse Emails",
+                                        "column_order": 7,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.abuse_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Address",
+                                        "column_order": 8,
+                                        "data_path": "action_result.data.*.nets.*.address",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1600 Amphitheatre Parkway"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Cidr",
+                                        "column_order": 9,
+                                        "data_path": "action_result.data.*.nets.*.cidr",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.128.0/20"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "City",
+                                        "column_order": 10,
+                                        "data_path": "action_result.data.*.nets.*.city",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "San Franscisco"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Country",
+                                        "column_order": 11,
+                                        "data_path": "action_result.data.*.nets.*.country",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "US"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Created",
+                                        "column_order": 12,
+                                        "data_path": "action_result.data.*.nets.*.created",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Description",
+                                        "column_order": 13,
+                                        "data_path": "action_result.data.*.nets.*.description",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Level 3 Parent, LLC"
+                                        ]
+                                    },
+                                    {
+                                        "column_order": 7,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.emails",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "ipaddressing@level3.com"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.nets.*.handle",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "NET-8-8-8-0-1"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Misc Emails",
+                                        "column_order": 20,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.misc_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Name",
+                                        "column_order": 14,
+                                        "data_path": "action_result.data.*.nets.*.name",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "LVLT-GOGL-8-8-8"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Postal Code",
+                                        "column_order": 15,
+                                        "data_path": "action_result.data.*.nets.*.postal_code",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "94043"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Range",
+                                        "column_order": 16,
+                                        "data_path": "action_result.data.*.nets.*.range",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.128.0 - 203.88.143.255"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "State",
+                                        "column_order": 17,
+                                        "data_path": "action_result.data.*.nets.*.state",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "CA"
+                                        ]
+                                    },
+                                    {
+                                        "column_name": "Tech Emails",
+                                        "column_order": 18,
+                                        "contains": [
+                                            "email"
+                                        ],
+                                        "data_path": "action_result.data.*.nets.*.tech_emails",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "column_name": "Updated",
+                                        "column_order": 19,
+                                        "data_path": "action_result.data.*.nets.*.updated",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2014-03-14"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.nir",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.query",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.139.34"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.raw",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.raw_referral",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.referral",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.asn",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "18207"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.country_code",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "US"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.nets.*.address",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "100 CenturyLink Drive"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.nets.*.range",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "203.88.128.0 - 203.88.143.255"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.registry",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "apnic"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.message",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Registry: arin ASN: 15169 Country: US Nets: Range: 8.0.0.0 - 8.127.255.255 Address: 100 CenturyLink Drive Range: None Address: 1600 Amphitheatre Parkway"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "parameters": {
+                                    "ip": {
+                                        "contains": [
+                                            "ip",
+                                            "ipv6"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "IP to query",
+                                        "key": "ip",
+                                        "order": 0,
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "Whois",
+                                "product_vendor": "Generic",
+                                "targets": "3",
+                                "type": "information"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "whois ip"
+                            },
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Investigate"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('whois_ip_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'whois_ip_1' call\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'whois_ip_1' call\n    for inputs_item_1 in inputs_data_1:\n        if inputs_item_1[0]:\n            parameters.append({\n                'ip': inputs_item_1[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': inputs_item_1[1]},\n            })\n\n    phantom.act(\"whois ip\", parameters=parameters, assets=['whois'], name=\"whois_ip_1\", parent_action=action)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "33a57ace-5917-4aca-ad9d-d98115033316",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 60,
+                        "line_start": 37,
+                        "message": "Configuring now",
+                        "name": "whois ip",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 600,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "whois_ip_1",
+                        "required_params": {
+                            "ip": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Investigate",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 8
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "d8a1e0ce-34b5-415c-a849-0ea30a40d908",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "33a57ace-5917-4aca-ad9d-d98115033316",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "e3e54a38-c85e-481a-b368-0a53b4ac51c6",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 9
                     }
                 ]
             },
@@ -358,7 +1230,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-08-28T18:12:29.905357+00:00",
+    "create_time": "2019-08-28T18:12:50.567633+00:00",
     "draft_mode": false,
     "labels": [
         "*"
