@@ -8,20 +8,26 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'geolocate_source_address' block
+    geolocate_source_address(container=container)
+
+    # call 'geolocate_destination_address' block
+    geolocate_destination_address(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+"""
+This block geolocates ip address
+"""
+def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_source_address() called')
 
-    # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
+    # collect data for 'geolocate_source_address' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])
+    
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'geolocate_source_address' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,30 +36,33 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=whois_ip_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_source_address")
 
     return
 
-def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('whois_ip_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'whois_ip_1' call
-    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceAddress', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+"""
+this will show up as comments in code
+"""
+def geolocate_destination_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_destination_address() called')
+
+    # collect data for 'geolocate_destination_address' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'whois_ip_1' call
-    for inputs_item_1 in inputs_data_1:
-        if inputs_item_1[0]:
+    # build parameters list for 'geolocate_destination_address' call
+    for container_item in container_data:
+        if container_item[0]:
             parameters.append({
-                'ip': inputs_item_1[0],
+                'ip': container_item[0],
                 # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': inputs_item_1[1]},
+                'context': {'artifact_id': container_item[1]},
             })
+    # calculate start time using delay of 2 minutes
+    start_time = datetime.now() + timedelta(minutes=2)
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1", parent_action=action)
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], start_time=start_time, name="geolocate_destination_address")
 
     return
 
