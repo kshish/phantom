@@ -20,7 +20,17 @@ def Prompt_for_color(action=None, success=None, container=None, results=None, ha
     user = "Administrator"
     message = """Please type in a color name"""
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_for_color", callback=decision_1)
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_for_color", response_types=response_types, callback=decision_1)
 
     return
 
@@ -32,7 +42,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["Prompt_for_color:action_result.summary.response", "in", "custom_list:colors"],
+            ["Prompt_for_color:action_result.summary.responses.0", "in", "custom_list:colors"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -50,32 +60,42 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Yes it's in the list"""
+    message = """Yes {0} is in the list"""
 
-    # response options
-    options = {
-        "type": "list",
-        "choices": [
-            "Yes",
-            "No",
-        ]
-    }
+    # parameter list for template variable replacement
+    parameters = [
+        "Prompt_for_color:action_result.summary.responses.0",
+    ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", options=options)
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
 
     return
 
 def add_list_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_list_pin_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.response', 'Prompt_for_color:action_result.status'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.responses.0', 'Prompt_for_color:action_result.status'], action_results=results)
 
     results_item_1_0 = [item[0] for item in results_data_1]
     results_item_1_1 = [item[1] for item in results_data_1]
 
     phantom.add_list("colors", results_item_1_0)
 
-    phantom.pin(container=container, message=results_item_1_0, data=results_item_1_1, pin_type="card_small", pin_style="purple")
+    phantom.pin(container=container, data=results_item_1_1, message=results_item_1_0, pin_type="card", pin_style="purple", name=None)
 
     return
 
