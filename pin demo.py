@@ -16,7 +16,7 @@ def on_start(container):
 def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_1() called')
 
-    phantom.pin(container=container, data="chris wuz here", message="", pin_type="card", pin_style="grey", name=None)
+    phantom.pin(container=container, data="in data pin type", message="chris wuz here", name=None)
 
     return
 
