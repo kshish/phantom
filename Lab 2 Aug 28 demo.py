@@ -50,6 +50,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
+        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -131,6 +132,54 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Ask_analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """What's your opinion?"""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", response_types=response_types, callback=format_analyst_response)
+
+    return
+
+def format_analyst_response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_analyst_response() called')
+    
+    template = """The country of ip is: {1}
+The analyst's opinion is {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "prompt_2:action_result.summary.responses.0",
+        "geolocate_source_address:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_analyst_response")
+
+    add_comment_2(container=container)
+
+    return
+
+def add_comment_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_comment_2() called')
+
+    formatted_data_1 = phantom.get_format_data(name='format_analyst_response')
+
+    phantom.comment(container=container, comment=formatted_data_1)
 
     return
 
