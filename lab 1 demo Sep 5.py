@@ -118,13 +118,16 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The severity of this {1} container owned by {2} has been updated to {0}"""
+    message = """The severity of this {1} container owned by {2} has been updated to {0}
+
+The other analyst answered: {3}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:severity",
         "container:description",
         "container:owner_name",
+        "Ask_analyst_to_set_high_severity:action_result.summary.responses.0",
     ]
 
     #responses:
