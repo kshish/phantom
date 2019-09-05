@@ -45,7 +45,7 @@ def decide_country_of_ip(action=None, success=None, container=None, results=None
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_source_address:action_result.data.*.country_iso_code", "==", "United States"],
+            ["geolocate_source_address:action_result.data.*.country_name", "==", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
