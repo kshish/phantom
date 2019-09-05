@@ -54,7 +54,7 @@ def decide_country_of_ip(action=None, success=None, container=None, results=None
         return
 
     # call connected blocks for 'else' condition 2
-    Ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -160,11 +160,14 @@ def Ask_analyst_to_set_high_severity(action=None, success=None, container=None, 
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The IP address is from {0}. Do you want to change severity to high?"""
+    message = """The IP address is from {0}. Do you want to change severity to high?
+
+The filtered data is: {1}"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_source_address:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -200,6 +203,24 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
     if matched_artifacts_1 or matched_results_1:
         set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_source_address:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
