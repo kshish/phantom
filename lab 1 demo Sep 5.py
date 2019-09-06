@@ -33,7 +33,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decide_country_of_ip, name="geolocate_source_address", parent_action=action)
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decide_country_of_ip, name="geolocate_source_address")
 
     return
 
@@ -80,14 +80,6 @@ def Set_to_low_severity(action=None, success=None, container=None, results=None,
     phantom.debug('Set_to_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
-    join_prompt_1(container=container)
-
-    return
-
-def set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_to_high() called')
-
-    phantom.set_severity(container=container, severity="High")
     join_prompt_1(container=container)
 
     return
@@ -147,8 +139,8 @@ The other analyst answered: {3}"""
 def join_prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('join_prompt_1() called')
 
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_source_address', 'geolocate_destination_address', 'Ask_analyst_to_set_high_severity' ]):
+    # check if all connected incoming playbooks or actions are done i.e. have succeeded or failed
+    if phantom.completed(playbook_names=['playbook_chris_my_child_playbook_1'], action_names=['geolocate_source_address', 'geolocate_destination_address']):
         
         # call connected block "prompt_1"
         prompt_1(container=container, handle=handle)
@@ -201,7 +193,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_chris_my_child_playbook_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -221,6 +213,14 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def playbook_chris_my_child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_chris_my_child_playbook_1() called')
+    
+    # call playbook "chris/my child playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/my child playbook", container=container, name="playbook_chris_my_child_playbook_1", callback=join_prompt_1)
 
     return
 
