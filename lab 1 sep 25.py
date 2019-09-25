@@ -54,7 +54,7 @@ def decide_what_country_ip_is_in(action=None, success=None, container=None, resu
         return
 
     # call connected blocks for 'else' condition 2
-    ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -74,8 +74,8 @@ def ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_sourceAddress:action_result.data.*.country_name",
-        "geolocate_sourceAddress:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name",
         "container:name",
     ]
 
@@ -112,6 +112,24 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     if matched_artifacts_1 or matched_results_1:
         set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_sourceAddress:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
