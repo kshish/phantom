@@ -70,12 +70,13 @@ def ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """This containers sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
+    message = """This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "geolocate_sourceAddress:action_result.data.*.country_name",
         "geolocate_sourceAddress:action_result.data.*.city_name",
+        "container:name",
     ]
 
     #responses:
