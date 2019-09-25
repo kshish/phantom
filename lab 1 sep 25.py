@@ -51,18 +51,10 @@ def decide_what_country_ip_is_in(action=None, success=None, container=None, resu
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
-    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_low_severity() called')
-
-    phantom.set_severity(container=container, severity="Low")
+    ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -70,6 +62,55 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def ask_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('ask_analyst_to_set_severity_to_high() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """This containers sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_sourceAddress:action_result.data.*.country_name",
+        "geolocate_sourceAddress:action_result.data.*.city_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="ask_analyst_to_set_severity_to_high", parameters=parameters, response_types=response_types, callback=decision_2)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["ask_analyst_to_set_severity_to_high:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
