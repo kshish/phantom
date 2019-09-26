@@ -146,7 +146,34 @@ def playbook_local_child_pb_do_bunch_of_stuff_1(action=None, success=None, conta
     phantom.debug('playbook_local_child_pb_do_bunch_of_stuff_1() called')
     
     # call playbook "local/child pb do bunch of stuff", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("local/child pb do bunch of stuff", container=container)
+    playbook_run_id = phantom.playbook("local/child pb do bunch of stuff", container=container, name="playbook_local_child_pb_do_bunch_of_stuff_1", callback=decision_3)
+
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+    
+    severity_param = container.get('severity', None)
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            [severity_param, "==", "High"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_label_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def set_label_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_label_1() called')
+
+    phantom.set_label(container=container, label="events")
 
     return
 
