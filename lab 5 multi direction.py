@@ -85,7 +85,7 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 
     results_item_1_0 = [item[0] for item in results_data_1]
 
-    phantom.pin(container=container, data=results_item_1_0, message="In U.S.A.", pin_type="", pin_style="blue", name=None)
+    phantom.pin(container=container, data=results_item_1_0, message="In U.S.A.", pin_type="card", pin_style="blue", name=None)
 
     return
 
@@ -96,14 +96,14 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
 
     results_item_1_0 = [item[0] for item in results_data_1]
 
-    phantom.pin(container=container, data=results_item_1_0, message="In China", pin_type="", pin_style="blue", name=None)
+    phantom.pin(container=container, data=results_item_1_0, message="In China", pin_type="card", pin_style="blue", name=None)
 
     return
 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_3() called')
 
-    phantom.pin(container=container, data="yeah", message="geolocate worked", pin_type="", pin_style="grey", name=None)
+    phantom.pin(container=container, data="yeah", message="geolocate worked", pin_type="card", pin_style="grey", name=None)
 
     return
 
