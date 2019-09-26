@@ -130,7 +130,7 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
     template = """This container {2}, sourceAddress are from: 
 
 %% 
-City: {0},
+City: {0}
 Country: {1}
 %%
 

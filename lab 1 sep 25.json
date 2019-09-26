@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will show up in the python comments",
-            "hash": "861f5e596f13baf6acda3c5f0a4515c007a6f7a3",
+            "hash": "194a95f0dfcda25295d096ed32ee2eae4d7e2ea8",
             "joint": {
                 "cells": [
                     {
@@ -2091,188 +2091,6 @@
                             ".color-band": {
                                 "fill": "#171D21"
                             },
-                            ".format": {
-                                "text": "format msg for analyst"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".message": {
-                                "opacity": 0,
-                                "text": "Configuring now"
-                            },
-                            ".outPorts>.port-out-1": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out-1>.port-body": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                }
-                            },
-                            ".title": {
-                                "text": "format"
-                            },
-                            "g.code image": {
-                                "opacity": 1
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress are from: \n\n%% \nCity: {0},\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "connected_to_start": true,
-                        "connection_name": "geolocate sourceAddress",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "format msg for analyst",
-                        "description": "",
-                        "format": "format",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "85b79d56-597b-47b5-9908-3fa445148688",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 152,
-                        "line_start": 127,
-                        "message": "Configuring now",
-                        "name": "format",
-                        "notes": "",
-                        "number": 1,
-                        "order": 7,
-                        "outPorts": [
-                            "out-1"
-                        ],
-                        "parameters": [
-                            {
-                                "position": 0,
-                                "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name"
-                            },
-                            {
-                                "position": 2,
-                                "type": "",
-                                "value": "container:name"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 840,
-                            "y": 360
-                        },
-                        "previous_function": "",
-                        "previous_name": "format_msg_for_analyst",
-                        "show_number": true,
-                        "size": {
-                            "height": 100,
-                            "width": 180
-                        },
-                        "state": "format",
-                        "status": "",
-                        "template": "This container {2}, sourceAddress are from: \n\n%% \nCity: {0},\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?",
-                        "title": "format",
-                        "type": "coa.Format",
-                        "warn": false,
-                        "z": 102
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "attrs": {
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#818D99"
-                            },
-                            ".color-band": {
-                                "fill": "#171D21"
-                            },
                             ".inPorts>.port-in": {
                                 "ref": ".background",
                                 "ref-x": 0.5
@@ -2427,6 +2245,188 @@
                         "type": "coa.CallPlaybook",
                         "warn": false,
                         "z": 103
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".format": {
+                                "text": "format msg for analyst"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out-1": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out-1>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "format"
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress are from: \n\n%% \nCity: {0}\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate sourceAddress",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "format msg for analyst",
+                        "description": "",
+                        "format": "format",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "85b79d56-597b-47b5-9908-3fa445148688",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 152,
+                        "line_start": 127,
+                        "message": "Configuring now",
+                        "name": "format",
+                        "notes": "",
+                        "number": 1,
+                        "order": 7,
+                        "outPorts": [
+                            "out-1"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "container:name"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 840,
+                            "y": 360
+                        },
+                        "previous_function": "",
+                        "previous_name": "format_msg_for_analyst",
+                        "show_number": true,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "format",
+                        "status": "",
+                        "template": "This container {2}, sourceAddress are from: \n\n%% \nCity: {0}\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?",
+                        "title": "format",
+                        "type": "coa.Format",
+                        "warn": false,
+                        "z": 104
                     }
                 ]
             },
@@ -2435,7 +2435,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-09-26T17:24:05.463213+00:00",
+    "create_time": "2019-09-26T17:28:03.822271+00:00",
     "draft_mode": false,
     "labels": [
         "*"
