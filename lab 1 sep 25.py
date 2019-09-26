@@ -63,7 +63,9 @@ def ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}"""
+    message = """%%
+{0}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -129,10 +131,8 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
     
     template = """This container {2}, sourceAddress are from: 
 
-%% 
 City: {0}
 Country: {1}
-%%
 
 IP(s) outside of the U.S. Do you want to set severity to high?"""
 
