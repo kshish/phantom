@@ -30,7 +30,7 @@ def Prompt_for_color(action=None, success=None, container=None, results=None, ha
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Prompt_for_color", response_types=response_types, callback=decision_1)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Prompt_for_color", response_types=response_types, callback=decision_2)
 
     return
 
@@ -96,6 +96,24 @@ def add_list_pin_1(action=None, success=None, container=None, results=None, hand
     phantom.add_list("colors", results_item_1_0)
 
     phantom.pin(container=container, data=results_item_1_1, message=results_item_1_0, pin_type="card", pin_style="purple", name=None)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Prompt_for_color:action_result.status", "==", "Success"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
