@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "50a92e9c6569da021d122c4f5f95f629ed63a120",
+            "hash": "b4ca5a274be45195f221b3d2df3865431a19886c",
             "joint": {
                 "cells": [
                     {
@@ -785,7 +785,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "block"
+                                "display": "none"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1325,7 +1325,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"Yes {0} is in the list also here's a curly brace \\\"{my stuff}\\\"\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"Prompt_for_color:action_result.summary.responses.0\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_2\", parameters=parameters, response_types=response_types)\n\n    return",
+                        "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"Yes {0} is in the list also here's a curly brace \\\"{{0}}\\\"\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"Prompt_for_color:action_result.summary.responses.0\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_2\", parameters=parameters, response_types=response_types)\n\n    return",
                         "callback_code": "",
                         "callback_start": 88,
                         "callsback": true,
@@ -1350,7 +1350,7 @@
                         "join_start": 1,
                         "line_end": 88,
                         "line_start": 58,
-                        "message": "Yes {0} is in the list also here's a curly brace \"{my stuff}\"",
+                        "message": "Yes {0} is in the list also here's a curly brace \"{{0}}\"",
                         "name": "prompt",
                         "notes": "",
                         "number": 2,
@@ -1450,7 +1450,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 81
+                        "z": 82
                     }
                 ]
             },
@@ -1459,7 +1459,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-09-26T20:21:54.446999+00:00",
+    "create_time": "2019-09-26T20:50:16.212441+00:00",
     "draft_mode": false,
     "labels": [
         "*"
