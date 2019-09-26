@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will show up in the python comments",
-            "hash": "be756d73ca90b68125ca8baf289889fb2d507f19",
+            "hash": "a3c2fa450cf4e615866f7ebee619e41cea868a14",
             "joint": {
                 "cells": [
                     {
@@ -597,7 +597,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "geolocate sourceAddress",
+                        "connection_name": "geolocate sourceAddress, ask analyst to set severity to high",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "def on_finish(container, summary):\n    phantom.debug('on_finish() called')\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all detals of actions \n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n    return",
@@ -675,8 +675,8 @@
                             }
                         },
                         "position": {
-                            "x": 1560,
-                            "y": 120
+                            "x": 1720,
+                            "y": 220
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -690,47 +690,6 @@
                         "type": "coa.StartEnd",
                         "warn": false,
                         "z": 46
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "b4f0f4cb-d35e-4557-be80-5eeeb913b928",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "bca13301-8ac8-4d72-aaa0-5fa8b7fef05c",
-                            "port": "out-1",
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "d39a4045-fc60-4284-9318-eabd15d4741a",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 50
                     },
                     {
                         "attrs": {
@@ -819,7 +778,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -949,7 +908,7 @@
                             }
                         },
                         "position": {
-                            "x": 640,
+                            "x": 620,
                             "y": 200
                         },
                         "previous_function": "",
@@ -998,7 +957,7 @@
                                 }
                             },
                             "g.delete": {
-                                "display": "block"
+                                "display": "none"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1013,7 +972,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"ask_analyst_to_set_severity_to_high:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        playbook_playbook_0(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"ask_analyst_to_set_severity_to_high:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        playbook_local_child_pb_do_bunch_of_stuff_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1318,8 +1277,8 @@
                             }
                         },
                         "position": {
-                            "x": 680,
-                            "y": 420
+                            "x": 700,
+                            "y": 360
                         },
                         "previous_function": "",
                         "previous_name": "filter_1",
@@ -1628,8 +1587,11 @@
                             ".title": {
                                 "text": "format"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
-                                "display": "none"
+                                "display": "block"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1639,6 +1601,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress %% {1}, {0} %%. It is outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
@@ -1809,7 +1774,7 @@
                         "attrs": {
                             ".background": {
                                 "fill": "#FFFFFF",
-                                "stroke": "#E6984E"
+                                "stroke": "#818D99"
                             },
                             ".color-band": {
                                 "fill": "#171D21"
@@ -1840,23 +1805,32 @@
                                     "type": "out"
                                 }
                             },
+                            ".playbook": {
+                                "text": "local/child pb do bunch o..."
+                            },
                             ".title": {
                                 "text": "Playbook"
+                            },
+                            "g.code image": {
+                                "opacity": 1
                             },
                             "g.delete": {
                                 "display": "none"
                             },
                             "g.error": {
-                                "opacity": 1
+                                "opacity": 0
                             },
                             "g.error image": {
                                 "xlink:href": "/inc/coa/img/block_icon_warn.svg"
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def playbook_playbook_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('playbook_playbook_0() called')\n    \n    # call playbook \"playbook\", returns the playbook_run_id\n    playbook_run_id = phantom.playbook(\"playbook\", container=container)\n\n    return",
+                        "block_code": "def playbook_local_child_pb_do_bunch_of_stuff_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('playbook_local_child_pb_do_bunch_of_stuff_1() called')\n    \n    # call playbook \"local/child pb do bunch of stuff\", returns the playbook_run_id\n    playbook_run_id = phantom.playbook(\"local/child pb do bunch of stuff\", container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1882,14 +1856,14 @@
                         "line_end": 153,
                         "line_start": 145,
                         "message": "Configuring now",
-                        "name": "playbook",
+                        "name": "local/child pb do bunch of stuff",
                         "notes": "",
-                        "number": 0,
+                        "number": 1,
                         "order": 8,
                         "outPorts": [
                             "out"
                         ],
-                        "playbook": "playbook",
+                        "playbook": "local/child pb do bunch of stuff",
                         "ports": {
                             "groups": {
                                 "in": {
@@ -1943,22 +1917,104 @@
                             }
                         },
                         "position": {
-                            "x": 1420,
+                            "x": 1380,
                             "y": 360
                         },
                         "previous_function": "",
-                        "previous_name": "playbook_playbook_0",
+                        "previous_name": "playbook_local_child_pb_do_bunch_of_stuff_1",
                         "show_number": false,
                         "size": {
                             "height": 100,
                             "width": 180
                         },
                         "state": "callplaybook",
-                        "status": "warn",
+                        "status": "",
                         "title": "Playbook",
                         "type": "coa.CallPlaybook",
                         "warn": false,
-                        "z": 79
+                        "z": 80
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "fc882b27-2148-402a-ab2d-35f614e8f08d",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "bca13301-8ac8-4d72-aaa0-5fa8b7fef05c",
+                            "port": "out-1",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "d39a4045-fc60-4284-9318-eabd15d4741a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 81
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "21d24d61-7a33-4e83-9003-b82ac6db768c",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "e2ff2bb7-40f4-4795-b7fc-4059c49ab6c9",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "d39a4045-fc60-4284-9318-eabd15d4741a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 82
                     }
                 ]
             },
@@ -1967,7 +2023,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-09-26T16:23:28.800252+00:00",
+    "create_time": "2019-09-26T16:26:07.367257+00:00",
     "draft_mode": false,
     "labels": [
         "*"

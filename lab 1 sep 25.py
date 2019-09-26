@@ -101,7 +101,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        playbook_playbook_0(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_local_child_pb_do_bunch_of_stuff_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -142,11 +142,11 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
 
     return
 
-def playbook_playbook_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('playbook_playbook_0() called')
+def playbook_local_child_pb_do_bunch_of_stuff_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_local_child_pb_do_bunch_of_stuff_1() called')
     
-    # call playbook "playbook", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("playbook", container=container)
+    # call playbook "local/child pb do bunch of stuff", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("local/child pb do bunch of stuff", container=container)
 
     return
 
