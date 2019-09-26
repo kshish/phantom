@@ -30,7 +30,7 @@ def Prompt_for_color(action=None, success=None, container=None, results=None, ha
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Prompt_for_color", response_types=response_types, callback=decision_1)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Prompt_for_color", response_types=response_types, callback=decision_1)
 
     return
 
