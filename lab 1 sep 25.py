@@ -101,7 +101,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        playbook_local_child_pb_do_bunch_of_stuff_1(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_chris_child_pb_do_bunch_of_stuff_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -149,11 +149,11 @@ IP(s) outside of the U.S. Do you want to set severity to high?"""
 
     return
 
-def playbook_local_child_pb_do_bunch_of_stuff_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('playbook_local_child_pb_do_bunch_of_stuff_1() called')
+def playbook_chris_child_pb_do_bunch_of_stuff_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_chris_child_pb_do_bunch_of_stuff_1() called')
     
-    # call playbook "local/child pb do bunch of stuff", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("local/child pb do bunch of stuff", container=container, name="playbook_local_child_pb_do_bunch_of_stuff_1", callback=decision_3)
+    # call playbook "chris/child pb do bunch of stuff", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/child pb do bunch of stuff", container=container, name="playbook_chris_child_pb_do_bunch_of_stuff_1", callback=decision_3)
 
     return
 
