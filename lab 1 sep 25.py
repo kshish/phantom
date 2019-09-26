@@ -127,18 +127,19 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_msg_for_analyst() called')
     
-    template = """This container {2}, sourceAddress are from:
+    template = """This container {2}, sourceAddress are from: 
+
 %% 
-City: {1},
-Country: {0}
+City: {0},
+Country: {1}
 %%
 
 IP(s) outside of the U.S. Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name",
         "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name",
         "container:name",
     ]
 

@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will show up in the python comments",
-            "hash": "307672496c9e79c3d53ca257d3a00ba276e675a5",
+            "hash": "47b0111f59850949f93f9539a75dd4749abc2f80",
             "joint": {
                 "cells": [
                     {
@@ -300,8 +300,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 199,
-                        "line_start": 186,
+                        "line_end": 200,
+                        "line_start": 187,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -1358,8 +1358,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 186,
-                        "line_start": 179,
+                        "line_end": 187,
+                        "line_start": 180,
                         "message": "Configuring now",
                         "name": "set label",
                         "notes": "",
@@ -1507,8 +1507,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 179,
-                        "line_start": 159,
+                        "line_end": 180,
+                        "line_start": 160,
                         "name": "decision",
                         "notes": "",
                         "number": 3,
@@ -2165,8 +2165,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 159,
-                        "line_start": 151,
+                        "line_end": 160,
+                        "line_start": 152,
                         "message": "Configuring now",
                         "name": "local/child pb do bunch of stuff",
                         "notes": "",
@@ -2306,7 +2306,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress are from:\n%% \nCity: {1},\nCountry: {0}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
+                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress are from: \n\n%% \nCity: {0},\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2330,7 +2330,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 151,
+                        "line_end": 152,
                         "line_start": 127,
                         "message": "Configuring now",
                         "name": "format",
@@ -2344,12 +2344,12 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name"
+                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name"
                             },
                             {
                                 "position": 1,
                                 "type": "",
-                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name"
+                                "value": "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name"
                             },
                             {
                                 "position": 2,
@@ -2422,11 +2422,11 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "This container {2}, sourceAddress are from:\n%% \nCity: {1},\nCountry: {0}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?",
+                        "template": "This container {2}, sourceAddress are from: \n\n%% \nCity: {0},\nCountry: {1}\n%%\n\nIP(s) outside of the U.S. Do you want to set severity to high?",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 101
+                        "z": 102
                     }
                 ]
             },
@@ -2435,7 +2435,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-09-26T17:16:57.783297+00:00",
+    "create_time": "2019-09-26T17:18:04.806516+00:00",
     "draft_mode": false,
     "labels": [
         "*"
