@@ -58,13 +58,6 @@ def decide_what_country_ip_is_in(action=None, success=None, container=None, resu
 
     return
 
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_high_severity() called')
-
-    phantom.set_severity(container=container, severity="High")
-
-    return
-
 def ask_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('ask_analyst_to_set_severity_to_high() called')
     
@@ -108,7 +101,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_playbook_0(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -146,6 +139,14 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
     phantom.format(container=container, template=template, parameters=parameters, name="format_msg_for_analyst")
 
     ask_analyst_to_set_severity_to_high(container=container)
+
+    return
+
+def playbook_playbook_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_playbook_0() called')
+    
+    # call playbook "playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("playbook", container=container)
 
     return
 
