@@ -132,8 +132,7 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
     phantom.debug('format_msg_for_analyst() called')
     
     template = """%%
-City: {0}
-Country: {1}
+{0}, {1}
 %%"""
 
     # parameter list for template variable replacement
