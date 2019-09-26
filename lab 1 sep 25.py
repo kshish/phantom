@@ -134,7 +134,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_msg_for_analyst() called')
     
-    template = """This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
+    template = """This container {2}, %%sourceAddress {1}, {0}%%. It is outside of the U.S. Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [

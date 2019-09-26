@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will show up in the python comments",
-            "hash": "40026a67fdd26ab207b126b35f3b639c9215a3b1",
+            "hash": "2398720b1579474a43190defdc6d248c9f71356a",
             "joint": {
                 "cells": [
                     {
@@ -1896,7 +1896,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
+                        "block_code": "def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_msg_for_analyst() called')\n    \n    template = \"\"\"This container {2}, %%sourceAddress {1}, {0}%%. It is outside of the U.S. Do you want to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name\",\n        \"filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_msg_for_analyst\")\n\n    ask_analyst_to_set_severity_to_high(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2012,11 +2012,11 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?",
+                        "template": "This container {2}, %%sourceAddress {1}, {0}%%. It is outside of the U.S. Do you want to set severity to high?",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 75
+                        "z": 76
                     }
                 ]
             },
@@ -2025,7 +2025,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-09-26T16:11:40.102980+00:00",
+    "create_time": "2019-09-26T16:13:12.614194+00:00",
     "draft_mode": false,
     "labels": [
         "*"
