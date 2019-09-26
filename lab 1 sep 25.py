@@ -70,13 +70,11 @@ def ask_analyst_to_set_severity_to_high(action=None, success=None, container=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
+    message = """{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name",
-        "container:name",
+        "format_msg_for_analyst:formatted_data.*",
     ]
 
     #responses:
@@ -129,7 +127,25 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        ask_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_msg_for_analyst(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_msg_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_msg_for_analyst() called')
+    
+    template = """This container {2}, sourceAddress {1}, {0}. It is outside of the U.S. Do you want to set severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_sourceAddress:action_result.data.*.city_name",
+        "container:name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_msg_for_analyst")
+
+    ask_analyst_to_set_severity_to_high(container=container)
 
     return
 
