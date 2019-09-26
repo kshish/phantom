@@ -129,8 +129,9 @@ def format_msg_for_analyst(action=None, success=None, container=None, results=No
     
     template = """This container {2}, sourceAddress are from:
 %% 
-{1}, {0}
-%%. 
+{1},
+{0}
+%%
 
 IP(s) outside of the U.S. Do you want to set severity to high?"""
 
