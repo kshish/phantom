@@ -11,9 +11,6 @@ def on_start(container):
     # call 'my_geolocate' block
     my_geolocate(container=container)
 
-    # call 'my_domain_checker' block
-    my_domain_checker(container=container)
-
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -33,159 +30,64 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Ask_Analyst_to_change_severity, name="my_geolocate")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
+def Ask_Analyst_to_change_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_Analyst_to_change_severity() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip is {0} and it is in {1}, {2}. Do you want to change severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.city_name",
+        "my_geolocate:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_Analyst_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_4)
+
+    return
+
+def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_4() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
+            ["Ask_Analyst_to_change_severity:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_5(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # check for 'elif' condition 2
-    matched_artifacts_2, matched_results_2 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "China"],
-        ])
-
-    # call connected blocks if condition 2 matched
-    if matched_artifacts_2 or matched_results_2:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # call connected blocks for 'else' condition 3
-    prompt_3(action=action, success=success, container=container, results=results, handle=handle)
-
     return
 
-def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_1() called')
+def set_severity_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_5() called')
 
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'my_geolocate', 'my_domain_checker' ]):
-        
-        # call connected block "decision_1"
-        decision_1(container=container, handle=handle)
-    
-    return
-
-def my_domain_checker(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('my_domain_checker() called')
-
-    # collect data for 'my_domain_checker' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'my_domain_checker' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'domain': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-
-    phantom.act("whois domain", parameters=parameters, assets=['whois'], callback=join_decision_1, name="my_domain_checker")
-
-    return
-
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_2() called')
-
-    return
-
-def join_decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_2() called')
-    
-    # if the joined function has already been called, do nothing
-    if phantom.get_run_data(key='join_decision_2_called'):
-        return
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'prompt_3', 'prompt_1', 'prompt_2' ]):
-        
-        # save the state that the joined function has now been called
-        phantom.save_run_data(key='join_decision_2_called', value='decision_2')
-        
-        # call connected block "decision_2"
-        decision_2(container=container, handle=handle)
-    
-    return
-
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = "admin"
-    message = """The ip is in US"""
-
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types, callback=join_decision_2)
-
-    return
-
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = ""
-    message = """The ip is in china"""
-
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", response_types=response_types, callback=join_decision_2)
-
-    return
-
-def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_3() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = ""
-    message = """Somewhere else"""
-
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", response_types=response_types, callback=join_decision_2)
+    phantom.set_severity(container=container, severity="High")
 
     return
 
