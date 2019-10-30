@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "9946464131cf8081d41fead2f45de2c0c2497e4b",
+            "hash": "fa11ac61126c010f89dc62c205d53a34fd38a742",
             "joint": {
                 "cells": [
                     {
@@ -20,11 +20,11 @@
                         "angle": 0,
                         "attrs": {
                             ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
                             },
                             ".color-band": {
-                                "fill": "#3C444D"
+                                "fill": "#171D21"
                             },
                             ".outPorts>.port-out": {
                                 "ref": ".background",
@@ -148,7 +148,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "start",
                         "status": "",
                         "title": "START",
                         "type": "coa.StartEnd",
@@ -163,11 +162,11 @@
                         "angle": 0,
                         "attrs": {
                             ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
                             },
                             ".color-band": {
-                                "fill": "#3C444D"
+                                "fill": "#171D21"
                             },
                             ".inPorts>.port-in": {
                                 "ref": ".background",
@@ -200,7 +199,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt 1",
+                        "connection_name": "prompt 1, geolocate ip",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -218,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 78,
-                        "line_start": 65,
+                        "line_end": 98,
+                        "line_start": 85,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 4,
+                        "order": 5,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -288,7 +287,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "end",
                         "status": "",
                         "title": "END",
                         "type": "coa.StartEnd",
@@ -478,11 +476,11 @@
                                 "text": "geolocate ip"
                             },
                             ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773"
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
                             },
                             ".color-band": {
-                                "fill": "#3C444D"
+                                "fill": "#171D21"
                             },
                             ".inPorts>.port-in": {
                                 "ref": ".background",
@@ -513,6 +511,12 @@
                             ".title": {
                                 "text": "Investigate"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -524,11 +528,17 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            },
+                            "g.timer image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=prompt_1, name=\"geolocate_ip_1\")\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=geolocate_ip_1_callback, name=\"geolocate_ip_1\")\n\n    return",
+                        "callback_code": "def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_ip_1_callback() called')\n    \n    prompt_1(action=action, success=success, container=container, results=results, handle=handle)\n    set_label_1(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "callback_start": 37,
                         "callsback": true,
                         "color": "",
                         "connected_to_start": true,
@@ -551,7 +561,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 37,
+                        "line_end": 45,
                         "line_start": 16,
                         "message": "Configuring now",
                         "name": "geolocate ip",
@@ -618,7 +628,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "lookup_ip_1",
+                        "previous_name": "geolocate_ip_1",
                         "required_params": {
                             "ip": true
                         },
@@ -632,7 +642,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 6
                     },
                     {
@@ -722,8 +732,8 @@
                         "approver": "Administrator",
                         "attrs": {
                             ".background": {
-                                "fill": "#000000",
-                                "stroke": "#E6984E"
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
                             },
                             ".inPorts>.port-in": {
                                 "ref": ".background",
@@ -752,16 +762,19 @@
                                 "display": "none"
                             },
                             "g.error": {
-                                "opacity": 1
+                                "opacity": 0
                             },
                             "g.error image": {
                                 "xlink:href": "/inc/coa/img/block_icon_warn.svg"
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"possible threat from ip: {0}, {1}\n\nAdd IP to threat list?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"geolocate_ip_1:action_result.data.*.city_name\",\n    ]\n\n    # response options\n    options = {\n        \"type\": \"list\",\n        \"choices\": [\n            \"Yes\",\n            \"No\",\n        ]\n    }\n\n    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, options=options)\n\n    return",
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"Administrator\"\n    message = \"\"\"possible threat from ip: {0}, {1}\n\nAdd IP to threat list?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"geolocate_ip_1:action_result.data.*.city_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, response_types=response_types)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -784,8 +797,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 65,
-                        "line_start": 37,
+                        "line_end": 78,
+                        "line_start": 45,
                         "message": "possible threat from ip: {0}, {1}\n\nAdd IP to threat list?",
                         "name": "prompt",
                         "notes": "",
@@ -871,6 +884,17 @@
                             "No"
                         ],
                         "response_type": "list",
+                        "responses": [
+                            {
+                                "response_key": "Yes/No",
+                                "response_options": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "response_prompt": "",
+                                "response_type": "list"
+                            }
+                        ],
                         "show_number": true,
                         "size": {
                             "height": 80,
@@ -881,17 +905,263 @@
                         "type": "coa.Prompt",
                         "warn": false,
                         "z": 10
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "7076053e-a9cc-41d6-90cf-893978cbed2b",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "54176e74-2720-4948-8aa6-ab9247a84581",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "9b527853-62c6-4f5d-abae-7048240b240c",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 11
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "api": "set label",
+                        "attrs": {
+                            ".api": {
+                                "text": "set label"
+                            },
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "API"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def set_label_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('set_label_1() called')\n\n    phantom.set_label(container=container, label=\"sample\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "color": "",
+                        "configured": [
+                            {
+                                "key": "set-label",
+                                "setLabelLabel": "sample"
+                            }
+                        ],
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "9b527853-62c6-4f5d-abae-7048240b240c",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 85,
+                        "line_start": 78,
+                        "message": "Configuring now",
+                        "name": "set label",
+                        "notes": "",
+                        "number": 1,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 640,
+                            "y": 180
+                        },
+                        "previous_function": "",
+                        "previous_name": "set_label_1",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "api",
+                        "status": "",
+                        "title": "API",
+                        "type": "coa.API",
+                        "warn": false,
+                        "z": 13
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "547bfcf2-05b7-4b1a-b90c-12c62d4971a8",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "9b527853-62c6-4f5d-abae-7048240b240c",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "c6cdb28f-b295-41e3-b646-71293d78b0ad",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 14
                     }
                 ]
             },
             "notes": ""
         },
         "schema": 3,
-        "version": "4.1.94"
+        "version": "4.5.15370"
     },
-    "create_time": "2019-02-01T18:23:55.892727+00:00",
+    "create_time": "2019-10-30T15:24:57.847446+00:00",
     "draft_mode": false,
     "labels": [
         "sample"
-    ]
+    ],
+    "tags": []
 }

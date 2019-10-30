@@ -30,7 +30,15 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_ip_1_callback, name="geolocate_ip_1")
+
+    return
+
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('geolocate_ip_1_callback() called')
+    
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -49,16 +57,28 @@ Add IP to threat list?"""
         "geolocate_ip_1:action_result.data.*.city_name",
     ]
 
-    # response options
-    options = {
-        "type": "list",
-        "choices": [
-            "Yes",
-            "No",
-        ]
-    }
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, options=options)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+
+    return
+
+def set_label_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_label_1() called')
+
+    phantom.set_label(container=container, label="sample")
 
     return
 
