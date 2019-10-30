@@ -30,7 +30,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Ask_Analyst_to_change_severity, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
 
     return
 
@@ -43,9 +43,9 @@ def Ask_Analyst_to_change_severity(action=None, success=None, container=None, re
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.city_name",
-        "my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -88,6 +88,24 @@ def set_severity_5(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_5() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Ask_Analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
