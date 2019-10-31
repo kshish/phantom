@@ -39,7 +39,7 @@ def Ask_Analyst_to_change_severity(action=None, success=None, container=None, re
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip is {0} and it is in {1}, {2}. Do you want to change severity to high?"""
+    message = """The ip is %% {0} and it is in {1}, {2}.%%  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -79,7 +79,7 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_label_7(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_7(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'elif' condition 2
@@ -114,42 +114,10 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def set_label_set_severity_set_sensitivity_set_status_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_label_set_severity_set_sensitivity_set_status_6() called')
-
-    phantom.set_label(container=container, label="sample")
+def set_severity_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_7() called')
 
     phantom.set_severity(container=container, severity="High")
-
-    phantom.set_sensitivity(container=container, sensitivity="amber")
-
-    phantom.set_status(container=container, status="Closed")
-    decision_6(container=container)
-
-    return
-
-def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_6() called')
-
-    # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["Ask_Analyst_to_change_severity:action_result.summary.responses.0", "==", "Yes"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        return
-
-    return
-
-def set_label_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_label_7() called')
-
-    phantom.set_label(container=container, label="events")
-    set_label_set_severity_set_sensitivity_set_status_6(container=container)
 
     return
 
