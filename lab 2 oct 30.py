@@ -122,7 +122,11 @@ def set_severity_7(action=None, success=None, container=None, results=None, hand
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_1() called')
     
-    template = """%% {0} and it is in {1}, {2}. %%"""
+    template = """%%
+IP: {0} 
+City: {1}
+Country {2}. 
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
