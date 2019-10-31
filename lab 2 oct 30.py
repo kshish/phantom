@@ -39,13 +39,11 @@ def Ask_Analyst_to_change_severity(action=None, success=None, container=None, re
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip is %% {0} and it is in {1}, {2}.%%  Do you want to change severity to high?"""
+    message = """The ip is  {0}  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.city_name",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_1:formatted_data.*",
     ]
 
     #responses:
@@ -110,7 +108,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Ask_Analyst_to_change_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -118,6 +116,24 @@ def set_severity_7(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_7() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """%% {0} and it is in {1}, {2}.%% {2}{1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    Ask_Analyst_to_change_severity(container=container)
 
     return
 
