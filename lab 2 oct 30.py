@@ -126,9 +126,11 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug('format_1() called')
     
     template = """%%
+
 IP: {0} 
 City: {1}
 Country {2}.
+
 %%"""
 
     # parameter list for template variable replacement
