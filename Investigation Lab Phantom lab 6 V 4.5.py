@@ -167,7 +167,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Store_Country_Name(action=action, success=success, container=container, results=results, handle=handle)
+        decision_4(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -181,6 +181,17 @@ def playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(action=None, success
     # call playbook "Chris/Case Promotion Lab Phantom Lab 6 V 4.5", returns the playbook_run_id
     playbook_run_id = phantom.playbook("Chris/Case Promotion Lab Phantom Lab 6 V 4.5", container=container)
 
+    return
+
+def join_playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'Notify_IT' ]):
+        
+        # call connected block "playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1"
+        playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(container=container, handle=handle)
+    
     return
 
 def add_comment_pin_set_status_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -307,7 +318,28 @@ def Store_Country_Name(action=None, success=None, container=None, results=None, 
     ################################################################################
     ## Custom Code End
     ################################################################################
-    playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(container=container)
+    join_playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(container=container)
+
+    return
+
+def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_4() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:Filter_Banned_Countries:condition_1:geolocate_ip_1:action_result.data.*.country_name", "in", "custom_list:colors"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        join_playbook_Chris_Case_Promotion_Lab_Phantom_Lab_6_V_4_5_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    Store_Country_Name(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
