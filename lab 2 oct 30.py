@@ -39,7 +39,10 @@ def Ask_Analyst_to_change_severity(action=None, success=None, container=None, re
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip is  {0}  Do you want to change severity to high?"""
+    message = """The following 
+ {0} 
+
+Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
