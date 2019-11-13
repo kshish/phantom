@@ -11,6 +11,9 @@ def on_start(container):
     # call 'geolocate_source_address' block
     geolocate_source_address(container=container)
 
+    # call 'whois_ip_1' block
+    whois_ip_1(container=container)
+
     return
 
 def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -30,7 +33,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_3, name="geolocate_source_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_3, name="geolocate_source_address")
 
     return
 
@@ -55,6 +58,17 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     return
 
+def join_decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_decision_3() called')
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'geolocate_source_address', 'whois_ip_1' ]):
+        
+        # call connected block "decision_3"
+        decision_3(container=container, handle=handle)
+    
+    return
+
 """
 set container severity to super high- needs super high severity
 """
@@ -69,6 +83,27 @@ def set_severity_5(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_5() called')
 
     phantom.set_severity(container=container, severity="Super high")
+
+    return
+
+def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_ip_1() called')
+
+    # collect data for 'whois_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'whois_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_3, name="whois_ip_1")
 
     return
 
