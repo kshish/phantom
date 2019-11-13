@@ -66,9 +66,20 @@ def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip is not in United States.
+    message = """The ip {4} is in {1}, {0}
 
-Do you want to set severity to Super High?"""
+The current severity of {2} is {3}
+Do you want to set severity to Super High?
+Country: {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_source_address:action_result.data.*.country_name",
+        "geolocate_source_address:action_result.data.*.city_name",
+        "container:name",
+        "container:severity",
+        "geolocate_source_address:action_result.parameter.ip",
+    ]
 
     #responses:
     response_types = [
@@ -84,7 +95,7 @@ Do you want to set severity to Super High?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="Ask_Analyst_to_set_Super_High_severity", response_types=response_types, callback=decision_4)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="Ask_Analyst_to_set_Super_High_severity", parameters=parameters, response_types=response_types, callback=decision_4)
 
     return
 
