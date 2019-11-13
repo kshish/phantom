@@ -54,11 +54,11 @@ Country: {1}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_source_address:action_result.data.*.country_name",
-        "geolocate_source_address:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.city_name",
         "container:name",
         "container:severity",
-        "geolocate_source_address:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.parameter.ip",
     ]
 
     #responses:
