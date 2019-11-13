@@ -68,7 +68,7 @@ def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=
     user = "admin"
     message = """The ip {4} is in {1}, {0}
 
-The current severity of {2} is {3}
+The current severity of \"{2}\" is {3}
 Do you want to set severity to Super High?
 Country: {1}"""
 

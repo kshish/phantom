@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "c3f563e155f42eed0a265d8e411a6215a2632f58",
+            "hash": "a216e483f3fd4451f8ce1556ed8accfefe8300df",
             "joint": {
                 "cells": [
                     {
@@ -1514,7 +1514,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_Analyst_to_set_Super_High_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip {4} is in {1}, {0}\n\nThe current severity of {2} is {3}\nDo you want to set severity to Super High?\nCountry: {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_source_address:action_result.data.*.country_name\",\n        \"geolocate_source_address:action_result.data.*.city_name\",\n        \"container:name\",\n        \"container:severity\",\n        \"geolocate_source_address:action_result.parameter.ip\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"Ask_Analyst_to_set_Super_High_severity\", parameters=parameters, response_types=response_types, callback=decision_4)\n\n    return",
+                        "block_code": "def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_Analyst_to_set_Super_High_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip {4} is in {1}, {0}\n\nThe current severity of \\\"{2}\\\" is {3}\nDo you want to set severity to Super High?\nCountry: {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_source_address:action_result.data.*.country_name\",\n        \"geolocate_source_address:action_result.data.*.city_name\",\n        \"container:name\",\n        \"container:severity\",\n        \"geolocate_source_address:action_result.parameter.ip\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"Ask_Analyst_to_set_Super_High_severity\", parameters=parameters, response_types=response_types, callback=decision_4)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1539,7 +1539,7 @@
                         "join_start": 1,
                         "line_end": 102,
                         "line_start": 64,
-                        "message": "The ip {4} is in {1}, {0}\n\nThe current severity of {2} is {3}\nDo you want to set severity to Super High?\nCountry: {1}",
+                        "message": "The ip {4} is in {1}, {0}\n\nThe current severity of \"{2}\" is {3}\nDo you want to set severity to Super High?\nCountry: {1}",
                         "name": "prompt",
                         "notes": "",
                         "number": 1,
@@ -1656,7 +1656,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 92
+                        "z": 93
                     }
                 ]
             },
@@ -1665,7 +1665,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-11-13T23:02:41.720269+00:00",
+    "create_time": "2019-11-13T23:04:27.081215+00:00",
     "draft_mode": false,
     "labels": [
         "*"
