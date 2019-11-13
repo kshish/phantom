@@ -7,6 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
+            "hash": "62e5d6e52dd51af7ae8be9b045323198d68470d1",
             "joint": {
                 "cells": [
                     {
@@ -54,7 +55,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "Ask Analyst to set Super High severity, geolocate source address, Ask Analyst to set Super High severity",
+                        "connection_name": "Ask Analyst to set Super High severity, Ask Analyst to set Super High severity",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -72,8 +73,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 135,
-                        "line_start": 122,
+                        "line_end": 133,
+                        "line_start": 120,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -188,46 +189,6 @@
                         },
                         "type": "link",
                         "z": 3
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "65c124cf-6b80-415a-97da-61e1690bd6f9",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "75aa2e54-d0ee-4070-83fa-ded70b4e4587",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "80707d1f-3ebf-4e8c-9e68-bd9d0193353e",
-                            "selector": ".port-body[type=\"input\"]"
-                        },
-                        "type": "link",
-                        "z": 8
                     },
                     {
                         "attrs": {
@@ -612,7 +573,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_source_address() called')\n\n    # collect data for 'geolocate_source_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_source_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=decide_what_country_ip_is_from, name=\"geolocate_source_address\")\n\n    return",
+                        "block_code": "def geolocate_source_address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('geolocate_source_address() called')\n\n    # collect data for 'geolocate_source_address' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_source_address' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=filter_1, name=\"geolocate_source_address\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -808,13 +769,13 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 86,
-                        "line_end": 64,
-                        "line_start": 57,
+                        "line_end": 44,
+                        "line_start": 37,
                         "message": "Configuring now",
                         "name": "set severity",
                         "notes": "",
                         "number": 3,
-                        "order": 4,
+                        "order": 3,
                         "outPorts": [
                             "out"
                         ],
@@ -887,87 +848,6 @@
                         "type": "coa.API",
                         "warn": false,
                         "z": 75
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "490387cc-9673-432b-917c-76d754361c82",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "80707d1f-3ebf-4e8c-9e68-bd9d0193353e",
-                            "port": "out-1",
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "4e937c14-4027-4e2f-a237-9a003dc2b817",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 76
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "b0e4129c-3890-4148-ad2d-b71427d78814",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "80707d1f-3ebf-4e8c-9e68-bd9d0193353e",
-                            "port": "out-2",
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(2) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "e95e63a1-bea7-4c66-a80a-aa0653284e66",
-                            "selector": ".port-body[type=\"input\"]"
-                        },
-                        "type": "link",
-                        "z": 78
                     },
                     {
                         "attrs": {
@@ -1133,12 +1013,12 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 122,
-                        "line_start": 102,
+                        "line_end": 102,
+                        "line_start": 82,
                         "name": "decision",
                         "notes": "",
                         "number": 4,
-                        "order": 6,
+                        "order": 5,
                         "outPorts": [
                             "out-1",
                             "out-2"
@@ -1349,13 +1229,13 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 102,
-                        "line_start": 64,
+                        "line_end": 82,
+                        "line_start": 44,
                         "message": "The ip {4} is in {1}, {0}\n\nThe current severity of \"{2}\" is {3}\nDo you want to set severity to Super High?\nCountry: {1}",
                         "name": "prompt",
                         "notes": "",
                         "number": 1,
-                        "order": 5,
+                        "order": 4,
                         "outPorts": [
                             "out"
                         ],
@@ -1439,8 +1319,8 @@
                             }
                         },
                         "position": {
-                            "x": 740,
-                            "y": 260
+                            "x": 820,
+                            "y": 180
                         },
                         "previous_function": "",
                         "previous_name": "Ask_Analyst_to_set_Super_High_severity",
@@ -1471,12 +1351,52 @@
                         "z": 94
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "4baaa1fd-5925-4108-a72f-e076c310b705",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "75aa2e54-d0ee-4070-83fa-ded70b4e4587",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "0604362b-a27b-4dfd-b9ff-64817d1dab92",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 95
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
                             ".background": {
                                 "fill": "#FFFFFF",
-                                "stroke": "#637282",
+                                "stroke": "#818D99",
                                 "transform": "rotate(45 30 70)"
                             },
                             ".inPorts>.port-0>.port-body": {
@@ -1486,7 +1406,7 @@
                                 }
                             },
                             ".number": {
-                                "text": 3
+                                "text": 1
                             },
                             ".outPorts>.port-0": {
                                 "port": {
@@ -1502,20 +1422,6 @@
                                     "type": "out"
                                 }
                             },
-                            ".outPorts>.port-1": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                },
-                                "ref-x": 41,
-                                "ref-y": 82
-                            },
-                            ".outPorts>.port-1>.port-body": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                }
-                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -1526,7 +1432,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def decide_what_country_ip_is_from(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_what_country_ip_is_from() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_source_address:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        return\n\n    # call connected blocks for 'else' condition 2\n    Ask_Analyst_to_set_Super_High_severity(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "block_code": "def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_1() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_source_address:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ],\n        name=\"filter_1:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_Analyst_to_set_Super_High_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1536,35 +1442,33 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "decide what country ip is from",
+                        "custom_name": "",
                         "description": "",
-                        "hasElse": true,
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "80707d1f-3ebf-4e8c-9e68-bd9d0193353e",
+                        "id": "0604362b-a27b-4dfd-b9ff-64817d1dab92",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
-                        "join_start": 69,
-                        "line_end": 57,
-                        "line_start": 37,
-                        "name": "decision",
+                        "join_start": 1,
+                        "line_end": 120,
+                        "line_start": 102,
+                        "name": "filter",
                         "notes": "",
-                        "number": 3,
-                        "order": 3,
+                        "number": 1,
+                        "order": 6,
                         "outPorts": [
-                            "out-1",
-                            "out-2"
+                            "out-1"
                         ],
                         "outputs": [
                             {
                                 "conditions": [
                                     {
-                                        "comparison": "==",
+                                        "comparison": "!=",
                                         "data_type": "",
                                         "param": "geolocate_source_address:action_result.data.*.country_name",
                                         "value": "United States"
@@ -1573,19 +1477,6 @@
                                 "display": "If",
                                 "logic": "and",
                                 "type": "if"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
                             }
                         ],
                         "ports": {
@@ -1641,21 +1532,62 @@
                             }
                         },
                         "position": {
-                            "x": 620,
+                            "x": 680,
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "decide_what_country_ip_is_from",
+                        "previous_name": "filter_1",
                         "show_number": true,
                         "size": {
                             "height": 82,
                             "width": 82
                         },
-                        "state": "decision",
+                        "state": "filter",
                         "status": "",
-                        "type": "coa.Decision",
+                        "type": "coa.Filter",
                         "warn": "",
                         "z": 97
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "74c6e832-2a69-420e-b063-c8675447c49b",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "0604362b-a27b-4dfd-b9ff-64817d1dab92",
+                            "port": "out-1",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "e95e63a1-bea7-4c66-a80a-aa0653284e66",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 98
                     }
                 ]
             },
@@ -1664,7 +1596,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-11-13T23:04:27.081215+00:00",
+    "create_time": "2019-11-13T23:09:07.575294+00:00",
     "draft_mode": false,
     "labels": [
         "*"
