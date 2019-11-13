@@ -30,7 +30,7 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="geolocate_source_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_US, name="geolocate_source_address")
 
     return
 
@@ -54,11 +54,11 @@ Country: {1}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.city_name",
+        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.country_name",
+        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.city_name",
         "container:name",
         "container:severity",
-        "filtered-data:filter_1:condition_1:geolocate_source_address:action_result.parameter.ip",
+        "filtered-data:filter_out_US:condition_1:geolocate_source_address:action_result.parameter.ip",
     ]
 
     #responses:
@@ -99,8 +99,8 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_1() called')
+def filter_out_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_out_US() called')
 
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -109,25 +109,25 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["geolocate_source_address:action_result.data.*.country_name", "!=", "United States"],
         ],
-        name="filter_1:condition_1")
+        name="filter_out_US:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_out_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_2() called')
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_out_none() called')
 
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_source_address:action_result.data.*.country_name", "!=", ""],
+            ["filtered-data:filter_out_US:condition_1:geolocate_source_address:action_result.data.*.country_name", "!=", ""],
         ],
-        name="filter_2:condition_1")
+        name="filter_out_none:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
