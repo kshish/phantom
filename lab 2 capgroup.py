@@ -5,6 +5,14 @@ import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
 
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -33,12 +41,12 @@ def geolocate_source_address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_3, name="geolocate_source_address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decide_what_country_ip_is_from, name="geolocate_source_address")
 
     return
 
-def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_3() called')
+def decide_what_country_ip_is_from(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decide_what_country_ip_is_from() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -58,14 +66,14 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def join_decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_decision_3() called')
+def join_decide_what_country_ip_is_from(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_decide_what_country_ip_is_from() called')
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
     if phantom.actions_done([ 'geolocate_source_address', 'whois_ip_1' ]):
         
-        # call connected block "decision_3"
-        decision_3(container=container, handle=handle)
+        # call connected block "decide_what_country_ip_is_from"
+        decide_what_country_ip_is_from(container=container, handle=handle)
     
     return
 
@@ -103,7 +111,7 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decision_3, name="whois_ip_1")
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_decide_what_country_ip_is_from, name="whois_ip_1")
 
     return
 
