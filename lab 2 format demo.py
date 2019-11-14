@@ -46,19 +46,16 @@ def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip {4} is in {1}, {0}
+    message = """{0}
 
-The current severity of \"{2}\" is {3}
-Do you want to set severity to Super High?
-Country: {1}"""
+The current severity of \"{1}\" is {2}
+Do you want to set severity to Super High?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.country_name",
-        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.city_name",
+        "format_2:formatted_data.*",
         "container:name",
         "container:severity",
-        "filtered-data:filter_out_US:condition_1:geolocate_source_address:action_result.parameter.ip",
     ]
 
     #responses:
@@ -131,7 +128,27 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Ask_Analyst_to_set_Super_High_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """%%
+The ip {0} is in {1}, {2}
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.city_name",
+        "filtered-data:filter_out_none:condition_1:geolocate_source_address:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    Ask_Analyst_to_set_Super_High_severity(container=container)
 
     return
 
@@ -141,11 +158,11 @@ def on_finish(container, summary):
     # summary of all the action and/or all detals of actions 
     # can be collected here.
 
-    # summary_json = phantom.get_summary()
-    # if 'result' in summary_json:
-        # for action_result in summary_json['result']:
-            # if 'action_run_id' in action_result:
-                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
-                # phantom.debug(action_results)
+    summary_json = phantom.get_summary()
+    if 'result' in summary_json:
+      for action_result in summary_json['result']:
+            if 'action_run_id' in action_result:
+                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
+                phantom.debug(action_results)
 
     return
