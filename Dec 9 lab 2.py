@@ -59,8 +59,8 @@ Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_ip_1:action_result.parameter.ip",
-        "geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -126,7 +126,25 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        prompt_with_ip_and_country(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+        filter_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+def filter_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_none() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        prompt_with_ip_and_country(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
