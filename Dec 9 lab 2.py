@@ -51,7 +51,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    prompt_with_ip_and_country(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -69,8 +69,8 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
+def prompt_with_ip_and_country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_with_ip_and_country() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
@@ -98,7 +98,7 @@ Would you like to set severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_with_ip_and_country", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
@@ -110,7 +110,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_with_ip_and_country:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
