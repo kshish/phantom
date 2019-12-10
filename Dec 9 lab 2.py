@@ -55,12 +55,15 @@ def prompt_with_ip_and_country(action=None, success=None, container=None, result
     user = "admin"
     message = """The source address ip {0} is in {1}
 
-Would you like to set severity to high?"""
+Would you like to set severity to high?
+
+All source address values: {2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
         "filtered-data:filter_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -120,7 +123,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Canada"],
         ],
         name="filter_1:condition_2")
 
