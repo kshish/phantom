@@ -49,7 +49,7 @@ def Ask_Analyst_to_set_Super_High_severity(action=None, success=None, container=
     message = """{0}
 
 The current severity of \"{1}\" is {2}
-Do you want to set severity to Super High?"""
+Do you want to set severity to  High?"""
 
     # parameter list for template variable replacement
     parameters = [
