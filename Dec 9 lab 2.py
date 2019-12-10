@@ -123,7 +123,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Canada"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
         ],
         name="filter_1:condition_2")
 
