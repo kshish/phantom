@@ -55,7 +55,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "China"],
         ],
         name="filter_1:condition_2")
 
@@ -97,7 +97,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Not in United States"""
+    message = """is in China"""
 
     #responses:
     response_types = [
