@@ -19,8 +19,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     # collect data for 'geolocate_ip_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-    phantom.debug("chris wuz here")
-    phantom.debug(container_data)
+
     parameters = []
     
     # build parameters list for 'geolocate_ip_1' call
@@ -32,12 +31,12 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_USA, name="geolocate_ip_1")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
+def decide_if_in_USA(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decide_if_in_USA() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -49,13 +48,13 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def Ask_analyst_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Ask_analyst_to_set_high_severity() called')
+def Ask_analyst_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_analyst_high_severity() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
@@ -85,7 +84,7 @@ Do you want to change severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
@@ -97,7 +96,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["Ask_analyst_to_set_high_severity:action_result.summary.responses.0", "==", "Yes"],
+            ["Ask_analyst_high_severity:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
