@@ -84,7 +84,7 @@ Do you want to change severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Ask_analyst_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 

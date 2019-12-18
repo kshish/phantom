@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "my comments",
-            "hash": "7aaaf423404eb8c278d667ee45d209c81bf33c95",
+            "hash": "a38350cf5fe6063fbe291b88352706ccc1532221",
             "joint": {
                 "cells": [
                     {
@@ -863,187 +863,6 @@
                     {
                         "active": false,
                         "angle": 0,
-                        "approver": "admin",
-                        "attrs": {
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#818D99"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            }
-                        },
-                        "block_code": "def Ask_analyst_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_high_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.parameter.ip\",\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"container:name\",\n        \"container:description\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"Ask_analyst_high_severity\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": true,
-                        "connected_to_start": true,
-                        "connection_name": "geolocate ip",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "Ask analyst  high severity",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "21e239e9-d2ca-46ef-8691-aa606b31820a",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 91,
-                        "line_start": 56,
-                        "message": "Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?",
-                        "name": "prompt",
-                        "notes": "",
-                        "number": 1,
-                        "order": 4,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "parameters": [
-                            {
-                                "position": 0,
-                                "type": "",
-                                "value": "geolocate_ip_1:action_result.parameter.ip"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
-                                "value": "geolocate_ip_1:action_result.data.*.country_name"
-                            },
-                            {
-                                "position": 2,
-                                "type": "",
-                                "value": "container:name"
-                            },
-                            {
-                                "position": 3,
-                                "type": "",
-                                "value": "container:description"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 720,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "Ask_analyst_high_severity",
-                        "respond_in": "30",
-                        "response_key": "Message",
-                        "response_options": [],
-                        "response_type": "list",
-                        "responses": [
-                            {
-                                "response_key": "Yes/No",
-                                "response_options": [
-                                    "Yes",
-                                    "No"
-                                ],
-                                "response_prompt": "",
-                                "response_type": "list"
-                            }
-                        ],
-                        "show_number": true,
-                        "size": {
-                            "height": 80,
-                            "width": 80
-                        },
-                        "state": "prompt",
-                        "status": "",
-                        "type": "coa.Prompt",
-                        "warn": false,
-                        "z": 77
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
                         "attrs": {
                             ".background": {
                                 "fill": "#FFFFFF",
@@ -1517,6 +1336,187 @@
                         "type": "coa.Action",
                         "warn": false,
                         "z": 90
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def Ask_analyst_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_high_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"geolocate_ip_1:action_result.parameter.ip\",\n        \"geolocate_ip_1:action_result.data.*.country_name\",\n        \"container:name\",\n        \"container:description\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_high_severity\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Ask analyst  high severity",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "21e239e9-d2ca-46ef-8691-aa606b31820a",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 91,
+                        "line_start": 56,
+                        "message": "Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.parameter.ip"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "geolocate_ip_1:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "container:name"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "container:description"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 720,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "Ask_analyst_high_severity",
+                        "respond_in": "1",
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "list",
+                        "responses": [
+                            {
+                                "response_key": "Yes/No",
+                                "response_options": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "response_prompt": "",
+                                "response_type": "list"
+                            }
+                        ],
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 91
                     }
                 ]
             },
@@ -1525,7 +1525,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-12-18T18:18:07.711735+00:00",
+    "create_time": "2019-12-18T18:25:13.271281+00:00",
     "draft_mode": false,
     "labels": [
         "*"
