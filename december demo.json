@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "my comments",
-            "hash": "531fd4568c09eeb631df8355f59322914b32f26d",
+            "hash": "86bd712714deea63e67eb928d534d57a7705c7ac",
             "joint": {
                 "cells": [
                     {
@@ -880,7 +880,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def decide_if_in_USA(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_in_USA() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        filter_3(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decide_if_in_USA(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_in_USA() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        filter_description(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -981,7 +981,7 @@
                             }
                         },
                         "position": {
-                            "x": 540,
+                            "x": 480,
                             "y": 80
                         },
                         "previous_function": "",
@@ -1353,6 +1353,47 @@
                         "z": 92
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "560c0def-b331-4766-9a71-dc9019e2b8e8",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "880e8f8d-dcdd-484c-8ae7-8bc38e89d421",
+                            "port": "out-1",
+                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "21e239e9-d2ca-46ef-8691-aa606b31820a",
+                            "port": null,
+                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 94
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
@@ -1394,7 +1435,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def filter_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_3() called')\n    \n    description_param = container.get('description', None)\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [description_param, \"!=\", \"\"],\n        ],\n        name=\"filter_3:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
+                        "block_code": "def filter_description(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_description() called')\n    \n    description_param = container.get('description', None)\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [description_param, \"!=\", None],\n        ],\n        name=\"filter_description:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1404,7 +1445,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "filter description",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
@@ -1433,7 +1474,7 @@
                                         "comparison": "!=",
                                         "data_type": "",
                                         "param": "container:description",
-                                        "value": ""
+                                        "value": "None"
                                     }
                                 ],
                                 "display": "If",
@@ -1494,11 +1535,11 @@
                             }
                         },
                         "position": {
-                            "x": 660,
-                            "y": 280
+                            "x": 600,
+                            "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "filter_3",
+                        "previous_name": "filter_description",
                         "show_number": true,
                         "size": {
                             "height": 82,
@@ -1508,48 +1549,7 @@
                         "status": "",
                         "type": "coa.Filter",
                         "warn": "",
-                        "z": 93
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "560c0def-b331-4766-9a71-dc9019e2b8e8",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "880e8f8d-dcdd-484c-8ae7-8bc38e89d421",
-                            "port": "out-1",
-                            "selector": "g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "21e239e9-d2ca-46ef-8691-aa606b31820a",
-                            "port": null,
-                            "selector": "g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 94
+                        "z": 101
                     },
                     {
                         "active": false,
@@ -1736,7 +1736,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 95
+                        "z": 102
                     }
                 ]
             },
@@ -1745,7 +1745,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-12-18T18:31:09.487729+00:00",
+    "create_time": "2019-12-18T18:32:28.373011+00:00",
     "draft_mode": false,
     "labels": [
         "*"

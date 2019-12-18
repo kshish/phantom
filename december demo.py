@@ -48,7 +48,7 @@ def decide_if_in_USA(action=None, success=None, container=None, results=None, ha
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        filter_3(action=action, success=success, container=container, results=results, handle=handle)
+        filter_description(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -113,8 +113,8 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 
     return
 
-def filter_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_3() called')
+def filter_description(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_description() called')
     
     description_param = container.get('description', None)
 
@@ -123,9 +123,9 @@ def filter_3(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            [description_param, "!=", ""],
+            [description_param, "!=", None],
         ],
-        name="filter_3:condition_1")
+        name="filter_description:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
