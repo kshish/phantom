@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "my comments",
-            "hash": "39541328e4538ca86cc3fbd69c54cbf7c5aa4e10",
+            "hash": "534634baeaa4b7a918de5c0dac12f89b6fb79ccd",
             "joint": {
                 "cells": [
                     {
@@ -1845,7 +1845,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def Ask_analyst_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_high_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n        \"container:name\",\n        \"container:description\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_high_severity\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
+                        "block_code": "def Ask_analyst_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_high_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {2}, {3} has the ip {0}  which is in {1}\n\nDo you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n        \"container:name\",\n        \"container:description\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_high_severity\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1882,7 +1882,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip"
+                                "value": "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.parameter.ip"
                             },
                             {
                                 "position": 1,
@@ -1982,7 +1982,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 139
+                        "z": 140
                     }
                 ]
             },
@@ -1991,7 +1991,7 @@
         "schema": 3,
         "version": "4.5.15370"
     },
-    "create_time": "2019-12-19T14:36:27.428669+00:00",
+    "create_time": "2019-12-19T14:37:41.993724+00:00",
     "draft_mode": false,
     "labels": [
         "*"
