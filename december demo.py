@@ -167,7 +167,51 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types, callback=format_1)
+
+    return
+
+def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('send_email_1() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'send_email_1' call
+    formatted_data_1 = phantom.get_format_data(name='format_1__as_list')
+
+    parameters = []
+    
+    # build parameters list for 'send_email_1' call
+    for formatted_part_1 in formatted_data_1:
+        parameters.append({
+            'from': "",
+            'to': "churyn@splunk.com",
+            'cc': "",
+            'bcc': "",
+            'subject': "",
+            'body': formatted_part_1,
+            'attachments': "",
+            'headers': "",
+        })
+
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1")
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """Container {0} has ips from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    send_email_1(container=container)
 
     return
 
