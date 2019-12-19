@@ -48,7 +48,7 @@ def decide_if_in_USA(action=None, success=None, container=None, results=None, ha
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        filter_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -64,8 +64,8 @@ Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_ip_1:action_result.parameter.ip",
-        "geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_3:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_3:condition_1:geolocate_ip_1:action_result.data.*.country_name",
         "container:name",
         "container:description",
     ]
@@ -110,6 +110,24 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_2() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_3() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_3:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
