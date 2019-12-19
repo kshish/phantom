@@ -40,16 +40,16 @@ def Ask_analyst_high_severity(action=None, success=None, container=None, results
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Container {2}, {3} has the ip {0}  which is in {1}
+    message = """Container{0} , {1} 
+{2}
 
 Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.data.*.country_name",
         "container:name",
         "container:description",
+        "format_2:formatted_data.*",
     ]
 
     #responses:
@@ -109,7 +109,7 @@ def US_or_Not(action=None, success=None, container=None, results=None, handle=No
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Ask_analyst_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -212,6 +212,25 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     send_email_1(container=container)
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_2() called')
+    
+    template = """%%
+has the ip {0}  which is in {1}
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    Ask_analyst_high_severity(container=container)
 
     return
 
