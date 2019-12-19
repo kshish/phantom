@@ -46,8 +46,8 @@ Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_3:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_3:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_4:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_4:condition_1:geolocate_ip_1:action_result.data.*.country_name",
         "container:name",
         "container:description",
     ]
