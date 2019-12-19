@@ -20,38 +20,17 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     user = "admin"
     message = """Please enter in a color"""
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", callback=filter_1)
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
 
-    return
-
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_1() called')
-
-    # collect filtered artifact ids for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["prompt_1:action_result.summary.response", "in", "custom_list:colors"],
-        ],
-        name="filter_1:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    # collect filtered artifact ids for 'if' condition 2
-    matched_artifacts_2, matched_results_2 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["prompt_1:action_result.summary.response", "not in", "custom_list:colors"],
-        ],
-        name="filter_1:condition_2")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_2 or matched_results_2:
-        add_list_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types, callback=decision_1)
 
     return
 
@@ -64,21 +43,52 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "prompt_1:action_result.summary.response",
+        "prompt_1:action_result.summary.responses.0",
     ]
 
-    phantom.prompt(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
 
     return
 
 def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('add_list_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.response'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.responses.0'], action_results=results)
 
     results_item_1_0 = [item[0] for item in results_data_1]
 
     phantom.add_list("colors", results_item_1_0)
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "in", "custom_list:colors"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    add_list_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
