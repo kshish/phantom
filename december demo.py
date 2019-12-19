@@ -9,20 +9,20 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'my_geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -31,7 +31,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_none, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_none, name="my_geolocate")
 
     return
 
@@ -49,7 +49,7 @@ Do you want to change severity to high?"""
     parameters = [
         "container:name",
         "container:description",
-        "format_2:formatted_data.*",
+        "format_ips_into_rows:formatted_data.*",
     ]
 
     #responses:
@@ -103,20 +103,20 @@ def US_or_Not(action=None, success=None, container=None, results=None, handle=No
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
         ],
         name="US_or_Not:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        format_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_ips_into_rows(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "==", "United States"],
         ],
         name="US_or_Not:condition_2")
 
@@ -134,7 +134,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
         ],
         name="filter_out_none:condition_1")
 
@@ -153,8 +153,8 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:US_or_Not:condition_2:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:US_or_Not:condition_2:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:US_or_Not:condition_2:my_geolocate:action_result.parameter.ip",
+        "filtered-data:US_or_Not:condition_2:my_geolocate:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -206,7 +206,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "geolocate_ip_1:action_result.data.*.country_name",
+        "my_geolocate:action_result.data.*.country_name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
@@ -215,8 +215,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('format_2() called')
+def format_ips_into_rows(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_ips_into_rows() called')
     
     template = """%%
 has the ip {0}  which is in {1}
@@ -224,11 +224,11 @@ has the ip {0}  which is in {1}
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:US_or_Not:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:US_or_Not:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:US_or_Not:condition_1:my_geolocate:action_result.data.*.country_name",
     ]
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ips_into_rows")
 
     Ask_analyst_high_severity(container=container)
 
