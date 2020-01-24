@@ -16,7 +16,7 @@ def on_start(container):
 def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_1() called')
 
-    phantom.pin(container=container, message="wuz here", data="chris", pin_type="card_small", pin_style="purple")
+    phantom.pin(container=container, data="chris", message="wuz here", pin_type="card", pin_style="purple", name=None)
     set_label_2(container=container)
 
     return
@@ -24,7 +24,29 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 def set_label_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('set_label_2() called')
 
-    phantom.set_label(container, "phishing")
+    phantom.set_label(container=container, label="phishing")
+    whois_ip_1(container=container)
+
+    return
+
+def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_ip_1() called')
+
+    # collect data for 'whois_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'whois_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], name="whois_ip_1")
 
     return
 
