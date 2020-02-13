@@ -59,8 +59,7 @@ def Ask_Analyst_to_set_high_severity(action=None, success=None, container=None, 
     user = "admin"
     message = """The ip {0} in the container {1}, {2} is not from U.S. It is from {3}
 
-Do you want to set container's severity to high?
-{4}"""
+Do you want to set container's severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -68,7 +67,6 @@ Do you want to set container's severity to high?
         "container:name",
         "container:description",
         "geolocate_ip_1:action_result.data.*.country_name",
-        "",
     ]
 
     #responses:
