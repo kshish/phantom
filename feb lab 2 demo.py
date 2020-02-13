@@ -30,12 +30,12 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_what_severity_to_set, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
 
     return
 
-def decide_what_severity_to_set(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decide_what_severity_to_set() called')
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -47,25 +47,68 @@ def decide_what_severity_to_set(action=None, success=None, container=None, resul
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        Ask_Analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # call connected blocks for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+    return
+
+def Ask_Analyst_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_Analyst_to_set_high_severity() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip {0} in the container {1}, {2} is not from U.S. It is from {3}
+
+Do you want to set container's severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_ip_1:action_result.parameter.ip",
+        "container:name",
+        "container:description",
+        "geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_Analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_3)
 
     return
 
-def Set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('Set_high_severity() called')
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Ask_Analyst_to_set_high_severity:action_result.summary.responses.0", "!=", "No"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_5(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def set_severity_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_5() called')
 
     phantom.set_severity(container=container, severity="High")
-
-    return
-
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_low_severity() called')
-
-    phantom.set_severity(container=container, severity="Low")
 
     return
 
