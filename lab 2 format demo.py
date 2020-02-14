@@ -135,7 +135,9 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_2() called')
     
-    template = """The ip {0} is in {1}, {2}"""
+    template = """%%
+The ip {0} is in {1}, {2}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
