@@ -70,7 +70,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip {0} is in {1}"""
+    message = """%%
+The ip {0} is in {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
