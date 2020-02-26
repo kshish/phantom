@@ -60,6 +60,8 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
 
     phantom.set_severity(container=container, severity="Low")
 
+    phantom.set_owner(container=container, user="admin")
+
     return
 
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
