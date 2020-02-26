@@ -8,20 +8,20 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'my_geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,7 +30,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="my_geolocate")
 
     return
 
@@ -42,28 +42,28 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_1() called')
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
     return
 
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_3() called')
+def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
 
