@@ -30,7 +30,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
 
     return
 
@@ -46,8 +46,8 @@ Do you want to set severity to high?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "my_geolocate:action_result.data.*.country_name",
-        "my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
     ]
 
     #responses:
@@ -90,6 +90,24 @@ def set_severity_4(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_4() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
