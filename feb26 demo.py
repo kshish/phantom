@@ -39,7 +39,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0)
+    message = """The container {0}
 
 {1}
 
