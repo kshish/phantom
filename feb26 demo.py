@@ -39,15 +39,16 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0} ip {2} is from {1}.
+    message = """The container {0)
+
+{1}
 
 Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "format_1:formatted_data.*",
     ]
 
     #responses:
@@ -107,7 +108,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -127,6 +128,25 @@ def join_filter_1(action=None, success=None, container=None, results=None, handl
         # call connected block "filter_1"
         filter_1(container=container, handle=handle)
     
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """%%
+ip is {0} is from {1}.
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
+
     return
 
 def on_finish(container, summary):
