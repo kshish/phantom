@@ -134,7 +134,7 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug('prompt_3() called')
     
     # set user and message variables for phantom.prompt call
-    user = ""
+    user = "admin"
     message = """not in U.S. or China"""
 
     #responses:
