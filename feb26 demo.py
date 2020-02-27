@@ -122,7 +122,7 @@ def join_filter_1(action=None, success=None, container=None, results=None, handl
         return
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'my_geolocate', 'geolocate_ip_2' ]):
+    if phantom.actions_done([ 'my_geolocate' ]):
         
         # save the state that the joined function has now been called
         phantom.save_run_data(key='join_filter_1_called', value='filter_1')
