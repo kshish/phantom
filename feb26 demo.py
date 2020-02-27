@@ -11,9 +11,6 @@ def on_start(container):
     # call 'my_geolocate' block
     my_geolocate(container=container)
 
-    # call 'geolocate_ip_2' block
-    geolocate_ip_2(container=container)
-
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -33,7 +30,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_filter_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
 
     return
 
@@ -130,29 +127,6 @@ def join_filter_1(action=None, success=None, container=None, results=None, handl
         # call connected block "filter_1"
         filter_1(container=container, handle=handle)
     
-    return
-
-def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_2() called')
-
-    # collect data for 'geolocate_ip_2' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'geolocate_ip_2' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-    # calculate start time using delay of 1 minutes
-    start_time = datetime.now() + timedelta(minutes=1)
-
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_filter_1, start_time=start_time, name="geolocate_ip_2")
-
     return
 
 def on_finish(container, summary):
