@@ -11,6 +11,9 @@ def on_start(container):
     # call 'my_geolocate' block
     my_geolocate(container=container)
 
+    # call 'whois_ip_1' block
+    whois_ip_1(container=container)
+
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -30,7 +33,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_filter_1, name="my_geolocate")
 
     return
 
@@ -108,6 +111,45 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def join_filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('join_filter_1() called')
+    
+    # if the joined function has already been called, do nothing
+    if phantom.get_run_data(key='join_filter_1_called'):
+        return
+
+    # check if all connected incoming actions are done i.e. have succeeded or failed
+    if phantom.actions_done([ 'my_geolocate' ]):
+        
+        # save the state that the joined function has now been called
+        phantom.save_run_data(key='join_filter_1_called', value='filter_1')
+        
+        # call connected block "filter_1"
+        filter_1(container=container, handle=handle)
+    
+    return
+
+def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('whois_ip_1() called')
+
+    # collect data for 'whois_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'whois_ip_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act("whois ip", parameters=parameters, assets=['whois'], callback=join_filter_1, name="whois_ip_1")
 
     return
 
