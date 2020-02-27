@@ -118,8 +118,8 @@ def join_filter_1(action=None, success=None, container=None, results=None, handl
     phantom.debug('join_filter_1() called')
     
     # if the joined function has already been called, do nothing
-    if phantom.get_run_data(key='join_filter_1_called'):
-        return
+    #if phantom.get_run_data(key='join_filter_1_called'):
+    #    return
 
     # check if all connected incoming actions are done i.e. have succeeded or failed
     if phantom.actions_done([ 'my_geolocate' ]):

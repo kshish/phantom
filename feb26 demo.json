@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "93032e657fe70ecce61ce673c031af87580177b4",
+            "hash": "cee7875ec136accd0d2f5070f3f5180261973f3b",
             "joint": {
                 "cells": [
                     {
@@ -1357,8 +1357,14 @@
                             ".title": {
                                 "text": "Investigate"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
-                                "display": "block"
+                                "display": "none"
                             },
                             "g.error": {
                                 "opacity": 0
@@ -1368,6 +1374,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             },
                             "g.timer image": {
                                 "opacity": 1,
@@ -1481,7 +1490,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 72
                     },
                     {
@@ -1763,13 +1772,13 @@
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
-                        "custom_join": "",
+                        "custom_join": "def join_filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('join_filter_1() called')\n    \n    # if the joined function has already been called, do nothing\n    #if phantom.get_run_data(key='join_filter_1_called'):\n    #    return\n\n    # check if all connected incoming actions are done i.e. have succeeded or failed\n    if phantom.actions_done([ 'my_geolocate' ]):\n        \n        # save the state that the joined function has now been called\n        phantom.save_run_data(key='join_filter_1_called', value='filter_1')\n        \n        # call connected block \"filter_1\"\n        filter_1(container=container, handle=handle)\n    \n    return",
                         "custom_name": "",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
-                        "has_custom_join": false,
+                        "has_custom_join": true,
                         "id": "bf2294d6-1790-4753-a24f-683aff523904",
                         "inPorts": [
                             "in"
@@ -1879,7 +1888,7 @@
         "schema": 3,
         "version": "4.6.19142"
     },
-    "create_time": "2020-02-27T16:21:44.272878+00:00",
+    "create_time": "2020-02-27T17:14:30.104560+00:00",
     "draft_mode": false,
     "labels": [
         "events",
