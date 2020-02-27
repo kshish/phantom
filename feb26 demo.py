@@ -91,6 +91,7 @@ def set_severity_4(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_4() called')
 
     phantom.set_severity(container=container, severity="High")
+    playbook_chris_Child_playbook_1(container=container)
 
     return
 
@@ -146,6 +147,48 @@ ip is {0} is from {1}.
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+def playbook_chris_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_chris_Child_playbook_1() called')
+    
+    # call playbook "chris/Child playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/Child playbook", container=container, name="playbook_chris_Child_playbook_1", callback=call_api_5)
+
+    return
+
+def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('call_api_5() called')
+    
+    action_0(container=container)
+
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["artifact:*.cef.cn3Label", "!=", ""],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        return
+
+    return
+
+def action_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('action_0() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    parameters = []
+
+    phantom.act("<undefined>", parameters=parameters, name="action_0")
 
     return
 
