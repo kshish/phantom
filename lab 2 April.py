@@ -60,13 +60,14 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip address {0} is from {1}. Click here to see the container https://antom15.class.splunk.com/container/{2} . Do you want to change severity to high?"""
+    message = """The ip address {0} is from {1}. Click here to see the container https://antom15.class.splunk.com/container/{2} . Or find it yourself by this name {3}.  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "my_geolocate:action_result.parameter.ip",
         "my_geolocate:action_result.data.*.country_name",
         "container:id",
+        "container:name",
     ]
 
     #responses:
