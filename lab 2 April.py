@@ -8,20 +8,23 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+"""
+This geolocates sourceaddress ip blah blah
+"""
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+    # collect data for 'my_geolocate' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.cn2Label', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,37 +33,37 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=my_send_email, name="my_geolocate")
 
     return
 
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('send_email_1() called')
+def my_send_email(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_send_email() called')
     
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
-    # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
+    # collect data for 'my_send_email' call
+    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)
 
     parameters = []
     
-    # build parameters list for 'send_email_1' call
+    # build parameters list for 'my_send_email' call
     for results_item_1 in results_data_1:
         if results_item_1[0]:
             parameters.append({
+                'body': results_item_1[0],
                 'from': "churyn@splunk.com",
+                'attachments': "",
                 'to': "churyn@splunk.com",
                 'cc': "",
                 'bcc': "",
-                'subject': "Something important",
-                'body': results_item_1[0],
-                'attachments': "",
                 'headers': "",
+                'subject': "Something important",
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': results_item_1[1]},
             })
 
-    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="my_send_email", parent_action=action)
 
     return
 
@@ -70,11 +73,11 @@ def on_finish(container, summary):
     # summary of all the action and/or all detals of actions
     # can be collected here.
 
-    # summary_json = phantom.get_summary()
-    # if 'result' in summary_json:
-        # for action_result in summary_json['result']:
-            # if 'action_run_id' in action_result:
-                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
-                # phantom.debug(action_results)
+    summary_json = phantom.get_summary()
+    if 'result' in summary_json:
+        for action_result in summary_json['result']:
+            if 'action_run_id' in action_result:
+                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
+                phantom.debug(action_results)
 
     return
