@@ -20,7 +20,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     phantom.debug('my_geolocate() called')
 
     # collect data for 'my_geolocate' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.cn2Label', 'artifact:*.id'])
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
