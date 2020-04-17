@@ -178,7 +178,7 @@ def format_message(action=None, success=None, container=None, results=None, hand
     phantom.debug('format_message() called')
     
     template = """%%
-<h1>The ip {0} is from {1}, {2}</h1>
+<html><h1>The ip {0} is from {1}, {2}</h1></html>
 %%"""
 
     # parameter list for template variable replacement
