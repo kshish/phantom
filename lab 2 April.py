@@ -50,7 +50,7 @@ def decide_to_prompt(action=None, success=None, container=None, results=None, ha
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        Change_Severity_to_High(action=action, success=success, container=container, results=results, handle=handle)
+        filter_no_country_result(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -64,11 +64,11 @@ def Change_Severity_to_High(action=None, success=None, container=None, results=N
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.country_name",
         "container:id",
         "container:name",
-        "my_geolocate:action_result.data.*.city_name",
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.city_name",
     ]
 
     #responses:
@@ -111,6 +111,24 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_1() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_no_country_result(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_no_country_result() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_no_country_result:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Change_Severity_to_High(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
