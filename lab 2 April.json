@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "My playbook comments",
-            "hash": "c04fc5aabf8de75410dcb7d26e503f093f6598a1",
+            "hash": "b727a3782a89ac66e82e0a3ab46982f00bae628e",
             "joint": {
                 "cells": [
                     {
@@ -205,7 +205,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": false,
-                        "connection_name": "prompt 1",
+                        "connection_name": "Change Severity to High",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "def on_finish(container, summary):\n    phantom.debug('on_finish() called')\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all detals of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n    return",
@@ -807,7 +807,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def decide_to_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_to_prompt() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        prompt_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decide_to_prompt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_to_prompt() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        Change_Severity_to_High(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1045,12 +1045,12 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"Change_Severity_to_High:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt 1",
+                        "connection_name": "Change Severity to High",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -1084,7 +1084,7 @@
                                     {
                                         "comparison": "==",
                                         "data_type": "",
-                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "param": "Change_Severity_to_High:action_result.summary.responses.0",
                                         "value": "Yes"
                                     }
                                 ],
@@ -1269,7 +1269,7 @@
                             }
                         ],
                         "connected_to_start": true,
-                        "connection_name": "prompt 1",
+                        "connection_name": "Change Severity to High",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -1449,7 +1449,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip address {0} is from {1}. Click here to see the container https://antom15.class.splunk.com/container/{2} . Or find it yourself by this name {3}.  Do you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geolocate:action_result.parameter.ip\",\n        \"my_geolocate:action_result.data.*.country_name\",\n        \"container:id\",\n        \"container:name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"prompt_1\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
+                        "block_code": "def Change_Severity_to_High(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Change_Severity_to_High() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip address {0} is from {1}. Click here to see the container https://antom15.class.splunk.com/container/{2} . Or find it yourself by this name {3}.  Do you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geolocate:action_result.parameter.ip\",\n        \"my_geolocate:action_result.data.*.country_name\",\n        \"container:id\",\n        \"container:name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"Change_Severity_to_High\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1459,7 +1459,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "Change Severity to High",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
@@ -1561,7 +1561,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "prompt_1",
+                        "previous_name": "Change_Severity_to_High",
                         "respond_in": "2",
                         "response_key": "Message",
                         "response_options": [],
@@ -1595,7 +1595,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-04-16T20:26:40.861372+00:00",
+    "create_time": "2020-04-17T16:28:39.955105+00:00",
     "draft_mode": false,
     "labels": [
         "*"
