@@ -172,7 +172,9 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_message() called')
     
-    template = """The ip {0} is from {1}, {2}"""
+    template = """%%
+The ip {0} is from {1}, {2}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
