@@ -188,6 +188,53 @@ def format_message(action=None, success=None, container=None, results=None, hand
     phantom.format(container=container, template=template, parameters=parameters, name="format_message")
 
     Change_Severity_to_High(container=container)
+    format_5(container=container)
+
+    return
+
+def send_email_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('send_email_4() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'send_email_4' call
+    formatted_data_1 = phantom.get_format_data(name='format_5__as_list')
+
+    parameters = []
+    
+    # build parameters list for 'send_email_4' call
+    for formatted_part_1 in formatted_data_1:
+        parameters.append({
+            'from': "donotreply@splunk.com",
+            'to': "churyn@splunk.com",
+            'cc': "",
+            'bcc': "",
+            'subject': "test",
+            'body': formatted_part_1,
+            'attachments': "",
+            'headers': "",
+        })
+
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_4")
+
+    return
+
+def format_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_5() called')
+    
+    template = """{0}
+
+Click here <html>https://antom15.class.splunk.com/container/{1} </html>"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "format_message:formatted_data.*",
+        "container:id",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_5")
+
+    send_email_4(container=container)
 
     return
 
