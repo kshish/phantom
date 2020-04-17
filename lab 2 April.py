@@ -149,7 +149,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug('prompt_2() called')
     
     # set user and message variables for phantom.prompt call
-    user = ""
+    user = "admin"
     message = """The following ip {0} has no country"""
 
     # parameter list for template variable replacement
