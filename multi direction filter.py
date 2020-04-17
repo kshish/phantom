@@ -4,7 +4,6 @@
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
-
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -69,7 +68,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         action_results=results,
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "China"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "China"],
         ],
         logical_operator='and',
         name="filter_1:condition_3")
@@ -154,7 +153,7 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
-    # summary of all the action and/or all detals of actions 
+    # summary of all the action and/or all detals of actions
     # can be collected here.
 
     # summary_json = phantom.get_summary()
