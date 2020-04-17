@@ -205,7 +205,7 @@ def send_email_4(action=None, success=None, container=None, results=None, handle
     # build parameters list for 'send_email_4' call
     for formatted_part_1 in formatted_data_1:
         parameters.append({
-            'from': "donotreply@splunk.com",
+            'from': "churyn@splunk.com",
             'to': "churyn@splunk.com",
             'cc': "",
             'bcc': "",
