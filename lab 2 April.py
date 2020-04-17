@@ -60,7 +60,9 @@ def Change_Severity_to_High(action=None, success=None, container=None, results=N
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{2} Click here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?"""
+    message = """{2}
+
+Click here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
