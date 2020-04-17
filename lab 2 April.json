@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "My playbook comments",
-            "hash": "1b34ca24c525d27972428950cf2e1c7a15f4c3b3",
+            "hash": "a6ed2280626bea190bd3bcacae48c1e884aba0b1",
             "joint": {
                 "cells": [
                     {
@@ -1942,7 +1942,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_message() called')\n    \n    template = \"\"\"%%\nThe ip {0} is from {1}, {2}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.city_name\",\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_message\")\n\n    Change_Severity_to_High(container=container)\n\n    return",
+                        "block_code": "def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_message() called')\n    \n    template = \"\"\"%%\n<h1>The ip {0} is from {1}, {2}</h1>\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.city_name\",\n        \"filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_message\")\n\n    Change_Severity_to_High(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2058,11 +2058,11 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "%%\nThe ip {0} is from {1}, {2}\n%%",
+                        "template": "%%\n<h1>The ip {0} is from {1}, {2}</h1>\n%%",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 75
+                        "z": 80
                     },
                     {
                         "active": false,
@@ -2110,7 +2110,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def Change_Severity_to_High(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Change_Severity_to_High() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"{2}\n\nClick here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:id\",\n        \"container:name\",\n        \"format_message:formatted_data.*\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"Change_Severity_to_High\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
+                        "block_code": "def Change_Severity_to_High(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Change_Severity_to_High() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"{2}\n\nClick here to see the container {1} <html>https://antom15.class.splunk.com/container/{0}</html> . Or find it yourself by this name .  Do you want to change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:id\",\n        \"container:name\",\n        \"format_message:formatted_data.*\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"Change_Severity_to_High\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -2135,7 +2135,7 @@
                         "join_start": 1,
                         "line_end": 92,
                         "line_start": 58,
-                        "message": "{2}\n\nClick here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?",
+                        "message": "{2}\n\nClick here to see the container {1} <html>https://antom15.class.splunk.com/container/{0}</html> . Or find it yourself by this name .  Do you want to change severity to high?",
                         "name": "prompt",
                         "notes": "",
                         "number": 1,
@@ -2242,7 +2242,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 76
+                        "z": 81
                     }
                 ]
             },
@@ -2251,7 +2251,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-04-17T17:03:31.887566+00:00",
+    "create_time": "2020-04-17T17:05:37.286150+00:00",
     "draft_mode": false,
     "labels": [
         "*"

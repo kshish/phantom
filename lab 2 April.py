@@ -62,7 +62,7 @@ def Change_Severity_to_High(action=None, success=None, container=None, results=N
     user = "admin"
     message = """{2}
 
-Click here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?"""
+Click here to see the container {1} <html>https://antom15.class.splunk.com/container/{0}</html> . Or find it yourself by this name .  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -175,7 +175,7 @@ def format_message(action=None, success=None, container=None, results=None, hand
     phantom.debug('format_message() called')
     
     template = """%%
-The ip {0} is from {1}, {2}
+<h1>The ip {0} is from {1}, {2}</h1>
 %%"""
 
     # parameter list for template variable replacement
