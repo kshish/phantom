@@ -60,15 +60,13 @@ def Change_Severity_to_High(action=None, success=None, container=None, results=N
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip address {0} is from {4}, {1}. Click here to see the container https://antom15.class.splunk.com/container/{2} . Or find it yourself by this name {3}.  Do you want to change severity to high?"""
+    message = """{2} Click here to see the container {1} https://antom15.class.splunk.com/container/{0} . Or find it yourself by this name .  Do you want to change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.country_name",
         "container:id",
         "container:name",
-        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.city_name",
+        "format_message:formatted_data.*",
     ]
 
     #responses:
@@ -128,7 +126,7 @@ def filter_no_country_result(action=None, success=None, container=None, results=
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Change_Severity_to_High(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_message(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -168,6 +166,24 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+
+    return
+
+def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_message() called')
+    
+    template = """The ip {0} is from {1}, {2}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.city_name",
+        "filtered-data:filter_no_country_result:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_message")
+
+    Change_Severity_to_High(container=container)
 
     return
 
