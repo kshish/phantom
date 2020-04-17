@@ -102,15 +102,18 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_set_sensitivity_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_1() called')
+def set_severity_set_sensitivity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_set_sensitivity_1() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    phantom.set_sensitivity(container=container, sensitivity="red")
+    promote_to_case_2(container=container)
 
     return
 
@@ -198,22 +201,21 @@ def send_email_4(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_4' call
-    formatted_data_1 = phantom.get_format_data(name='format_5__as_list')
+    formatted_data_1 = phantom.get_format_data(name='format_5')
 
     parameters = []
     
     # build parameters list for 'send_email_4' call
-    for formatted_part_1 in formatted_data_1:
-        parameters.append({
-            'from': "churyn@splunk.com",
-            'to': "churyn@splunk.com",
-            'cc': "",
-            'bcc': "",
-            'subject': "test",
-            'body': formatted_part_1,
-            'attachments': "",
-            'headers': "",
-        })
+    parameters.append({
+        'from': "churyn@splunk.com",
+        'to': "churyn@splunk.com",
+        'cc': "",
+        'bcc': "",
+        'subject': "test",
+        'body': formatted_data_1,
+        'attachments': "",
+        'headers': "",
+    })
 
     phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_4")
 
@@ -235,6 +237,13 @@ Click here <html>https://antom15.class.splunk.com/container/{1} </html>"""
     phantom.format(container=container, template=template, parameters=parameters, name="format_5")
 
     send_email_4(container=container)
+
+    return
+
+def promote_to_case_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('promote_to_case_2() called')
+
+    phantom.promote(container=container, template="Data Breach")
 
     return
 
