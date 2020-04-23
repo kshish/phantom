@@ -50,12 +50,22 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('set_severity_2() called')
 
     phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_3() called')
+
+    phantom.set_severity(container=container, severity="High")
 
     return
 
