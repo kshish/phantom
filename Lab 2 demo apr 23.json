@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This is a demo playbook",
-            "hash": "a0fc978da6123a0cfa29eaf719a893316f87ae28",
+            "hash": "3a4ee239219e63c48e7a156a5265531d8e49a42f",
             "joint": {
                 "cells": [
                     {
@@ -398,7 +398,7 @@
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "my geo locate, prompt 2",
+                        "connection_name": "my geo locate, prompt to set high severity",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "def on_finish(container, summary):\n    phantom.debug('on_finish() called')\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all detals of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n    return",
@@ -495,370 +495,6 @@
                     {
                         "active": false,
                         "angle": 0,
-                        "attrs": {
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#637282",
-                                "transform": "rotate(45 30 70)"
-                            },
-                            ".inPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 1
-                            },
-                            ".outPorts>.port-0": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                },
-                                "ref-x": 83,
-                                "ref-y": 40
-                            },
-                            ".outPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                }
-                            },
-                            ".outPorts>.port-1": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                },
-                                "ref-x": 41,
-                                "ref-y": 82
-                            },
-                            ".outPorts>.port-1>.port-body": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_1() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geo_locate:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n    decision_5(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "connected_to_start": true,
-                        "connection_name": "my geo locate",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "",
-                        "description": "",
-                        "hasElse": true,
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "a00e1dd6-a161-4bf6-8147-a80c4c040d01",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 58,
-                        "line_start": 37,
-                        "name": "decision",
-                        "notes": "",
-                        "number": 1,
-                        "order": 3,
-                        "outPorts": [
-                            "out-1",
-                            "out-2"
-                        ],
-                        "outputs": [
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "my_geo_locate:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 520,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "decision_1",
-                        "show_number": true,
-                        "size": {
-                            "height": 82,
-                            "width": 82
-                        },
-                        "state": "decision",
-                        "status": "",
-                        "type": "coa.Decision",
-                        "warn": "",
-                        "z": 42
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "api": "set severity",
-                        "attrs": {
-                            ".api": {
-                                "text": "set severity"
-                            },
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#818D99"
-                            },
-                            ".color-band": {
-                                "fill": "#171D21"
-                            },
-                            ".inPorts>.port-in": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".inPorts>.port-in>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".message": {
-                                "opacity": 0,
-                                "ref-x": 5,
-                                "ref-y": 105,
-                                "text": "Configuring now"
-                            },
-                            ".outPorts>.port-out": {
-                                "ref": ".background",
-                                "ref-x": 0.5
-                            },
-                            ".outPorts>.port-out>.port-body": {
-                                "port": {
-                                    "id": "out",
-                                    "type": "out"
-                                }
-                            },
-                            ".title": {
-                                "text": "API"
-                            },
-                            "g.code image": {
-                                "opacity": 1
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('set_severity_2() called')\n\n    phantom.set_severity(container=container, severity=\"Low\")\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "color": "",
-                        "configured": [
-                            {
-                                "key": "set-severity",
-                                "setSeveritySeverity": "Low",
-                                "setSeveritySeverity_display": "Low"
-                            }
-                        ],
-                        "connected_to_start": true,
-                        "connection_name": "my geo locate",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "aa0db43c-7926-4c5d-ba80-64eb8c6fbdb0",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 65,
-                        "line_start": 58,
-                        "message": "Configuring now",
-                        "name": "set severity",
-                        "notes": "",
-                        "number": 2,
-                        "order": 4,
-                        "outPorts": [
-                            "out"
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 700,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "set_severity_2",
-                        "show_number": false,
-                        "size": {
-                            "height": 100,
-                            "width": 180
-                        },
-                        "state": "api",
-                        "status": "",
-                        "title": "API",
-                        "type": "coa.API",
-                        "warn": false,
-                        "z": 43
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
                         "api": "set severity",
                         "attrs": {
                             ".api": {
@@ -932,7 +568,7 @@
                             }
                         ],
                         "connected_to_start": false,
-                        "connection_name": "prompt 2",
+                        "connection_name": "prompt to set high severity",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
@@ -1069,168 +705,6 @@
                         },
                         "type": "link",
                         "z": 48
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "attrs": {
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#637282",
-                                "transform": "rotate(45 30 70)"
-                            },
-                            ".inPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 5
-                            },
-                            ".outPorts>.port-0": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                },
-                                "ref-x": 83,
-                                "ref-y": 40
-                            },
-                            ".outPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
-                            }
-                        },
-                        "block_code": "def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_5() called')\n    \n    severity_param = container.get('severity', None)\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [severity_param, \"!=\", \"HIGH\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        prompt_2(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "connected_to_start": true,
-                        "connection_name": "my geo locate",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "",
-                        "description": "",
-                        "hasElse": false,
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "0c7dcc87-7de5-49d4-ab0a-e80d5653e43f",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 92,
-                        "line_start": 72,
-                        "name": "decision",
-                        "notes": "",
-                        "number": 5,
-                        "order": 6,
-                        "outPorts": [
-                            "out-1"
-                        ],
-                        "outputs": [
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "!=",
-                                        "data_type": "",
-                                        "param": "container:severity",
-                                        "value": "HIGH"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 580,
-                            "y": 320
-                        },
-                        "previous_function": "",
-                        "previous_name": "decision_5",
-                        "show_number": true,
-                        "size": {
-                            "height": 82,
-                            "width": 82
-                        },
-                        "state": "decision",
-                        "status": "",
-                        "type": "coa.Decision",
-                        "warn": "",
-                        "z": 49
                     },
                     {
                         "attrs": {
@@ -1551,7 +1025,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def my_geo_locate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geo_locate() called')\n\n    # collect data for 'my_geo_locate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geo_locate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=decision_1, name=\"my_geo_locate\")\n\n    return",
+                        "block_code": "def my_geo_locate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('my_geo_locate() called')\n\n    # collect data for 'my_geo_locate' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'my_geo_locate' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=Decide_if_in_US, name=\"my_geo_locate\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 36,
                         "callsback": true,
@@ -1661,6 +1135,611 @@
                         "z": 54
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "b097b6e0-4c4d-40e7-a34e-35ecd58f23b4",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "10f59589-7f3b-4248-af6a-8fe2f9968784",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "d11760f4-7e75-4778-8308-0dc2c8b5bb16",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 56
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "341f2d81-789f-4f94-87eb-fc1fcad2c11a",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "d11760f4-7e75-4778-8308-0dc2c8b5bb16",
+                            "port": "out-1",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "21b5c342-95ff-4a3f-8b9f-456c1e567dfe",
+                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 58
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "api": "set severity",
+                        "attrs": {
+                            ".api": {
+                                "text": "set low severity"
+                            },
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "API"
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('set_low_severity() called')\n\n    phantom.set_severity(container=container, severity=\"Low\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "color": "",
+                        "configured": [
+                            {
+                                "key": "set-severity",
+                                "setSeveritySeverity": "Low",
+                                "setSeveritySeverity_display": "Low"
+                            }
+                        ],
+                        "connected_to_start": true,
+                        "connection_name": "my geo locate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "set low severity",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "aa0db43c-7926-4c5d-ba80-64eb8c6fbdb0",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 65,
+                        "line_start": 58,
+                        "message": "Configuring now",
+                        "name": "set severity",
+                        "notes": "",
+                        "number": 2,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 700,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "set_low_severity",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "api",
+                        "status": "",
+                        "title": "API",
+                        "type": "coa.API",
+                        "warn": false,
+                        "z": 59
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#637282",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".outPorts>.port-1": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                },
+                                "ref-x": 41,
+                                "ref-y": 82
+                            },
+                            ".outPorts>.port-1>.port-body": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def Decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Decide_if_in_US() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geo_locate:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # call connected blocks for 'else' condition 2\n    decide_if_already_high_priority(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "my geo locate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Decide if in US",
+                        "description": "",
+                        "hasElse": true,
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "a00e1dd6-a161-4bf6-8147-a80c4c040d01",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 58,
+                        "line_start": 37,
+                        "name": "decision",
+                        "notes": "",
+                        "number": 1,
+                        "order": 3,
+                        "outPorts": [
+                            "out-1",
+                            "out-2"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "my_geo_locate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 520,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "Decide_if_in_US",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "decision",
+                        "status": "",
+                        "type": "coa.Decision",
+                        "warn": "",
+                        "z": 60
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#637282",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 5
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def decide_if_already_high_priority(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_already_high_priority() called')\n    \n    severity_param = container.get('severity', None)\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [severity_param, \"!=\", \"HIGH\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        prompt_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "my geo locate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "decide if already high priority",
+                        "description": "",
+                        "hasElse": false,
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "0c7dcc87-7de5-49d4-ab0a-e80d5653e43f",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 92,
+                        "line_start": 72,
+                        "name": "decision",
+                        "notes": "",
+                        "number": 5,
+                        "order": 6,
+                        "outPorts": [
+                            "out-1"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "!=",
+                                        "data_type": "",
+                                        "param": "container:severity",
+                                        "value": "HIGH"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 580,
+                            "y": 320
+                        },
+                        "previous_function": "",
+                        "previous_name": "decide_if_already_high_priority",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "decision",
+                        "status": "",
+                        "type": "coa.Decision",
+                        "warn": "",
+                        "z": 61
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "approver": "admin",
@@ -1706,7 +1785,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {0} with {1} has ip {2} from {3}.\n\nDo you want change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"container:severity\",\n        \"my_geo_locate:action_result.parameter.ip\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"prompt_2\", parameters=parameters, response_types=response_types, callback=decision_6)\n\n    return",
+                        "block_code": "def prompt_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_to_set_high_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Container {0} with {1} has ip {2} from {3}.\n\nDo you want change severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"container:severity\",\n        \"my_geo_locate:action_result.parameter.ip\",\n        \"my_geo_locate:action_result.data.*.country_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name=\"prompt_to_set_high_severity\", parameters=parameters, response_types=response_types, callback=decide_if_promptee_said_yes)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1716,7 +1795,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "prompt to set high severity",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
@@ -1818,7 +1897,7 @@
                             "y": 320
                         },
                         "previous_function": "",
-                        "previous_name": "prompt_2",
+                        "previous_name": "prompt_to_set_high_severity",
                         "respond_in": "2",
                         "response_key": "Message",
                         "response_options": [],
@@ -1843,46 +1922,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 55
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "b097b6e0-4c4d-40e7-a34e-35ecd58f23b4",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "10f59589-7f3b-4248-af6a-8fe2f9968784",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "d11760f4-7e75-4778-8308-0dc2c8b5bb16",
-                            "selector": ".port-body[type=\"input\"]"
-                        },
-                        "type": "link",
-                        "z": 56
+                        "z": 62
                     },
                     {
                         "active": false,
@@ -1929,17 +1969,17 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decision_6() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_2:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
+                        "block_code": "def decide_if_promptee_said_yes(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_promptee_said_yes() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_to_set_high_severity:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
                         "connected_to_start": true,
-                        "connection_name": "prompt 2",
+                        "connection_name": "prompt to set high severity",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "decide if promptee  said yes",
                         "description": "",
                         "hasElse": false,
                         "has_custom": false,
@@ -1968,7 +2008,7 @@
                                     {
                                         "comparison": "==",
                                         "data_type": "",
-                                        "param": "prompt_2:action_result.summary.responses.0",
+                                        "param": "prompt_to_set_high_severity:action_result.summary.responses.0",
                                         "value": "Yes"
                                     }
                                 ],
@@ -2034,7 +2074,7 @@
                             "y": 320
                         },
                         "previous_function": "",
-                        "previous_name": "decision_6",
+                        "previous_name": "decide_if_promptee_said_yes",
                         "show_number": true,
                         "size": {
                             "height": 82,
@@ -2044,47 +2084,7 @@
                         "status": "",
                         "type": "coa.Decision",
                         "warn": "",
-                        "z": 57
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "341f2d81-789f-4f94-87eb-fc1fcad2c11a",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "d11760f4-7e75-4778-8308-0dc2c8b5bb16",
-                            "port": "out-1",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "21b5c342-95ff-4a3f-8b9f-456c1e567dfe",
-                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 58
+                        "z": 63
                     }
                 ]
             },
@@ -2093,7 +2093,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-04-23T19:57:52.771898+00:00",
+    "create_time": "2020-04-23T20:02:31.888433+00:00",
     "draft_mode": false,
     "labels": [
         "*"

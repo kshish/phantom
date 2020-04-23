@@ -30,12 +30,12 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="my_geo_locate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Decide_if_in_US, name="my_geo_locate")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_1() called')
+def Decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Decide_if_in_US() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -47,16 +47,16 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
-    decision_5(action=action, success=success, container=container, results=results, handle=handle)
+    decide_if_already_high_priority(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_2() called')
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
@@ -69,8 +69,8 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
 
     return
 
-def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_5() called')
+def decide_if_already_high_priority(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decide_if_already_high_priority() called')
     
     severity_param = container.get('severity', None)
 
@@ -84,13 +84,13 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+        prompt_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
+def prompt_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_to_set_high_severity() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
@@ -120,19 +120,19 @@ Do you want change severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="prompt_2", parameters=parameters, response_types=response_types, callback=decision_6)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="prompt_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decide_if_promptee_said_yes)
 
     return
 
-def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_6() called')
+def decide_if_promptee_said_yes(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decide_if_promptee_said_yes() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_2:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_to_set_high_severity:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
