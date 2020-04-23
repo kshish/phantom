@@ -5,6 +5,14 @@ This is a demo playbook
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -51,7 +59,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    decision_5(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -66,6 +74,79 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_3() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_5() called')
+    
+    severity_param = container.get('severity', None)
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            [severity_param, "!=", "HIGH"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """Container {0} with {1} has ip {2} from {3}.
+
+Do you want change severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "my_geo_locate:action_result.parameter.ip",
+        "my_geo_locate:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="prompt_2", parameters=parameters, response_types=response_types, callback=decision_6)
+
+    return
+
+def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_6() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_2:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
