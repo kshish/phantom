@@ -120,7 +120,7 @@ Do you want change severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="prompt_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decide_if_promptee_said_yes)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="prompt_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_7)
 
     return
 
@@ -139,6 +139,48 @@ def decide_if_promptee_said_yes(action=None, success=None, container=None, resul
     if matched_artifacts_1 or matched_results_1:
         set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+def decision_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_7() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_to_set_high_severity:action_result.status", "==", "failed"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        prompt_3(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    decide_if_promptee_said_yes(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_3() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """Admin ananlyst FAILED to answer a question."""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", response_types=response_types)
 
     return
 
