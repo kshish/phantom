@@ -94,7 +94,7 @@ def prompt_to_set_high_severity(action=None, success=None, container=None, resul
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Container {0} with {1} has ip {2} from {3}.
+    message = """Container {0} with {1} severity has ip {2} from {3}.
 
 Do you want change severity to high?"""
 
