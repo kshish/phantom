@@ -150,7 +150,7 @@ def decision_7(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_to_set_high_severity:action_result.status", "==", "failed"],
+            ["prompt_to_set_high_severity:action_result.status", "==", "fail"],
         ])
 
     # call connected blocks if condition 1 matched
