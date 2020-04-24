@@ -94,7 +94,7 @@ def prompt_to_set_high_severity(action=None, success=None, container=None, resul
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Container {0} with {1} severity has ip {2} from {3}.
+    message = """Container {0} with {1} severity has ip {2} from  {3}, {4}.
 
 Do you want change severity to high?"""
 
@@ -103,6 +103,7 @@ Do you want change severity to high?"""
         "container:name",
         "container:severity",
         "my_geo_locate:action_result.parameter.ip",
+        "my_geo_locate:action_result.data.*.city_name",
         "my_geo_locate:action_result.data.*.country_name",
     ]
 
