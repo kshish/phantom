@@ -202,7 +202,9 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_message() called')
     
-    template = """The container {0} with severity {1} has ip {2} from {3}, {4}"""
+    template = """%%
+The container {0} with severity {1} has ip {2} from {3}, {4}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -216,6 +218,34 @@ def format_message(action=None, success=None, container=None, results=None, hand
     phantom.format(container=container, template=template, parameters=parameters, name="format_message")
 
     prompt_to_set_high_severity(container=container)
+    send_email_3(container=container)
+
+    return
+
+def send_email_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('send_email_3() called')
+    
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'send_email_3' call
+    formatted_data_1 = phantom.get_format_data(name='format_message__as_list')
+
+    parameters = []
+    
+    # build parameters list for 'send_email_3' call
+    for formatted_part_1 in formatted_data_1:
+        parameters.append({
+            'from': "donotreply@splunk.com",
+            'to': "churyn@splunk.com",
+            'cc': "",
+            'bcc': "",
+            'subject': "phantom demo",
+            'body': formatted_part_1,
+            'attachments': "",
+            'headers': "",
+        })
+
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_3")
 
     return
 
