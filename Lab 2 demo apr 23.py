@@ -94,13 +94,17 @@ def prompt_to_set_high_severity(action=None, success=None, container=None, resul
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}
+    message = """The container {1}  with severity {2}
+
+{0}
 
 Do you want change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "format_message:formatted_data.*",
+        "container:name",
+        "container:severity",
     ]
 
     #responses:
@@ -203,13 +207,11 @@ def format_message(action=None, success=None, container=None, results=None, hand
     phantom.debug('format_message() called')
     
     template = """%%
-The container {0} with severity {1} has ip {2} from {3}, {4}
+has ip {0} from {1}, {2} 
 %%"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
-        "container:severity",
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
         "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
