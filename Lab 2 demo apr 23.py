@@ -30,7 +30,7 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=Decide_if_in_US, name="my_geo_locate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geo_locate")
 
     return
 
@@ -102,9 +102,9 @@ Do you want change severity to high?"""
     parameters = [
         "container:name",
         "container:severity",
-        "my_geo_locate:action_result.parameter.ip",
-        "my_geo_locate:action_result.data.*.city_name",
-        "my_geo_locate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -182,6 +182,24 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", response_types=response_types)
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geo_locate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
