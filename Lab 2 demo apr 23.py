@@ -84,7 +84,7 @@ def decide_if_already_high_priority(action=None, success=None, container=None, r
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        prompt_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        format_message(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -94,17 +94,13 @@ def prompt_to_set_high_severity(action=None, success=None, container=None, resul
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Container {0} with {1} severity has ip {2} from  {3}, {4}.
+    message = """{0}
 
 Do you want change severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
-        "container:severity",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
-        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
+        "format_message:formatted_data.*",
     ]
 
     #responses:
@@ -200,6 +196,26 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         Decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_message() called')
+    
+    template = """The container {0} with severity {1} has ip {2} from {3}, {4}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.city_name",
+        "filtered-data:filter_1:condition_1:my_geo_locate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_message")
+
+    prompt_to_set_high_severity(container=container)
 
     return
 
