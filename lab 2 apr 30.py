@@ -28,8 +28,29 @@ def my_better_geolocate(action=None, success=None, container=None, results=None,
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug(parameters)
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="my_better_geolocate")
+
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="my_better_geolocate")
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """"""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types)
 
     return
 
