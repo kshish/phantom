@@ -29,28 +29,45 @@ def my_better_geolocate(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=prompt_1, name="my_better_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="my_better_geolocate")
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_1() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = ""
-    message = """"""
+"""
+my comment for decision block
+"""
+def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decide_if_in_US() called')
 
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_better_geolocate:action_result.data.*.country_name", "!=", "United States"],
+        ])
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types)
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="High")
+
+    return
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_2() called')
+
+    phantom.set_severity(container=container, severity="Low")
 
     return
 
