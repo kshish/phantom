@@ -29,57 +29,69 @@ def my_better_geolocate(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="my_better_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=ask_analyst_to_set_high_severity, name="my_better_geolocate")
 
     return
 
-"""
-my comment for decision block
-"""
-def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decide_if_in_US() called')
+def ask_analyst_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('ask_analyst_to_set_high_severity() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "Administrator"
+    message = """The container {0}, {1} with severity {5} with ip {2} is in {3}, {4}.
+
+Do you want to set severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:description",
+        "my_better_geolocate:action_result.parameter.ip",
+        "my_better_geolocate:action_result.data.*.city_name",
+        "my_better_geolocate:action_result.data.*.country_name",
+        "container:severity",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
 
     # check for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["my_better_geolocate:action_result.data.*.country_name", "==", "United States"],
+            ["ask_analyst_to_set_high_severity:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    # check for 'elif' condition 2
-    matched_artifacts_2, matched_results_2 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["my_better_geolocate:action_result.data.*.country_name", "==", "Japan"],
-        ])
-
-    # call connected blocks if condition 2 matched
-    if matched_artifacts_2 or matched_results_2:
-        return
-
-    # call connected blocks for 'else' condition 3
-    set_severity_high(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
-def set_severity_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_high() called')
+def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_3() called')
 
     phantom.set_severity(container=container, severity="High")
-
-    return
-
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_to_low() called')
-
-    phantom.set_severity(container=container, severity="Low")
 
     return
 
