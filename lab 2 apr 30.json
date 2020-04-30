@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "680b7226503f4b06ff2dc475dce6bb50cacf2cc8",
+            "hash": "069d30b50cb29ed6d034837181b6789bd4aa612f",
             "joint": {
                 "cells": [
                     {
@@ -133,8 +133,8 @@
                             }
                         },
                         "position": {
-                            "x": 1060,
-                            "y": 440
+                            "x": 1120,
+                            "y": 400
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -908,7 +908,7 @@
                         },
                         "position": {
                             "x": 1020,
-                            "y": 240
+                            "y": 180
                         },
                         "previous_function": "",
                         "previous_name": "set_severity_to_low",
@@ -1282,7 +1282,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_in_US() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_better_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # check for 'elif' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_better_geolocate:action_result.data.*.country_name\", \"==\", \"Japan\"],\n        ])\n\n    # call connected blocks if condition 2 matched\n    if matched_artifacts_2 or matched_results_2:\n        return\n\n    # call connected blocks for 'else' condition 3\n    set_severity_high(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
+                        "block_code": "def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('decide_if_in_US() called')\n\n    # check for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_better_geolocate:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched_artifacts_1 or matched_results_1:\n        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)\n        return\n\n    # check for 'elif' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_better_geolocate:action_result.data.*.country_name\", \"==\", \"Japan\"],\n        ])\n\n    # call connected blocks if condition 2 matched\n    if matched_artifacts_2 or matched_results_2:\n        return\n\n    # call connected blocks for 'else' condition 3\n    set_severity_high(action=action, success=success, container=container, results=results, handle=handle)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1321,7 +1321,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "comparison": "!=",
+                                        "comparison": "==",
                                         "data_type": "",
                                         "param": "my_better_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
@@ -1412,7 +1412,7 @@
                         },
                         "position": {
                             "x": 760,
-                            "y": 80
+                            "y": 100
                         },
                         "previous_function": "",
                         "previous_name": "decide_if_in_US",
@@ -1434,7 +1434,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-04-30T17:02:32.166573+00:00",
+    "create_time": "2020-04-30T17:05:09.879338+00:00",
     "draft_mode": false,
     "labels": [
         "*"
