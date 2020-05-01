@@ -29,7 +29,7 @@ def my_better_geolocate(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_4, name="my_better_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=ask_analyst_to_set_high_severity, name="my_better_geolocate")
 
     return
 
@@ -46,9 +46,9 @@ Do you want to set severity to high?"""
     parameters = [
         "container:name",
         "container:description",
-        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_5:condition_1:my_better_geolocate:action_result.data.*.city_name",
-        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.country_name",
+        "my_better_geolocate:action_result.parameter.ip",
+        "my_better_geolocate:action_result.data.*.city_name",
+        "my_better_geolocate:action_result.data.*.country_name",
         "container:severity",
     ]
 
@@ -68,17 +68,6 @@ Do you want to set severity to high?"""
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
 
-    return
-
-def join_ask_analyst_to_set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_ask_analyst_to_set_high_severity() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'my_better_geolocate' ]):
-        
-        # call connected block "ask_analyst_to_set_high_severity"
-        ask_analyst_to_set_high_severity(container=container, handle=handle)
-    
     return
 
 def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -103,43 +92,6 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_3() called')
 
     phantom.set_severity(container=container, severity="High")
-
-    return
-
-def filter_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_4() called')
-
-    # collect filtered artifact ids for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["my_better_geolocate:action_result.data.*.country_name", "!=", ""],
-        ],
-        name="filter_4:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        filter_5(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-        join_ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-def filter_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_5() called')
-
-    # collect filtered artifact ids for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.city_name", "!=", ""],
-        ],
-        name="filter_5:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        join_ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
