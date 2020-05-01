@@ -41,7 +41,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
         ],
         name="filter_1:condition_1")
 
@@ -54,7 +54,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
         ],
         name="filter_1:condition_2")
 
