@@ -65,7 +65,7 @@ Do you want to set severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=prompt_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_3)
 
     return
 
@@ -136,33 +136,31 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('prompt_2() called')
-    
-    # set user and message variables for phantom.prompt call
-    user = "admin"
-    message = """status {0}
-msg {1}
-response {2}"""
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_3() called')
 
-    # parameter list for template variable replacement
-    parameters = [
-        "ask_analyst_to_set_high_severity:action_result.status",
-        "ask_analyst_to_set_high_severity:action_result.parameter.message",
-        "ask_analyst_to_set_high_severity:action_result.summary.responses.0",
-    ]
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["ask_analyst_to_set_high_severity:action_result.status", "==", "failed"],
+        ])
 
-    #responses:
-    response_types = [
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
-    ]
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        pin_4(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types, callback=decision_2)
+    # call connected blocks for 'else' condition 2
+    decision_2(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_4() called')
+
+    phantom.pin(container=container, data="User failed to promote event within the time limit", message="Awaiting Action", pin_type="card", pin_style="red", name=None)
 
     return
 
