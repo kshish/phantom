@@ -83,6 +83,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
         set_severity_set_status_set_owner_3(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_chris_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -161,6 +162,14 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     phantom.debug('pin_4() called')
 
     phantom.pin(container=container, data="User failed to promote event within the time limit", message="Awaiting Action", pin_type="card", pin_style="red", name=None)
+
+    return
+
+def playbook_chris_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_chris_child_demo_1() called')
+    
+    # call playbook "chris/child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/child demo", container=container)
 
     return
 
