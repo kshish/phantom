@@ -38,7 +38,7 @@ def ask_analyst_to_set_high_severity(action=None, success=None, container=None, 
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """The container {0}, {1} with severity {5} with ip {2} is in {3}, {4}.
+    message = """The container {0}, {1} with severity {2} with ip {3}
 
 Do you want to set severity to high?"""
 
@@ -46,10 +46,8 @@ Do you want to set severity to high?"""
     parameters = [
         "container:name",
         "container:description",
-        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.city_name",
-        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.country_name",
         "container:severity",
+        "format_1:formatted_data.*",
     ]
 
     #responses:
@@ -109,7 +107,25 @@ def filter_4(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """{0} is from {1}, {2}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.city_name",
+        "filtered-data:filter_4:condition_1:my_better_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    ask_analyst_to_set_high_severity(container=container)
 
     return
 
