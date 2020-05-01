@@ -38,7 +38,8 @@ def ask_analyst_to_set_high_severity(action=None, success=None, container=None, 
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """The container {0}, {1} with severity {2} with ip {3}
+    message = """The container {0}, {1} with severity {2} with IP(s)
+{3}
 
 Do you want to set severity to high?"""
 
