@@ -65,7 +65,7 @@ Do you want to set severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=2, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
@@ -82,15 +82,19 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_set_status_set_owner_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_3() called')
+def set_severity_set_status_set_owner_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_set_status_set_owner_3() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    phantom.set_status(container=container, status="Open")
+
+    phantom.set_owner(container=container, role="students")
 
     return
 
