@@ -65,7 +65,7 @@ Do you want to set severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_analyst_to_set_high_severity", parameters=parameters, response_types=response_types, callback=prompt_2)
 
     return
 
@@ -133,6 +133,36 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     ask_analyst_to_set_high_severity(container=container)
+
+    return
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_2() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """status {0}
+msg {1}
+response {2}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "ask_analyst_to_set_high_severity:action_result.status",
+        "ask_analyst_to_set_high_severity:action_result.parameter.message",
+        "ask_analyst_to_set_high_severity:action_result.summary.responses.0",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
