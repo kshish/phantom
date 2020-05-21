@@ -6,64 +6,6 @@ import json
 from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
-    
-    # call 'geolocate_ip_2' block
-    geolocate_ip_2(container=container)
-
-    return
-
-def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_2() called')
-
-    # collect data for 'geolocate_ip_2' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'geolocate_ip_2' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_2")
-
-    return
-
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('send_email_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    name_value = container.get('name', None)
-
-    # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:action_result.data.*.country_name', 'geolocate_ip_2:action_result.parameter.context.artifact_id'], action_results=results)
-    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:artifact:*.cef.destinationUserName', 'geolocate_ip_2:artifact:*.id'], action_results=results)
-
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for results_item_1 in results_data_1:
-        for inputs_item_1 in inputs_data_1:
-            if results_item_1[0] and inputs_item_1[0]:
-                parameters.append({
-                    'body': results_item_1[0],
-                    'from': "donotreply@splunk.com",
-                    'attachments': "",
-                    'to': inputs_item_1[0],
-                    'cc': "",
-                    'bcc': "",
-                    'headers': "",
-                    'subject': name_value,
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': results_item_1[1]},
-                })
-
-    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
 
     return
 
