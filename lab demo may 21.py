@@ -44,7 +44,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -53,7 +53,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         return
 
     # call connected blocks for 'else' condition 2
-    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -68,6 +68,59 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The container {0} is not in the United States.  It has an ip address of {1} from {2}
+
+Container's severity is {3}. Would you like to set severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.country_name",
+        "container:severity",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
