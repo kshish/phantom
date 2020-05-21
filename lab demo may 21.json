@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "e944080a17f999c9d56cbbb21577c81a2dc75a0f",
+            "hash": "c1294d8bba78fa65a8354887077807e277425041",
             "joint": {
                 "cells": [
                     {
@@ -878,6 +878,12 @@
                             ".title": {
                                 "text": "Generic"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -889,9 +895,15 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            },
+                            "g.timer image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    name_value = container.get('name', None)\n\n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:action_result.data.*.country_name', 'geolocate_ip_2:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:artifact:*.cef.destinationUserName', 'geolocate_ip_2:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if inputs_item_1[0] and results_item_1[0]:\n                parameters.append({\n                    'from': \"donotreply@splunk.com\",\n                    'to': inputs_item_1[0],\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'subject': name_value,\n                    'body': results_item_1[0],\n                    'attachments': \"\",\n                    'headers': \"\",\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': inputs_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\", parent_action=action)\n\n    return",
+                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('send_email_1() called')\n    \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    name_value = container.get('name', None)\n\n    # collect data for 'send_email_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:action_result.data.*.country_name', 'geolocate_ip_2:action_result.parameter.context.artifact_id'], action_results=results)\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:artifact:*.cef.destinationUserName', 'geolocate_ip_2:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for results_item_1 in results_data_1:\n        for inputs_item_1 in inputs_data_1:\n            if results_item_1[0] and inputs_item_1[0]:\n                parameters.append({\n                    'body': results_item_1[0],\n                    'from': \"donotreply@splunk.com\",\n                    'attachments': \"\",\n                    'to': inputs_item_1[0],\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'headers': \"\",\n                    'subject': name_value,\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': results_item_1[1]},\n                })\n\n    phantom.act(\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -998,7 +1010,7 @@
                         "status": "",
                         "title": "Generic",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 9
                     },
                     {
@@ -1045,7 +1057,7 @@
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
-                        "connected_to_start": false,
+                        "connected_to_start": true,
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
@@ -1124,8 +1136,8 @@
                             }
                         },
                         "position": {
-                            "x": 840,
-                            "y": 100
+                            "x": 1200,
+                            "y": 120
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -1147,7 +1159,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-05-21T15:49:09.390412+00:00",
+    "create_time": "2020-05-21T15:54:11.979369+00:00",
     "draft_mode": false,
     "labels": [
         "*"

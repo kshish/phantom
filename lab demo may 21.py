@@ -49,18 +49,18 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     # build parameters list for 'send_email_1' call
     for results_item_1 in results_data_1:
         for inputs_item_1 in inputs_data_1:
-            if inputs_item_1[0] and results_item_1[0]:
+            if results_item_1[0] and inputs_item_1[0]:
                 parameters.append({
+                    'body': results_item_1[0],
                     'from': "donotreply@splunk.com",
+                    'attachments': "",
                     'to': inputs_item_1[0],
                     'cc': "",
                     'bcc': "",
-                    'subject': name_value,
-                    'body': results_item_1[0],
-                    'attachments': "",
                     'headers': "",
+                    'subject': name_value,
                     # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': inputs_item_1[1]},
+                    'context': {'artifact_id': results_item_1[1]},
                 })
 
     phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
