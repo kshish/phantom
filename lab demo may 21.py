@@ -44,7 +44,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
