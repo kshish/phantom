@@ -53,7 +53,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         return
 
     # call connected blocks for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -83,8 +83,8 @@ Container's severity is {3}. Would you like to set severity to high?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
         "container:severity",
     ]
 
@@ -121,6 +121,24 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     if matched_artifacts_1 or matched_results_1:
         set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
