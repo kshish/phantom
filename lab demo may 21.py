@@ -110,7 +110,7 @@ def Filter_out_None_country(action=None, success=None, container=None, results=N
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+            ["filtered-data:determines_US:condition_2:my_geolocate:action_result.data.*.country_name", "!=", ""],
         ],
         name="Filter_out_None_country:condition_1")
 
