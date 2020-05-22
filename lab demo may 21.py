@@ -45,7 +45,7 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
 
     phantom.set_severity(container=container, severity="High")
 
-    phantom.pin(container=container, data=filtered_results_item_1_0, message="IP not in US", pin_type="", pin_style="", name=None)
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="IP not in US", pin_type="card", pin_style="red", name=None)
 
     return
 
