@@ -54,15 +54,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0} is not in the United States.  It has an ip address of {1} from {2}
+    message = """{0}
 
-Container's severity is {3}. Would you like to set severity to high?"""
+Container's severity is {1} . Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
-        "filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_1:formatted_data.*",
         "container:severity",
     ]
 
@@ -116,7 +114,7 @@ def Filter_out_None_country(action=None, success=None, container=None, results=N
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -159,6 +157,24 @@ def determines_US(action=None, success=None, container=None, results=None, handl
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
         Filter_out_None_country(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """The container {0} has IPs not from United States.  IP {1} is from {2}."""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
