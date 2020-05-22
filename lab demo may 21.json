@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "90d3de1223fe00e20bbd67aa6571f7e43890db33",
+            "hash": "25c41c6c31bd58ca1e6d0f8cac8d6242dc56e9ef",
             "joint": {
                 "cells": [
                     {
@@ -259,8 +259,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 194,
-                        "line_start": 181,
+                        "line_end": 196,
+                        "line_start": 183,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -874,8 +874,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 103,
-                        "line_start": 85,
+                        "line_end": 105,
+                        "line_start": 87,
                         "name": "decision",
                         "notes": "",
                         "number": 2,
@@ -1180,8 +1180,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 132,
-                        "line_start": 121,
+                        "line_end": 134,
+                        "line_start": 123,
                         "message": "Configuring now",
                         "name": "pin",
                         "notes": "",
@@ -1328,8 +1328,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 121,
-                        "line_start": 103,
+                        "line_end": 123,
+                        "line_start": 105,
                         "name": "filter",
                         "notes": "",
                         "number": 1,
@@ -1684,8 +1684,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 163,
-                        "line_start": 132,
+                        "line_end": 165,
+                        "line_start": 134,
                         "name": "filter",
                         "notes": "",
                         "number": 2,
@@ -1924,7 +1924,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_1() called')\n    \n    template = \"\"\"The container {0} has IPs not from United States.  IP {1} is from {2}.\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_1\")\n\n    prompt_1(container=container)\n\n    return",
+                        "block_code": "def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_1() called')\n    \n    template = \"\"\"IP {1} is from {2}.\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:Filter_out_None_country:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_1\")\n\n    prompt_1(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1948,8 +1948,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 181,
-                        "line_start": 163,
+                        "line_end": 183,
+                        "line_start": 165,
                         "message": "Configuring now",
                         "name": "format",
                         "notes": "",
@@ -2040,11 +2040,11 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "The container {0} has IPs not from United States.  IP {1} is from {2}.",
+                        "template": "IP {1} is from {2}.",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
-                        "z": 85
+                        "z": 87
                     },
                     {
                         "active": false,
@@ -2095,7 +2095,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"{0}\n\nContainer's severity is {1} . Would you like to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"format_1:formatted_data.*\",\n        \"container:severity\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"prompt_1\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The container has IPs not from U.S.\n\n{0}\n\nContainer's severity is {1} . Would you like to set severity to high?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"format_1:formatted_data.*\",\n        \"container:severity\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"prompt_1\", parameters=parameters, response_types=response_types, callback=decision_2)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -2118,9 +2118,9 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 85,
+                        "line_end": 87,
                         "line_start": 52,
-                        "message": "{0}\n\nContainer's severity is {1} . Would you like to set severity to high?",
+                        "message": "The container has IPs not from U.S.\n\n{0}\n\nContainer's severity is {1} . Would you like to set severity to high?",
                         "name": "prompt",
                         "notes": "",
                         "number": 1,
@@ -2222,7 +2222,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 86
+                        "z": 88
                     }
                 ]
             },
@@ -2231,7 +2231,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-05-22T14:14:23.120309+00:00",
+    "create_time": "2020-05-22T14:15:39.478623+00:00",
     "draft_mode": false,
     "labels": [
         "*"

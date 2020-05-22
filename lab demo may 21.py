@@ -54,7 +54,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}
+    message = """The container has IPs not from U.S.
+
+{0}
 
 Container's severity is {1} . Would you like to set severity to high?"""
 
@@ -163,7 +165,7 @@ def determines_US(action=None, success=None, container=None, results=None, handl
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_1() called')
     
-    template = """The container {0} has IPs not from United States.  IP {1} is from {2}."""
+    template = """IP {1} is from {2}."""
 
     # parameter list for template variable replacement
     parameters = [
