@@ -123,11 +123,11 @@ def Filter_out_None_country(action=None, success=None, container=None, results=N
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_3() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.parameter.ip'], action_results=results)
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:determines_US:condition_1:my_geolocate:action_result.parameter.ip"])
 
-    results_item_1_0 = [item[0] for item in results_data_1]
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
-    phantom.pin(container=container, data=results_item_1_0, message="Artifact is in US", pin_type="card", pin_style="blue", name=None)
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="Artifact is in US", pin_type="card", pin_style="blue", name=None)
 
     return
 
