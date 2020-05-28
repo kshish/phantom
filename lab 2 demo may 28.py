@@ -1,4 +1,5 @@
 """
+This is a comment in the playbook code
 """
 
 import phantom.rules as phantom
