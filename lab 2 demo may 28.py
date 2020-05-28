@@ -50,6 +50,9 @@ def decide_if_ip_in_US(action=None, success=None, container=None, results=None, 
         pin_safe(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # call connected blocks for 'else' condition 2
+    pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 def pin_safe(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
