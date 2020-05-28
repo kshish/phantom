@@ -47,23 +47,23 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        pin_1(action=action, success=success, container=container, results=results, handle=handle)
+        pin_safe(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
-    pin_2(action=action, success=success, container=container, results=results, handle=handle)
+    pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
-def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('pin_1() called')
+def pin_safe(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_safe() called')
 
     phantom.pin(container=container, data="safe", message="Ip is in US", pin_type="card", pin_style="grey", name=None)
 
     return
 
-def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('pin_2() called')
+def pin_maybe_not_safe(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_maybe_not_safe() called')
 
     phantom.pin(container=container, data="possibly not safe", message="IP not in US", pin_type="card", pin_style="red", name=None)
 
