@@ -8,20 +8,20 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_ip_1() called')
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('my_geolocate() called')
 
-    # collect data for 'geolocate_ip_1' call
+    # collect data for 'my_geolocate' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
@@ -30,7 +30,42 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="my_geolocate")
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        pin_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # call connected blocks for 'else' condition 2
+    pin_2(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_1() called')
+
+    phantom.pin(container=container, data="safe", message="Ip is in US", pin_type="card", pin_style="grey", name=None)
+
+    return
+
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_2() called')
+
+    phantom.pin(container=container, data="possibly not safe", message="IP not in US", pin_type="card", pin_style="red", name=None)
 
     return
 
