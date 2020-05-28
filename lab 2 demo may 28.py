@@ -50,9 +50,6 @@ def decide_if_ip_in_US(action=None, success=None, container=None, results=None, 
         pin_safe(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # call connected blocks for 'else' condition 2
-    pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
-
     return
 
 def pin_safe(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -75,11 +72,11 @@ def on_finish(container, summary):
     # summary of all the action and/or all detals of actions
     # can be collected here.
 
-    # summary_json = phantom.get_summary()
-    # if 'result' in summary_json:
-        # for action_result in summary_json['result']:
-            # if 'action_run_id' in action_result:
-                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
-                # phantom.debug(action_results)
+    summary_json = phantom.get_summary()
+    if 'result' in summary_json:
+        for action_result in summary_json['result']:
+            if 'action_run_id' in action_result:
+                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
+                phantom.debug(action_results)
 
     return
