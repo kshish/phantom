@@ -51,7 +51,7 @@ def decide_if_ip_in_US(action=None, success=None, container=None, results=None, 
         return
 
     # call connected blocks for 'else' condition 2
-    pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
+    Ask_analyst_if_to_pin_unsafe_warning(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -66,6 +66,60 @@ def pin_maybe_not_safe(action=None, success=None, container=None, results=None, 
     phantom.debug('pin_maybe_not_safe() called')
 
     phantom.pin(container=container, data="possibly not safe", message="IP not in US", pin_type="card", pin_style="red", name=None)
+
+    return
+
+def Ask_analyst_if_to_pin_unsafe_warning(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('Ask_analyst_if_to_pin_unsafe_warning() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The container {0} with IP {1} is not U.S.A. it is in {2}.
+
+Would you like to pin a not safe warning?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_if_to_pin_unsafe_warning", parameters=parameters, response_types=response_types, callback=evaluate_analyst_answer)
+
+    return
+
+def evaluate_analyst_answer(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('evaluate_analyst_answer() called')
+
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["Ask_analyst_if_to_pin_unsafe_warning:action_result.summary.responses.0", "!=", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        return
+
+    # call connected blocks for 'else' condition 2
+    pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
