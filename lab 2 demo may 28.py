@@ -61,7 +61,6 @@ def pin_safe(action=None, success=None, container=None, results=None, handle=Non
     phantom.pin(container=container, data="safe", message="Ip is in US", pin_type="card", pin_style="grey", name=None)
 
     phantom.set_severity(container=container, severity="Low")
-    playbook_Chris_Child_playbook_1(container=container)
 
     return
 
@@ -175,14 +174,6 @@ def add_comment_set_status_3(action=None, success=None, container=None, results=
     phantom.comment(container=container, comment="whatever comment")
 
     phantom.set_status(container=container, status="Closed")
-
-    return
-
-def playbook_Chris_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('playbook_Chris_Child_playbook_1() called')
-    
-    # call playbook "Chris/Child playbook", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("Chris/Child playbook", container=container)
 
     return
 
