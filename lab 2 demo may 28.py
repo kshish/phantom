@@ -74,15 +74,16 @@ def Ask_analyst_if_to_pin_unsafe_warning(action=None, success=None, container=No
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0} with IP {1} is not U.S.A. it is in {2}.
+    message = """The container {0} has IP addresses outside USA
+
+{1}
 
 Would you like to pin a not safe warning?"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_ip_and_country_list:formatted_data.*",
     ]
 
     #responses:
@@ -137,7 +138,24 @@ def filter_out_no_Country(action=None, success=None, container=None, results=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Ask_analyst_if_to_pin_unsafe_warning(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_ip_and_country_list() called')
+    
+    template = """The ip {0} is from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
+
+    Ask_analyst_if_to_pin_unsafe_warning(container=container)
 
     return
 

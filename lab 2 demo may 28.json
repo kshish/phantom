@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This is a comment in the playbook code",
-            "hash": "059513e120f4d1e069cef0f92422d0c3dbb70b74",
+            "hash": "e18b83a1899b97beacf62821c34932cc2f0dfb0d",
             "joint": {
                 "cells": [
                     {
@@ -514,12 +514,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 157,
-                        "line_start": 144,
+                        "line_end": 175,
+                        "line_start": 162,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 9,
+                        "order": 10,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -1372,7 +1372,7 @@
                             }
                         },
                         "position": {
-                            "x": 980,
+                            "x": 1200,
                             "y": 380
                         },
                         "previous_function": "",
@@ -1555,8 +1555,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 126,
-                        "line_start": 106,
+                        "line_end": 127,
+                        "line_start": 107,
                         "name": "decision",
                         "notes": "",
                         "number": 2,
@@ -1646,7 +1646,7 @@
                             }
                         },
                         "position": {
-                            "x": 800,
+                            "x": 920,
                             "y": 260
                         },
                         "previous_function": "",
@@ -1703,46 +1703,6 @@
                         "z": 42
                     },
                     {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "031fb394-4216-40a3-9c3f-3ae76775a7e0",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "0cad051f-912b-46ec-8d54-69cf94a97f4b",
-                            "port": "out-1",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "42986f87-d8fa-4fd2-868c-2b57ea295e6a",
-                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 49
-                    },
-                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
@@ -1784,7 +1744,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def filter_out_no_Country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_out_no_Country() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geolocate:action_result.data.*.country_name\", \"!=\", \"\"],\n        ],\n        name=\"filter_out_no_Country:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        Ask_analyst_if_to_pin_unsafe_warning(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
+                        "block_code": "def filter_out_no_Country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('filter_out_no_Country() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geolocate:action_result.data.*.country_name\", \"!=\", \"\"],\n        ],\n        name=\"filter_out_no_Country:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1807,8 +1767,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 144,
-                        "line_start": 126,
+                        "line_end": 145,
+                        "line_start": 127,
                         "name": "filter",
                         "notes": "",
                         "number": 1,
@@ -1884,7 +1844,7 @@
                             }
                         },
                         "position": {
-                            "x": 520,
+                            "x": 340,
                             "y": 260
                         },
                         "previous_function": "",
@@ -1898,17 +1858,100 @@
                         "status": "",
                         "type": "coa.Filter",
                         "warn": "",
-                        "z": 53
+                        "z": 55
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "acbcdf39-3074-4fe5-81d8-ad09db8d868e",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "0cad051f-912b-46ec-8d54-69cf94a97f4b",
+                            "port": "out-1",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "37954978-e6f7-4910-bc56-52ca305dc799",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 57
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "c2d775db-3a7d-4b17-bec2-0131c29ad1fb",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "37954978-e6f7-4910-bc56-52ca305dc799",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "42986f87-d8fa-4fd2-868c-2b57ea295e6a",
+                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 59
                     },
                     {
                         "active": false,
                         "angle": 0,
-                        "approver": "admin",
-                        "approver_display": "Chris ",
                         "attrs": {
                             ".background": {
                                 "fill": "#FFFFFF",
                                 "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".format": {
+                                "text": "format ip and country list"
                             },
                             ".inPorts>.port-in": {
                                 "ref": ".background",
@@ -1920,18 +1963,22 @@
                                     "type": "in"
                                 }
                             },
-                            ".number": {
-                                "text": 3
+                            ".message": {
+                                "opacity": 0,
+                                "text": "Configuring now"
                             },
-                            ".outPorts>.port-out": {
+                            ".outPorts>.port-out-1": {
                                 "ref": ".background",
                                 "ref-x": 0.5
                             },
-                            ".outPorts>.port-out>.port-body": {
+                            ".outPorts>.port-out-1>.port-body": {
                                 "port": {
-                                    "id": "out",
+                                    "id": "out-1",
                                     "type": "out"
                                 }
+                            },
+                            ".title": {
+                                "text": "format"
                             },
                             "g.delete": {
                                 "display": "none"
@@ -1939,62 +1986,52 @@
                             "g.error": {
                                 "opacity": 0
                             },
-                            "g.error image": {
-                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
-                            },
                             "g.notes": {
                                 "display": "block"
-                            },
-                            "g.notes image": {
-                                "opacity": 1
                             }
                         },
-                        "block_code": "def Ask_analyst_if_to_pin_unsafe_warning(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_if_to_pin_unsafe_warning() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The container {0} with IP {1} is not U.S.A. it is in {2}.\n\nWould you like to pin a not safe warning?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_if_to_pin_unsafe_warning\", parameters=parameters, response_types=response_types, callback=evaluate_analyst_answer)\n\n    return",
+                        "block_code": "def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('format_ip_and_country_list() called')\n    \n    template = \"\"\"The ip {0} is from {1}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip\",\n        \"filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_ip_and_country_list\")\n\n    Ask_analyst_if_to_pin_unsafe_warning(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
-                        "callsback": true,
+                        "callsback": false,
                         "connected_to_start": true,
                         "connection_name": "my geolocate",
                         "connection_type": "action",
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "Ask analyst if to pin unsafe warning",
+                        "custom_name": "format ip and country list",
                         "description": "",
+                        "format": "format",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "42986f87-d8fa-4fd2-868c-2b57ea295e6a",
+                        "id": "37954978-e6f7-4910-bc56-52ca305dc799",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 106,
-                        "line_start": 72,
-                        "message": "The container {0} with IP {1} is not U.S.A. it is in {2}.\n\nWould you like to pin a not safe warning?",
-                        "name": "prompt",
+                        "line_end": 162,
+                        "line_start": 145,
+                        "message": "Configuring now",
+                        "name": "format",
                         "notes": "",
-                        "number": 3,
-                        "order": 6,
+                        "number": 1,
+                        "order": 9,
                         "outPorts": [
-                            "out"
+                            "out-1"
                         ],
                         "parameters": [
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "container:name"
-                            },
-                            {
-                                "position": 1,
-                                "type": "",
                                 "value": "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip"
                             },
                             {
-                                "position": 2,
+                                "position": 1,
                                 "type": "",
                                 "value": "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name"
                             }
@@ -2052,7 +2089,172 @@
                             }
                         },
                         "position": {
-                            "x": 660,
+                            "x": 560,
+                            "y": 260
+                        },
+                        "previous_function": "",
+                        "previous_name": "format_ip_and_country_list",
+                        "show_number": true,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "format",
+                        "status": "",
+                        "template": "The ip {0} is from {1}",
+                        "title": "format",
+                        "type": "coa.Format",
+                        "warn": false,
+                        "z": 61
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "approver_display": "Chris ",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 3
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            }
+                        },
+                        "block_code": "def Ask_analyst_if_to_pin_unsafe_warning(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):\n    phantom.debug('Ask_analyst_if_to_pin_unsafe_warning() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The container {0} has IP addresses outside USA\n\n{1}\n\nWould you like to pin a not safe warning?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"container:name\",\n        \"format_ip_and_country_list:formatted_data.*\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"Ask_analyst_if_to_pin_unsafe_warning\", parameters=parameters, response_types=response_types, callback=evaluate_analyst_answer)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "my geolocate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "Ask analyst if to pin unsafe warning",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "42986f87-d8fa-4fd2-868c-2b57ea295e6a",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 107,
+                        "line_start": 72,
+                        "message": "The container {0} has IP addresses outside USA\n\n{1}\n\nWould you like to pin a not safe warning?",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 3,
+                        "order": 6,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "container:name"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "format_ip_and_country_list:formatted_data.*"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 800,
                             "y": 260
                         },
                         "previous_function": "",
@@ -2081,7 +2283,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 54
+                        "z": 62
                     }
                 ]
             },
@@ -2090,7 +2292,7 @@
         "schema": 3,
         "version": "4.8.24304"
     },
-    "create_time": "2020-05-29T16:49:38.839721+00:00",
+    "create_time": "2020-05-29T16:55:19.773919+00:00",
     "draft_mode": false,
     "labels": [
         "*"
