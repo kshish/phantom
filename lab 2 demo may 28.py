@@ -51,7 +51,7 @@ def decide_if_ip_in_US(action=None, success=None, container=None, results=None, 
         return
 
     # call connected blocks for 'else' condition 2
-    Ask_analyst_if_to_pin_unsafe_warning(action=action, success=success, container=container, results=results, handle=handle)
+    filter_out_no_Country(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -81,8 +81,8 @@ Would you like to pin a not safe warning?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_out_no_Country:condition_1:my_geolocate:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -120,6 +120,24 @@ def evaluate_analyst_answer(action=None, success=None, container=None, results=N
 
     # call connected blocks for 'else' condition 2
     pin_maybe_not_safe(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+def filter_out_no_Country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_out_no_Country() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_out_no_Country:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        Ask_analyst_if_to_pin_unsafe_warning(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
