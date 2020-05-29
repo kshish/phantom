@@ -11,9 +11,6 @@ def on_start(container):
     # call 'my_geolocate' block
     my_geolocate(container=container)
 
-    # call 'action_0' block
-    action_0(container=container)
-
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -108,12 +105,6 @@ Would you like to pin a not safe warning?"""
                 ]
             },
         },
-        {
-            "prompt": "",
-            "options": {
-                "type": "message",
-            },
-        },
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_if_to_pin_unsafe_warning", parameters=parameters, response_types=response_types, callback=evaluate_analyst_answer)
@@ -175,15 +166,6 @@ The ip {0} is from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     Ask_analyst_if_to_pin_unsafe_warning(container=container)
-
-    return
-
-def action_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('action_0() called')
-
-    parameters = []
-
-    phantom.act("<undefined>", parameters=parameters, name="action_0")
 
     return
 
