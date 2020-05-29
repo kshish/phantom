@@ -11,6 +11,9 @@ def on_start(container):
     # call 'my_geolocate' block
     my_geolocate(container=container)
 
+    # call 'action_0' block
+    action_0(container=container)
+
     return
 
 def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
@@ -60,12 +63,19 @@ def pin_safe(action=None, success=None, container=None, results=None, handle=Non
 
     phantom.pin(container=container, data="safe", message="Ip is in US", pin_type="card", pin_style="grey", name=None)
 
+    phantom.set_severity(container=container, severity="Low")
+    playbook_Chris_Child_playbook_1(container=container)
+
     return
 
 def pin_maybe_not_safe(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_maybe_not_safe() called')
 
     phantom.pin(container=container, data="possibly not safe", message="IP not in US", pin_type="card", pin_style="red", name=None)
+
+    phantom.set_severity(container=container, severity="High")
+
+    phantom.comment(container=container, comment="determine outside US")
 
     return
 
@@ -98,6 +108,12 @@ Would you like to pin a not safe warning?"""
                 ]
             },
         },
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="Ask_analyst_if_to_pin_unsafe_warning", parameters=parameters, response_types=response_types, callback=evaluate_analyst_answer)
@@ -117,6 +133,7 @@ def evaluate_analyst_answer(action=None, success=None, container=None, results=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
+        add_comment_set_status_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -158,6 +175,32 @@ The ip {0} is from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     Ask_analyst_if_to_pin_unsafe_warning(container=container)
+
+    return
+
+def action_0(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('action_0() called')
+
+    parameters = []
+
+    phantom.act("<undefined>", parameters=parameters, name="action_0")
+
+    return
+
+def add_comment_set_status_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_comment_set_status_3() called')
+
+    phantom.comment(container=container, comment="whatever comment")
+
+    phantom.set_status(container=container, status="Closed")
+
+    return
+
+def playbook_Chris_Child_playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('playbook_Chris_Child_playbook_1() called')
+    
+    # call playbook "Chris/Child playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/Child playbook", container=container)
 
     return
 
