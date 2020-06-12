@@ -47,7 +47,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        ask_analyst_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -75,16 +75,17 @@ def ask_analyst_to_set_high_severity(action=None, success=None, container=None, 
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """This container has an ip address outside of the United States. The ip address is: {0} in {1}.
+    message = """This container has an ip address outside of the United States.
 
-The container {2} has {3} severity.
+{0}
+
+The container {1} has {2} severity {2}.
 
 Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_ip_and_country_list:formatted_data.*",
         "container:name",
         "container:severity",
     ]
@@ -128,7 +129,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_3() called')
 
-    phantom.pin(container=container, data="important data here", message="chris wuz here", pin_type="", pin_style="", name=None)
+    phantom.pin(container=container, data="important data here", message="chris wuz here", pin_type="card", pin_style="", name=None)
 
     return
 
@@ -147,6 +148,23 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_ip_and_country_list() called')
+    
+    template = """the ip {0} is in {1}."""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
+
+    ask_analyst_to_set_high_severity(container=container)
 
     return
 
