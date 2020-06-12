@@ -30,7 +30,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="my_geolocate")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
 
     return
 
@@ -42,7 +42,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -83,8 +83,8 @@ Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
         "container:name",
         "container:severity",
     ]
@@ -129,6 +129,24 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     phantom.debug('pin_3() called')
 
     phantom.pin(container=container, data="important data here", message="chris wuz here", pin_type="", pin_style="", name=None)
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
