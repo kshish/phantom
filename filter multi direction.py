@@ -114,7 +114,33 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
-    pin_2(container=container)
+    prompt_1(container=container)
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "format_1:formatted_data.*",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=pin_2)
 
     return
 
