@@ -59,6 +59,7 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
+    pin_3(container=container)
 
     return
 
@@ -121,6 +122,13 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
     if matched_artifacts_1 or matched_results_1:
         set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('pin_3() called')
+
+    phantom.pin(container=container, data="important data here", message="chris wuz here", pin_type="", pin_style="", name=None)
 
     return
 
