@@ -4,7 +4,6 @@
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
-
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -25,13 +24,21 @@ def set_status_2(action=None, success=None, container=None, results=None, handle
     phantom.debug('set_status_2() called')
 
     phantom.set_status(container=container, status="Open")
+    add_comment_3(container=container)
+
+    return
+
+def add_comment_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('add_comment_3() called')
+
+    phantom.comment(container=container, comment="Child pb was here")
 
     return
 
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
-    # summary of all the action and/or all detals of actions 
+    # summary of all the action and/or all detals of actions
     # can be collected here.
 
     # summary_json = phantom.get_summary()
