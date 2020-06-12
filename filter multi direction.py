@@ -60,7 +60,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        pin_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
@@ -97,6 +97,24 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_1() called')
+    
+    template = """%%
+{0}
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    pin_2(container=container)
 
     return
 
