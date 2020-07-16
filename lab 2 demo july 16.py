@@ -5,14 +5,20 @@ This playbook demonstrates stuff
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
+##############################
+# Start - Global Code Block
+
+import mymodule
+
+
+# End - Global Code block
+##############################
+
 def on_start(container):
     phantom.debug('on_start() called')
     
     # call 'geolocate_Source_Address' block
     geolocate_Source_Address(container=container)
-
-    # call 'geolocate_Destination_Address' block
-    geolocate_Destination_Address(container=container)
 
     return
 
@@ -36,76 +42,50 @@ def geolocate_Source_Address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="geolocate_Source_Address")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_Source_Address")
 
     return
 
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('send_email_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    name_value = container.get('name', None)
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('decision_2() called')
 
-    # collect data for 'send_email_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fromEmail', 'artifact:*.id'])
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_Source_Address:action_result.data.*.country_name', 'geolocate_Source_Address:action_result.parameter.context.artifact_id'], action_results=results)
+    # check for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_Source_Address:action_result.data.*.country_name", "!=", "United States"],
+        ])
 
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for container_item in container_data:
-        for results_item_1 in results_data_1:
-            if results_item_1[0]:
-                parameters.append({
-                    'from': container_item[0],
-                    'to': "chrishu@splunk.com",
-                    'cc': "",
-                    'bcc': "",
-                    'subject': name_value,
-                    'body': results_item_1[0],
-                    'attachments': "",
-                    'headers': "",
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': container_item[1]},
-                })
-
-    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    # call connected blocks if condition 1 matched
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
-def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('join_send_email_1() called')
-
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'geolocate_Source_Address', 'geolocate_Destination_Address' ]):
-        
-        # call connected block "send_email_1"
-        send_email_1(container=container, handle=handle)
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('prompt_1() called')
     
-    return
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """Container's source address ip is not in U.S."""
 
-"""
-etc.... blah blahh
-"""
-def geolocate_Destination_Address(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('geolocate_Destination_Address() called')
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
 
-    # collect data for 'geolocate_Destination_Address' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'geolocate_Destination_Address' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_send_email_1, name="geolocate_Destination_Address")
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types)
 
     return
 
