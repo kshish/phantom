@@ -69,7 +69,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
                     'context': {'artifact_id': container_item[1]},
                 })
 
-    phantom.act("send email", parameters=parameters, assets=['smtp'], callback=execute_program_1, name="send_email_1", parent_action=action)
+    phantom.act("send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
 
     return
 
@@ -82,32 +82,6 @@ def join_send_email_1(action=None, success=None, container=None, results=None, h
         # call connected block "send_email_1"
         send_email_1(container=container, handle=handle)
     
-    return
-
-def execute_program_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('execute_program_1() called')
-    
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'execute_program_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationHostName', 'artifact:*.id'])
-
-    parameters = []
-    
-    # build parameters list for 'execute_program_1' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip_hostname': container_item[0],
-                'command': "",
-                'script_file': "",
-                'timeout': "",
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
-
-    phantom.act("execute program", parameters=parameters, assets=['mylocalssh'], name="execute_program_1", parent_action=action)
-
     return
 
 """
