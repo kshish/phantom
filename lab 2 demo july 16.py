@@ -146,7 +146,9 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 def format_ip_and_country_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('format_ip_and_country_for_analyst() called')
     
-    template = """ip  {0} is from {1}"""
+    template = """%%
+ip  {0} is from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
