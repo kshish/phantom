@@ -67,7 +67,11 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_1() called')
 
-    phantom.pin(container=container, data="", message="United States", pin_type="card", pin_style="blue", name=None)
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip"])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="United States", pin_type="card", pin_style="blue", name=None)
 
     return
 
@@ -75,10 +79,11 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
     phantom.debug('pin_2() called')
 
     filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.data.*.country_name"])
+    formatted_data_1 = phantom.get_format_data(name='format_1__as_list')
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
-    phantom.pin(container=container, data="", message=filtered_results_item_1_0, pin_type="card", pin_style="red", name=None)
+    phantom.pin(container=container, data=formatted_data_1, message=filtered_results_item_1_0, pin_type="card", pin_style="red", name=None)
 
     return
 
