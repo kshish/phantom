@@ -104,7 +104,7 @@ def set_severity_set_sensitivity_pin_1(action=None, success=None, container=None
 
     phantom.set_sensitivity(container=container, sensitivity="red")
 
-    phantom.pin(container=container, data=filtered_results_item_1_0, message="chris wuz here", pin_type="", pin_style="red", name=None)
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="chris wuz here", pin_type="card", pin_style="red", name=None)
 
     return
 
