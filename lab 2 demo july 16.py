@@ -42,15 +42,16 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Container {0} with source address ip {1} is not in U.S. The ip is in {2}
+    message = """Container {0} with source address
+
+{1}
 
 Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.parameter.ip",
-        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.data.*.country_name",
+        "format_ip_and_country_for_analyst:formatted_data.*",
     ]
 
     #responses:
@@ -131,7 +132,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_ip_and_country_for_analyst(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -139,6 +140,23 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_2() called')
 
     phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def format_ip_and_country_for_analyst(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('format_ip_and_country_for_analyst() called')
+    
+    template = """ip  {0} is from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.parameter.ip",
+        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_for_analyst")
+
+    prompt_1(container=container)
 
     return
 
