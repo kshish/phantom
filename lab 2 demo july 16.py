@@ -85,7 +85,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched_artifacts_1 or matched_results_1:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_set_sensitivity_pin_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # call connected blocks for 'else' condition 2
@@ -93,10 +93,18 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('set_severity_1() called')
+def set_severity_set_sensitivity_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('set_severity_set_sensitivity_pin_1() called')
+
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.data.*.country_name"])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
     phantom.set_severity(container=container, severity="High")
+
+    phantom.set_sensitivity(container=container, sensitivity="red")
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="chris wuz here", pin_type="", pin_style="red", name=None)
 
     return
 
