@@ -33,25 +33,7 @@ def geolocate_Source_Address(action=None, success=None, container=None, results=
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_Source_Address")
-
-    return
-
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('decision_2() called')
-
-    # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["geolocate_Source_Address:action_result.data.*.country_name", "!=", "United States"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="geolocate_Source_Address")
 
     return
 
@@ -67,8 +49,8 @@ Would you like to set severity to high?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "geolocate_Source_Address:action_result.parameter.ip",
-        "geolocate_Source_Address:action_result.data.*.country_name",
+        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.parameter.ip",
+        "filtered-data:filter_2:condition_1:geolocate_Source_Address:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -111,6 +93,42 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('set_severity_1() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_Source_Address:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_2() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_Source_Address:action_result.data.*.country_name", "!=", "United States"],
+        ],
+        name="filter_2:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
