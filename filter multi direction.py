@@ -29,21 +29,21 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_2, name="geolocate_ip_1")
+    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_null_countries, name="geolocate_ip_1")
 
     return
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_1() called')
+def filter_US_vs_other(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_US_vs_other() called')
 
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_out_null_countries:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
         ],
-        name="filter_1:condition_1")
+        name="filter_US_vs_other:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
@@ -54,9 +54,9 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_null_countries:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
         ],
-        name="filter_1:condition_2")
+        name="filter_US_vs_other:condition_2")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
@@ -67,7 +67,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_1() called')
 
-    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip"])
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_US_vs_other:condition_1:geolocate_ip_1:action_result.parameter.ip"])
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
@@ -78,7 +78,7 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
     phantom.debug('pin_2() called')
 
-    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.data.*.country_name"])
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_US_vs_other:condition_2:geolocate_ip_1:action_result.data.*.country_name"])
     formatted_data_1 = phantom.get_format_data(name='format_1__as_list')
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
@@ -87,8 +87,8 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
 
     return
 
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('filter_2() called')
+def filter_out_null_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+    phantom.debug('filter_out_null_countries() called')
 
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -97,11 +97,11 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
         ],
-        name="filter_2:condition_1")
+        name="filter_out_null_countries:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_US_vs_other(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -114,7 +114,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_US_vs_other:condition_2:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
