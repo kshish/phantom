@@ -63,7 +63,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
                     'context': {'artifact_id': container_item[1]},
                 })
 
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=set_severity_2, name="send_email_1", parent_action=action)
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=set_severity_2, name="send_email_1")
 
     return
 
