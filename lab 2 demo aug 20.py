@@ -29,7 +29,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
 
     return
 
@@ -62,22 +62,88 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
                     # context (artifact id) is added to associate results with the artifact
                     'context': {'artifact_id': container_item[1]},
                 })
-    phantom.debug(parameters)
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=format_1, name="send_email_1", parent_action=action)
+
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=set_severity_2, name="send_email_1", parent_action=action)
 
     return
 
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('format_1() called')
-    
-    template = """{0}"""
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decision_1() called')
 
-    # parameter list for template variable replacement
-    parameters = [
-        "geolocate_ip_1:action_result.data.*.country_name",
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    # call connected blocks for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip is outside of the United States.
+
+Do you want to send email and set severity to high?"""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
     ]
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types, callback=decision_2)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        send_email_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_2() called')
+
+    phantom.set_severity(container=container, severity="High")
 
     return
 
