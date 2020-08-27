@@ -16,7 +16,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.myfield', 'artifact:*.id'])
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
