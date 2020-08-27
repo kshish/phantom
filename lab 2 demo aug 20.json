@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "f24cacb50ae9b8dc647e65ff0ab9eec213b93f9e",
+            "hash": "81749ca24c0ae8cf874405d711a21bb6f6291436",
             "joint": {
                 "cells": [
                     {
@@ -218,8 +218,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 44,
-                        "line_start": 31,
+                        "line_end": 49,
+                        "line_start": 36,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -335,12 +335,51 @@
                         "z": 3
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "d31ea58b-6bf6-4702-93c9-205cf5d93660",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "9183da32-a1ca-4cad-a01c-0384c9bee1f3",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "fde3465e-ecca-4499-a5d4-3505a0f71869",
+                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 6
+                    },
+                    {
                         "action": "geolocate ip",
                         "action_type": "investigate",
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "ip": "222.222.11.11"
+                            "ip": "artifact:*.cef.sourceAddress"
                         },
                         "angle": 0,
                         "app": "MaxMind",
@@ -360,7 +399,7 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "ip": "222.222.11.11"
+                                    "ip": "artifact:*.cef.sourceAddress"
                                 },
                                 "has_app": true,
                                 "id": 2,
@@ -598,7 +637,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    parameters.append({\n        'ip': \"222.222.11.11\",\n    })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_1\")\n\n    return",
+                        "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -623,7 +662,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 31,
+                        "line_end": 36,
                         "line_start": 15,
                         "message": "Configuring now",
                         "name": "geolocate ip",
@@ -705,46 +744,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 5
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "d31ea58b-6bf6-4702-93c9-205cf5d93660",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "9183da32-a1ca-4cad-a01c-0384c9bee1f3",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "fde3465e-ecca-4499-a5d4-3505a0f71869",
-                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 6
+                        "z": 7
                     }
                 ]
             },
@@ -754,7 +754,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2020-08-27T15:45:31.302134+00:00",
+    "create_time": "2020-08-27T15:49:14.018593+00:00",
     "draft_mode": false,
     "labels": [
         "*"

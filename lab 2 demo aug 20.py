@@ -16,13 +16,18 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
     # build parameters list for 'geolocate_ip_1' call
-    parameters.append({
-        'ip': "222.222.11.11",
-    })
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
 
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
 
