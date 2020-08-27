@@ -16,7 +16,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.myfield', 'artifact:*.id'])
 
     parameters = []
     
@@ -51,19 +51,33 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
         for results_item_1 in results_data_1:
             if container_item[0] and results_item_1[0]:
                 parameters.append({
-                    'from': "do_not_reply@splunk.com",
-                    'to': container_item[0],
                     'cc': "",
+                    'to': container_item[0],
                     'bcc': "",
-                    'subject': description_value,
                     'body': results_item_1[0],
-                    'attachments': "",
+                    'from': "do_not_reply@splunk.com",
                     'headers': "",
+                    'subject': description_value,
+                    'attachments': "",
                     # context (artifact id) is added to associate results with the artifact
                     'context': {'artifact_id': container_item[1]},
                 })
 
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=format_1, name="send_email_1", parent_action=action)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_1() called')
+    
+    template = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     return
 
