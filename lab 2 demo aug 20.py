@@ -80,7 +80,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -88,8 +88,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_1() called')
+def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_to_low() called')
 
     phantom.set_severity(container=container, severity="Low")
 
