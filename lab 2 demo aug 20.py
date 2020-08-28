@@ -110,7 +110,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "none"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
         ],
         name="filter_out_none:condition_1")
 
