@@ -4,7 +4,6 @@
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
-
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -13,7 +12,7 @@ def on_start(container):
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_1() called')
     
     # set user and message variables for phantom.prompt call
@@ -34,7 +33,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_2() called')
     
     # set user and message variables for phantom.prompt call
@@ -60,7 +59,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('add_list_1() called')
 
     results_data_1 = phantom.collect2(container=container, datapath=['prompt_1:action_result.summary.responses.0'], action_results=results)
@@ -71,11 +70,11 @@ def add_list_1(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('decision_1() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -83,19 +82,19 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        prompt_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
-    add_list_1(action=action, success=success, container=container, results=results, handle=handle)
+    add_list_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
-    # summary of all the action and/or all detals of actions 
+    # summary of all the action and/or all details of actions
     # can be collected here.
 
     # summary_json = phantom.get_summary()
