@@ -29,28 +29,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="geolocate_ip_1")
-
-    return
-
-def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decide_if_in_US() called')
-
-    # check for 'if' condition 1
-    matched = phantom.decision(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-        return
-
-    # call connected blocks for 'else' condition 2
-    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_2, name="geolocate_ip_1")
 
     return
 
@@ -58,6 +37,7 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
+    pin_5(container=container)
 
     return
 
@@ -118,6 +98,7 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
+    pin_6(container=container)
 
     return
 
@@ -155,6 +136,59 @@ ip {0} is in {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_4")
 
     prompt_1(container=container)
+
+    return
+
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_2() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+        ],
+        name="filter_2:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+        ],
+        name="filter_2:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        filter_out_none(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('pin_5() called')
+
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.parameter.ip'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="IP is in United States", pin_type="card", pin_style="grey", name=None)
+
+    return
+
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('pin_6() called')
+
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="Not In USA", pin_type="card", pin_style="red", name=None)
 
     return
 
