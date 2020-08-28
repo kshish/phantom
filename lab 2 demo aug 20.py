@@ -66,16 +66,14 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0} has {1} ip from {2}.
+    message = """{0}
 The ip is outside of the United States.
 
 Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
-        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "format_4:formatted_data.*",
     ]
 
     #responses:
@@ -135,7 +133,25 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_4(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_4() called')
+    
+    template = """The container {0} with ip {1} is in {2}."""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_4")
+
+    prompt_1(container=container)
 
     return
 
