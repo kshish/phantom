@@ -29,12 +29,12 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="geolocate_ip_1")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_1() called')
+def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_if_in_US() called')
 
     # check for 'if' condition 1
     matched = phantom.decision(
@@ -46,7 +46,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -54,8 +54,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_to_low() called')
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
@@ -69,7 +69,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     message = """The container {0} has {1} ip from {2}.
 The ip is outside of the United States.
 
-Do you want to send email and set severity to high?"""
+Do you want to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -92,12 +92,12 @@ Do you want to send email and set severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decide_to_set_severity_to_low)
 
     return
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_2() called')
+def decide_to_set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_to_set_severity_to_low() called')
 
     # check for 'if' condition 1
     matched = phantom.decision(
@@ -109,13 +109,13 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_2() called')
+def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
 
