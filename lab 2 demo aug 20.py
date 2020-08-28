@@ -140,7 +140,8 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 def format_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_4() called')
     
-    template = """The container {0} with ip {1} is in {2}."""
+    template = """The container {0} with
+%%ip {1} is in {2}%%"""
 
     # parameter list for template variable replacement
     parameters = [
