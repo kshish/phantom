@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "680518366c309d063ee2a151c93bd3e487f48e2d",
+            "hash": "61e3547ab2385cb196b6a1cc80db120335d8266f",
             "joint": {
                 "cells": [
                     {
@@ -73,8 +73,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 174,
-                        "line_start": 161,
+                        "line_end": 176,
+                        "line_start": 163,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -2093,7 +2093,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def format_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('format_4() called')\n    \n    template = \"\"\"%%\nip {0} is in {1}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_4\")\n\n    prompt_1(container=container)\n\n    return",
+                        "block_code": "def format_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('format_4() called')\n    \n    template = \"\"\"The container {2}\n%%\nip {0} is in {1}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n        \"container:name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_4\")\n\n    prompt_1(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2117,7 +2117,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 161,
+                        "line_end": 163,
                         "line_start": 142,
                         "message": "Configuring now",
                         "name": "format",
@@ -2137,6 +2137,11 @@
                                 "position": 2,
                                 "type": "",
                                 "value": "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "container:name"
                             }
                         ],
                         "ports": {
@@ -2204,7 +2209,7 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "%%\nip {0} is in {1}\n%%",
+                        "template": "The container {2}\n%%\nip {0} is in {1}\n%%",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
@@ -2218,7 +2223,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2020-08-28T14:08:29.126462+00:00",
+    "create_time": "2020-08-28T14:10:21.799871+00:00",
     "draft_mode": false,
     "labels": [
         "*"

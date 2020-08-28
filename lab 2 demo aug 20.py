@@ -142,7 +142,8 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 def format_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_4() called')
     
-    template = """%%
+    template = """The container {2}
+%%
 ip {0} is in {1}
 %%"""
 
@@ -150,6 +151,7 @@ ip {0} is in {1}
     parameters = [
         "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
         "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "container:name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_4")
