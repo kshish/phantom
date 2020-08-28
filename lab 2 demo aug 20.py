@@ -33,40 +33,6 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     return
 
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('send_email_1() called')
-        
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    description_value = container.get('description', None)
-
-    # collect data for 'send_email_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
-
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for container_item in container_data:
-        for results_item_1 in results_data_1:
-            if container_item[0] and results_item_1[0]:
-                parameters.append({
-                    'cc': "",
-                    'to': container_item[0],
-                    'bcc': "",
-                    'body': results_item_1[0],
-                    'from': "do_not_reply@splunk.com",
-                    'headers': "",
-                    'subject': description_value,
-                    'attachments': "",
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': container_item[1]},
-                })
-
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], callback=set_severity_2, name="send_email_1")
-
-    return
-
 def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('decision_1() called')
 
@@ -143,7 +109,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        send_email_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
