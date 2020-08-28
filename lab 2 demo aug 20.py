@@ -50,7 +50,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         return
 
     # call connected blocks for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
@@ -74,8 +74,8 @@ Do you want to set severity to high?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "artifact:*.cef.sourceAddress",
-        "geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -118,6 +118,24 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
+
+    return
+
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_out_none() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "none"],
+        ],
+        name="filter_out_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
