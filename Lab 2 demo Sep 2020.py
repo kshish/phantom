@@ -38,8 +38,6 @@ def send_note(action=None, success=None, container=None, results=None, handle=No
         
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
-    owner_value = container.get('owner', None)
-
     # collect data for 'send_note' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])
     results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
@@ -51,7 +49,7 @@ def send_note(action=None, success=None, container=None, results=None, handle=No
         for results_item_1 in results_data_1:
             if container_item[0] and results_item_1[0]:
                 parameters.append({
-                    'from': owner_value,
+                    'from': "",
                     'to': container_item[0],
                     'cc': "",
                     'bcc': "",
