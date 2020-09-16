@@ -29,12 +29,12 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="geolocate_ip_1")
 
     return
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_2() called')
+def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_if_in_US() called')
 
     # check for 'if' condition 1
     matched = phantom.decision(
@@ -46,7 +46,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        prompt_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -54,14 +54,21 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('prompt_1() called')
+def prompt_analyst_to_set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_analyst_to_set_severity_to_high() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip address in the container is not from United States.
+    message = """The ip {1} address in the {0} container is not from United States.  It is from {2}.
 
 Would you like to set severity to High on the container"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name",
+    ]
 
     #responses:
     response_types = [
@@ -77,19 +84,19 @@ Would you like to set severity to High on the container"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", response_types=response_types, callback=decision_3)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_analyst_to_set_severity_to_high", parameters=parameters, response_types=response_types, callback=check_what_analyst_answered_for_severity)
 
     return
 
-def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_3() called')
+def check_what_analyst_answered_for_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('check_what_analyst_answered_for_severity() called')
 
     # check for 'if' condition 1
     matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_analyst_to_set_severity_to_high:action_result.summary.responses.0", "==", "Yes"],
         ])
 
     # call connected blocks if condition 1 matched
