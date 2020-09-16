@@ -33,6 +33,40 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     return
 
+def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('send_email_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    owner_value = container.get('owner', None)
+
+    # collect data for 'send_email_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])
+    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
+
+    parameters = []
+    
+    # build parameters list for 'send_email_1' call
+    for container_item in container_data:
+        for results_item_1 in results_data_1:
+            if container_item[0] and results_item_1[0]:
+                parameters.append({
+                    'from': owner_value,
+                    'to': container_item[0],
+                    'cc': "",
+                    'bcc': "",
+                    'subject': "Geolocate info",
+                    'body': results_item_1[0],
+                    'attachments': "",
+                    'headers': "",
+                    # context (artifact id) is added to associate results with the artifact
+                    'context': {'artifact_id': container_item[1]},
+                })
+
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+
+    return
+
 def on_finish(container, summary):
     phantom.debug('on_finish() called')
     # This function is called after all actions are completed.
