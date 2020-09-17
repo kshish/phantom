@@ -65,7 +65,7 @@ Would you like to set severity to High on the container"""
 
     # parameter list for template variable replacement
     parameters = [
-        "format_1:formatted_data",
+        "format_1:formatted_data.*",
     ]
 
     #responses:
@@ -115,6 +115,7 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
+    add_artifact_1(container=container)
 
     return
 
@@ -154,6 +155,36 @@ The ip  {0} address is from {2}
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_analyst_to_set_severity_to_high(container=container)
+
+    return
+
+def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('add_artifact_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'add_artifact_1' call
+    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
+
+    parameters = []
+    
+    # build parameters list for 'add_artifact_1' call
+    for results_item_1 in results_data_1:
+        parameters.append({
+            'name': "a1",
+            'container_id': "",
+            'label': "temp",
+            'source_data_identifier': "",
+            'cef_name': "myChildResultCountryName",
+            'cef_value': results_item_1[0],
+            'cef_dictionary': "",
+            'contains': "",
+            'run_automation': False,
+            # context (artifact id) is added to associate results with the artifact
+            'context': {'artifact_id': results_item_1[1]},
+        })
+
+    phantom.act(action="add artifact", parameters=parameters, assets=['mylocal'], name="add_artifact_1")
 
     return
 
