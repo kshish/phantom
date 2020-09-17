@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "bfbdfe8faa72e2ec238ac4178071409a7c0df1df",
+            "hash": "38c032a348d37871fcfdd190b948918992931652",
             "joint": {
                 "cells": [
                     {
@@ -112,8 +112,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 170,
-                        "line_start": 157,
+                        "line_end": 173,
+                        "line_start": 160,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -2089,7 +2089,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('format_1() called')\n    \n    template = \"\"\"The {1} container is not from United States. The ip  {0} address is from {2}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"container:name\",\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_1\")\n\n    prompt_analyst_to_set_severity_to_high(container=container)\n\n    return",
+                        "block_code": "def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('format_1() called')\n    \n    template = \"\"\"The {1} container is not from United States. \n%%\nThe ip  {0} address is from {2}\n%%\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip\",\n        \"container:name\",\n        \"filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name\",\n    ]\n\n    phantom.format(container=container, template=template, parameters=parameters, name=\"format_1\")\n\n    prompt_analyst_to_set_severity_to_high(container=container)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -2113,7 +2113,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 157,
+                        "line_end": 160,
                         "line_start": 139,
                         "message": "Configuring now",
                         "name": "format",
@@ -2205,7 +2205,7 @@
                         },
                         "state": "format",
                         "status": "",
-                        "template": "The {1} container is not from United States. The ip  {0} address is from {2}",
+                        "template": "The {1} container is not from United States. \n%%\nThe ip  {0} address is from {2}\n%%",
                         "title": "format",
                         "type": "coa.Format",
                         "warn": false,
@@ -2219,7 +2219,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2020-09-17T14:01:02.869880+00:00",
+    "create_time": "2020-09-17T14:02:04.257424+00:00",
     "draft_mode": false,
     "labels": [
         "*"
