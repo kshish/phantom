@@ -46,7 +46,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_analyst_to_set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -59,15 +59,13 @@ def prompt_analyst_to_set_severity_to_high(action=None, success=None, container=
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip {1} address in the {0} container is not from United States.  It is from {2}.
+    message = """{0}
 
 Would you like to set severity to High on the container"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "format_1:formatted_data",
     ]
 
     #responses:
@@ -135,6 +133,24 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_1() called')
+    
+    template = """The ip  {0} address in the {1} container is not from United States.  It is from {2}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "container:name",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_analyst_to_set_severity_to_high(container=container)
 
     return
 
