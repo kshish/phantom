@@ -139,7 +139,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """The ip  {0} address in the {1} container is not from United States.  It is from {2}"""
+    template = """The {1} container is not from United States. The ip  {0} address is from {2}"""
 
     # parameter list for template variable replacement
     parameters = [
