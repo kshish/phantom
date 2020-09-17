@@ -175,7 +175,7 @@ def pin_5(action=None, success=None, container=None, results=None, handle=None, 
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
-    phantom.pin(container=container, data=filtered_results_item_1_0, message="Has sourceAddress outside of U.S.", pin_type="", pin_style="", name=None)
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="Has sourceAddress outside of U.S.", pin_type="card", pin_style="red", name=None)
 
     return
 
