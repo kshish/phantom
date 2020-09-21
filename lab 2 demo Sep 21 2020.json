@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "392d376caaecd8f66467d02e50e127ff308fba4c",
+            "hash": "0ffba5708b13306bb7f3b3ce4b791c9f94e8ddb5",
             "joint": {
                 "cells": [
                     {
@@ -148,7 +148,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "start",
                         "status": "",
                         "title": "START",
                         "type": "coa.StartEnd",
@@ -218,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 101,
-                        "line_start": 88,
+                        "line_end": 129,
+                        "line_start": 116,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 5,
+                        "order": 8,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -278,8 +277,8 @@
                             }
                         },
                         "position": {
-                            "x": 1080,
-                            "y": 440
+                            "x": 1280,
+                            "y": 460
                         },
                         "previous_function": "",
                         "previous_name": "",
@@ -288,7 +287,6 @@
                             "height": 54,
                             "width": 80
                         },
-                        "state": "end",
                         "status": "",
                         "title": "END",
                         "type": "coa.StartEnd",
@@ -585,6 +583,12 @@
                             ".title": {
                                 "text": "Investigate"
                             },
+                            "g.approver image": {
+                                "opacity": 1
+                            },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -599,6 +603,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
+                            },
+                            "g.timer image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('geolocate_ip_1() called')\n\n    # collect data for 'geolocate_ip_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=decision_2, name=\"geolocate_ip_1\")\n\n    return",
@@ -693,7 +703,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "blacklist_url_1",
+                        "previous_name": "geolocate_ip_1",
                         "required_params": {
                             "ip": true
                         },
@@ -707,7 +717,7 @@
                         "status": "",
                         "title": "Investigate",
                         "type": "coa.Action",
-                        "warn": "",
+                        "warn": false,
                         "z": 9
                     },
                     {
@@ -770,7 +780,7 @@
                         "endDirections": [
                             "left"
                         ],
-                        "id": "59f9ff06-1d2e-4f37-89be-f32d1f4e3fc5",
+                        "id": "1e068fd3-ebb3-4b57-b591-1b06a6872ca3",
                         "router": {
                             "name": "metro"
                         },
@@ -783,270 +793,59 @@
                             "right"
                         ],
                         "target": {
-                            "id": "ad032ce3-d33e-4c86-9163-45b33ecb80b3",
+                            "id": "002aad6e-a293-4286-8ab4-6ed194dabbf5",
                             "selector": ".port-body[type=\"input\"]"
                         },
                         "type": "link",
-                        "z": 12
+                        "z": 18
                     },
                     {
-                        "action": "send email",
-                        "action_type": "generic",
-                        "active": false,
-                        "active_keys": {},
-                        "active_values": {
-                            "attachments": "",
-                            "bcc": "",
-                            "body": "geolocate_ip_1:action_result.data.*.country_name",
-                            "cc": "",
-                            "from": "donotreply@splunk.com",
-                            "headers": "",
-                            "subject": "container:description",
-                            "to": "artifact:*.cef.toEmail"
-                        },
-                        "angle": 0,
-                        "app": "SMTP",
-                        "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                        "approver": "",
-                        "assets": [
-                            {
-                                "action": "send email",
-                                "actions": [
-                                    "send htmlemail",
-                                    "send rawemail",
-                                    "send email",
-                                    "test connectivity"
-                                ],
-                                "active": true,
-                                "app_name": "SMTP",
-                                "app_version": "2.0.11",
-                                "appid": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                                "asset_name": "smtp",
-                                "config_type": "asset",
-                                "count": 0,
-                                "fields": {
-                                    "attachments": "",
-                                    "bcc": "",
-                                    "body": "geolocate_ip_1:action_result.data.*.country_name",
-                                    "cc": "",
-                                    "from": "donotreply@splunk.com",
-                                    "headers": "",
-                                    "subject": "container:description",
-                                    "to": "artifact:*.cef.toEmail"
-                                },
-                                "has_app": true,
-                                "id": 6,
-                                "loaded": false,
-                                "missing": false,
-                                "name": "smtp",
-                                "output": [
-                                    {
-                                        "column_name": "Status",
-                                        "column_order": 0,
-                                        "data_path": "action_result.status",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "success",
-                                            "failed"
-                                        ]
-                                    },
-                                    {
-                                        "contains": [
-                                            "vault id"
-                                        ],
-                                        "data_path": "action_result.parameter.attachments",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "ab2b2ccfba08ea538ef22f521caa01c3c2b17ccf"
-                                        ]
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.bcc",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "test1@testdomain.com"
-                                        ]
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.body",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "Test body"
-                                        ]
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.cc",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "test2@testdomain.com"
-                                        ]
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.from",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "sender@testdomain.com"
-                                        ]
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.headers",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "{\"Subject\": \"Test1\", \"To\": \"test3@testdomain.com\"}"
-                                        ]
-                                    },
-                                    {
-                                        "data_path": "action_result.parameter.subject",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "Test"
-                                        ]
-                                    },
-                                    {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_path": "action_result.parameter.to",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "receiver@testdomain.com"
-                                        ]
-                                    },
-                                    {
-                                        "data_path": "action_result.data",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "data_path": "action_result.summary",
-                                        "data_type": "string"
-                                    },
-                                    {
-                                        "column_name": "Message",
-                                        "column_order": 1,
-                                        "data_path": "action_result.message",
-                                        "data_type": "string",
-                                        "example_values": [
-                                            "Email sent"
-                                        ]
-                                    },
-                                    {
-                                        "data_path": "summary.total_objects",
-                                        "data_type": "numeric"
-                                    },
-                                    {
-                                        "data_path": "summary.total_objects_successful",
-                                        "data_type": "numeric"
-                                    }
-                                ],
-                                "parameters": {
-                                    "attachments": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "vault id"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Vault IDs of files to attach",
-                                        "key": "attachments",
-                                        "order": 6,
-                                        "primary": true,
-                                        "required": false,
-                                        "verbose": "Each file that is required to be attached, needs to be in the vault. Multiple file vault ids can be specified as comma separated."
-                                    },
-                                    "bcc": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses to include on bcc line",
-                                        "key": "bcc",
-                                        "order": 3,
-                                        "primary": true,
-                                        "required": false
-                                    },
-                                    "body": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Message body",
-                                        "key": "body",
-                                        "order": 5,
-                                        "required": true
-                                    },
-                                    "cc": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses to include on cc line",
-                                        "key": "cc",
-                                        "order": 2,
-                                        "primary": true,
-                                        "required": false
-                                    },
-                                    "from": {
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "From field",
-                                        "key": "from",
-                                        "order": 0,
-                                        "primary": true,
-                                        "required": false
-                                    },
-                                    "headers": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Custom email headers (formatted as JSON)",
-                                        "key": "headers",
-                                        "order": 7,
-                                        "required": false
-                                    },
-                                    "subject": {
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "Message Subject",
-                                        "key": "subject",
-                                        "order": 4,
-                                        "required": false
-                                    },
-                                    "to": {
-                                        "allow_list": true,
-                                        "contains": [
-                                            "email"
-                                        ],
-                                        "data_type": "string",
-                                        "default": null,
-                                        "description": "List of recipients email addresses",
-                                        "key": "to",
-                                        "order": 1,
-                                        "primary": true,
-                                        "required": true
-                                    }
-                                },
-                                "product_name": "SMTP",
-                                "product_vendor": "Generic",
-                                "targets": "6",
-                                "type": "email"
-                            }
-                        ],
                         "attrs": {
-                            ".action": {
-                                "text": "send email"
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "41bcc684-3140-4e55-a2a2-103a2a3debd0",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "35225901-f039-4094-9c0b-dc9ccebec419",
+                            "port": "out-2",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(2) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "a5f04429-a186-4189-a5e0-8f24d7cf8e19",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 20
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "api": "set severity",
+                        "attrs": {
+                            ".api": {
+                                "text": "set severity"
                             },
                             ".background": {
                                 "fill": "#FFFFFF",
@@ -1082,7 +881,7 @@
                                 }
                             },
                             ".title": {
-                                "text": "Generic"
+                                "text": "API"
                             },
                             "g.delete": {
                                 "display": "none"
@@ -1090,18 +889,22 @@
                             "g.error": {
                                 "opacity": 0
                             },
-                            "g.icon image": {
-                                "xlink:href": "/inc/coa/img/block_icon_generic.svg"
-                            },
                             "g.notes": {
                                 "display": "block"
                             }
                         },
-                        "block_code": "def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('send_email_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    description_value = container.get('description', None)\n\n    # collect data for 'send_email_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'send_email_1' call\n    for container_item in container_data:\n        for results_item_1 in results_data_1:\n            if container_item[0] and results_item_1[0]:\n                parameters.append({\n                    'from': \"donotreply@splunk.com\",\n                    'to': container_item[0],\n                    'cc': \"\",\n                    'bcc': \"\",\n                    'subject': description_value,\n                    'body': results_item_1[0],\n                    'attachments': \"\",\n                    'headers': \"\",\n                    # context (artifact id) is added to associate results with the artifact\n                    'context': {'artifact_id': container_item[1]},\n                })\n\n    phantom.act(action=\"send email\", parameters=parameters, assets=['smtp'], name=\"send_email_1\")\n\n    return",
+                        "block_code": "def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('set_severity_1() called')\n\n    phantom.set_severity(container=container, severity=\"Low\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
-                        "callsback": true,
+                        "callsback": false,
                         "color": "",
+                        "configured": [
+                            {
+                                "key": "set-severity",
+                                "setSeveritySeverity": "Low",
+                                "setSeveritySeverity_display": "Low"
+                            }
+                        ],
                         "connected_to_start": true,
                         "connection_name": "geolocate ip",
                         "connection_type": "action",
@@ -1109,26 +912,25 @@
                         "custom_code": "",
                         "custom_join": "",
                         "custom_name": "",
-                        "delay": 0,
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
-                        "id": "ad032ce3-d33e-4c86-9163-45b33ecb80b3",
+                        "id": "a5f04429-a186-4189-a5e0-8f24d7cf8e19",
                         "inPorts": [
                             "in"
                         ],
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 88,
-                        "line_start": 54,
+                        "line_end": 91,
+                        "line_start": 84,
                         "message": "Configuring now",
-                        "name": "send email",
+                        "name": "set severity",
                         "notes": "",
                         "number": 1,
-                        "order": 4,
+                        "order": 5,
                         "outPorts": [
                             "out"
                         ],
@@ -1185,27 +987,224 @@
                             }
                         },
                         "position": {
-                            "x": 1000,
-                            "y": 80
+                            "x": 960,
+                            "y": 260
                         },
                         "previous_function": "",
-                        "previous_name": "send_email_1",
-                        "required_params": {
-                            "body": true,
-                            "to": true
-                        },
-                        "reviewer": "",
+                        "previous_name": "set_severity_1",
                         "show_number": false,
                         "size": {
                             "height": 100,
                             "width": 180
                         },
-                        "state": "app_action_assets",
+                        "state": "api",
                         "status": "",
-                        "title": "Generic",
-                        "type": "coa.Action",
-                        "warn": "",
-                        "z": 15
+                        "title": "API",
+                        "type": "coa.API",
+                        "warn": false,
+                        "z": 21
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "approver": "admin",
+                        "approver_display": "admin",
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 1
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.error image": {
+                                "xlink:href": "/inc/coa/img/block_icon_warn.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def prompt_to_set_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_to_set_severity() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The container has an ip outside of the US\n\nWould you like to set severity to high?\"\"\"\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name=\"prompt_to_set_severity\", response_types=response_types, callback=decision_5)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "prompt to set severity",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "002aad6e-a293-4286-8ab4-6ed194dabbf5",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 84,
+                        "line_start": 57,
+                        "message": "The container has an ip outside of the US\n\nWould you like to set severity to high?",
+                        "name": "prompt",
+                        "notes": "",
+                        "number": 1,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "parameters": [],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 900,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "prompt_to_set_severity",
+                        "respond_in": "1",
+                        "response_key": "Message",
+                        "response_options": [],
+                        "response_type": "list",
+                        "responses": [
+                            {
+                                "response_key": "Yes/No",
+                                "response_options": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "response_type": "list"
+                            }
+                        ],
+                        "show_number": true,
+                        "size": {
+                            "height": 80,
+                            "width": 80
+                        },
+                        "state": "prompt",
+                        "status": "",
+                        "type": "coa.Prompt",
+                        "warn": false,
+                        "z": 23
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "357eb7bf-7740-48f6-b1ba-e12b3cbc0a82",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "002aad6e-a293-4286-8ab4-6ed194dabbf5",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "7ac9b998-968b-46a3-9f85-8b8e8efa6821",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 24
                     },
                     {
                         "active": false,
@@ -1261,9 +1260,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        send_email_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    return",
+                        "block_code": "def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decision_2() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        prompt_to_set_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    # call connected blocks for 'else' condition 2\n    set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1287,7 +1289,7 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 54,
+                        "line_end": 57,
                         "line_start": 36,
                         "name": "decision",
                         "notes": "",
@@ -1392,7 +1394,371 @@
                         "status": "",
                         "type": "coa.Decision",
                         "warn": "",
-                        "z": 16
+                        "z": 25
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "47ca7d02-b1ae-4161-bbfa-a9830fa67e20",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "7ac9b998-968b-46a3-9f85-8b8e8efa6821",
+                            "port": "out-1",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "30bb02a4-000c-41a4-b1bc-0e2aca9b5453",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 27
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "api": "set severity",
+                        "attrs": {
+                            ".api": {
+                                "text": "set severity"
+                            },
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99"
+                            },
+                            ".color-band": {
+                                "fill": "#171D21"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "API"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('set_severity_2() called')\n\n    phantom.set_severity(container=container, severity=\"High\")\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "color": "",
+                        "configured": [
+                            {
+                                "key": "set-severity",
+                                "setSeveritySeverity": "High",
+                                "setSeveritySeverity_display": "High"
+                            }
+                        ],
+                        "connected_to_start": true,
+                        "connection_name": "prompt to set severity",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "30bb02a4-000c-41a4-b1bc-0e2aca9b5453",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 116,
+                        "line_start": 109,
+                        "message": "Configuring now",
+                        "name": "set severity",
+                        "notes": "",
+                        "number": 2,
+                        "order": 7,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 1240,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "set_severity_2",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "api",
+                        "status": "",
+                        "title": "API",
+                        "type": "coa.API",
+                        "warn": false,
+                        "z": 28
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#637282",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 5
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decision_5() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_to_set_severity:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "prompt to set severity",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "description": "",
+                        "hasElse": false,
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "7ac9b998-968b-46a3-9f85-8b8e8efa6821",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 109,
+                        "line_start": 91,
+                        "name": "decision",
+                        "notes": "",
+                        "number": 5,
+                        "order": 6,
+                        "outPorts": [
+                            "out-1"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "prompt_to_set_severity:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 1100,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "decision_5",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "decision",
+                        "status": "",
+                        "type": "coa.Decision",
+                        "warn": "",
+                        "z": 29
                     }
                 ]
             },
@@ -1402,7 +1768,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2020-09-21T16:16:26.273977+00:00",
+    "create_time": "2020-09-21T17:24:01.693333+00:00",
     "draft_mode": false,
     "labels": [
         "*"
