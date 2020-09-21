@@ -69,7 +69,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
         for results_item_1 in results_data_1:
             if container_item[0] and results_item_1[0]:
                 parameters.append({
-                    'from': "donotreply@fmr.com",
+                    'from': "donotreply@splunk.com",
                     'to': container_item[0],
                     'cc': "",
                     'bcc': "",
