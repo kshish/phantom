@@ -94,7 +94,9 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_high_severity() called')
 
-    phantom.pin(container=container, data="", message="NOT in US", pin_type="card", pin_style="red", name=None)
+    formatted_data_1 = phantom.get_format_data(name='format_ip_and_country__as_list')
+
+    phantom.pin(container=container, data=formatted_data_1, message="NOT in US", pin_type="card", pin_style="red", name=None)
 
     return
 
