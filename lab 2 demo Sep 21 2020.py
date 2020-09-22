@@ -33,27 +33,6 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     return
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_2() called')
-
-    # check for 'if' condition 1
-    matched = phantom.decision(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched:
-        format_6(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-        return
-
-    # call connected blocks for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-
-    return
-
 def prompt_to_set_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_to_set_severity() called')
     
@@ -90,9 +69,7 @@ Would you like to set severity to high?"""
 def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_low_severity() called')
 
-    phantom.set_severity(container=container, severity="Low")
-
-    phantom.set_sensitivity(container=container, sensitivity="amber")
+    phantom.pin(container=container, data="", message="IP In US", pin_type="card", pin_style="grey", name=None)
 
     return
 
@@ -117,7 +94,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_high_severity() called')
 
-    phantom.set_severity(container=container, severity="High")
+    phantom.pin(container=container, data="", message="NOT in US", pin_type="card", pin_style="red", name=None)
 
     return
 
@@ -135,7 +112,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_ip_and_country(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -155,6 +132,54 @@ ip is {0} from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_6")
 
     prompt_to_set_severity(container=container)
+
+    return
+
+def format_ip_and_country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_ip_and_country() called')
+    
+    template = """{0} in {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country")
+
+    filter_2(container=container)
+
+    return
+
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_2() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+        ],
+        name="filter_2:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        format_6(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+        ],
+        name="filter_2:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
