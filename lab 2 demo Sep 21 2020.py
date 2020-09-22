@@ -46,7 +46,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_to_set_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_6(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -59,15 +59,14 @@ def prompt_to_set_severity(action=None, success=None, container=None, results=No
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container {0} has an ip {1} outside of the US. It is in {2}
-
+    message = """The container {0} 
+{1}
 Would you like to set severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "format_6:formatted_data",
     ]
 
     #responses:
@@ -135,6 +134,23 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_6() called')
+    
+    template = """ip is {0} from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_6")
+
+    prompt_to_set_severity(container=container)
 
     return
 
