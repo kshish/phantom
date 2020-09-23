@@ -60,9 +60,16 @@ def ask_to_set_high_severity(action=None, success=None, container=None, results=
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container's IP is outside of U.S.
+    message = """The container named {0} with IP {1} is outside of U.S. It is from {2}
 
 Do you want to set severity to High?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.country_name",
+    ]
 
     #responses:
     response_types = [
@@ -78,7 +85,7 @@ Do you want to set severity to High?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_set_high_severity", response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_set_high_severity", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
