@@ -30,7 +30,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geolocate")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=find_artifacts_1, name="my_geolocate")
 
     return
 
@@ -90,14 +90,14 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_high_severity() called')
 
-    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:direct_flow:condition_1:my_geolocate:action_result.data.*.country_name', 'filtered-data:direct_flow:condition_1:my_geolocate:action_result.parameter.ip'])
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:direct_flow:condition_1:my_geolocate:action_result.parameter.ip', 'filtered-data:direct_flow:condition_1:my_geolocate:action_result.data.*.country_name'])
 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
     filtered_results_item_1_1 = [item[1] for item in filtered_results_data_1]
 
     phantom.set_severity(container=container, severity="High")
 
-    phantom.pin(container=container, data=filtered_results_item_1_1, message=filtered_results_item_1_0, pin_type="card", pin_style="red", name=None)
+    phantom.pin(container=container, data=filtered_results_item_1_0, message=filtered_results_item_1_1, pin_type="card", pin_style="red", name=None)
 
     return
 
@@ -122,7 +122,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", ""],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "find_artifacts_1:artifact:*.cef.cn2"],
         ],
         name="filter_1:condition_1")
 
@@ -179,6 +179,27 @@ def direct_flow(action=None, success=None, container=None, results=None, handle=
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
         set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+def find_artifacts_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('find_artifacts_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'find_artifacts_1' call
+
+    parameters = []
+    
+    # build parameters list for 'find_artifacts_1' call
+    parameters.append({
+        'values': "country",
+        'exact_match': "true",
+        'limit_search': False,
+        'container_ids': 12,
+    })
+
+    phantom.act(action="find artifacts", parameters=parameters, assets=['mylocophantom'], callback=filter_1, name="find_artifacts_1", parent_action=action)
 
     return
 
