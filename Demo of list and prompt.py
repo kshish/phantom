@@ -4,7 +4,6 @@
 import phantom.rules as phantom
 import json
 from datetime import datetime, timedelta
-
 def on_start(container):
     phantom.debug('on_start() called')
     
@@ -13,7 +12,7 @@ def on_start(container):
 
     return
 
-def Prompt_for_color(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def Prompt_for_color(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('Prompt_for_color() called')
     
     # set user and message variables for phantom.prompt call
@@ -34,11 +33,11 @@ def Prompt_for_color(action=None, success=None, container=None, results=None, ha
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('decision_1() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -46,16 +45,16 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        prompt_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
-    add_list_pin_1(action=action, success=success, container=container, results=results, handle=handle)
+    add_list_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_2() called')
     
     # set user and message variables for phantom.prompt call
@@ -85,25 +84,22 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def add_list_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
-    phantom.debug('add_list_pin_1() called')
+def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('add_list_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.responses.0', 'Prompt_for_color:action_result.status'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.responses.0'], action_results=results)
 
     results_item_1_0 = [item[0] for item in results_data_1]
-    results_item_1_1 = [item[1] for item in results_data_1]
 
     phantom.add_list("colors", results_item_1_0)
 
-    phantom.pin(container=container, data=results_item_1_1, message=results_item_1_0, pin_type="card", pin_style="purple", name=None)
-
     return
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('decision_2() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -111,8 +107,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        decision_1(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
