@@ -170,7 +170,7 @@ def find_artifacts_2(action=None, success=None, container=None, results=None, ha
     
     # build parameters list for 'find_artifacts_2' call
     parameters.append({
-        'values': "mycountry",
+        'values': "country",
         'exact_match': "true",
         'limit_search': "",
         'container_ids': 12,
