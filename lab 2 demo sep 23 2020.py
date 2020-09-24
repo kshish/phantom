@@ -43,25 +43,26 @@ def send_country_name_email(action=None, success=None, container=None, results=N
 
     # collect data for 'send_country_name_email' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])
-    formatted_data_1 = phantom.get_format_data(name='format_1')
+    formatted_data_1 = phantom.get_format_data(name='format_1__as_list')
 
     parameters = []
     
     # build parameters list for 'send_country_name_email' call
     for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'cc': "",
-                'to': container_item[0],
-                'bcc': "",
-                'body': formatted_data_1,
-                'from': "donotreply@splunk.com",
-                'headers': "",
-                'subject': name_value,
-                'attachments': "",
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
+        for formatted_part_1 in formatted_data_1:
+            if container_item[0]:
+                parameters.append({
+                    'cc': "",
+                    'to': container_item[0],
+                    'bcc': "",
+                    'body': formatted_part_1,
+                    'from': "donotreply@splunk.com",
+                    'headers': "",
+                    'subject': name_value,
+                    'attachments': "",
+                    # context (artifact id) is added to associate results with the artifact
+                    'context': {'artifact_id': container_item[1]},
+                })
 
     phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_country_name_email")
 
