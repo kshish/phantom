@@ -47,7 +47,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        ask_to_set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_ip_and_country_name_list(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -60,15 +60,16 @@ def ask_to_set_high_severity(action=None, success=None, container=None, results=
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container named {0} with IP {1} is outside of U.S. It is from {2}
+    message = """The container named {0} with
+
+{1}
 
 Do you want to set severity to High?"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_ip_and_country_name_list:formatted_data",
     ]
 
     #responses:
@@ -136,6 +137,23 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_ip_and_country_name_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_ip_and_country_name_list() called')
+    
+    template = """ip {0} is in {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_name_list")
+
+    ask_to_set_high_severity(container=container)
 
     return
 
