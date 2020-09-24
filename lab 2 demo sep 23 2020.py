@@ -64,14 +64,16 @@ def send_country_name_email(action=None, success=None, container=None, results=N
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_country_name_email", parent_action=action)
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_country_name_email")
 
     return
 
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """{0} from {1}"""
+    template = """%%
+{0} from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
