@@ -172,7 +172,7 @@ def find_artifacts_2(action=None, success=None, container=None, results=None, ha
     parameters.append({
         'values': "country",
         'exact_match': "true",
-        'limit_search': "",
+        'limit_search': False,
         'container_ids': 12,
     })
 
