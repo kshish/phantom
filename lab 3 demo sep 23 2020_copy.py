@@ -69,7 +69,7 @@ Do you want to set severity to High?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "format_ip_and_country_name_list:formatted_data",
+        "format_ip_and_country_name_list:formatted_data.*",
     ]
 
     #responses:
