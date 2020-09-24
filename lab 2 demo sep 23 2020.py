@@ -44,28 +44,44 @@ def send_country_name_email(action=None, success=None, container=None, results=N
 
     # collect data for 'send_country_name_email' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.toEmail', 'artifact:*.id'])
-    results_data_1 = phantom.collect2(container=container, datapath=['my_geolocate:action_result.data.*.country_name', 'my_geolocate:action_result.parameter.context.artifact_id'], action_results=results)
+    formatted_data_1 = phantom.get_format_data(name='format_1')
 
     parameters = []
     
     # build parameters list for 'send_country_name_email' call
     for container_item in container_data:
-        for results_item_1 in results_data_1:
-            if container_item[0] and results_item_1[0]:
-                parameters.append({
-                    'from': "donotreply@splunk.com",
-                    'to': container_item[0],
-                    'cc': "",
-                    'bcc': "",
-                    'subject': name_value,
-                    'body': results_item_1[0],
-                    'attachments': "",
-                    'headers': "",
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': container_item[1]},
-                })
+        if container_item[0]:
+            parameters.append({
+                'cc': "",
+                'to': container_item[0],
+                'bcc': "",
+                'body': formatted_data_1,
+                'from': "donotreply@splunk.com",
+                'headers': "",
+                'subject': name_value,
+                'attachments': "",
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
 
     phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_country_name_email", parent_action=action)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_1() called')
+    
+    template = """{0} from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    send_country_name_email(container=container)
 
     return
 
