@@ -29,9 +29,8 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug(parameters)
-    phantom.debug('chris wuz here')
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_country_name_email, name="my_geolocate")
+
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=format_1, name="my_geolocate")
 
     return
 
