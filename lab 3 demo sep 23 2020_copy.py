@@ -42,7 +42,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "find_artifacts_2:artifact:*.cef.cn2"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -136,7 +136,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        find_artifacts_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -156,27 +156,6 @@ ip {0} is in {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_name_list")
 
     ask_to_set_high_severity(container=container)
-
-    return
-
-def find_artifacts_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('find_artifacts_2() called')
-        
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'find_artifacts_2' call
-
-    parameters = []
-    
-    # build parameters list for 'find_artifacts_2' call
-    parameters.append({
-        'values': "country",
-        'exact_match': "true",
-        'limit_search': False,
-        'container_ids': 12,
-    })
-
-    phantom.act(action="find artifacts", parameters=parameters, assets=['mylocophantom'], callback=decision_1, name="find_artifacts_2")
 
     return
 
