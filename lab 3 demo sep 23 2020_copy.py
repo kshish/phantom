@@ -143,7 +143,9 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_ip_and_country_name_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_ip_and_country_name_list() called')
     
-    template = """ip {0} is in {1}"""
+    template = """%%
+ip {0} is in {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
