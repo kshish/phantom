@@ -29,7 +29,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-
+    phantom.debug(parameters)
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
 
     return
@@ -47,23 +47,35 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
-    # call connected blocks for 'else' condition 2
-    set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    # check for 'elif' condition 2
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Japan"],
+        ])
+
+    # call connected blocks if condition 2 matched
+    if matched:
+        return
+
+    # call connected blocks for 'else' condition 3
+    set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_1() called')
+def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
 
     return
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_2() called')
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
