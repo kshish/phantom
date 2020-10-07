@@ -42,7 +42,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -58,14 +58,14 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_severity_1() called')
 
-    phantom.set_severity(container=container, severity="Low")
+    phantom.set_severity(container=container, severity="High")
 
     return
 
 def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_severity_2() called')
 
-    phantom.set_severity(container=container, severity="High")
+    phantom.set_severity(container=container, severity="Low")
 
     return
 
