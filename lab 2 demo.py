@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'format_ip' block
+    format_ip(container=container)
 
     return
 
@@ -17,18 +17,14 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+    formatted_data_1 = phantom.get_format_data(name='format_ip')
 
     parameters = []
     
     # build parameters list for 'geolocate_ip_1' call
-    for container_item in container_data:
-        if container_item[0]:
-            parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
-            })
+    parameters.append({
+        'ip': formatted_data_1,
+    })
 
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_none_country_name, name="geolocate_ip_1")
 
@@ -228,6 +224,23 @@ ip: {0} from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     prompt_1(container=container)
+
+    return
+
+def format_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_ip() called')
+    
+    template = """{0}{1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.sourceAddress",
+        "artifact:*.cef.destinationAddress",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip")
+
+    geolocate_ip_1(container=container)
 
     return
 
