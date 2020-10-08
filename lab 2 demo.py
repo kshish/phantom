@@ -194,7 +194,7 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "prompt_2:action_result.parameter.message",
+        "prompt_2:action_result.summary.responses.0",
     ]
 
     #responses:

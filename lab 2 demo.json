@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "This will be a comment in the playbook code",
-            "hash": "2698e22a96653008f2641e803844d33215485d7f",
+            "hash": "f56fbb94c1b5eefbe8d685ab3fe8164186b8ae42",
             "joint": {
                 "cells": [
                     {
@@ -2087,7 +2087,7 @@
                         "state": "filter",
                         "status": "",
                         "type": "coa.Filter",
-                        "warn": "",
+                        "warn": false,
                         "z": 108
                     },
                     {
@@ -2131,6 +2131,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_2() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"HEY!!@@!@ Internal IP address found!!!!\n\nHere it is:\n\n{0}\n\nType in a message\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"filtered-data:filter_none_country_name:condition_2:geolocate_ip_1:action_result.parameter.ip\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"message\",\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_2\", parameters=parameters, response_types=response_types, callback=prompt_3)\n\n    return",
@@ -2337,9 +2340,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_3() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"the message was {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"prompt_2:action_result.parameter.message\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"message\",\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_3\", parameters=parameters, response_types=response_types)\n\n    return",
+                        "block_code": "def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_3() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"the message was {0}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"prompt_2:action_result.summary.responses.0\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"message\",\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_3\", parameters=parameters, response_types=response_types)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -2376,7 +2382,7 @@
                             {
                                 "position": 0,
                                 "type": "",
-                                "value": "prompt_2:action_result.parameter.message"
+                                "value": "prompt_2:action_result.summary.responses.0"
                             }
                         ],
                         "ports": {
@@ -2468,7 +2474,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2020-10-08T16:59:11.042131+00:00",
+    "create_time": "2020-10-08T17:02:16.421575+00:00",
     "draft_mode": false,
     "labels": [
         "*"
