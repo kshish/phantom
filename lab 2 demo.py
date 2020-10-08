@@ -8,11 +8,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'dest' block
-    dest(container=container)
-
-    # call 'source' block
-    source(container=container)
+    # call 'geolocate_ip_1' block
+    geolocate_ip_1(container=container)
 
     return
 
@@ -20,14 +17,18 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
-    formatted_data_1 = phantom.get_format_data(name='format_ip')
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
 
     parameters = []
     
     # build parameters list for 'geolocate_ip_1' call
-    parameters.append({
-        'ip': formatted_data_1,
-    })
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'ip': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
 
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_none_country_name, name="geolocate_ip_1")
 
@@ -233,67 +234,6 @@ ip: {0} from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     prompt_1(container=container)
-
-    return
-
-def format_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('format_ip() called')
-    
-    template = """{0}{1}"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "filtered-data:dest:condition_1:artifact:*.cef.destinationAddress",
-        "filtered-data:source:condition_1:artifact:*.cef.sourceAddress",
-    ]
-
-    phantom.format(container=container, template=template, parameters=parameters, name="format_ip")
-
-    geolocate_ip_1(container=container)
-
-    return
-
-def join_format_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
-    phantom.debug('join_format_ip() called')
-
-    # no callbacks to check, call connected block "format_ip"
-    phantom.save_run_data(key='join_format_ip_called', value='format_ip', auto=True)
-
-    format_ip(container=container, handle=handle)
-    
-    return
-
-def dest(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('dest() called')
-
-    # collect filtered artifact ids for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        conditions=[
-            ["artifact:*.cef.sourceAddress", "!=", ""],
-        ],
-        name="dest:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        join_format_ip(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-def source(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('source() called')
-
-    # collect filtered artifact ids for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        conditions=[
-            ["artifact:*.cef.destinationAddress", "!=", ""],
-        ],
-        name="source:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        join_format_ip(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
