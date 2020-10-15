@@ -32,35 +32,20 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="geolocate_ip_1")
-
-    return
-
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_2() called')
-
-    # check for 'if' condition 1
-    matched = phantom.decision(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched:
-        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-        return
-
-    # call connected blocks for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_none_for_country_name, name="geolocate_ip_1")
 
     return
 
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_high_severity() called')
 
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:by_US_or_not:condition_1:geolocate_ip_1:action_result.data.*.country_name'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
     phantom.set_severity(container=container, severity="High")
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="Not in US", pin_type="card", pin_style="red", name=None)
     join_add_comment_8(container=container)
 
     return
@@ -68,7 +53,13 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
 def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_low_severity() called')
 
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:by_US_or_not:condition_2:geolocate_ip_1:action_result.data.*.country_name'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
     phantom.set_severity(container=container, severity="Low")
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="Is in US", pin_type="card", pin_style="blue", name=None)
     join_add_comment_8(container=container)
 
     return
@@ -151,8 +142,8 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('filter_1() called')
+def filter_out_none_for_country_name(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_out_none_for_country_name() called')
 
     # collect filtered artifact ids for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -161,11 +152,11 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
         ],
-        name="filter_1:condition_1")
+        name="filter_out_none_for_country_name:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        by_US_or_not(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -178,13 +169,44 @@ ip: {0} is from {1}
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:by_US_or_not:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:by_US_or_not:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+def by_US_or_not(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('by_US_or_not() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_out_none_for_country_name:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+        ],
+        name="by_US_or_not:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_out_none_for_country_name:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+        ],
+        name="by_US_or_not:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
