@@ -18,7 +18,7 @@ def on_start(container):
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('geolocate_ip_1() called')
 
     # collect data for 'geolocate_ip_1' call
@@ -35,11 +35,11 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decision_1, name="geolocate_ip_1")
 
     return
 
-def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('file_reputation_1() called')
 
     # collect data for 'file_reputation_1' call
@@ -56,11 +56,11 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("file reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="file_reputation_1")
+    phantom.act(action="file reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="file_reputation_1")
 
     return
 
-def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('domain_reputation_1() called')
 
     # collect data for 'domain_reputation_1' call
@@ -77,15 +77,15 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act("domain reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="domain_reputation_1")
+    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], callback=join_decision_1, name="domain_reputation_1")
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('decision_1() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -93,27 +93,27 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        filter_1(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        filter_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
-    filter_2(action=action, success=success, container=container, results=results, handle=handle)
+    filter_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
     phantom.debug('join_decision_1() called')
 
-    # check if all connected incoming actions are done i.e. have succeeded or failed
-    if phantom.actions_done([ 'file_reputation_1', 'geolocate_ip_1', 'domain_reputation_1' ]):
+    # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed
+    if phantom.completed(action_names=['file_reputation_1', 'geolocate_ip_1', 'domain_reputation_1']):
         
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
     
     return
 
-def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('Notify_IT() called')
     
     # set user and message variables for phantom.prompt call
@@ -149,7 +149,7 @@ def Notify_IT(action=None, success=None, container=None, results=None, handle=No
 
     return
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('filter_1() called')
 
     # collect filtered artifact ids for 'if' condition 1
@@ -163,15 +163,15 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        Notify_IT(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        Notify_IT(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
-def prompt_timeout(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def prompt_timeout(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_timeout() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -179,20 +179,20 @@ def prompt_timeout(action=None, success=None, container=None, results=None, hand
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        event_promote(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        event_promote(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
-    pin_add_comment_2(action=action, success=success, container=container, results=results, handle=handle)
+    pin_add_comment_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def event_promote(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def event_promote(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('event_promote() called')
 
     # check for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
+    matched = phantom.decision(
         container=container,
         action_results=results,
         conditions=[
@@ -200,16 +200,16 @@ def event_promote(action=None, success=None, container=None, results=None, handl
         ])
 
     # call connected blocks if condition 1 matched
-    if matched_artifacts_1 or matched_results_1:
-        add_artifact_1(action=action, success=success, container=container, results=results, handle=handle)
+    if matched:
+        add_artifact_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
-    add_comment_set_status_3(action=action, success=success, container=container, results=results, handle=handle)
+    add_comment_set_status_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('filter_2() called')
 
     # collect filtered artifact ids for 'if' condition 1
@@ -223,11 +223,11 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
     template = """Virus positives ({0}) are below threshold (10), closing event."""
@@ -243,7 +243,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     return
 
-def add_comment_set_status_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def add_comment_set_status_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('add_comment_set_status_1() called')
 
     formatted_data_1 = phantom.get_format_data(name='format_1')
@@ -254,7 +254,7 @@ def add_comment_set_status_1(action=None, success=None, container=None, results=
 
     return
 
-def pin_add_comment_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def pin_add_comment_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('pin_add_comment_2() called')
 
     phantom.pin(container=container, data="", message="Awaiting Action", pin_type="card", pin_style="red", name=None)
@@ -263,7 +263,7 @@ def pin_add_comment_2(action=None, success=None, container=None, results=None, h
 
     return
 
-def add_comment_set_status_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def add_comment_set_status_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('add_comment_set_status_3() called')
 
     results_data_1 = phantom.collect2(container=container, datapath=['Notify_IT:action_result.summary.responses.1'], action_results=results)
@@ -276,17 +276,17 @@ def add_comment_set_status_3(action=None, success=None, container=None, results=
 
     return
 
-def playbook_local_Case_Promotion_Lab_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def playbook_local_Case_Promotion_Lab_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('playbook_local_Case_Promotion_Lab_1() called')
     
     # call playbook "local/Case Promotion Lab", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("local/Case Promotion Lab", container=container)
+    playbook_run_id = phantom.playbook(playbook="local/Case Promotion Lab", container=container)
 
     return
 
-def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None):
+def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('add_artifact_1() called')
-    
+        
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'add_artifact_1' call
@@ -297,19 +297,19 @@ def add_artifact_1(action=None, success=None, container=None, results=None, hand
     # build parameters list for 'add_artifact_1' call
     for results_item_1 in results_data_1:
         parameters.append({
-            'container_id': "",
             'name': "Promote Reason",
-            'contains': "",
-            'source_data_identifier': "Investigation Lab",
             'label': "event",
-            'cef_value': results_item_1[0],
             'cef_name': "reason",
+            'contains': "",
+            'cef_value': results_item_1[0],
+            'container_id': "",
             'cef_dictionary': "",
+            'source_data_identifier': "Investigation Lab",
             # context (artifact id) is added to associate results with the artifact
             'context': {'artifact_id': results_item_1[1]},
         })
 
-    phantom.act("add artifact", parameters=parameters, assets=['phantom'], callback=playbook_local_Case_Promotion_Lab_1, name="add_artifact_1")
+    phantom.act(action="add artifact", parameters=parameters, assets=['phantom'], callback=playbook_local_Case_Promotion_Lab_1, name="add_artifact_1")
 
     return
 
