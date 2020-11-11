@@ -32,44 +32,88 @@ def my_geo(action=None, success=None, container=None, results=None, handle=None,
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-            
-    phantom.debug(parameters)
-    phantom.debug('chris wuz here')
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="my_geo")
+
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="my_geo")
 
     return
 
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('send_email_1() called')
-        
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+def decide_if_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_if_in_US() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "!=", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    # call connected blocks for 'else' condition 2
+    set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_1() called')
     
-    name_value = container.get('name', None)
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip is outside of the United States.
 
-    # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['my_geo:action_result.data.*.country_name', 'my_geo:action_result.parameter.context.artifact_id'], action_results=results)
-    inputs_data_1 = phantom.collect2(container=container, datapath=['my_geo:artifact:*.cef.toEmail', 'my_geo:artifact:*.id'], action_results=results)
+Do you want to set severity to High?"""
 
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for results_item_1 in results_data_1:
-        for inputs_item_1 in inputs_data_1:
-            if inputs_item_1[0] and results_item_1[0]:
-                parameters.append({
-                    'from': "donotreply@splunk.com",
-                    'to': inputs_item_1[0],
-                    'cc': "",
-                    'bcc': "",
-                    'subject': name_value,
-                    'body': results_item_1[0],
-                    'attachments': "",
-                    'headers': "",
-                    # context (artifact id) is added to associate results with the artifact
-                    'context': {'artifact_id': inputs_item_1[1]},
-                })
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
 
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", response_types=response_types, callback=decision_3)
+
+    return
+
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decision_3() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="High")
+
+    return
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_2() called')
+
+    phantom.set_severity(container=container, severity="Low")
 
     return
 
