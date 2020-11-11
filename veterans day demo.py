@@ -63,9 +63,20 @@ def ask_to_set_severity_to_high(action=None, success=None, container=None, resul
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip is outside of the United States.
+    message = """The container {2} with description {3} with severity {4} has ip  outside of the United States.
+
+The ip {0} is from {1}.
 
 Do you want to set severity to High?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geo:action_result.parameter.ip",
+        "my_geo:action_result.data.*.country_name",
+        "container:name",
+        "container:description",
+        "container:severity",
+    ]
 
     #responses:
     response_types = [
@@ -81,7 +92,7 @@ Do you want to set severity to High?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_set_severity_to_high", response_types=response_types, callback=evaluate_response)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_set_severity_to_high", parameters=parameters, response_types=response_types, callback=evaluate_response)
 
     return
 
