@@ -41,7 +41,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["Prompt_for_color:action_result.summary.responses.0", "in", "custom_list:colors"],
+            ["cf_community_string_to_lowercase_1:custom_function_result.data.lowercase_string", "in", "custom_list:colors"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -87,11 +87,11 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 def add_list_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('add_list_1() called')
 
-    results_data_1 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.responses.0'], action_results=results)
+    custom_function_results_data_1 = phantom.collect2(container=container, datapath=['cf_community_string_to_lowercase_1:custom_function_result.data.lowercase_string'], action_results=results)
 
-    results_item_1_0 = [item[0] for item in results_data_1]
+    custom_function_results_item_1_0 = [item[0] for item in custom_function_results_data_1]
 
-    phantom.add_list("colors", results_item_1_0)
+    phantom.add_list("colors", custom_function_results_item_1_0)
 
     return
 
@@ -108,8 +108,34 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        decision_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        cf_community_string_to_lowercase_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
+
+    return
+
+def cf_community_string_to_lowercase_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('cf_community_string_to_lowercase_1() called')
+    
+    action_results_data_0 = phantom.collect2(container=container, datapath=['Prompt_for_color:action_result.summary.responses.0', 'Prompt_for_color:action_result.parameter.context.artifact_id'], action_results=results )
+
+    parameters = []
+
+    for item0 in action_results_data_0:
+        parameters.append({
+            'input_string': item0[0],
+        })
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################    
+
+    # call custom function "community/string_to_lowercase", returns the custom_function_run_id
+    phantom.custom_function(custom_function='community/string_to_lowercase', parameters=parameters, name='cf_community_string_to_lowercase_1', callback=decision_1)
 
     return
 
