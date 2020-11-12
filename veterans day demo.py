@@ -33,7 +33,7 @@ def my_geo(action=None, success=None, container=None, results=None, handle=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_in_US, name="my_geo")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="my_geo")
 
     return
 
@@ -45,7 +45,7 @@ def decide_if_in_US(action=None, success=None, container=None, results=None, han
         container=container,
         action_results=results,
         conditions=[
-            ["my_geo:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:my_geo:action_result.data.*.country_name", "!=", "United States"],
         ])
 
     # call connected blocks if condition 1 matched
@@ -71,8 +71,8 @@ Do you want to set severity to High?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geo:action_result.parameter.ip",
-        "my_geo:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geo:action_result.data.*.country_name",
         "container:name",
         "container:description",
         "container:severity",
@@ -125,6 +125,24 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     phantom.debug('set_low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_1() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decide_if_in_US(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
