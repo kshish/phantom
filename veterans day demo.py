@@ -125,6 +125,10 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
 
     phantom.set_severity(container=container, severity="Low")
 
+    phantom.set_sensitivity(container=container, sensitivity="amber")
+
+    phantom.comment(container=container, comment="Set to low severity due to internal ip or US based")
+
     return
 
 def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
