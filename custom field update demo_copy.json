@@ -7,7 +7,6 @@
             "clean": true,
             "code_block": "",
             "description": "this is a comment",
-            "hash": "b4f303b0e3ffedb97411df65a8eea65311aae1d6",
             "joint": {
                 "cells": [
                     {
@@ -2126,192 +2125,6 @@
                                 }
                             },
                             ".number": {
-                                "text": 2
-                            },
-                            ".outPorts>.port-0": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                },
-                                "ref-x": 83,
-                                "ref-y": 40
-                            },
-                            ".outPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                }
-                            },
-                            ".outPorts>.port-1": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                },
-                                "ref-x": 41,
-                                "ref-y": 82
-                            },
-                            ".outPorts>.port-1>.port-body": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            }
-                        },
-                        "block_code": "def route_IPs(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('route_IPs() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ],\n        name=\"route_IPs:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    # collect filtered artifact ids for 'if' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ],\n        name=\"route_IPs:condition_2\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_2 or matched_results_2:\n        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "connected_to_start": true,
-                        "connection_name": "my geolocate",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "route IPs",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "df75ef99-798f-4ca8-91ca-0d85e519a702",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 201,
-                        "line_start": 170,
-                        "name": "filter",
-                        "notes": "",
-                        "number": 2,
-                        "order": 10,
-                        "outPorts": [
-                            "out-1",
-                            "out-2"
-                        ],
-                        "outputs": [
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "!=",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 680,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "route_IPs",
-                        "show_number": true,
-                        "size": {
-                            "height": 82,
-                            "width": 82
-                        },
-                        "state": "filter",
-                        "status": "",
-                        "type": "coa.Filter",
-                        "warn": "",
-                        "z": 141
-                    },
-                    {
-                        "active": false,
-                        "angle": 0,
-                        "attrs": {
-                            ".background": {
-                                "fill": "#FFFFFF",
-                                "stroke": "#818D99",
-                                "transform": "rotate(45 30 70)"
-                            },
-                            ".inPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
                                 "text": 1
                             },
                             ".outPorts>.port-0": {
@@ -2653,6 +2466,192 @@
                         "type": "coa.API",
                         "warn": false,
                         "z": 143
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#FFFFFF",
+                                "stroke": "#818D99",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 2
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".outPorts>.port-1": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                },
+                                "ref-x": 41,
+                                "ref-y": 82
+                            },
+                            ".outPorts>.port-1>.port-body": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def route_IPs(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('route_IPs() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ],\n        name=\"route_IPs:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    # collect filtered artifact ids for 'if' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name\", \"==\", \"United States\"],\n        ],\n        name=\"route_IPs:condition_2\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_2 or matched_results_2:\n        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "my geolocate",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "route IPs",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "df75ef99-798f-4ca8-91ca-0d85e519a702",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 201,
+                        "line_start": 170,
+                        "name": "filter",
+                        "notes": "",
+                        "number": 2,
+                        "order": 10,
+                        "outPorts": [
+                            "out-1",
+                            "out-2"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "!=",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 680,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "route_IPs",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "filter",
+                        "status": "",
+                        "type": "coa.Filter",
+                        "warn": "",
+                        "z": 144
                     }
                 ]
             },
