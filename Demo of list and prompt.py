@@ -63,7 +63,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "Prompt_for_color:action_result.summary.responses.0",
+        "cf_community_string_to_lowercase_1:custom_function_result.data.lowercase_string",
     ]
 
     #responses:
