@@ -17,7 +17,7 @@ def Prompt_for_color(action=None, success=None, container=None, results=None, ha
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Please type in a color name"""
+    message = """Please type in a sone value name"""
 
     #responses:
     response_types = [
