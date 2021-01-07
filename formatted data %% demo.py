@@ -176,7 +176,7 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug('prompt_3() called')
     
     # set user and message variables for phantom.prompt call
-    user = ""
+    user = "admin"
     message = """ip and country
 
 {0} is from {1}"""
