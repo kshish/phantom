@@ -64,12 +64,61 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         {
             "prompt": "",
             "options": {
-                "type": "message",
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
             },
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_1)
+
+    return
+
+def update_event_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('update_event_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'update_event_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.event_id', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'update_event_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'event_ids': container_item[0],
+                'owner': "",
+                'status': "in progress",
+                'urgency': "high",
+                'comment': "",
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act(action="update event", parameters=parameters, assets=['esa100'], name="update_event_1")
+
+    return
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decision_1() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        update_event_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
 
     return
 
