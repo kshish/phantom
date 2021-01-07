@@ -95,7 +95,7 @@ def update_event_1(action=None, success=None, container=None, results=None, hand
                 'owner': "",
                 'status': "in progress",
                 'urgency': "high",
-                'comment': "",
+                'comment': "Chris wuz here",
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })

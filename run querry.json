@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "926c7f62b4cec74c6b4fe7d06ef5e4f6c286e7ca",
+            "hash": "8a5dbb58589ab90dd2ea04fcd4b2a6442ff984d7",
             "joint": {
                 "cells": [
                     {
@@ -1286,12 +1286,52 @@
                         "z": 20
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "2e5c8492-70f7-4b2f-851f-90f464b851c0",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "9facd27a-354b-438e-b0de-751d70eeaa66",
+                            "port": "out-1",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "f393d848-06a8-41f2-a428-5aa651aa48a5",
+                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 22
+                    },
+                    {
                         "action": "update event",
                         "action_type": "generic",
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "comment": "",
+                            "comment": "Chris wuz here",
                             "event_ids": "artifact:*.cef.event_id",
                             "owner": "",
                             "status": "in progress",
@@ -1320,7 +1360,7 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "comment": "",
+                                    "comment": "Chris wuz here",
                                     "event_ids": "artifact:*.cef.event_id",
                                     "owner": "",
                                     "status": "in progress",
@@ -1511,12 +1551,12 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def update_event_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('update_event_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'update_event_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.event_id', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'update_event_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'event_ids': container_item[0],\n                'owner': \"\",\n                'status': \"in progress\",\n                'urgency': \"high\",\n                'comment': \"\",\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"update event\", parameters=parameters, assets=['esa100'], name=\"update_event_1\")\n\n    return",
+                        "block_code": "def update_event_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('update_event_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'update_event_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.event_id', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'update_event_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'event_ids': container_item[0],\n                'owner': \"\",\n                'status': \"in progress\",\n                'urgency': \"high\",\n                'comment': \"Chris wuz here\",\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"update event\", parameters=parameters, assets=['esa100'], name=\"update_event_1\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
                         "color": "",
-                        "connected_to_start": false,
+                        "connected_to_start": true,
                         "connection_name": "prompt 1",
                         "connection_type": "action",
                         "custom_callback": "",
@@ -1618,47 +1658,7 @@
                         "title": "Generic",
                         "type": "coa.Action",
                         "warn": "",
-                        "z": 21
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "2e5c8492-70f7-4b2f-851f-90f464b851c0",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "9facd27a-354b-438e-b0de-751d70eeaa66",
-                            "port": "out-1",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "f393d848-06a8-41f2-a428-5aa651aa48a5",
-                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 22
+                        "z": 23
                     }
                 ]
             },
@@ -1668,7 +1668,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2021-01-07T19:24:42.118422+00:00",
+    "create_time": "2021-01-07T19:26:16.767030+00:00",
     "draft_mode": false,
     "labels": [
         "notable"
