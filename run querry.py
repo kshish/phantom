@@ -26,7 +26,7 @@ def run_query_1(action=None, success=None, container=None, results=None, handle=
         'display': "",
     })
 
-    phantom.act(action="run query", parameters=parameters, assets=['esa100'], callback=prompt_1, name="run_query_1")
+    phantom.act(action="run query", parameters=parameters, assets=['esa100'], callback=format_prompt_message, name="run_query_1")
 
     return
 
@@ -51,12 +51,11 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0} count {1}"""
+    message = """{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "run_query_1:action_result.data.*.dest",
-        "run_query_1:action_result.data.*.count",
+        "format_prompt_message:formatted_data",
     ]
 
     #responses:
@@ -136,6 +135,26 @@ def format_2(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     update_event_1(container=container)
+
+    return
+
+def format_prompt_message(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_prompt_message() called')
+    
+    template = """%%
+dest is {0} count is {1} with priority {2}
+%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "run_query_1:action_result.data.*.dest",
+        "run_query_1:action_result.data.*.count",
+        "run_query_1:action_result.data.*.priority",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_prompt_message")
+
+    prompt_1(container=container)
 
     return
 
