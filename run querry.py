@@ -50,7 +50,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.debug('prompt_1() called')
     
     # set user and message variables for phantom.prompt call
-    user = ""
+    user = "admin"
     message = """{0}"""
 
     # parameter list for template variable replacement
