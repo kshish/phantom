@@ -26,7 +26,7 @@ def run_query_1(action=None, success=None, container=None, results=None, handle=
         'display': "",
     })
 
-    phantom.act(action="run query", parameters=parameters, assets=['esa100'], name="run_query_1")
+    phantom.act(action="run query", parameters=parameters, assets=['esa100'], callback=prompt_1, name="run_query_1")
 
     return
 
@@ -43,6 +43,32 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     run_query_1(container=container)
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "run_query_1:action_result.data.*.dest",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
 
     return
 
