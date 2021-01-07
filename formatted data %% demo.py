@@ -131,14 +131,14 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     
     # build parameters list for 'send_email_1' call
     parameters.append({
-        'from': "donotreply@splunk.com",
-        'to': "churyn@splunk.com",
         'cc': "",
+        'to': "churyn@splunk.com",
         'bcc': "",
-        'subject': "formatted data",
         'body': formatted_data_1,
-        'attachments': "",
+        'from': "donotreply@splunk.com",
         'headers': "",
+        'subject': "formatted data",
+        'attachments': "",
     })
 
     phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_1")
@@ -158,14 +158,14 @@ def send_email_2(action=None, success=None, container=None, results=None, handle
     # build parameters list for 'send_email_2' call
     for formatted_part_1 in formatted_data_1:
         parameters.append({
-            'from': "donotreply@splunk.com",
-            'to': "churyn@splunk.com",
             'cc': "",
+            'to': "churyn@splunk.com",
             'bcc': "",
-            'subject': "formatted data *",
             'body': formatted_part_1,
-            'attachments': "",
+            'from': "donotreply@splunk.com",
             'headers': "",
+            'subject': "formatted data *",
+            'attachments': "",
         })
 
     phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_2")
@@ -215,14 +215,14 @@ def send_email_3(action=None, success=None, container=None, results=None, handle
     for results_item_1 in results_data_1:
         if results_item_1[0]:
             parameters.append({
-                'from': "donotreply@splunk.com",
-                'to': "churyn@splunk.com",
                 'cc': "",
+                'to': "churyn@splunk.com",
                 'bcc': "",
-                'subject': "unformatted",
                 'body': results_item_1[0],
-                'attachments': "",
+                'from': "donotreply@splunk.com",
                 'headers': "",
+                'subject': "unformatted",
+                'attachments': "",
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': results_item_1[1]},
             })
