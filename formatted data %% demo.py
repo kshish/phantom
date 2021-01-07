@@ -29,14 +29,24 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=format_1, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=geolocate_ip_1_callback, name="geolocate_ip_1")
+
+    return
+
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
+    phantom.debug('geolocate_ip_1_callback() called')
+    
+    format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    prompt_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """%%
+    template = """ip and country:
+
+%%
 {0} is from {1}
 %%"""
 
@@ -159,6 +169,65 @@ def send_email_2(action=None, success=None, container=None, results=None, handle
         })
 
     phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_2")
+
+    return
+
+def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_3() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = ""
+    message = """ip and country
+
+{0} is from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters, response_types=response_types, callback=send_email_3)
+
+    return
+
+def send_email_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('send_email_3() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'send_email_3' call
+    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
+
+    parameters = []
+    
+    # build parameters list for 'send_email_3' call
+    for results_item_1 in results_data_1:
+        if results_item_1[0]:
+            parameters.append({
+                'from': "donotreply@splunk.com",
+                'to': "churyn@splunk.com",
+                'cc': "",
+                'bcc': "",
+                'subject': "unformatted",
+                'body': results_item_1[0],
+                'attachments': "",
+                'headers': "",
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': results_item_1[1]},
+            })
+
+    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_3")
 
     return
 
