@@ -51,11 +51,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}"""
+    message = """{0} count {1}"""
 
     # parameter list for template variable replacement
     parameters = [
         "run_query_1:action_result.data.*.dest",
+        "run_query_1:action_result.data.*.count",
     ]
 
     #responses:
