@@ -147,7 +147,7 @@ dest is {0} count is {1} with priority {2}
 
     # parameter list for template variable replacement
     parameters = [
-        "run_query_1:action_result.data.*.dest",
+        "run_query_1:action_result.data.*.peer",
         "run_query_1:action_result.data.*.count",
         "run_query_1:action_result.data.*.priority",
     ]
