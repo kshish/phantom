@@ -84,6 +84,7 @@ def update_event_1(action=None, success=None, container=None, results=None, hand
     
     # collect data for 'update_event_1' call
     container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.event_id', 'artifact:*.id'])
+    formatted_data_1 = phantom.get_format_data(name='format_2')
 
     parameters = []
     
@@ -91,11 +92,11 @@ def update_event_1(action=None, success=None, container=None, results=None, hand
     for container_item in container_data:
         if container_item[0]:
             parameters.append({
-                'event_ids': container_item[0],
                 'owner': "",
                 'status': "in progress",
+                'comment': formatted_data_1,
                 'urgency': "high",
-                'comment': "Chris wuz here",
+                'event_ids': container_item[0],
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
@@ -117,8 +118,24 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        update_event_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
+
+    return
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_2() called')
+    
+    template = """click here to see the container in Phantom {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:url",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    update_event_1(container=container)
 
     return
 
