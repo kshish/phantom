@@ -51,11 +51,16 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """{0}"""
+    message = """The host {1} communicated with 
+
+{0}
+
+Do you want to update the notable event with in progress?"""
 
     # parameter list for template variable replacement
     parameters = [
         "format_prompt_message:formatted_data",
+        "artifact:*.cef.destination",
     ]
 
     #responses:
