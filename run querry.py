@@ -33,8 +33,7 @@ def run_query_1(action=None, success=None, container=None, results=None, handle=
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """index=* src={0} dest=* NOT dest={0}
-|stats count by dest"""
+    template = """| savedsearch myhosts myhost={0}"""
 
     # parameter list for template variable replacement
     parameters = [
