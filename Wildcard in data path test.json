@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "8fdc2a941c1eb3c243c84b8051b5169d6076886e",
+            "hash": "84aad22ebb65c6f04c9e3139f090b023d430b1a2",
             "joint": {
                 "cells": [
                     {
@@ -803,7 +803,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def test_no_wildcard(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('test_no_wildcard() called')\n\n    # collect data for 'test_no_wildcard' call\n\n    parameters = []\n    \n    # build parameters list for 'test_no_wildcard' call\n    parameters.append({\n        'ip': \"artifact:test.cef.destinationAddress\",\n    })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name=\"test_no_wildcard\")\n\n    return",
+                        "block_code": "def test_no_wildcard(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('test_no_wildcard() called')\n\n    # collect data for 'test_no_wildcard' call\n\n    parameters = []\n    \n    # build parameters list for 'test_no_wildcard' call\n    parameters.append({\n        'ip': \"artifact:test.cef.destinationAddress\",\n    })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name=\"test_no_wildcard\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1188,7 +1188,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def test_with_wildcards_surounding(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('test_with_wildcards_surounding() called')\n\n    # collect data for 'test_with_wildcards_surounding' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*test*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'test_with_wildcards_surounding' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name=\"test_with_wildcards_surounding\")\n\n    return",
+                        "block_code": "def test_with_wildcards_surounding(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('test_with_wildcards_surounding() called')\n\n    # collect data for 'test_with_wildcards_surounding' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*test*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'test_with_wildcards_surounding' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name=\"test_with_wildcards_surounding\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1573,7 +1573,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def just_wildcard(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('just_wildcard() called')\n\n    # collect data for 'just_wildcard' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'just_wildcard' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name=\"just_wildcard\")\n\n    return",
+                        "block_code": "def just_wildcard(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('just_wildcard() called')\n\n    # collect data for 'just_wildcard' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.destinationAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'just_wildcard' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name=\"just_wildcard\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1731,7 +1731,7 @@
                                 "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Specific path without wildcard:\nartifact:test.cef.destinationAddress\nip {0}. country {1}\n----\nWildcards surrounding word in datapath:\nartifact:*test*.cef.destinationAddress\nip {2}. country {3}\n----\nJust wildcard (default)\nartifact:*.cef.destinationAddress\nip {4}. country {5}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"test_no_wildcard:action_result.parameter.ip\",\n        \"test_no_wildcard:action_result.data.*.country_name\",\n        \"test_with_wildcards_surounding:action_result.parameter.ip\",\n        \"test_with_wildcards_surounding:action_result.data.*.country_name\",\n        \"just_wildcard:action_result.parameter.ip\",\n        \"just_wildcard:action_result.data.*.country_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"message\",\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, response_types=response_types)\n\n    return",
+                        "block_code": "def Datapath_results(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('Datapath_results() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"Specific path without wildcard:\nartifact:test.cef.destinationAddress\nip {0}. country {1}\n----\nWildcards surrounding word in datapath:\nartifact:*test*.cef.destinationAddress\nip {2}. country {3}\n----\nJust wildcard (default)\nartifact:*.cef.destinationAddress\nip {4}. country {5}\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"test_no_wildcard:action_result.parameter.ip\",\n        \"test_no_wildcard:action_result.data.*.country_name\",\n        \"test_with_wildcards_surounding:action_result.parameter.ip\",\n        \"test_with_wildcards_surounding:action_result.data.*.country_name\",\n        \"just_wildcard:action_result.parameter.ip\",\n        \"just_wildcard:action_result.data.*.country_name\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"message\",\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"Datapath_results\", parameters=parameters, response_types=response_types)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1741,7 +1741,7 @@
                         "custom_callback": "",
                         "custom_code": "",
                         "custom_join": "",
-                        "custom_name": "",
+                        "custom_name": "Datapath results",
                         "description": "",
                         "has_custom": false,
                         "has_custom_block": false,
@@ -1751,7 +1751,7 @@
                         "inPorts": [
                             "in"
                         ],
-                        "join_code": "def join_prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):\n    phantom.debug('join_prompt_1() called')\n\n    # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed\n    if phantom.completed(action_names=['test_no_wildcard', 'test_with_wildcards_surounding', 'just_wildcard']):\n        \n        # call connected block \"prompt_1\"\n        prompt_1(container=container, handle=handle)\n    \n    return",
+                        "join_code": "def join_Datapath_results(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):\n    phantom.debug('join_Datapath_results() called')\n\n    # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed\n    if phantom.completed(action_names=['test_no_wildcard', 'test_with_wildcards_surounding', 'just_wildcard']):\n        \n        # call connected block \"Datapath_results\"\n        Datapath_results(container=container, handle=handle)\n    \n    return",
                         "join_optional": [],
                         "join_start": 78,
                         "line_end": 89,
@@ -1853,7 +1853,7 @@
                             "y": 80
                         },
                         "previous_function": "",
-                        "previous_name": "prompt_1",
+                        "previous_name": "Datapath_results",
                         "respond_in": "30",
                         "response_key": "Message",
                         "response_options": [],
@@ -1885,7 +1885,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-01-20T04:41:49.400598+00:00",
+    "create_time": "2021-01-20T04:43:56.054034+00:00",
     "draft_mode": false,
     "labels": [
         "*"

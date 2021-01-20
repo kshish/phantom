@@ -30,12 +30,12 @@ def test_no_wildcard(action=None, success=None, container=None, results=None, ha
         'ip': "artifact:test.cef.destinationAddress",
     })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name="test_no_wildcard")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name="test_no_wildcard")
 
     return
 
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('prompt_1() called')
+def Datapath_results(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('Datapath_results() called')
     
     # set user and message variables for phantom.prompt call
     user = "admin"
@@ -71,18 +71,18 @@ ip {4}. country {5}"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Datapath_results", parameters=parameters, response_types=response_types)
 
     return
 
-def join_prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
-    phantom.debug('join_prompt_1() called')
+def join_Datapath_results(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
+    phantom.debug('join_Datapath_results() called')
 
     # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed
     if phantom.completed(action_names=['test_no_wildcard', 'test_with_wildcards_surounding', 'just_wildcard']):
         
-        # call connected block "prompt_1"
-        prompt_1(container=container, handle=handle)
+        # call connected block "Datapath_results"
+        Datapath_results(container=container, handle=handle)
     
     return
 
@@ -103,7 +103,7 @@ def test_with_wildcards_surounding(action=None, success=None, container=None, re
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name="test_with_wildcards_surounding")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name="test_with_wildcards_surounding")
 
     return
 
@@ -124,7 +124,7 @@ def just_wildcard(action=None, success=None, container=None, results=None, handl
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_prompt_1, name="just_wildcard")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_Datapath_results, name="just_wildcard")
 
     return
 
