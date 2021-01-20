@@ -42,11 +42,11 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     message = """Specific path without wildcard:
 artifact:test.cef.destinationAddress
 ip {0}. country {1}
-
+----
 Wildcards surrounding word in datapath:
 artifact:*test*.cef.destinationAddress
 ip {2}. country {3}
-
+----
 Just wildcard (default)
 artifact:*.cef.destinationAddress
 ip {4}. country {5}"""
