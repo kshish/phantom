@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "d999bdabac529f0e33765a6c18e5180478185305",
+            "hash": "683002b6843b7d89a3d760494610fc2a3660043c",
             "joint": {
                 "cells": [
                     {
@@ -763,7 +763,7 @@
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "domain": "geolocate_ip_1:artifact:*.cef.destinationDnsDomain"
+                            "domain": "geolocate_ip_1:artifact:*.cef.sourceDnsDomain"
                         },
                         "angle": 0,
                         "app": "VirusTotal",
@@ -791,7 +791,7 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "domain": "geolocate_ip_1:artifact:*.cef.destinationDnsDomain"
+                                    "domain": "geolocate_ip_1:artifact:*.cef.sourceDnsDomain"
                                 },
                                 "has_app": true,
                                 "id": 10,
@@ -1413,7 +1413,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('domain_reputation_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'domain_reputation_1' call\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.destinationDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'domain_reputation_1' call\n    for inputs_item_1 in inputs_data_1:\n        if inputs_item_1[0]:\n            parameters.append({\n                'domain': inputs_item_1[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': inputs_item_1[1]},\n            })\n\n    phantom.act(action=\"domain reputation\", parameters=parameters, assets=['virustotal'], name=\"domain_reputation_1\", parent_action=action)\n\n    return",
+                        "block_code": "def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('domain_reputation_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'domain_reputation_1' call\n    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'domain_reputation_1' call\n    for inputs_item_1 in inputs_data_1:\n        if inputs_item_1[0]:\n            parameters.append({\n                'domain': inputs_item_1[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': inputs_item_1[1]},\n            })\n\n    phantom.act(action=\"domain reputation\", parameters=parameters, assets=['virustotal'], name=\"domain_reputation_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1502,7 +1502,7 @@
                         },
                         "position": {
                             "x": 640,
-                            "y": 80
+                            "y": 60
                         },
                         "previous_function": "",
                         "previous_name": "domain_reputation_1",
@@ -1530,7 +1530,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-01-20T05:47:28.036568+00:00",
+    "create_time": "2021-01-20T05:49:29.243214+00:00",
     "draft_mode": false,
     "labels": [
         "*"

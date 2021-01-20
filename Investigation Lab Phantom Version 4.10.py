@@ -39,7 +39,7 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'domain_reputation_1' call
-    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.destinationDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)
 
     parameters = []
     
