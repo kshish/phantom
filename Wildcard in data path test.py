@@ -43,7 +43,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
 Wildcards surrounding word in datapath ip {2}. country {3}
 
-Just wildcard (default) ip {5}. country {4}"""
+Just wildcard (default) ip {4}. country {5}"""
 
     # parameter list for template variable replacement
     parameters = [
