@@ -39,17 +39,17 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'domain_reputation_1' call
-    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.sourceDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])
 
     parameters = []
     
     # build parameters list for 'domain_reputation_1' call
-    for inputs_item_1 in inputs_data_1:
-        if inputs_item_1[0]:
+    for container_item in container_data:
+        if container_item[0]:
             parameters.append({
-                'domain': inputs_item_1[0],
+                'domain': container_item[0],
                 # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': inputs_item_1[1]},
+                'context': {'artifact_id': container_item[1]},
             })
 
     phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], name="domain_reputation_1", parent_action=action)
