@@ -39,11 +39,17 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """Specific path without wildcard ip {0}. country {1}
+    message = """Specific path without wildcard:
+artifact:test.cef.destinationAddress
+ip {0}. country {1}
 
-Wildcards surrounding word in datapath ip {2}. country {3}
+Wildcards surrounding word in datapath:
+artifact:*test*.cef.destinationAddress
+ip {2}. country {3}
 
-Just wildcard (default) ip {4}. country {5}"""
+Just wildcard (default)
+artifact:*.cef.destinationAddress
+ip {4}. country {5}"""
 
     # parameter list for template variable replacement
     parameters = [
