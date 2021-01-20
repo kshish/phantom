@@ -35,7 +35,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=join_decide_if_summary_positives_is_high, name="geolocate_ip_1")
 
     return
 
@@ -56,7 +56,7 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], name="domain_reputation_1", parent_action=action)
+    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], callback=join_decide_if_summary_positives_is_high, name="domain_reputation_1", parent_action=action)
 
     return
 
@@ -77,7 +77,66 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="file reputation", parameters=parameters, assets=['virustotal'], name="file_reputation_1", parent_action=action)
+    phantom.act(action="file reputation", parameters=parameters, assets=['virustotal'], callback=join_decide_if_summary_positives_is_high, name="file_reputation_1", parent_action=action)
+
+    return
+
+def decide_if_summary_positives_is_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_if_summary_positives_is_high() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["file_reputation_1:action_result.summary.positives", ">", 10],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        Notify_IT(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def join_decide_if_summary_positives_is_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
+    phantom.debug('join_decide_if_summary_positives_is_high() called')
+
+    # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed
+    if phantom.completed(action_names=['domain_reputation_1', 'geolocate_ip_1', 'file_reputation_1']):
+        
+        # call connected block "decide_if_summary_positives_is_high"
+        decide_if_summary_positives_is_high(container=container, handle=handle)
+    
+    return
+
+def Notify_IT(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('Notify_IT() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """A potentially malicious file download has been detected on a local server with IP address {0}. Notify IT team?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.destinationAddress",
+    ]
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="Notify_IT", parameters=parameters, response_types=response_types)
 
     return
 
