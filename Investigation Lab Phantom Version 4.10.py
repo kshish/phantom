@@ -52,7 +52,30 @@ def domain_reputation_1(action=None, success=None, container=None, results=None,
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], name="domain_reputation_1", parent_action=action)
+    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], callback=file_reputation_1, name="domain_reputation_1", parent_action=action)
+
+    return
+
+def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('file_reputation_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'file_reputation_1' call
+    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fileHash', 'artifact:*.id'])
+
+    parameters = []
+    
+    # build parameters list for 'file_reputation_1' call
+    for container_item in container_data:
+        if container_item[0]:
+            parameters.append({
+                'hash': container_item[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': container_item[1]},
+            })
+
+    phantom.act(action="file reputation", parameters=parameters, assets=['virustotal'], name="file_reputation_1", parent_action=action)
 
     return
 

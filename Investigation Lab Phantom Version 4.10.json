@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "f9cc51959f71f38a7fc57c5219e558d48fab7da2",
+            "hash": "62145d16b821c2b2a63ce25f866739ba08094d1c",
             "joint": {
                 "cells": [
                     {
@@ -217,12 +217,12 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 72,
-                        "line_start": 59,
+                        "line_end": 95,
+                        "line_start": 82,
                         "name": "",
                         "notes": "",
                         "number": 0,
-                        "order": 4,
+                        "order": 5,
                         "outPorts": [],
                         "ports": {
                             "groups": {
@@ -277,7 +277,7 @@
                             }
                         },
                         "position": {
-                            "x": 1140,
+                            "x": 1280,
                             "y": 100
                         },
                         "previous_function": "",
@@ -1413,7 +1413,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('domain_reputation_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'domain_reputation_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'domain_reputation_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'domain': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"domain reputation\", parameters=parameters, assets=['virustotal'], name=\"domain_reputation_1\", parent_action=action)\n\n    return",
+                        "block_code": "def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('domain_reputation_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'domain_reputation_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceDnsDomain', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'domain_reputation_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'domain': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"domain reputation\", parameters=parameters, assets=['virustotal'], callback=file_reputation_1, name=\"domain_reputation_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1502,7 +1502,7 @@
                         },
                         "position": {
                             "x": 640,
-                            "y": 60
+                            "y": 80
                         },
                         "previous_function": "",
                         "previous_name": "domain_reputation_1",
@@ -1521,6 +1521,2570 @@
                         "type": "coa.Action",
                         "warn": "",
                         "z": 9
+                    },
+                    {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "d06246f6-83aa-4db7-ad54-cf654e2394e3",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "e3d08def-519b-467d-8fd3-f007205ad028",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "731c64de-c1dd-43aa-897c-f837c45f949e",
+                            "selector": ".port-body[type=\"input\"]"
+                        },
+                        "type": "link",
+                        "z": 10
+                    },
+                    {
+                        "action": "file reputation",
+                        "action_type": "investigate",
+                        "active": false,
+                        "active_keys": {},
+                        "active_values": {
+                            "hash": "artifact:*.cef.fileHash"
+                        },
+                        "angle": 0,
+                        "app": "VirusTotal",
+                        "appid": "11f676a4-f3d4-4db0-8587-f4e942c07c7c",
+                        "approver": "",
+                        "assets": [
+                            {
+                                "action": "file reputation",
+                                "actions": [
+                                    "detonate url",
+                                    "detonate file",
+                                    "get report",
+                                    "get file",
+                                    "ip reputation",
+                                    "domain reputation",
+                                    "url reputation",
+                                    "file reputation",
+                                    "test connectivity"
+                                ],
+                                "active": true,
+                                "app_name": "VirusTotal",
+                                "app_version": "1.2.52",
+                                "appid": "11f676a4-f3d4-4db0-8587-f4e942c07c7c",
+                                "asset_name": "virustotal",
+                                "config_type": "asset",
+                                "count": 0,
+                                "fields": {
+                                    "hash": "artifact:*.cef.fileHash"
+                                },
+                                "has_app": true,
+                                "id": 10,
+                                "loaded": false,
+                                "missing": false,
+                                "name": "virustotal",
+                                "output": [
+                                    {
+                                        "data_path": "action_result.status",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "success"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "hash",
+                                            "sha256",
+                                            "sha1",
+                                            "md5"
+                                        ],
+                                        "data_path": "action_result.parameter.hash",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6c1948f7edf115cd1f13cd170b882077930be150"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "hash",
+                                            "md5"
+                                        ],
+                                        "data_path": "action_result.data.*.md5",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "494303294715f5ffad7ad3f43b73b00b"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "url"
+                                        ],
+                                        "data_path": "action_result.data.*.permalink",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "https://www.test.com/file/27ce020f7cdb4b775b80bd6e3ef1d16079401e0d45cfd28ffbd8c63ff2ddf7d7/analysis/1548112684/"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.positives",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            64
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "sha1"
+                                        ],
+                                        "data_path": "action_result.data.*.resource",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6c1948f7edf115cd1f13cd170b882077930be150"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.response_code",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scan_date",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2019-01-21 23:18:04"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "virustotal scan id"
+                                        ],
+                                        "data_path": "action_result.data.*.scan_id",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "27ce020f7cdb4b775b80bd6e3ef1d16079401e0d45cfd28ffbd8c63ff2ddf7d7-1548112684"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.*.detected",
+                                        "data_type": "boolean"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.*.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.*.update",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.*.version",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ALYac.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ALYac.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ALYac.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.ALYac.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.1.1.5"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVG.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVG.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32:Parite"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVG.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVG.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "18.4.3895.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVware.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVware.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.b (v)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AVware.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20180925"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.AVware.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.6.0.52"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Acronis.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Acronis.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "suspicious"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Acronis.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190119"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Acronis.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.1.37"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ad-Aware.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ad-Aware.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ad-Aware.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ad-Aware.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.0.5.370"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AegisLab.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AegisLab.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AegisLab.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AegisLab.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "4.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AhnLab-V3.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AhnLab-V3.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32/Parite"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AhnLab-V3.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.AhnLab-V3.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.14.1.22785"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Alibaba.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Alibaba.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Alibaba.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20180921"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Alibaba.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "0.1.0.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Antiy-AVL.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Antiy-AVL.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus/Win32.Parite.c"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Antiy-AVL.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Antiy-AVL.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.0.0.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Arcabit.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Arcabit.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Arcabit.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Arcabit.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.0.837"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast-Mobile.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast-Mobile.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast-Mobile.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast-Mobile.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "190121-00"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32:Parite"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avast.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "18.4.3895.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avira.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avira.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Parite"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Avira.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Avira.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "8.3.3.8"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Babable.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Babable.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Babable.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20180918"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Babable.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "9107201"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Baidu.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Baidu.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Virus.Parite.d"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Baidu.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Baidu.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.0.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.BitDefender.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.BitDefender.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.BitDefender.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.BitDefender.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "7.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Bkav.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Bkav.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32.Pinfi.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Bkav.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Bkav.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.3.0.9899"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CAT-QuickHeal.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CAT-QuickHeal.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32.Perite.A"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CAT-QuickHeal.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CAT-QuickHeal.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "14.00"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CMC.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CMC.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.b!O"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CMC.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CMC.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.1.0.977"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ClamAV.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ClamAV.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Heuristics.W32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ClamAV.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.ClamAV.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "0.101.1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Comodo.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Comodo.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Malware@#1b1651nqd7ivb"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Comodo.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Comodo.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "30310"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CrowdStrike.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CrowdStrike.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "malicious_confidence_100% (W)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CrowdStrike.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20181023"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.CrowdStrike.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cybereason.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cybereason.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "malicious.94715f"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cybereason.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190109"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cybereason.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.2.27"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cylance.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cylance.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Unsafe"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cylance.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Cylance.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2.3.1.101"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cyren.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cyren.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Virut.E.gen!Eldorado"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Cyren.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Cyren.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6.2.0.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.DrWeb.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.DrWeb.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Trojan.DownLoader20.25948"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.DrWeb.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.DrWeb.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "7.0.34.11020"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ESET-NOD32.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ESET-NOD32.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32/Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ESET-NOD32.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ESET-NOD32.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "18744"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Emsisoft.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Emsisoft.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B (B)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Emsisoft.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Emsisoft.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2018.4.0.1029"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Endgame.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Endgame.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "malicious (high confidence)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Endgame.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20181108"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Endgame.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.0.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Prot.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Prot.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Virut.E.gen!Eldorado"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Prot.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.F-Prot.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "4.7.1.166"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Secure.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Secure.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Secure.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.F-Secure.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "11.0.19100.45"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Fortinet.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Fortinet.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Fortinet.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Fortinet.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "5.4.247.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.GData.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.GData.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.GData.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.GData.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "A:25.20275B:25.14197"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ikarus.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ikarus.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Virut"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Ikarus.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Ikarus.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "0.1.5.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Invincea.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Invincea.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "heuristic"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Invincea.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20181128"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Invincea.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6.3.6.26157"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Jiangmin.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Jiangmin.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32/Parite.b"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Jiangmin.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Jiangmin.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "16.0.100"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7AntiVirus.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7AntiVirus.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus ( 00001b711 )"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7AntiVirus.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7AntiVirus.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "11.24.29740"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7GW.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7GW.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus ( 00001b711 )"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7GW.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.K7GW.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "11.24.29740"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kaspersky.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kaspersky.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.b"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kaspersky.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Kaspersky.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "15.0.1.13"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kingsoft.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kingsoft.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.b.5756"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kingsoft.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Kingsoft.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2013.8.14.323"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MAX.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MAX.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "malware (ai score=100)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MAX.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MAX.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2018.9.12.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Malwarebytes.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Malwarebytes.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Trojan.Agent.QQ"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Malwarebytes.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Malwarebytes.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2.1.1.1115"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee-GW-Edition.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee-GW-Edition.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "BehavesLike.Win32.Pate.hh"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee-GW-Edition.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee-GW-Edition.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "v2017.3010"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Pate.b"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.McAfee.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6.0.6.653"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MicroWorld-eScan.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MicroWorld-eScan.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MicroWorld-eScan.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.MicroWorld-eScan.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "14.0.297.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Microsoft.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Microsoft.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus:Win32/Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Microsoft.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Microsoft.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.1.15500.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.NANO-Antivirus.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.NANO-Antivirus.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.bgvo"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.NANO-Antivirus.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.NANO-Antivirus.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.134.24576"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Paloalto.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Paloalto.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "generic.ml"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Paloalto.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Paloalto.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Panda.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Panda.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Panda.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Panda.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "4.6.4.2"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Qihoo-360.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Qihoo-360.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.H"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Qihoo-360.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Qihoo-360.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.0.1120"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Rising.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Rising.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Parite!1.9B80 (CLOUD)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Rising.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Rising.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "25.0.0.24"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SUPERAntiSpyware.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SUPERAntiSpyware.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SUPERAntiSpyware.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190116"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SUPERAntiSpyware.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "5.6.0.1032"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SentinelOne.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SentinelOne.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "static engine - malicious"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SentinelOne.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190118"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.SentinelOne.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.21.268"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Sophos.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Sophos.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Parite-B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Sophos.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Sophos.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "4.98.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Symantec.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Symantec.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Trojan.Gen.6"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Symantec.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Symantec.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.8.0.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TACHYON.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TACHYON.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus/W32.Parite.C"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TACHYON.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TACHYON.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2019-01-21.02"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Tencent.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Tencent.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Dropper.c"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Tencent.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Tencent.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.0.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TheHacker.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TheHacker.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "W32/Pate.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TheHacker.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190118"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TheHacker.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6.8.0.5.3962"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TotalDefense.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TotalDefense.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32/Pinfi.A"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TotalDefense.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.TotalDefense.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "37.1.62.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trapmine.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trapmine.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "malicious.high.ml.score"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trapmine.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190103"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trapmine.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.0.34.707"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro-HouseCall.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro-HouseCall.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "PE_PARITE.A"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro-HouseCall.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro-HouseCall.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "10.0.0.1040"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "PE_PARITE.A"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.TrendMicro.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "10.0.0.1040"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trustlook.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trustlook.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trustlook.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Trustlook.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VBA32.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VBA32.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.b"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VBA32.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VBA32.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "3.35.1"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VIPRE.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VIPRE.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.b (v)"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VIPRE.update",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.VIPRE.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "None"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ViRobot.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ViRobot.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.A"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ViRobot.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ViRobot.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2014.3.20.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Webroot.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Webroot.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Webroot.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Webroot.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0.0.403"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Yandex.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Yandex.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Yandex.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190120"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "ip"
+                                        ],
+                                        "data_path": "action_result.data.*.scans.Yandex.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "5.5.1.3"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zillya.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zillya.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Parite.Win32.9"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zillya.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190118"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zillya.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "2.0.0.3733"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ZoneAlarm.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ZoneAlarm.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Virus.Win32.Parite.b"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ZoneAlarm.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.ZoneAlarm.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zoner.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zoner.result",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Win32.Parite.B"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zoner.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190121"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.Zoner.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "1.0"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.eGambit.detected",
+                                        "data_type": "boolean",
+                                        "example_values": [
+                                            true,
+                                            false
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.eGambit.result",
+                                        "data_type": "string"
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.eGambit.update",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "20190122"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.scans.eGambit.version",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "v4.3.5"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "hash",
+                                            "sha1"
+                                        ],
+                                        "data_path": "action_result.data.*.sha1",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "6c1948f7edf115cd1f13cd170b882077930be150"
+                                        ]
+                                    },
+                                    {
+                                        "contains": [
+                                            "hash",
+                                            "sha256"
+                                        ],
+                                        "data_path": "action_result.data.*.sha256",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "27ce020f7cdb4b775b80bd6e3ef1d16079401e0d45cfd28ffbd8c63ff2ddf7d7"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.total",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            72
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.data.*.verbose_msg",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Scan finished, information embedded"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.positives",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            64
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.summary.total_scans",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            72
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "action_result.message",
+                                        "data_type": "string",
+                                        "example_values": [
+                                            "Positives: 64, Total scans: 72"
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "summary.total_objects_successful",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "data_path": "summary.total_positives",
+                                        "data_type": "numeric",
+                                        "example_values": [
+                                            1
+                                        ]
+                                    }
+                                ],
+                                "parameters": {
+                                    "hash": {
+                                        "contains": [
+                                            "hash",
+                                            "sha256",
+                                            "sha1",
+                                            "md5"
+                                        ],
+                                        "data_type": "string",
+                                        "default": null,
+                                        "description": "File hash to query",
+                                        "key": "hash",
+                                        "order": 0,
+                                        "primary": true,
+                                        "required": true
+                                    }
+                                },
+                                "product_name": "VirusTotal",
+                                "product_vendor": "VirusTotal",
+                                "targets": "10",
+                                "type": "reputation"
+                            }
+                        ],
+                        "attrs": {
+                            ".action": {
+                                "text": "file reputation"
+                            },
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773"
+                            },
+                            ".color-band": {
+                                "fill": "#3C444D"
+                            },
+                            ".inPorts>.port-in": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".inPorts>.port-in>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".message": {
+                                "opacity": 0,
+                                "ref-x": 5,
+                                "ref-y": 105,
+                                "text": "Configuring now"
+                            },
+                            ".outPorts>.port-out": {
+                                "ref": ".background",
+                                "ref-x": 0.5
+                            },
+                            ".outPorts>.port-out>.port-body": {
+                                "port": {
+                                    "id": "out",
+                                    "type": "out"
+                                }
+                            },
+                            ".title": {
+                                "text": "Investigate"
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.icon image": {
+                                "xlink:href": "/inc/coa/img/block_icon_investigate.svg"
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('file_reputation_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'file_reputation_1' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.fileHash', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'file_reputation_1' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'hash': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"file reputation\", parameters=parameters, assets=['virustotal'], name=\"file_reputation_1\", parent_action=action)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": true,
+                        "color": "",
+                        "connected_to_start": true,
+                        "connection_name": "domain reputation",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "",
+                        "delay": 0,
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "731c64de-c1dd-43aa-897c-f837c45f949e",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 82,
+                        "line_start": 59,
+                        "message": "Configuring now",
+                        "name": "file reputation",
+                        "notes": "",
+                        "number": 1,
+                        "order": 4,
+                        "outPorts": [
+                            "out"
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 900,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "file_reputation_1",
+                        "required_params": {
+                            "hash": true
+                        },
+                        "reviewer": "",
+                        "show_number": false,
+                        "size": {
+                            "height": 100,
+                            "width": 180
+                        },
+                        "state": "app_action_assets",
+                        "status": "",
+                        "title": "Investigate",
+                        "type": "coa.Action",
+                        "warn": "",
+                        "z": 11
                     }
                 ]
             },
@@ -1530,7 +4094,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-01-20T05:52:00.527415+00:00",
+    "create_time": "2021-01-20T06:13:40.598753+00:00",
     "draft_mode": false,
     "labels": [
         "*"
