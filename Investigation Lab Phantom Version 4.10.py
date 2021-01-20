@@ -28,11 +28,31 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug("====Parameter list======")
-    phantom.debug(parameters)
-    phantom.debug("========================")
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=domain_reputation_1, name="geolocate_ip_1")
+
+    return
+
+def domain_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('domain_reputation_1() called')
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
+    # collect data for 'domain_reputation_1' call
+    inputs_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:artifact:*.cef.destinationDnsDomain', 'geolocate_ip_1:artifact:*.id'], action_results=results)
+
+    parameters = []
+    
+    # build parameters list for 'domain_reputation_1' call
+    for inputs_item_1 in inputs_data_1:
+        if inputs_item_1[0]:
+            parameters.append({
+                'domain': inputs_item_1[0],
+                # context (artifact id) is added to associate results with the artifact
+                'context': {'artifact_id': inputs_item_1[1]},
+            })
+
+    phantom.act(action="domain reputation", parameters=parameters, assets=['virustotal'], name="domain_reputation_1", parent_action=action)
 
     return
 
