@@ -114,7 +114,7 @@ def block_ip_1(action=None, success=None, container=None, results=None, handle=N
                 'context': {'artifact_id': inputs_item_1[1]},
             })
 
-    phantom.act(action="block ip", parameters=parameters, assets=['myloco'], callback=add_list_1, name="block_ip_1")
+    phantom.act(action="block ip", parameters=parameters, assets=['c os'], callback=add_list_1, name="block_ip_1")
 
     return
 
