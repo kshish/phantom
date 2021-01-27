@@ -28,10 +28,78 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug(parameters)
-    phantom.debug(container)
-    phantom.debug("chris wuz here")
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], name="my_geolocate")
+
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decide_if_ip_is_in_US, name="my_geolocate")
+
+    return
+
+def decide_if_ip_is_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_if_ip_is_in_US() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """The ip address is outside of the United States!!!
+
+Would you like to set high severity on the container?"""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No",
+                ]
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", response_types=response_types, callback=decide_what_analyst_answered)
+
+    return
+
+def decide_what_analyst_answered(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decide_what_analyst_answered() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="High")
 
     return
 
