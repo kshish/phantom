@@ -85,7 +85,7 @@ Would you like to set high severity on the
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decide_what_analyst_answered)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decide_what_analyst_answered)
 
     return
 
@@ -97,13 +97,15 @@ def decide_what_analyst_answered(action=None, success=None, container=None, resu
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_1:action_result.summary.responses.0", "==", "No"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
+
+    # call connected blocks for 'else' condition 2
+    set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
