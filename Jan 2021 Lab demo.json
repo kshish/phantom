@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "dc9755943a5c117465020f51028b2dc6d584c61c",
+            "hash": "6a96522f57cb586802d679e14804ad69a6a0f6c0",
             "joint": {
                 "cells": [
                     {
@@ -73,8 +73,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 119,
-                        "line_start": 106,
+                        "line_end": 130,
+                        "line_start": 117,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -390,6 +390,9 @@
                             ".title": {
                                 "text": "API"
                             },
+                            "g.code image": {
+                                "opacity": 1
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -398,6 +401,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('set_severity_1() called')\n\n    phantom.set_severity(container=container, severity=\"High\")\n\n    return",
@@ -431,8 +437,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 106,
-                        "line_start": 99,
+                        "line_end": 117,
+                        "line_start": 110,
                         "message": "Configuring now",
                         "name": "set severity",
                         "notes": "",
@@ -551,6 +557,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def decide_what_analyst_answered(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decide_what_analyst_answered() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    return",
@@ -577,8 +586,8 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 99,
-                        "line_start": 81,
+                        "line_end": 110,
+                        "line_start": 92,
                         "name": "decision",
                         "notes": "",
                         "number": 3,
@@ -719,7 +728,7 @@
                         "callback_code": "# read-only block view not available",
                         "callback_start": 1,
                         "callsback": false,
-                        "connected_to_start": false,
+                        "connected_to_start": true,
                         "connection_name": "",
                         "connection_type": "",
                         "custom_callback": "",
@@ -854,6 +863,9 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
                         "block_code": "def decide_if_ip_is_in_US(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decide_if_ip_is_in_US() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"my_geolocate:action_result.data.*.country_name\", \"!=\", \"United States\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    return",
@@ -1266,7 +1278,7 @@
                         "custom_name": "my geolocate",
                         "delay": 0,
                         "description": "",
-                        "has_custom": true,
+                        "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
                         "has_custom_join": false,
@@ -1359,7 +1371,7 @@
                         "title": "Investigate",
                         "type": "coa.Action",
                         "warn": false,
-                        "z": 34
+                        "z": 36
                     },
                     {
                         "active": false,
@@ -1405,9 +1417,12 @@
                             },
                             "g.notes": {
                                 "display": "block"
+                            },
+                            "g.notes image": {
+                                "opacity": 1
                             }
                         },
-                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip address is outside of the United States!!!\n\nWould you like to set high severity on the container?\"\"\"\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", response_types=response_types, callback=decide_what_analyst_answered)\n\n    return",
+                        "block_code": "def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('prompt_1() called')\n    \n    # set user and message variables for phantom.prompt call\n    user = \"admin\"\n    message = \"\"\"The ip address is outside of the United States!!!\n\nIP is {0} it is in {1}\n\nWould you like to set high severity on the \n{2} container which currently has {3} severity?\"\"\"\n\n    # parameter list for template variable replacement\n    parameters = [\n        \"my_geolocate:action_result.parameter.ip\",\n        \"my_geolocate:action_result.data.*.country_name\",\n        \"container:name\",\n        \"container:severity\",\n    ]\n\n    #responses:\n    response_types = [\n        {\n            \"prompt\": \"\",\n            \"options\": {\n                \"type\": \"list\",\n                \"choices\": [\n                    \"Yes\",\n                    \"No\",\n                ]\n            },\n        },\n    ]\n\n    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name=\"prompt_1\", parameters=parameters, response_types=response_types, callback=decide_what_analyst_answered)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1430,9 +1445,9 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 81,
+                        "line_end": 92,
                         "line_start": 54,
-                        "message": "The ip address is outside of the United States!!!\n\nWould you like to set high severity on the container?",
+                        "message": "The ip address is outside of the United States!!!\n\nIP is {0} it is in {1}\n\n\nWould you like to set high severity on the \n{2} container which currently has {3} severity?",
                         "name": "prompt",
                         "notes": "",
                         "number": 1,
@@ -1440,7 +1455,28 @@
                         "outPorts": [
                             "out"
                         ],
-                        "parameters": [],
+                        "parameters": [
+                            {
+                                "position": 0,
+                                "type": "",
+                                "value": "my_geolocate:action_result.parameter.ip"
+                            },
+                            {
+                                "position": 1,
+                                "type": "",
+                                "value": "my_geolocate:action_result.data.*.country_name"
+                            },
+                            {
+                                "position": 2,
+                                "type": "",
+                                "value": "container:name"
+                            },
+                            {
+                                "position": 3,
+                                "type": "",
+                                "value": "container:severity"
+                            }
+                        ],
                         "ports": {
                             "groups": {
                                 "in": {
@@ -1523,7 +1559,7 @@
                         "status": "",
                         "type": "coa.Prompt",
                         "warn": false,
-                        "z": 35
+                        "z": 37
                     }
                 ]
             },
@@ -1533,7 +1569,7 @@
         "schema": 4,
         "version": "4.9.34514"
     },
-    "create_time": "2021-01-27T21:02:31.150740+00:00",
+    "create_time": "2021-01-27T21:14:57.909419+00:00",
     "draft_mode": false,
     "labels": [
         "*"
