@@ -137,7 +137,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         container=container,
         action_results=results,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", ""],
+            ["my_geolocate:action_result.data.*.country_name", "==", None],
         ],
         name="filter_1:condition_2")
 
