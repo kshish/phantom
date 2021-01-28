@@ -10,6 +10,9 @@ def on_start(container):
     # call 'cf_community_list_merge_1' block
     cf_community_list_merge_1(container=container)
 
+    # call 'map_your_email_addr' block
+    map_your_email_addr(container=container)
+
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
@@ -36,13 +39,24 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
     phantom.debug('geolocate_ip_1_callback() called')
     
-    format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    format_list(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
     prompt_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('format_1() called')
+def join_geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None):
+    phantom.debug('join_geolocate_ip_1() called')
+
+    # check if all connected incoming playbooks, actions, or custom functions are done i.e. have succeeded or failed
+    if phantom.completed(custom_function_names=['cf_community_list_merge_1']):
+        
+        # call connected block "geolocate_ip_1"
+        geolocate_ip_1(container=container, handle=handle)
+    
+    return
+
+def format_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_list() called')
     
     template = """ip and country:
 
@@ -56,7 +70,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
         "geolocate_ip_1:action_result.data.*.country_name",
     ]
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+    phantom.format(container=container, template=template, parameters=parameters, name="format_list")
 
     prompt_1(container=container)
     prompt_2(container=container)
@@ -74,7 +88,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "format_1:formatted_data",
+        "format_list:formatted_data",
     ]
 
     #responses:
@@ -102,7 +116,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "format_1:formatted_data.*",
+        "format_list:formatted_data.*",
     ]
 
     #responses:
@@ -151,17 +165,18 @@ def send_email_2(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_2' call
-    formatted_data_1 = phantom.get_format_data(name='format_1__as_list')
+    formatted_data_1 = phantom.get_format_data(name='map_your_email_addr')
+    formatted_data_2 = phantom.get_format_data(name='format_1__as_list')
 
     parameters = []
     
     # build parameters list for 'send_email_2' call
-    for formatted_part_1 in formatted_data_1:
+    for formatted_part_2 in formatted_data_2:
         parameters.append({
             'cc': "",
-            'to': "churyn@splunk.com",
+            'to': formatted_data_1,
             'bcc': "",
-            'body': formatted_part_1,
+            'body': formatted_part_2,
             'from': "donotreply@splunk.com",
             'headers': "",
             'subject': "formatted data *",
@@ -208,6 +223,7 @@ def send_email_3(action=None, success=None, container=None, results=None, handle
     
     # collect data for 'send_email_3' call
     results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
+    formatted_data_1 = phantom.get_format_data(name='map_your_email_addr')
 
     parameters = []
     
@@ -216,7 +232,7 @@ def send_email_3(action=None, success=None, container=None, results=None, handle
         if results_item_1[0]:
             parameters.append({
                 'cc': "",
-                'to': "churyn@splunk.com",
+                'to': formatted_data_1,
                 'bcc': "",
                 'body': results_item_1[0],
                 'from': "donotreply@splunk.com",
@@ -264,7 +280,23 @@ def cf_community_list_merge_1(action=None, success=None, container=None, results
     ################################################################################    
 
     # call custom function "community/list_merge", returns the custom_function_run_id
-    phantom.custom_function(custom_function='community/list_merge', parameters=parameters, name='cf_community_list_merge_1', callback=geolocate_ip_1)
+    phantom.custom_function(custom_function='community/list_merge', parameters=parameters, name='cf_community_list_merge_1', callback=join_geolocate_ip_1)
+
+    return
+
+def map_your_email_addr(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('map_your_email_addr() called')
+    
+    template = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "churyn@splunk.com",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="map_your_email_addr")
+
+    join_geolocate_ip_1(container=container)
 
     return
 
