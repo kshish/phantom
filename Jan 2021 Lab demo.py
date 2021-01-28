@@ -46,7 +46,7 @@ def decide_if_ip_is_in_US(action=None, success=None, container=None, results=Non
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
@@ -56,17 +56,17 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The ip address is outside of the United States!!!
+    message = """{1}
+The ip address is outside of the United States!!!
 
-IP is {0} it is in {1}
+{0}
 
 Would you like to set high severity on the 
-{2} container which currently has {3} severity?"""
+{1} container which currently has {2}  severity?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+        "format_1:formatted_data",
         "container:name",
         "container:severity",
     ]
@@ -152,7 +152,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """This container has all internal IP's
+    message = """This container has all or some internal IP's
 
 {0} is internal"""
 
@@ -172,6 +172,23 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_1() called')
+    
+    template = """ip is {0} from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
