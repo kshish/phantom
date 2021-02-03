@@ -7,26 +7,26 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
     
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'cf_community_list_merge_1' block
+    cf_community_list_merge_1(container=container)
 
     return
 
 def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('geolocate_ip_1() called')
-
+        
+    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+    
     # collect data for 'geolocate_ip_1' call
-    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])
+    custom_function_results_data_1 = phantom.collect2(container=container, datapath=['cf_community_list_merge_1:custom_function_result.data.*.item'], action_results=results)
 
     parameters = []
     
     # build parameters list for 'geolocate_ip_1' call
-    for container_item in container_data:
-        if container_item[0]:
+    for custom_function_results_item_1 in custom_function_results_data_1:
+        if custom_function_results_item_1[0]:
             parameters.append({
-                'ip': container_item[0],
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': container_item[1]},
+                'ip': custom_function_results_item_1[0],
             })
 
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=add_artifact_1, name="geolocate_ip_1")
@@ -47,19 +47,57 @@ def add_artifact_1(action=None, success=None, container=None, results=None, hand
     for results_item_1 in results_data_1:
         parameters.append({
             'name': results_item_1[0],
-            'container_id': "",
             'label': "event",
-            'source_data_identifier': "chris",
             'cef_name': "mySomeKindOfField",
-            'cef_value': results_item_1[1],
-            'cef_dictionary': "",
             'contains': "",
+            'cef_value': results_item_1[1],
+            'container_id': "",
+            'cef_dictionary': "",
             'run_automation': "true",
+            'source_data_identifier': "chris",
             # context (artifact id) is added to associate results with the artifact
             'context': {'artifact_id': results_item_1[2]},
         })
 
     phantom.act(action="add artifact", parameters=parameters, assets=['mylocal'], name="add_artifact_1", parent_action=action)
+
+    return
+
+def cf_community_list_merge_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('cf_community_list_merge_1() called')
+    
+    container_data_0 = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.cef.myIp', 'artifact:*.cef.destinationAddress', 'artifact:*.id'])
+
+    parameters = []
+
+    container_data_0_0 = [item[0] for item in container_data_0]
+    container_data_0_1 = [item[1] for item in container_data_0]
+    container_data_0_2 = [item[2] for item in container_data_0]
+
+    parameters.append({
+        'input_1': container_data_0_0,
+        'input_2': container_data_0_1,
+        'input_3': container_data_0_2,
+        'input_4': None,
+        'input_5': None,
+        'input_6': None,
+        'input_7': None,
+        'input_8': None,
+        'input_9': None,
+        'input_10': None,
+    })
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################    
+
+    # call custom function "community/list_merge", returns the custom_function_run_id
+    phantom.custom_function(custom_function='community/list_merge', parameters=parameters, name='cf_community_list_merge_1', callback=geolocate_ip_1)
 
     return
 
