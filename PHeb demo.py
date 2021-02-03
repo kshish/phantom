@@ -29,37 +29,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'ip': custom_function_results_item_1[0],
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=add_artifact_1, name="geolocate_ip_1")
-
-    return
-
-def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('add_artifact_1() called')
-        
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    # collect data for 'add_artifact_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.parameter.ip', 'geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
-
-    parameters = []
-    
-    # build parameters list for 'add_artifact_1' call
-    for results_item_1 in results_data_1:
-        parameters.append({
-            'name': results_item_1[0],
-            'label': "event",
-            'cef_name': "mySomeKindOfField",
-            'contains': "",
-            'cef_value': results_item_1[1],
-            'container_id': "",
-            'cef_dictionary': "",
-            'run_automation': "true",
-            'source_data_identifier': "chris",
-            # context (artifact id) is added to associate results with the artifact
-            'context': {'artifact_id': results_item_1[2]},
-        })
-
-    phantom.act(action="add artifact", parameters=parameters, assets=['mylocal'], name="add_artifact_1", parent_action=action)
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
 
     return
 
@@ -98,6 +68,45 @@ def cf_community_list_merge_1(action=None, success=None, container=None, results
 
     # call custom function "community/list_merge", returns the custom_function_run_id
     phantom.custom_function(custom_function='community/list_merge', parameters=parameters, name='cf_community_list_merge_1', callback=geolocate_ip_1)
+
+    return
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('decision_2() called')
+
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+        ])
+
+    # call connected blocks if condition 1 matched
+    if matched:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
+
+    return
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('prompt_1() called')
+    
+    # set user and message variables for phantom.prompt call
+    user = "admin"
+    message = """IP not in US"""
+
+    #responses:
+    response_types = [
+        {
+            "prompt": "",
+            "options": {
+                "type": "message",
+            },
+        },
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", response_types=response_types)
 
     return
 
