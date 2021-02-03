@@ -36,18 +36,17 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 def cf_community_list_merge_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('cf_community_list_merge_1() called')
     
-    container_data_0 = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.cef.myIp', 'artifact:*.cef.destinationAddress', 'artifact:*.id'])
+    container_data_0 = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.cef.myIp', 'artifact:*.id'])
 
     parameters = []
 
     container_data_0_0 = [item[0] for item in container_data_0]
     container_data_0_1 = [item[1] for item in container_data_0]
-    container_data_0_2 = [item[2] for item in container_data_0]
 
     parameters.append({
         'input_1': container_data_0_0,
         'input_2': container_data_0_1,
-        'input_3': container_data_0_2,
+        'input_3': None,
         'input_4': None,
         'input_5': None,
         'input_6': None,
