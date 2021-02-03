@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "9d971ca0cfdfb7a7eb9d9408abb3e040dce07e83",
+            "hash": "4c9de0f4ae7b653def8635773abb73f5c2d8737f",
             "joint": {
                 "cells": [
                     {
@@ -768,7 +768,7 @@
                             "container_id": "",
                             "contains": "",
                             "label": "event",
-                            "name": "User created artifact",
+                            "name": "geolocate_ip_1:action_result.parameter.ip",
                             "run_automation": true,
                             "source_data_identifier": "chris"
                         },
@@ -810,7 +810,7 @@
                                     "container_id": "",
                                     "contains": "",
                                     "label": "event",
-                                    "name": "User created artifact",
+                                    "name": "geolocate_ip_1:action_result.parameter.ip",
                                     "run_automation": true,
                                     "source_data_identifier": "chris"
                                 },
@@ -1250,7 +1250,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('add_artifact_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'add_artifact_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'add_artifact_1' call\n    for results_item_1 in results_data_1:\n        parameters.append({\n            'name': \"User created artifact\",\n            'container_id': \"\",\n            'label': \"event\",\n            'source_data_identifier': \"chris\",\n            'cef_name': \"mySomeKindOfField\",\n            'cef_value': results_item_1[0],\n            'cef_dictionary': \"\",\n            'contains': \"\",\n            'run_automation': \"true\",\n            # context (artifact id) is added to associate results with the artifact\n            'context': {'artifact_id': results_item_1[1]},\n        })\n\n    phantom.act(action=\"add artifact\", parameters=parameters, assets=['mylocal'], name=\"add_artifact_1\", parent_action=action)\n\n    return",
+                        "block_code": "def add_artifact_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('add_artifact_1() called')\n        \n    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n    \n    # collect data for 'add_artifact_1' call\n    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.parameter.ip', 'geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)\n\n    parameters = []\n    \n    # build parameters list for 'add_artifact_1' call\n    for results_item_1 in results_data_1:\n        parameters.append({\n            'name': results_item_1[0],\n            'container_id': \"\",\n            'label': \"event\",\n            'source_data_identifier': \"chris\",\n            'cef_name': \"mySomeKindOfField\",\n            'cef_value': results_item_1[1],\n            'cef_dictionary': \"\",\n            'contains': \"\",\n            'run_automation': \"true\",\n            # context (artifact id) is added to associate results with the artifact\n            'context': {'artifact_id': results_item_1[2]},\n        })\n\n    phantom.act(action=\"add artifact\", parameters=parameters, assets=['mylocal'], name=\"add_artifact_1\", parent_action=action)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -1367,7 +1367,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-02-03T17:14:13.543317+00:00",
+    "create_time": "2021-02-03T17:19:18.705118+00:00",
     "draft_mode": false,
     "labels": [
         "*"
