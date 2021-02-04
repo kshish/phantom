@@ -83,7 +83,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_5(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
@@ -95,7 +95,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     user = "admin"
     message = """The container {0} with severity {1} 
 
-IP {2} is from {3}
+{2}
 
 Would you like to set high severity?"""
 
@@ -103,8 +103,7 @@ Would you like to set high severity?"""
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "format_5:formatted_data",
     ]
 
     #responses:
@@ -165,6 +164,23 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+def format_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_5() called')
+    
+    template = """IP: {0} is from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_5")
+
+    prompt_1(container=container)
 
     return
 
