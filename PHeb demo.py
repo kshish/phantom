@@ -170,7 +170,9 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_5() called')
     
-    template = """IP: {0} is from {1}"""
+    template = """%%
+IP: {0} is from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
