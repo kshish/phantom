@@ -28,7 +28,8 @@ def geolocate_ip_2(action=None, success=None, container=None, results=None, hand
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-
+    phantom.debug(parameters)
+    phantom.debug("chris wuz here")
     phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_2")
 
     return
