@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "7341dbf3ad8a3eac8aed8b7957ebe094a8c1bed2",
+            "hash": "1be9a61e539e25be28686796e04ddf01a210d055",
             "joint": {
                 "cells": [
                     {
@@ -340,7 +340,7 @@
                         "active": false,
                         "active_keys": {},
                         "active_values": {
-                            "ip": "artifact:*.cef.deviceAddress"
+                            "ip": "artifact:*.cef.sourceAddress"
                         },
                         "angle": 0,
                         "app": "",
@@ -360,7 +360,7 @@
                                 "config_type": "asset",
                                 "count": 0,
                                 "fields": {
-                                    "ip": "artifact:*.cef.deviceAddress"
+                                    "ip": "artifact:*.cef.sourceAddress"
                                 },
                                 "has_app": true,
                                 "id": 2,
@@ -598,7 +598,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('geolocate_ip_2() called')\n\n    # collect data for 'geolocate_ip_2' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.deviceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_2' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_2\")\n\n    return",
+                        "block_code": "def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('geolocate_ip_2() called')\n\n    # collect data for 'geolocate_ip_2' call\n    container_data = phantom.collect2(container=container, datapath=['artifact:*.cef.sourceAddress', 'artifact:*.id'])\n\n    parameters = []\n    \n    # build parameters list for 'geolocate_ip_2' call\n    for container_item in container_data:\n        if container_item[0]:\n            parameters.append({\n                'ip': container_item[0],\n                # context (artifact id) is added to associate results with the artifact\n                'context': {'artifact_id': container_item[1]},\n            })\n\n    phantom.act(action=\"geolocate ip\", parameters=parameters, assets=['maxmind'], name=\"geolocate_ip_2\")\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": true,
@@ -715,7 +715,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-03-03T16:45:00.660905+00:00",
+    "create_time": "2021-03-03T16:46:08.298927+00:00",
     "draft_mode": false,
     "labels": [
         "*"
