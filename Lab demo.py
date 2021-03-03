@@ -28,41 +28,47 @@ def geolocate_ip_2(action=None, success=None, container=None, results=None, hand
                 # context (artifact id) is added to associate results with the artifact
                 'context': {'artifact_id': container_item[1]},
             })
-    phantom.debug(parameters)
-    phantom.debug("chris wuz here")
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=send_email_1, name="geolocate_ip_2")
+
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=my_decision, name="geolocate_ip_2")
 
     return
 
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('send_email_1() called')
-        
-    #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-    
-    name_value = container.get('name', None)
+def my_decision(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('my_decision() called')
 
-    # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['geolocate_ip_2:action_result.data.*.city_name', 'geolocate_ip_2:action_result.parameter.context.artifact_id'], action_results=results)
+    # check for 'if' condition 1
+    matched = phantom.decision(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_2:action_result.data.*.country_name", "==", "United States"],
+            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Canada"],
+            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Mexico"],
+            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Brazil"],
+        ],
+        logical_operator='or')
 
-    parameters = []
-    
-    # build parameters list for 'send_email_1' call
-    for results_item_1 in results_data_1:
-        if results_item_1[0]:
-            parameters.append({
-                'from': "donotreply@splunk.com",
-                'to': "churyn@splunk.com",
-                'cc': "",
-                'bcc': "",
-                'subject': name_value,
-                'body': results_item_1[0],
-                'attachments': "",
-                'headers': "",
-                # context (artifact id) is added to associate results with the artifact
-                'context': {'artifact_id': results_item_1[1]},
-            })
+    # call connected blocks if condition 1 matched
+    if matched:
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        return
 
-    phantom.act(action="send email", parameters=parameters, assets=['smtp'], name="send_email_1", parent_action=action)
+    # call connected blocks for 'else' condition 2
+    set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+
+    return
+
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_1() called')
+
+    phantom.set_severity(container=container, severity="Low")
+
+    return
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('set_severity_2() called')
+
+    phantom.set_severity(container=container, severity="High")
 
     return
 
