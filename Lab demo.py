@@ -33,31 +33,6 @@ def geolocate_ip_2(action=None, success=None, container=None, results=None, hand
 
     return
 
-def my_decision(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('my_decision() called')
-
-    # check for 'if' condition 1
-    matched = phantom.decision(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["geolocate_ip_2:action_result.data.*.country_name", "==", "United States"],
-            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Canada"],
-            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Mexico"],
-            ["geolocate_ip_2:action_result.data.*.country_name", "==", "Brazil"],
-        ],
-        logical_operator='or')
-
-    # call connected blocks if condition 1 matched
-    if matched:
-        pin_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-        return
-
-    # call connected blocks for 'else' condition 2
-    format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-
-    return
-
 def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('set_high_severity() called')
 
@@ -135,7 +110,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        my_decision(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -178,6 +153,41 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
 
     phantom.pin(container=container, data=filtered_results_item_1_0, message="OUtside our Countries", pin_type="card", pin_style="red", name=None)
+
+    return
+
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_2() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name", "==", "Brazil"],
+        ],
+        logical_operator='or',
+        name="filter_2:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        pin_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name", "!=", "Brazil"],
+        ],
+        logical_operator='and',
+        name="filter_2:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
