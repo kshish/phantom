@@ -78,9 +78,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
     user = "admin"
     message = """The container {0} {1}
-
+.
 {2}
-
+.
 Would you like to change severity to High?"""
 
     # parameter list for template variable replacement
@@ -149,7 +149,9 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """The {0} is from {1}"""
+    template = """%%
+The {0} is from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
