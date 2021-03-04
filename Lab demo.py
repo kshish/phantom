@@ -117,13 +117,15 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_1:action_result.summary.responses.0", "==", "No"],
         ])
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
+
+    # call connected blocks for 'else' condition 2
+    set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 

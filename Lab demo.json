@@ -7,6 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
+            "hash": "ba53cf37d78001367ea3fcac9440d0c7684d5b75",
             "joint": {
                 "cells": [
                     {
@@ -471,8 +472,8 @@
                         "join_code": "# read-only block view not available",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 143,
-                        "line_start": 130,
+                        "line_end": 145,
+                        "line_start": 132,
                         "name": "",
                         "notes": "",
                         "number": 0,
@@ -705,7 +706,7 @@
                         },
                         "position": {
                             "x": 1140,
-                            "y": 240
+                            "y": 420
                         },
                         "previous_function": "",
                         "previous_name": "set_high_severity",
@@ -839,46 +840,6 @@
                         },
                         "type": "link",
                         "z": 56
-                    },
-                    {
-                        "attrs": {
-                            ".connection": {
-                                "stroke": "#818D99",
-                                "stroke-width": 2
-                            },
-                            ".marker-target": {
-                                "d": "M 10 0 L 0 5 L 10 10 z",
-                                "fill": "#818D99",
-                                "stroke": "#818D99"
-                            }
-                        },
-                        "connector": {
-                            "args": {
-                                "radius": 5
-                            },
-                            "name": "rounded"
-                        },
-                        "endDirections": [
-                            "left"
-                        ],
-                        "id": "853d9a95-9dcb-4e7a-95a7-7c70aca6c484",
-                        "router": {
-                            "name": "metro"
-                        },
-                        "source": {
-                            "id": "8e75c74b-2f1d-45d2-8093-15ff66cbbde3",
-                            "port": "out-1",
-                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "startDirections": [
-                            "right"
-                        ],
-                        "target": {
-                            "id": "6a5af583-b90f-4d19-b1da-313f7f5a0cb3",
-                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
-                        },
-                        "type": "link",
-                        "z": 58
                     },
                     {
                         "action": "geolocate ip",
@@ -1662,6 +1623,46 @@
                         "z": 63
                     },
                     {
+                        "attrs": {
+                            ".connection": {
+                                "stroke": "#818D99",
+                                "stroke-width": 2
+                            },
+                            ".marker-target": {
+                                "d": "M 10 0 L 0 5 L 10 10 z",
+                                "fill": "#818D99",
+                                "stroke": "#818D99"
+                            }
+                        },
+                        "connector": {
+                            "args": {
+                                "radius": 5
+                            },
+                            "name": "rounded"
+                        },
+                        "endDirections": [
+                            "left"
+                        ],
+                        "id": "7ae05e10-3cf3-482d-a21f-b8902484b3f1",
+                        "router": {
+                            "name": "metro"
+                        },
+                        "source": {
+                            "id": "8e75c74b-2f1d-45d2-8093-15ff66cbbde3",
+                            "port": "out-2",
+                            "selector": "> g:nth-child(1) > g:nth-child(2) > g:nth-child(2) > circle:nth-child(1)"
+                        },
+                        "startDirections": [
+                            "right"
+                        ],
+                        "target": {
+                            "id": "6a5af583-b90f-4d19-b1da-313f7f5a0cb3",
+                            "selector": "> g:nth-child(1) > g:nth-child(1) > g:nth-child(1) > circle:nth-child(1)"
+                        },
+                        "type": "link",
+                        "z": 65
+                    },
+                    {
                         "active": false,
                         "angle": 0,
                         "attrs": {
@@ -1693,6 +1694,20 @@
                                     "type": "out"
                                 }
                             },
+                            ".outPorts>.port-1": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                },
+                                "ref-x": 41,
+                                "ref-y": 82
+                            },
+                            ".outPorts>.port-1>.port-body": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                }
+                            },
                             "g.delete": {
                                 "display": "none"
                             },
@@ -1703,7 +1718,7 @@
                                 "display": "block"
                             }
                         },
-                        "block_code": "def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decision_5() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.responses.0\", \"==\", \"Yes\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n        return\n\n    return",
+                        "block_code": "def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('decision_5() called')\n\n    # check for 'if' condition 1\n    matched = phantom.decision(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"prompt_1:action_result.summary.responses.0\", \"==\", \"No\"],\n        ])\n\n    # call connected blocks if condition 1 matched\n    if matched:\n        return\n\n    # call connected blocks for 'else' condition 2\n    set_high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)\n\n    return",
                         "callback_code": "",
                         "callback_start": 1,
                         "callsback": false,
@@ -1715,7 +1730,7 @@
                         "custom_join": "",
                         "custom_name": "",
                         "description": "",
-                        "hasElse": false,
+                        "hasElse": true,
                         "has_custom": false,
                         "has_custom_block": false,
                         "has_custom_callback": false,
@@ -1727,14 +1742,15 @@
                         "join_code": "",
                         "join_optional": [],
                         "join_start": 1,
-                        "line_end": 130,
+                        "line_end": 132,
                         "line_start": 112,
                         "name": "decision",
                         "notes": "",
                         "number": 5,
                         "order": 7,
                         "outPorts": [
-                            "out-1"
+                            "out-1",
+                            "out-2"
                         ],
                         "outputs": [
                             {
@@ -1743,12 +1759,25 @@
                                         "comparison": "==",
                                         "data_type": "",
                                         "param": "prompt_1:action_result.summary.responses.0",
-                                        "value": "Yes"
+                                        "value": "No"
                                     }
                                 ],
                                 "display": "If",
                                 "logic": "and",
                                 "type": "if"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
                             }
                         ],
                         "ports": {
@@ -1818,7 +1847,7 @@
                         "status": "",
                         "type": "coa.Decision",
                         "warn": "",
-                        "z": 64
+                        "z": 66
                     }
                 ]
             },
@@ -1828,7 +1857,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-03-03T18:26:31.305050+00:00",
+    "create_time": "2021-03-04T14:11:12.975576+00:00",
     "draft_mode": false,
     "labels": [
         "*"
