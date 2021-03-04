@@ -78,9 +78,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
     user = "admin"
     message = """The container {0} {1}
-.
+
 {2}
-.
+
 Would you like to change severity to High?"""
 
     # parameter list for template variable replacement
