@@ -50,18 +50,11 @@ def my_decision(action=None, success=None, container=None, results=None, handle=
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        pin_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
     format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-
-    return
-
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_low_severity() called')
-
-    phantom.set_severity(container=container, severity="Low")
 
     return
 
@@ -162,6 +155,29 @@ The {0} is from {1}
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+    pin_4(container=container)
+
+    return
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('pin_3() called')
+
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="in Our Countries", pin_type="card", pin_style="blue", name=None)
+
+    return
+
+def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('pin_4() called')
+
+    filtered_results_data_1 = phantom.collect2(container=container, datapath=['filtered-data:filter_1:condition_1:geolocate_ip_2:action_result.data.*.country_name'])
+
+    filtered_results_item_1_0 = [item[0] for item in filtered_results_data_1]
+
+    phantom.pin(container=container, data=filtered_results_item_1_0, message="OUtside our Countries", pin_type="card", pin_style="red", name=None)
 
     return
 
