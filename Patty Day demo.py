@@ -59,7 +59,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        low_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     # call connected blocks for 'else' condition 2
@@ -67,8 +67,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     return
 
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_1() called')
+def low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('low_severity() called')
 
     phantom.set_severity(container=container, severity="Low")
 
@@ -114,13 +114,13 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        high_severity(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('set_severity_2() called')
+def high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('high_severity() called')
 
     phantom.set_severity(container=container, severity="High")
 
