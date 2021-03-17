@@ -79,7 +79,7 @@ Would you like to change container's severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "container:name",
+        "container:department",
         "geolocate_ip_1:action_result.parameter.ip",
         "geolocate_ip_1:action_result.data.*.country_name",
     ]
