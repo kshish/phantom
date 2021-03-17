@@ -69,9 +69,20 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "admin"
-    message = """The container has one or more IPs outside of N.A.
+    message = """The container {0} has one or more IPs outside of N.A.
+-
+The ip {1} is from {2}
+
+-
 
 Would you like to change container's severity to high?"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name",
+    ]
 
     #responses:
     response_types = [
@@ -87,7 +98,7 @@ Would you like to change container's severity to high?"""
         },
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", response_types=response_types, callback=decision_3)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_3)
 
     return
 
