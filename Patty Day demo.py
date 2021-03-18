@@ -29,7 +29,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
                 'context': {'artifact_id': container_item[1]},
             })
 
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_2, name="geolocate_ip_1")
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_out_internal_IPs, name="geolocate_ip_1")
 
     return
 
@@ -41,9 +41,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         action_results=results,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Canada"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Mexico"],
+            ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "Canada"],
+            ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "Mexico"],
         ],
         logical_operator='or')
 
@@ -80,8 +80,8 @@ Would you like to change container's severity to high?"""
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "geolocate_ip_1:action_result.parameter.ip",
-        "geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     #responses:
@@ -155,6 +155,24 @@ def add_artifact_1(action=None, success=None, container=None, results=None, hand
         })
 
     phantom.act(action="add artifact", parameters=parameters, assets=['my local'], name="add_artifact_1")
+
+    return
+
+def filter_out_internal_IPs(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filter_out_internal_IPs() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""],
+        ],
+        name="filter_out_internal_IPs:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_2(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
