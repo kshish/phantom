@@ -59,7 +59,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """Yes {0} is in the list also here's a curly brace \"{{0}}\""""
+    message = """Yes {0} is in the list also here's a curly brace {{0}}"""
 
     # parameter list for template variable replacement
     parameters = [
