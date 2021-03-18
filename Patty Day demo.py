@@ -178,7 +178,9 @@ def filter_out_internal_IPs(action=None, success=None, container=None, results=N
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """The ip is {0} is from {1}"""
+    template = """%%
+The ip is {0} is from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
