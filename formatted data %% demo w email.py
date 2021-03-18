@@ -139,16 +139,17 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_1' call
-    formatted_data_1 = phantom.get_format_data(name='format_1')
+    formatted_data_1 = phantom.get_format_data(name='map_your_email_addr')
+    formatted_data_2 = phantom.get_format_data(name='format_1')
 
     parameters = []
     
     # build parameters list for 'send_email_1' call
     parameters.append({
         'cc': "",
-        'to': "churyn@splunk.com",
+        'to': formatted_data_1,
         'bcc': "",
-        'body': formatted_data_1,
+        'body': formatted_data_2,
         'from': "donotreply@splunk.com",
         'headers': "",
         'subject': "formatted data",
