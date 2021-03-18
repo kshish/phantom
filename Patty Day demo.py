@@ -53,7 +53,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # call connected blocks for 'else' condition 2
-    format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+    custom_function_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
 
     return
 
@@ -79,7 +79,7 @@ Would you like to change container's severity to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "format_1:formatted_data",
+        "custom_function_1:custom_function:dept",
         "geolocate_ip_1:action_result.parameter.ip",
         "geolocate_ip_1:action_result.data.*.country_name",
     ]
@@ -127,18 +127,24 @@ def high_severity(action=None, success=None, container=None, results=None, handl
 
     return
 
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('format_1() called')
+def custom_function_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('custom_function_1() called')
     
-    template = """{0}"""
+    department_value = container.get('department', None)
 
-    # parameter list for template variable replacement
-    parameters = [
-        "container:custom_fields.department",
-    ]
+    custom_function_1__dept = None
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
 
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.save_run_data(key='custom_function_1:dept', value=json.dumps(custom_function_1__dept))
     prompt_1(container=container)
 
     return
