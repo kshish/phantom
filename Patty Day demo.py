@@ -151,7 +151,7 @@ def filter_by_country(action=None, success=None, container=None, results=None, h
         conditions=[
             ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
             ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "Mexico"],
+            ["filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Mexico"],
         ],
         logical_operator='and',
         name="filter_by_country:condition_2")

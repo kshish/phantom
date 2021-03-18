@@ -7,7 +7,7 @@
             "clean": true,
             "code_block": "",
             "description": "",
-            "hash": "54ca20705d022e7ccdaa5fd264c7c11d2863e226",
+            "hash": "5740a4691f74963b4422adb5630e831ba2c5dc9c",
             "joint": {
                 "cells": [
                     {
@@ -1082,216 +1082,6 @@
                         "z": 98
                     },
                     {
-                        "active": false,
-                        "angle": 0,
-                        "attrs": {
-                            ".background": {
-                                "fill": "#000000",
-                                "stroke": "#5C6773",
-                                "transform": "rotate(45 30 70)"
-                            },
-                            ".inPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "in",
-                                    "type": "in"
-                                }
-                            },
-                            ".number": {
-                                "text": 2
-                            },
-                            ".outPorts>.port-0": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                },
-                                "ref-x": 83,
-                                "ref-y": 40
-                            },
-                            ".outPorts>.port-0>.port-body": {
-                                "port": {
-                                    "id": "out-1",
-                                    "type": "out"
-                                }
-                            },
-                            ".outPorts>.port-1": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                },
-                                "ref-x": 41,
-                                "ref-y": 82
-                            },
-                            ".outPorts>.port-1>.port-body": {
-                                "port": {
-                                    "id": "out-2",
-                                    "type": "out"
-                                }
-                            },
-                            "g.delete": {
-                                "display": "none"
-                            },
-                            "g.error": {
-                                "opacity": 0
-                            },
-                            "g.notes": {
-                                "display": "block"
-                            }
-                        },
-                        "block_code": "def filter_by_country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('filter_by_country() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"United States\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"Canada\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"Mexico\"],\n        ],\n        logical_operator='or',\n        name=\"filter_by_country:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        pin_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    # collect filtered artifact ids for 'if' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"Canada\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"Mexico\"],\n        ],\n        logical_operator='and',\n        name=\"filter_by_country:condition_2\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_2 or matched_results_2:\n        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)\n\n    return",
-                        "callback_code": "",
-                        "callback_start": 1,
-                        "callsback": false,
-                        "connected_to_start": true,
-                        "connection_name": "geolocate ip",
-                        "connection_type": "action",
-                        "custom_callback": "",
-                        "custom_code": "",
-                        "custom_join": "",
-                        "custom_name": "filter by country",
-                        "description": "",
-                        "has_custom": false,
-                        "has_custom_block": false,
-                        "has_custom_callback": false,
-                        "has_custom_join": false,
-                        "id": "251171ad-ccd0-4a69-9bd0-43e37bed8c30",
-                        "inPorts": [
-                            "in"
-                        ],
-                        "join_code": "",
-                        "join_optional": [],
-                        "join_start": 1,
-                        "line_end": 165,
-                        "line_start": 128,
-                        "name": "filter",
-                        "notes": "",
-                        "number": 2,
-                        "order": 7,
-                        "outPorts": [
-                            "out-1",
-                            "out-2"
-                        ],
-                        "outputs": [
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    },
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "Canada"
-                                    },
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "Mexico"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "or",
-                                "type": "if"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "comparison": "!=",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    },
-                                    {
-                                        "comparison": "!=",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "Canada"
-                                    },
-                                    {
-                                        "comparison": "==",
-                                        "data_type": "",
-                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "Mexico"
-                                    }
-                                ],
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            }
-                        ],
-                        "ports": {
-                            "groups": {
-                                "in": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "left"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "left"
-                                    }
-                                },
-                                "out": {
-                                    "attrs": {
-                                        ".port-body": {
-                                            "fill": "#fff",
-                                            "magnet": true,
-                                            "r": 10,
-                                            "stroke": "#000"
-                                        },
-                                        ".port-label": {
-                                            "fill": "#000"
-                                        }
-                                    },
-                                    "label": {
-                                        "position": {
-                                            "args": {
-                                                "y": 10
-                                            },
-                                            "name": "right"
-                                        }
-                                    },
-                                    "position": {
-                                        "name": "right"
-                                    }
-                                }
-                            }
-                        },
-                        "position": {
-                            "x": 420,
-                            "y": 80
-                        },
-                        "previous_function": "",
-                        "previous_name": "filter_by_country",
-                        "show_number": true,
-                        "size": {
-                            "height": 82,
-                            "width": 82
-                        },
-                        "state": "filter",
-                        "status": "",
-                        "type": "coa.Filter",
-                        "warn": "",
-                        "z": 105
-                    },
-                    {
                         "attrs": {
                             ".connection": {
                                 "stroke": "#818D99",
@@ -2230,6 +2020,216 @@
                         "type": "coa.API",
                         "warn": false,
                         "z": 113
+                    },
+                    {
+                        "active": false,
+                        "angle": 0,
+                        "attrs": {
+                            ".background": {
+                                "fill": "#000000",
+                                "stroke": "#5C6773",
+                                "transform": "rotate(45 30 70)"
+                            },
+                            ".inPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "in",
+                                    "type": "in"
+                                }
+                            },
+                            ".number": {
+                                "text": 2
+                            },
+                            ".outPorts>.port-0": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                },
+                                "ref-x": 83,
+                                "ref-y": 40
+                            },
+                            ".outPorts>.port-0>.port-body": {
+                                "port": {
+                                    "id": "out-1",
+                                    "type": "out"
+                                }
+                            },
+                            ".outPorts>.port-1": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                },
+                                "ref-x": 41,
+                                "ref-y": 82
+                            },
+                            ".outPorts>.port-1>.port-body": {
+                                "port": {
+                                    "id": "out-2",
+                                    "type": "out"
+                                }
+                            },
+                            "g.delete": {
+                                "display": "none"
+                            },
+                            "g.error": {
+                                "opacity": 0
+                            },
+                            "g.notes": {
+                                "display": "block"
+                            }
+                        },
+                        "block_code": "def filter_by_country(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug('filter_by_country() called')\n\n    # collect filtered artifact ids for 'if' condition 1\n    matched_artifacts_1, matched_results_1 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"United States\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"Canada\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"==\", \"Mexico\"],\n        ],\n        logical_operator='or',\n        name=\"filter_by_country:condition_1\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_1 or matched_results_1:\n        pin_3(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)\n\n    # collect filtered artifact ids for 'if' condition 2\n    matched_artifacts_2, matched_results_2 = phantom.condition(\n        container=container,\n        action_results=results,\n        conditions=[\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"United States\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"Canada\"],\n            [\"filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name\", \"!=\", \"Mexico\"],\n        ],\n        logical_operator='and',\n        name=\"filter_by_country:condition_2\")\n\n    # call connected blocks if filtered artifacts or results\n    if matched_artifacts_2 or matched_results_2:\n        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)\n\n    return",
+                        "callback_code": "",
+                        "callback_start": 1,
+                        "callsback": false,
+                        "connected_to_start": true,
+                        "connection_name": "geolocate ip",
+                        "connection_type": "action",
+                        "custom_callback": "",
+                        "custom_code": "",
+                        "custom_join": "",
+                        "custom_name": "filter by country",
+                        "description": "",
+                        "has_custom": false,
+                        "has_custom_block": false,
+                        "has_custom_callback": false,
+                        "has_custom_join": false,
+                        "id": "251171ad-ccd0-4a69-9bd0-43e37bed8c30",
+                        "inPorts": [
+                            "in"
+                        ],
+                        "join_code": "",
+                        "join_optional": [],
+                        "join_start": 1,
+                        "line_end": 165,
+                        "line_start": 128,
+                        "name": "filter",
+                        "notes": "",
+                        "number": 2,
+                        "order": 7,
+                        "outPorts": [
+                            "out-1",
+                            "out-2"
+                        ],
+                        "outputs": [
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Canada"
+                                    },
+                                    {
+                                        "comparison": "==",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Mexico"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "or",
+                                "type": "if"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "comparison": "!=",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "comparison": "!=",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Canada"
+                                    },
+                                    {
+                                        "comparison": "!=",
+                                        "data_type": "",
+                                        "param": "filtered-data:filter_out_internal_IPs:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Mexico"
+                                    }
+                                ],
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "ports": {
+                            "groups": {
+                                "in": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "left"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "left"
+                                    }
+                                },
+                                "out": {
+                                    "attrs": {
+                                        ".port-body": {
+                                            "fill": "#fff",
+                                            "magnet": true,
+                                            "r": 10,
+                                            "stroke": "#000"
+                                        },
+                                        ".port-label": {
+                                            "fill": "#000"
+                                        }
+                                    },
+                                    "label": {
+                                        "position": {
+                                            "args": {
+                                                "y": 10
+                                            },
+                                            "name": "right"
+                                        }
+                                    },
+                                    "position": {
+                                        "name": "right"
+                                    }
+                                }
+                            }
+                        },
+                        "position": {
+                            "x": 420,
+                            "y": 80
+                        },
+                        "previous_function": "",
+                        "previous_name": "filter_by_country",
+                        "show_number": true,
+                        "size": {
+                            "height": 82,
+                            "width": 82
+                        },
+                        "state": "filter",
+                        "status": "",
+                        "type": "coa.Filter",
+                        "warn": "",
+                        "z": 114
                     }
                 ]
             },
@@ -2239,7 +2239,7 @@
         "schema": 4,
         "version": "4.10.0.40961"
     },
-    "create_time": "2021-03-18T16:31:23.435566+00:00",
+    "create_time": "2021-03-18T16:34:28.776471+00:00",
     "draft_mode": false,
     "labels": [
         "*"
