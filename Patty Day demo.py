@@ -134,7 +134,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "container:department",
+        "container:custom_fields.department",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
