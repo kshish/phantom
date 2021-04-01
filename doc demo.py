@@ -57,9 +57,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
     user = "Administrator"
     message = """There is at least one IP outside of U.S.A.
-
+-
 {0}
-
+-
 Would you like to set severity of container to high?"""
 
     # parameter list for template variable replacement
@@ -172,7 +172,9 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('format_1() called')
     
-    template = """The ip {0} is from {1}"""
+    template = """%%
+The ip {0} is from {1}
+%%"""
 
     # parameter list for template variable replacement
     parameters = [
