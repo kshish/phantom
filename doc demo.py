@@ -33,38 +33,21 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug('decision_1() called')
-
-    # check for 'if' condition 1
-    matched = phantom.decision(
-        container=container,
-        action_results=results,
-        conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-        ])
-
-    # call connected blocks if condition 1 matched
-    if matched:
-        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
-        return
-
-    return
-
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug('prompt_1() called')
     
     # set user and message variables for phantom.prompt call
     user = "Administrator"
-    message = """There is at least one IP outside of U.S.A.
+    message = """The  {1}  container. Has at least one IP outside of U.S.A.
 -
 {0}
 -
-Would you like to set severity of container to high?"""
+Would you like to set severity of container {1}  to high?"""
 
     # parameter list for template variable replacement
     parameters = [
         "format_1:formatted_data",
+        "container:name",
     ]
 
     #responses:
@@ -124,7 +107,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filters_in_Non_USA(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -178,13 +161,31 @@ The ip {0} is from {1}
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "filtered-data:filters_in_Non_USA:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filters_in_Non_USA:condition_1:geolocate_ip_1:action_result.data.*.country_name",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+def filters_in_Non_USA(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('filters_in_Non_USA() called')
+
+    # collect filtered artifact ids for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        action_results=results,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+        ],
+        name="filters_in_Non_USA:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
