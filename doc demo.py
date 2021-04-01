@@ -46,7 +46,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if matched:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, custom_function=custom_function)
         return
 
     return
@@ -58,14 +58,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     user = "Administrator"
     message = """There is at least one IP outside of U.S.A.
 
-The ip is {0} is from {1}
+{0}
 
 Would you like to set severity of container to high?"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+        "format_1:formatted_data",
     ]
 
     #responses:
@@ -167,6 +166,23 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types)
+
+    return
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug('format_1() called')
+    
+    template = """The ip {0} is from {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+    ]
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
