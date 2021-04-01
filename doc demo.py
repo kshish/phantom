@@ -28,9 +28,8 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
             parameters.append({
                 'ip': custom_function_results_item_1[0],
             })
-    phantom.debug(parameters)
-    phantom.debug(container)
-    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=decision_1, name="geolocate_ip_1")
+
+    phantom.act(action="geolocate ip", parameters=parameters, assets=['maxmind'], callback=filter_1, name="geolocate_ip_1")
 
     return
 
