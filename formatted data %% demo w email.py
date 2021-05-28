@@ -292,7 +292,7 @@ def map_your_email_addr(action=None, success=None, container=None, results=None,
 
     # parameter list for template variable replacement
     parameters = [
-        "churyn@splunk.com",
+        "kshish@yahoo.com",
     ]
 
     phantom.format(container=container, template=template, parameters=parameters, name="map_your_email_addr")
