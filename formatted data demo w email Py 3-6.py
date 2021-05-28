@@ -119,7 +119,7 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_1' call
-    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.parameter.message', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.summary.responses.0', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
     results_data_2 = phantom.collect2(container=container, datapath=['geolocate_ip_1:action_result.data.*.country_name', 'geolocate_ip_1:action_result.parameter.context.artifact_id'], action_results=results)
 
     parameters = []
@@ -171,7 +171,7 @@ def send_email_2(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_2' call
-    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.parameter.message', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.summary.responses.0', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
     formatted_data_1 = phantom.get_format_data(name='format_a_list__as_list')
 
     parameters = []
@@ -203,7 +203,7 @@ def send_email_3(action=None, success=None, container=None, results=None, handle
     #phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
     
     # collect data for 'send_email_3' call
-    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.parameter.message', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
+    results_data_1 = phantom.collect2(container=container, datapath=['provide_email_addr:action_result.summary.responses.0', 'provide_email_addr:action_result.parameter.context.artifact_id'], action_results=results)
     formatted_data_1 = phantom.get_format_data(name='format_a_list')
 
     parameters = []
