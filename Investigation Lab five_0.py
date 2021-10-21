@@ -24,7 +24,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     parameters = []
 
     parameters.append({
-        "ip": "artifact:ip.cef.sourceAddress",
+        "ip": "artifact:Source Address.cef.sourceAddress",
     })
 
     ################################################################################
