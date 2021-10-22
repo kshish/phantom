@@ -13,6 +13,10 @@ def on_start(container):
 
     # call 'locate_source' block
     locate_source(container=container)
+    # call 'virus_search' block
+    virus_search(container=container)
+    # call 'source_reputation' block
+    source_reputation(container=container)
 
     return
 
