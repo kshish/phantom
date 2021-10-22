@@ -47,7 +47,7 @@ def locate_source(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="locate_source", assets=["maxmind"], callback=join_debug_2)
+    phantom.act("geolocate ip", parameters=parameters, name="locate_source", assets=["maxmind"], callback=join_decision_1)
 
     return
 
@@ -79,7 +79,7 @@ def source_reputation(action=None, success=None, container=None, results=None, h
     ## Custom Code End
     ################################################################################
 
-    phantom.act("domain reputation", parameters=parameters, name="source_reputation", assets=["vt"], callback=join_debug_2)
+    phantom.act("domain reputation", parameters=parameters, name="source_reputation", assets=["vt"], callback=join_decision_1)
 
     return
 
@@ -111,17 +111,7 @@ def virus_search(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("file reputation", parameters=parameters, name="virus_search", assets=["vt"], callback=join_debug_2)
-
-    return
-
-
-def join_debug_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("join_debug_2() called")
-
-    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search"]):
-        # call connected block "debug_2"
-        debug_2(container=container, handle=handle)
+    phantom.act("file reputation", parameters=parameters, name="virus_search", assets=["vt"], callback=join_decision_1)
 
     return
 
@@ -165,6 +155,66 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_2")
+
+    return
+
+
+def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_decision_1() called")
+
+    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search"]):
+        # call connected block "decision_1"
+        decision_1(container=container, handle=handle)
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["virus_search:action_result.summary.positives", ">", 10]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        notify_soc_management(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+def notify_soc_management(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("notify_soc_management() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """A potentially malicious file download has been detected on a local server with IP address {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.destinationAddress"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Notify SOC Management?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types)
 
     return
 

@@ -14,27 +14,6 @@
                     "targetPort": "2_in"
                 },
                 {
-                    "id": "port_5_to_port_7",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
-                    "id": "port_4_to_port_7",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
-                    "id": "port_2_to_port_7",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_0_to_port_5",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -47,9 +26,42 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_2_to_port_8",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_5_to_port_8",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_4_to_port_8",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "fb9d25aee91fa880275ddab77659659bea3b631a",
+            "hash": "de6cfa45c27288eabb3af587f581d44cf3e95f1e",
             "nodes": {
                 "0": {
                     "data": {
@@ -81,7 +93,7 @@
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
                     "x": 1000,
-                    "y": 1000
+                    "y": 1520
                 },
                 "2": {
                     "data": {
@@ -344,7 +356,88 @@
                     "id": "7",
                     "type": "utility",
                     "x": 960,
-                    "y": 880
+                    "y": 1320
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": ">",
+                                        "param": "virus_search:action_result.summary.positives",
+                                        "value": "10"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "Hi Positives",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "Low Positives",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "8",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "decision",
+                    "x": 1120,
+                    "y": 900
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Notify SOC Management",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 1,
+                        "functionName": "notify_soc_management",
+                        "id": "9",
+                        "message": "A potentially malicious file download has been detected on a local server with IP address {0}",
+                        "parameters": [
+                            "artifact:*.cef.destinationAddress"
+                        ],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Notify SOC Management?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "prompt",
+                    "x": 1080,
+                    "y": 1100
                 }
             },
             "notes": ""
@@ -356,7 +449,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-10-22T19:09:48.151132+00:00",
+    "create_time": "2021-10-22T19:27:41.795264+00:00",
     "draft_mode": false,
     "labels": [
         "*"
