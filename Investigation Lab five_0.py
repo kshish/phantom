@@ -216,7 +216,35 @@ def notify_soc_management(action=None, success=None, container=None, results=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types, drop_none=True)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types, callback=decision_2, drop_none=True)
+
+    return
+
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_2() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["notify_soc_management:action_result.status", "!=", "success"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        return
+
+    # check for 'elif' condition 2
+    found_match_2 = phantom.decision(
+        container=container,
+        conditions=[
+            ["notify_soc_management:action_result.summary.responses.0", "==", "Yes"]
+        ])
+
+    # call connected blocks if condition 2 matched
+    if found_match_2:
+        return
 
     return
 

@@ -59,9 +59,16 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_9_to_port_11",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "c1f6b018cc1a33caf6711e88e7f1356565f88b75",
+            "hash": "03a850caeb64a12d14914db8c1daf34caa24c2b5",
             "nodes": {
                 "0": {
                     "data": {
@@ -92,8 +99,68 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
-                    "x": 1000,
-                    "y": 1520
+                    "x": 1100,
+                    "y": 1680
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "notify_soc_management:action_result.status",
+                                        "value": "success"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "notify_soc_management:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "Escalate",
+                                "display": "Else If",
+                                "logic": "and",
+                                "type": "elif"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 2,
+                                "customName": "Close",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "11",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "decision",
+                    "x": 1080,
+                    "y": 1244.5
                 },
                 "2": {
                     "data": {
@@ -355,8 +422,8 @@
                     "errors": {},
                     "id": "7",
                     "type": "utility",
-                    "x": 960,
-                    "y": 1320
+                    "x": 920,
+                    "y": 1600
                 },
                 "8": {
                     "data": {
@@ -450,7 +517,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-10-22T19:32:03.945506+00:00",
+    "create_time": "2021-10-22T19:43:16.112269+00:00",
     "draft_mode": false,
     "labels": [
         "*"
