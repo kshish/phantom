@@ -19,9 +19,23 @@
                     "sourcePort": "2_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_5",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
+                },
+                {
+                    "id": "port_5_to_port_7",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "b18e4287aa0c604ef486eb73dda7cd45b564869f",
+            "hash": "b6d65d0984c0d1a3c3344ec580ec2ae9dd71bd82",
             "nodes": {
                 "0": {
                     "data": {
@@ -60,6 +74,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "Locate Source",
+                            "customNameId": 0,
                             "delayTime": 0,
                             "join": []
                         },
@@ -70,7 +86,7 @@
                         "connectorId": 93,
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "locate_source",
                         "id": "2",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -86,29 +102,83 @@
                     "x": 951.5,
                     "y": 536
                 },
-                "3": {
+                "4": {
+                    "data": {
+                        "action": "domain reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "Source Reputation",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "VirusTotal",
+                        "connectorConfigs": [
+                            "vt"
+                        ],
+                        "connectorId": 170,
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "source_reputation",
+                        "id": "4",
+                        "parameters": {
+                            "domain": "artifact:*.cef.sourceDnsDomain"
+                        },
+                        "requiredParameters": [
+                            "domain"
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "action",
+                    "x": 960,
+                    "y": 664.5
+                },
+                "5": {
+                    "data": {
+                        "action": "file reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "Virus Search",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "VirusTotal",
+                        "connectorConfigs": [
+                            "vt"
+                        ],
+                        "connectorId": 170,
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "virus_search",
+                        "id": "5",
+                        "parameters": {
+                            "hash": "artifact:*.cef.fileHash"
+                        },
+                        "requiredParameters": [
+                            "hash"
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "action",
+                    "x": 960,
+                    "y": 760
+                },
+                "7": {
                     "data": {
                         "advanced": {
                             "join": []
-                        },
-                        "customDatapaths": {
-                            "artifacts": {
-                                "artifact:*.cef.myCEFField": {
-                                    "contains": [],
-                                    "isCustomDatapath": true,
-                                    "label": "artifact:*.cef.myCEFField",
-                                    "value": "artifact:*.cef.myCEFField"
-                                }
-                            }
                         },
                         "customFunction": {
                             "draftMode": false,
                             "name": "debug",
                             "repoName": "community"
                         },
-                        "functionId": 1,
-                        "functionName": "debug_1",
-                        "id": "3",
+                        "functionId": 2,
+                        "functionName": "debug_2",
+                        "id": "7",
                         "selectMore": false,
                         "type": "utility",
                         "utilities": {
@@ -245,10 +315,10 @@
                             "debug": {
                                 "input_1": "artifact:*.cef.sourceAddress",
                                 "input_10": null,
-                                "input_2": "artifact:*.cef.myCEFField",
-                                "input_3": "keyword_argument:filtered_artifacts",
-                                "input_4": "keyword_argument:filtered_results",
-                                "input_5": "geolocate_ip_1:action_result.data.*.country_name",
+                                "input_2": "locate_source:action_result.data",
+                                "input_3": "source_reputation:action_result.summary",
+                                "input_4": "virus_search:action_result.summary",
+                                "input_5": null,
                                 "input_6": null,
                                 "input_7": null,
                                 "input_8": null,
@@ -257,42 +327,10 @@
                         }
                     },
                     "errors": {},
-                    "id": "3",
+                    "id": "7",
                     "type": "utility",
-                    "x": 700,
-                    "y": 640
-                },
-                "4": {
-                    "data": {
-                        "action": "domain reputation",
-                        "actionType": "investigate",
-                        "advanced": {
-                            "customName": "Source Reputation",
-                            "customNameId": 0,
-                            "join": []
-                        },
-                        "connector": "VirusTotal",
-                        "connectorConfigs": [
-                            "vt"
-                        ],
-                        "connectorId": 170,
-                        "connectorVersion": "v1",
-                        "functionId": 1,
-                        "functionName": "source_reputation",
-                        "id": "4",
-                        "parameters": {
-                            "domain": "artifact:*.cef.sourceDnsDomain"
-                        },
-                        "requiredParameters": [
-                            "domain"
-                        ],
-                        "type": "action"
-                    },
-                    "errors": {},
-                    "id": "4",
-                    "type": "action",
                     "x": 960,
-                    "y": 664.5
+                    "y": 884.5
                 }
             },
             "notes": ""
@@ -304,7 +342,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-10-22T18:35:43.304529+00:00",
+    "create_time": "2021-10-22T18:56:52.142136+00:00",
     "draft_mode": false,
     "labels": [
         "*"
