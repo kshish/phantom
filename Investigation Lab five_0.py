@@ -216,7 +216,7 @@ def notify_soc_management(action=None, success=None, container=None, results=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types, drop_none=False)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types, drop_none=True)
 
     return
 
