@@ -4,6 +4,7 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
+            "customCode": null,
             "description": "",
             "edges": [
                 {
@@ -21,7 +22,8 @@
                     "targetPort": "3_in"
                 }
             ],
-            "hash": "77124d98332acdf053afdd20a894c96ab35615c3",
+            "globalCustomCode": "import mymodule\n\n\n\n",
+            "hash": "9f6d8d94f5ee7aa52661023fd465b3b9aaea2af7",
             "nodes": {
                 "0": {
                     "data": {
@@ -36,7 +38,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.99999999999983
+                    "y": 419.9999999999999
                 },
                 "1": {
                     "data": {
@@ -51,7 +53,7 @@
                     "errors": {},
                     "id": "1",
                     "type": "end",
-                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
+                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1000
                 },
@@ -116,8 +118,8 @@
                     "errors": {},
                     "id": "3",
                     "type": "action",
-                    "x": 1010,
-                    "y": 764.5
+                    "x": 1000,
+                    "y": 680
                 }
             },
             "notes": ""
@@ -129,7 +131,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-12-13T16:42:49.393508+00:00",
+    "create_time": "2021-12-13T16:51:24.435090+00:00",
     "draft_mode": false,
     "labels": [
         "*"
