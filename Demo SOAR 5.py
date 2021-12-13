@@ -126,7 +126,7 @@ def prompt_to_change_severity(action=None, success=None, container=None, results
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_3)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_3)
 
     return
 
@@ -138,8 +138,9 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_to_change_severity:action_result.summary.responses.0", "==", "Yes"]
-        ])
+            ["prompt_to_change_severity:action_result.summary.responses.0", "!=", "No"]
+        ],
+        case_sensitive=True)
 
     # call connected blocks if condition 1 matched
     if found_match_1:
