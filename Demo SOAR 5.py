@@ -65,10 +65,10 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "==", "Spain"]
+            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "Spain"]
         ])
 
     # call connected blocks if condition 1 matched
