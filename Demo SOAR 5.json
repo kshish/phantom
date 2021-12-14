@@ -63,10 +63,17 @@
                     "sourcePort": "15_out",
                     "targetNode": "12",
                     "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_16",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
                 }
             ],
             "globalCustomCode": "\n\n\n\n",
-            "hash": "102a8079ff0bf2c6244153ad230e1cba764a95fe",
+            "hash": "48aa9096773cf8452e94609ab2dcfa6c135b7e38",
             "nodes": {
                 "0": {
                     "data": {
@@ -376,8 +383,8 @@
                     "errors": {},
                     "id": "14",
                     "type": "utility",
-                    "x": 1380,
-                    "y": 1040
+                    "x": 1420,
+                    "y": 1060
                 },
                 "15": {
                     "data": {
@@ -432,6 +439,158 @@
                     "x": 1060,
                     "y": 720
                 },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "artifact_create",
+                            "repoName": "community"
+                        },
+                        "functionId": 4,
+                        "functionName": "artifact_create_4",
+                        "id": "16",
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "artifact_create": {
+                                "description": "Create a new artifact with the specified attributes.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "phantom container id"
+                                        ],
+                                        "description": "Container which the artifact will be added to.",
+                                        "inputType": "item",
+                                        "label": "container",
+                                        "name": "container",
+                                        "placeholder": "container:id",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "The name of the new artifact, which is optional and defaults to \"artifact\".",
+                                        "inputType": "item",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "artifact",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "The label of the new artifact, which is optional and defaults to \"events\"",
+                                        "inputType": "item",
+                                        "label": "label",
+                                        "name": "label",
+                                        "placeholder": "events",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            ""
+                                        ],
+                                        "description": "The severity of the new artifact, which is optional and defaults to \"Medium\". Typically this is either \"High\", \"Medium\", or \"Low\".",
+                                        "inputType": "item",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Medium",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "The name of the CEF field to populate in the artifact, such as \"destinationAddress\" or \"sourceDnsDomain\". Required only if cef_value is provided.",
+                                        "inputType": "item",
+                                        "label": "cef_field",
+                                        "name": "cef_field",
+                                        "placeholder": "destinationAddress",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "The value of the CEF field to populate in the artifact, such as the IP address, domain name, or file hash. Required only if cef_field is provided.",
+                                        "inputType": "item",
+                                        "label": "cef_value",
+                                        "name": "cef_value",
+                                        "placeholder": "192.0.2.192",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "The CEF data type of the data in cef_value. For example, this could be \"ip\", \"hash\", or \"domain\". Optional.",
+                                        "inputType": "item",
+                                        "label": "cef_data_type",
+                                        "name": "cef_data_type",
+                                        "placeholder": "ip",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "A comma-separated list of tags to apply to the created artifact, which is optional.",
+                                        "inputType": "item",
+                                        "label": "tags",
+                                        "name": "tags",
+                                        "placeholder": "tag1, tag2, tag3",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "Either \"true\" or \"false\", depending on whether or not the new artifact should trigger the execution of any playbooks that are set to active on the label of the container the artifact will be added to. Optional and defaults to \"false\".",
+                                        "inputType": "item",
+                                        "label": "run_automation",
+                                        "name": "run_automation",
+                                        "placeholder": "false",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [],
+                                        "description": "Optional parameter to modify any extra attributes of the artifact. Input_json will be merged with other inputs. In the event of a conflict, input_json will take precedence.",
+                                        "inputType": "item",
+                                        "label": "input_json",
+                                        "name": "input_json",
+                                        "placeholder": "{\"source_data_identifier\": \"1234\", \"data\": \"5678\"}",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "artifact_create",
+                                "name": "artifact_create"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "artifact_create": {
+                                "cef_data_type": null,
+                                "cef_field": "myfield",
+                                "cef_value": "format_list_of_ips_and_countries:formatted_data.*",
+                                "container": null,
+                                "input_json": null,
+                                "label": null,
+                                "name": "format_list_of_ips_and_countries:formatted_data.*",
+                                "run_automation": null,
+                                "severity": null,
+                                "tags": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "utility",
+                    "x": 1140,
+                    "y": 1064.5
+                },
                 "2": {
                     "data": {
                         "action": "geolocate ip",
@@ -475,7 +634,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-12-14T17:21:00.951202+00:00",
+    "create_time": "2021-12-14T17:23:37.921793+00:00",
     "draft_mode": false,
     "labels": [
         "*"

@@ -101,6 +101,7 @@ def format_list_of_ips_and_countries(action=None, success=None, container=None, 
     phantom.format(container=container, template=template, parameters=parameters, name="format_list_of_ips_and_countries")
 
     pin_3(container=container)
+    artifact_create_4(container=container)
 
     return
 
@@ -177,6 +178,41 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
         format_list_of_ips_and_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+
+def artifact_create_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("artifact_create_4() called")
+
+    format_list_of_ips_and_countries__as_list = phantom.get_format_data(name="format_list_of_ips_and_countries__as_list")
+
+    parameters = []
+
+    parameters.append({
+        "container": None,
+        "name": format_list_of_ips_and_countries__as_list,
+        "label": None,
+        "severity": None,
+        "cef_field": "myfield",
+        "cef_value": format_list_of_ips_and_countries__as_list,
+        "cef_data_type": None,
+        "tags": None,
+        "run_automation": None,
+        "input_json": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/artifact_create", parameters=parameters, name="artifact_create_4")
 
     return
 
