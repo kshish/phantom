@@ -15,13 +15,6 @@
                     "targetPort": "2_in"
                 },
                 {
-                    "id": "port_2_to_port_5",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -63,10 +56,29 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_2_to_port_10",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_5",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
             "globalCustomCode": "\n\n\n\n",
-            "hash": "046d3d87759c0dcb569358172d5f1968f0d6f817",
+            "hash": "46b0fcbe1b34f3a3741e25e54c32400c384ec797",
             "nodes": {
                 "0": {
                     "data": {
@@ -80,8 +92,8 @@
                     "errors": {},
                     "id": "0",
                     "type": "start",
-                    "x": 1000,
-                    "y": 419.9999999999998
+                    "x": 1020,
+                    "y": 219.99999999999991
                 },
                 "1": {
                     "data": {
@@ -99,6 +111,38 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1080,
                     "y": 1360
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter out internal IPs",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_out_internal_ips",
+                        "id": "10",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "filter",
+                    "x": 1060,
+                    "y": 544.5
                 },
                 "2": {
                     "data": {
@@ -131,7 +175,7 @@
                     "id": "2",
                     "type": "action",
                     "x": 1000,
-                    "y": 580
+                    "y": 380
                 },
                 "5": {
                     "data": {
@@ -144,13 +188,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Spain"
                                     }
                                 ],
@@ -219,8 +263,8 @@
                         "id": "7",
                         "message": "The IP {0} is from {1}",
                         "parameters": [
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -336,7 +380,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-12-13T18:25:03.061120+00:00",
+    "create_time": "2021-12-14T14:30:33.906476+00:00",
     "draft_mode": false,
     "labels": [
         "*"
