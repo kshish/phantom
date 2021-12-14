@@ -11,21 +11,49 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'decision_1' block
-    decision_1(container=container)
+    # call 'format_1' block
+    format_1(container=container)
 
     return
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_1() called")
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_1() called")
 
+    template = """{0} is from {1}\n"""
 
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_input:ip",
+        "playbook_input:country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     return
 
 
 def on_finish(container, summary):
     phantom.debug("on_finish() called")
+
+    playbook_input_ip = phantom.collect2(container=container, datapath=["playbook_input:ip"])
+    format_1 = phantom.get_format_data(name="format_1")
+
+    playbook_input_ip_values = [item[0] for item in playbook_input_ip]
+
+    output = {
+        "ip_and_country": format_1,
+        "ip": playbook_input_ip_values,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -45,5 +73,7 @@ def on_finish(container, summary):
     ################################################################################
     ## Custom Code End
     ################################################################################
+
+    phantom.save_playbook_output_data(output=output)
 
     return

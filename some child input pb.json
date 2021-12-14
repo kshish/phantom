@@ -7,14 +7,21 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_0_to_port_2",
+                    "id": "port_0_to_port_3",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
-                    "targetNode": "2",
-                    "targetPort": "2_in"
+                    "targetNode": "3",
+                    "targetPort": "3_in"
+                },
+                {
+                    "id": "port_3_to_port_1",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "1",
+                    "targetPort": "1_in"
                 }
             ],
-            "hash": "25342c4b98243f08a3afd685adfd3d3c36583279",
+            "hash": "d8b22038a8af4b007f07775f46efcc8f086e1732",
             "nodes": {
                 "0": {
                     "data": {
@@ -48,37 +55,26 @@
                     "x": 1000,
                     "y": 1000
                 },
-                "2": {
+                "3": {
                     "data": {
                         "advanced": {
                             "join": []
                         },
-                        "conditions": [
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 0,
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            }
-                        ],
                         "functionId": 1,
-                        "functionName": "decision_1",
-                        "id": "2",
-                        "type": "decision"
+                        "functionName": "format_1",
+                        "id": "3",
+                        "parameters": [
+                            "playbook_input:ip",
+                            "playbook_input:country_name"
+                        ],
+                        "template": "{0} is from {1}\n",
+                        "type": "format"
                     },
                     "errors": {},
-                    "id": "2",
-                    "type": "decision",
-                    "x": 1060,
-                    "y": 624.5
+                    "id": "3",
+                    "type": "format",
+                    "x": 1000,
+                    "y": 604.5
                 }
             },
             "notes": ""
@@ -97,13 +93,42 @@
                 "name": "ip"
             }
         ],
-        "output_spec": null,
+        "output_spec": [
+            {
+                "contains": [],
+                "datapaths": [
+                    "format_1:formatted_data"
+                ],
+                "deduplicate": false,
+                "description": "",
+                "metadata": {},
+                "name": "ip and country"
+            },
+            {
+                "contains": [
+                    "ip"
+                ],
+                "datapaths": [
+                    "playbook_input:ip"
+                ],
+                "deduplicate": false,
+                "description": "",
+                "metadata": {
+                    "playbook_input:ip": {
+                        "contains": [
+                            "ip"
+                        ]
+                    }
+                },
+                "name": "ip"
+            }
+        ],
         "playbook_type": "data",
         "python_version": "3",
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2021-12-14T16:00:04.172735+00:00",
+    "create_time": "2021-12-14T16:01:52.438509+00:00",
     "draft_mode": false,
     "labels": [
         "*"
