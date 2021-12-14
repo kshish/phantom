@@ -192,7 +192,7 @@ def filter_out_internal_ips(action=None, success=None, container=None, results=N
 def format_list_of_ips_and_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("format_list_of_ips_and_countries() called")
 
-    template = """The IP {0} is from {1}\n"""
+    template = """%%\nThe IP {0} is from {1}\n%%"""
 
     # parameter list for template variable replacement
     parameters = [
