@@ -73,7 +73,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_to_change_severity(action=action, success=success, container=container, results=results, handle=handle)
+        format_list_of_ips_and_countries(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -104,12 +104,13 @@ def prompt_to_change_severity(action=None, success=None, container=None, results
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The IP {0} is from {1}"""
+    message = """The container {1}, {2} has IPs outside USA and Spain\n\n{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+        "format_list_of_ips_and_countries:formatted_data",
+        "container:name",
+        "container:description"
     ]
 
     # responses
@@ -184,6 +185,34 @@ def filter_out_internal_ips(action=None, success=None, container=None, results=N
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+def format_list_of_ips_and_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_list_of_ips_and_countries() called")
+
+    template = """The IP {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_list_of_ips_and_countries")
+
+    prompt_to_change_severity(container=container)
 
     return
 
