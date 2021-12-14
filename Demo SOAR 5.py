@@ -187,17 +187,17 @@ def artifact_create_4(action=None, success=None, container=None, results=None, h
     phantom.debug("artifact_create_4() called")
 
     id_value = container.get("id", None)
-    format_list_of_ips_and_countries__as_list = phantom.get_format_data(name="format_list_of_ips_and_countries__as_list")
+    format_list_of_ips_and_countries = phantom.get_format_data(name="format_list_of_ips_and_countries")
 
     parameters = []
 
     parameters.append({
         "container": id_value,
-        "name": format_list_of_ips_and_countries__as_list,
+        "name": format_list_of_ips_and_countries,
         "label": None,
         "severity": None,
         "cef_field": "myfield",
-        "cef_value": format_list_of_ips_and_countries__as_list,
+        "cef_value": format_list_of_ips_and_countries,
         "cef_data_type": None,
         "tags": None,
         "run_automation": None,
