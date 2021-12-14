@@ -101,7 +101,6 @@ def format_list_of_ips_and_countries(action=None, success=None, container=None, 
     phantom.format(container=container, template=template, parameters=parameters, name="format_list_of_ips_and_countries")
 
     pin_3(container=container)
-    artifact_create_4(container=container)
 
     return
 
@@ -144,6 +143,8 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=format_list_of_ips_and_countries__as_list, message="IPs outside of USA and Spain", pin_style="red", pin_type="card")
+
+    artifact_create_4(container=container)
 
     return
 
