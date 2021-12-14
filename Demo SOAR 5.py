@@ -186,12 +186,13 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 def artifact_create_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("artifact_create_4() called")
 
+    id_value = container.get("id", None)
     format_list_of_ips_and_countries__as_list = phantom.get_format_data(name="format_list_of_ips_and_countries__as_list")
 
     parameters = []
 
     parameters.append({
-        "container": None,
+        "container": id_value,
         "name": format_list_of_ips_and_countries__as_list,
         "label": None,
         "severity": None,
