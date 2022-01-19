@@ -14,7 +14,7 @@
                     "targetPort": "2_in"
                 }
             ],
-            "hash": "e3a49e677966ebd3e65f83daa0aeba1637e8361f",
+            "hash": "ad6ebdeeb9625c01090ddc477b9f42bb52b8a8a5",
             "nodes": {
                 "0": {
                     "data": {
@@ -29,7 +29,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 419.99999999999943
                 },
                 "1": {
                     "data": {
@@ -44,7 +44,7 @@
                     "errors": {},
                     "id": "1",
                     "type": "end",
-                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
+                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1000
                 },
@@ -53,6 +53,9 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
+                            "description": "This is a demo",
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +65,7 @@
                         "connectorId": 93,
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "2",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -77,7 +80,7 @@
                     "id": "2",
                     "type": "action",
                     "x": 980,
-                    "y": 584.5
+                    "y": 580
                 }
             },
             "notes": ""
@@ -89,7 +92,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-19T19:03:26.583359+00:00",
+    "create_time": "2022-01-19T19:29:59.250761+00:00",
     "draft_mode": false,
     "labels": [
         "*"
