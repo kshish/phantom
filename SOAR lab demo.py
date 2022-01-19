@@ -97,10 +97,18 @@ def ask_to_change_severity(action=None, success=None, container=None, results=No
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please pick a color",
+            "options": {
+                "type": "range",
+                "min": 50,
+                "max": 1000,
+            },
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="ask_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_5)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_5)
 
     return
 
@@ -112,7 +120,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["ask_to_change_severity:action_result.summary.responses.0", "==", "Yes"]
+            ["ask_to_change_severity:action_result.summary.responses.0", "!=", "No"]
         ])
 
     # call connected blocks if condition 1 matched

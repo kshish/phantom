@@ -52,7 +52,7 @@
                     "targetPort": "6_in"
                 }
             ],
-            "hash": "8124fcd74b64cac7a406232fb98b5f2f83bede81",
+            "hash": "1d5d68ab704f091a21f130412a2cc029413b7da2",
             "nodes": {
                 "0": {
                     "data": {
@@ -67,7 +67,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999994
+                    "y": 419.9999999999993
                 },
                 "1": {
                     "data": {
@@ -138,22 +138,8 @@
                                 "conditionIndex": 0,
                                 "customName": "IP is NOT  in USA",
                                 "display": "If",
-                                "logic": "and",
+                                "logic": "or",
                                 "type": "if"
-                            },
-                            {
-                                "comparisons": [
-                                    {
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 1,
-                                "customName": "",
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
                             }
                         ],
                         "functionId": 4,
@@ -165,7 +151,7 @@
                     "id": "3",
                     "type": "decision",
                     "x": 1060,
-                    "y": 664.5
+                    "y": 660
                 },
                 "4": {
                     "data": {
@@ -185,7 +171,7 @@
                             "my_geolocate:action_result.parameter.ip",
                             "my_geolocate:action_result.data.*.country_name"
                         ],
-                        "responseTime": 30,
+                        "responseTime": 1,
                         "responses": [
                             {
                                 "responseOptions": [
@@ -194,6 +180,14 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responseOptions": [
+                                    50,
+                                    1000
+                                ],
+                                "responsePrompt": "Please pick a color",
+                                "responseType": "customRange"
                             }
                         ],
                         "type": "prompt"
@@ -214,9 +208,9 @@
                                 "comparisons": [
                                     {
                                         "conditionIndex": 0,
-                                        "op": "==",
+                                        "op": "!=",
                                         "param": "ask_to_change_severity:action_result.summary.responses.0",
-                                        "value": "Yes"
+                                        "value": "No"
                                     }
                                 ],
                                 "conditionIndex": 0,
@@ -298,7 +292,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-19T20:50:35.619525+00:00",
+    "create_time": "2022-01-19T21:14:03.574125+00:00",
     "draft_mode": false,
     "labels": [
         "*"
