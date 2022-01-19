@@ -12,9 +12,47 @@
                     "sourcePort": "0_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
+                },
+                {
+                    "id": "port_2_to_port_3",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_3_to_port_4",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_5",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_5_to_port_6",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "ad6ebdeeb9625c01090ddc477b9f42bb52b8a8a5",
+            "hash": "8124fcd74b64cac7a406232fb98b5f2f83bede81",
             "nodes": {
                 "0": {
                     "data": {
@@ -29,7 +67,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.99999999999943
+                    "y": 419.9999999999994
                 },
                 "1": {
                     "data": {
@@ -46,7 +84,7 @@
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
-                    "y": 1000
+                    "y": 1220
                 },
                 "2": {
                     "data": {
@@ -81,6 +119,174 @@
                     "type": "action",
                     "x": 980,
                     "y": 580
+                },
+                "3": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IP is NOT  in USA",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 4,
+                        "functionName": "decision_4",
+                        "id": "3",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "3",
+                    "type": "decision",
+                    "x": 1060,
+                    "y": 664.5
+                },
+                "4": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Ask to change severity",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 4,
+                        "functionName": "ask_to_change_severity",
+                        "id": "4",
+                        "message": "The container {0} with severity {1}\n\nHas an IP address of {2} is from {3}\n",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "prompt",
+                    "x": 1460,
+                    "y": 840
+                },
+                "5": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "ask_to_change_severity:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 5,
+                        "functionName": "decision_5",
+                        "id": "5",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "decision",
+                    "x": 1460,
+                    "y": 1024.5
+                },
+                "6": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "6",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "utility",
+                    "x": 1380,
+                    "y": 1204.5
                 }
             },
             "notes": ""
@@ -92,7 +298,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-19T19:29:59.250761+00:00",
+    "create_time": "2022-01-19T20:50:35.619525+00:00",
     "draft_mode": false,
     "labels": [
         "*"
