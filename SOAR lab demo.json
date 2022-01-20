@@ -85,18 +85,6 @@
                 {
                     "conditions": [
                         {
-                            "index": 1
-                        }
-                    ],
-                    "id": "port_9_to_port_11",
-                    "sourceNode": "9",
-                    "sourcePort": "9_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
-                    "conditions": [
-                        {
                             "index": 0
                         }
                     ],
@@ -105,9 +93,35 @@
                     "sourcePort": "7_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_9_to_port_12",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_13",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "id": "port_13_to_port_11",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "d4bc7e862c4a881c4363634dfa33cd573e598ad7",
+            "hash": "bdad25a7e35509e3e2298bac6280ac08a76770ad",
             "nodes": {
                 "0": {
                     "data": {
@@ -138,8 +152,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1020,
-                    "y": 1540
+                    "x": 1060,
+                    "y": 1840
                 },
                 "10": {
                     "data": {
@@ -351,8 +365,8 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "filtered-data:filter_2:condition_2:my_geolocate:action_result.parameter.ip",
-                                "message": "filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name",
+                                "data": "outside_ips:formatted_data.*",
+                                "message": "outside_countries:formatted_data.*",
                                 "name": null,
                                 "pin_style": "red",
                                 "pin_type": "card"
@@ -363,7 +377,51 @@
                     "id": "11",
                     "type": "utility",
                     "x": 1040,
-                    "y": 1340
+                    "y": 1540
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "outside countries",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "outside_countries",
+                        "id": "12",
+                        "parameters": [
+                            "filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "%%\n{0}\n%%",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "format",
+                    "x": 1040,
+                    "y": 1300
+                },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "customName": "outside IPs",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 3,
+                        "functionName": "outside_ips",
+                        "id": "13",
+                        "parameters": [
+                            ""
+                        ],
+                        "template": "%%\n{0}\n%%\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "format",
+                    "x": 1050,
+                    "y": 1424.5
                 },
                 "2": {
                     "data": {
@@ -667,7 +725,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-20T20:23:58.224485+00:00",
+    "create_time": "2022-01-20T20:30:22.212824+00:00",
     "draft_mode": false,
     "labels": [
         "*"

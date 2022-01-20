@@ -222,7 +222,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        pin_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+        outside_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
@@ -252,10 +252,8 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:my_geolocate:action_result.parameter.ip","filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name"])
-
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
-    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_2]
+    outside_ips__as_list = phantom.get_format_data(name="outside_ips__as_list")
+    outside_countries__as_list = phantom.get_format_data(name="outside_countries__as_list")
 
     ################################################################################
     ## Custom Code Start
@@ -267,7 +265,61 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=outside_ips__as_list, message=outside_countries__as_list, pin_style="red", pin_type="card")
+
+    return
+
+
+def outside_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("outside_countries() called")
+
+    template = """%%\n{0}\n%%"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="outside_countries")
+
+    outside_ips(container=container)
+
+    return
+
+
+def outside_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("outside_ips() called")
+
+    template = """%%\n{0}\n%%\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        ""
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="outside_ips")
+
+    pin_3(container=container)
 
     return
 
