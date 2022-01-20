@@ -47,7 +47,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=decision_4)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filtered_out_none)
 
     return
 
@@ -59,7 +59,7 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"]
+            ["filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -82,8 +82,8 @@ def ask_to_change_severity(action=None, success=None, container=None, results=No
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
@@ -147,6 +147,24 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def filtered_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filtered_out_none() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filtered_out_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
