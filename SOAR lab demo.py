@@ -252,8 +252,8 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    outside_ips = phantom.get_format_data(name="outside_ips")
-    outside_countries = phantom.get_format_data(name="outside_countries")
+    outside_ips__as_list = phantom.get_format_data(name="outside_ips__as_list")
+    outside_countries__as_list = phantom.get_format_data(name="outside_countries__as_list")
 
     ################################################################################
     ## Custom Code Start
@@ -265,7 +265,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=outside_ips, message=outside_countries, pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=outside_ips__as_list, message=outside_countries__as_list, pin_style="red", pin_type="card")
 
     return
 
