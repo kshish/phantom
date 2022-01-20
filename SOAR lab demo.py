@@ -98,9 +98,11 @@ def ask_to_change_severity(action=None, success=None, container=None, results=No
             },
         },
         {
-            "prompt": "Please type in a word",
+            "prompt": "Please pick a color",
             "options": {
-                "type": "message",
+                "type": "range",
+                "min": 50,
+                "max": 1000,
             },
         }
     ]
@@ -122,8 +124,28 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        playbook_myword_child_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -170,56 +192,6 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     ask_to_change_severity(container=container)
-
-    return
-
-
-def playbook_myword_child_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("playbook_myword_child_1() called")
-
-    ask_to_change_severity_result_data = phantom.collect2(container=container, datapath=["ask_to_change_severity:action_result.summary.responses.1"], action_results=results)
-    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
-    format_1 = phantom.get_format_data(name="format_1")
-
-    ask_to_change_severity_summary_responses_1 = [item[0] for item in ask_to_change_severity_result_data]
-    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
-
-    inputs = {
-        "some_word": ask_to_change_severity_summary_responses_1,
-        "ip_and_country_list": format_1,
-        "ip": my_geolocate_parameter_ip,
-    }
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    # call playbook "chris/myword_child", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/myword_child", container=container, name="playbook_myword_child_1", callback=prompt_6, inputs=inputs)
-
-    return
-
-
-def prompt_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_6() called")
-
-    # set user and message variables for phantom.prompt call
-
-    user = "admin"
-    message = """word back is: {0}"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "playbook_myword_child_1:playbook_output:word__back"
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_6", parameters=parameters)
 
     return
 
