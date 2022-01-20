@@ -304,7 +304,7 @@ def outside_ips(action=None, success=None, container=None, results=None, handle=
 
     # parameter list for template variable replacement
     parameters = [
-        ""
+        "filtered-data:filter_2:condition_2:my_geolocate:action_result.parameter.ip"
     ]
 
     ################################################################################
