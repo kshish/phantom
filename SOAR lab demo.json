@@ -14,18 +14,6 @@
                     "targetPort": "2_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_3_to_port_4",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "id": "port_4_to_port_5",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -62,9 +50,28 @@
                     "sourcePort": "7_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_3_to_port_8",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_8_to_port_4",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "87c3d79e76a95de51d6c279e228b505c5c8bac0d",
+            "hash": "286b7fd7676db30c37a20a7d19cd6cd715a2ca49",
             "nodes": {
                 "0": {
                     "data": {
@@ -176,12 +183,11 @@
                         "functionId": 4,
                         "functionName": "ask_to_change_severity",
                         "id": "4",
-                        "message": "The container {0} with severity {1}\n\nHas an IP address of {2} is from {3}\n",
+                        "message": "The container {0} with severity {1}\n\n{2}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -208,7 +214,7 @@
                     "id": "4",
                     "type": "prompt",
                     "x": 1460,
-                    "y": 880
+                    "y": 1040
                 },
                 "5": {
                     "data": {
@@ -240,7 +246,7 @@
                     "id": "5",
                     "type": "decision",
                     "x": 1460,
-                    "y": 1024.5
+                    "y": 1180
                 },
                 "6": {
                     "data": {
@@ -292,7 +298,7 @@
                     "id": "6",
                     "type": "utility",
                     "x": 1380,
-                    "y": 1204.5
+                    "y": 1360
                 },
                 "7": {
                     "data": {
@@ -325,6 +331,27 @@
                     "type": "filter",
                     "x": 1040,
                     "y": 660
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "8",
+                        "parameters": [
+                            "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "The ip {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "format",
+                    "x": 980,
+                    "y": 1004.5
                 }
             },
             "notes": ""
@@ -336,7 +363,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-20T17:42:54.283000+00:00",
+    "create_time": "2022-01-20T17:51:51.082420+00:00",
     "draft_mode": false,
     "labels": [
         "*"
