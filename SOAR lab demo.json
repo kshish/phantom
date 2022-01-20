@@ -21,18 +21,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_6",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
-                },
-                {
                     "id": "port_2_to_port_7",
                     "sourceNode": "2",
                     "sourcePort": "2_out",
@@ -69,9 +57,28 @@
                     "sourcePort": "8_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_5_to_port_9",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "id": "port_9_to_port_10",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "1320819e143bfa8ad1bb4cbcf333b8e2cb68a536",
+            "hash": "1ca3a8f43f92d328a32e7548a87acc43405f77be",
             "nodes": {
                 "0": {
                     "data": {
@@ -86,7 +93,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.99999999999926
+                    "y": 419.9999999999992
                 },
                 "1": {
                     "data": {
@@ -104,6 +111,29 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1220
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 6,
+                        "functionName": "prompt_6",
+                        "id": "10",
+                        "message": "word back is: {0}",
+                        "parameters": [
+                            "playbook_myword_child_1:playbook_output:word__back"
+                        ],
+                        "responseTime": 30,
+                        "responses": [],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "prompt",
+                    "x": 1460,
+                    "y": 1604.5
                 },
                 "2": {
                     "data": {
@@ -200,12 +230,9 @@
                                 "responseType": "yes/no"
                             },
                             {
-                                "responseOptions": [
-                                    50,
-                                    1000
-                                ],
-                                "responsePrompt": "Please pick a color",
-                                "responseType": "customRange"
+                                "responseOptions": [],
+                                "responsePrompt": "Please type in a word",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -247,58 +274,6 @@
                     "type": "decision",
                     "x": 1460,
                     "y": 1180
-                },
-                "6": {
-                    "data": {
-                        "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 2,
-                        "functionName": "set_severity_2",
-                        "id": "6",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "6",
-                    "type": "utility",
-                    "x": 1380,
-                    "y": 1360
                 },
                 "7": {
                     "data": {
@@ -352,6 +327,47 @@
                     "type": "format",
                     "x": 980,
                     "y": 1004.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_myword_child_1",
+                        "id": "9",
+                        "inputs": {
+                            "ip": {
+                                "datapaths": [
+                                    "my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip_and_Country_list": {
+                                "datapaths": [
+                                    "format_1:formatted_data"
+                                ],
+                                "deduplicate": false
+                            },
+                            "some_word": {
+                                "datapaths": [
+                                    "ask_to_change_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "myword_child",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "playbook",
+                    "x": 1380,
+                    "y": 1424.5
                 }
             },
             "notes": ""
@@ -363,7 +379,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-01-20T17:53:51.849215+00:00",
+    "create_time": "2022-01-20T19:10:24.375690+00:00",
     "draft_mode": false,
     "labels": [
         "*"
