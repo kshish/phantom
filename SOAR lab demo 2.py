@@ -221,18 +221,18 @@ def playbook_soar_child_pin_1(action=None, success=None, container=None, results
     phantom.debug("playbook_soar_child_pin_1() called")
 
     ask_for_high_severity_result_data = phantom.collect2(container=container, datapath=["ask_for_high_severity:action_result.summary.responses.1","ask_for_high_severity:action_result.summary.responses.2"], action_results=results)
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip"], action_results=results)
+    filtered_result_0_data_filter_and_multi_direction = phantom.collect2(container=container, datapath=["filtered-data:filter_and_multi_direction:condition_2:geolocate_ip_1:action_result.data.*.country_name","filtered-data:filter_and_multi_direction:condition_2:geolocate_ip_1:action_result.parameter.ip"])
 
     ask_for_high_severity_summary_responses_1 = [item[0] for item in ask_for_high_severity_result_data]
     ask_for_high_severity_summary_responses_2 = [item[1] for item in ask_for_high_severity_result_data]
-    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
-    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_and_multi_direction]
+    filtered_result_0_parameter_ip = [item[1] for item in filtered_result_0_data_filter_and_multi_direction]
 
     inputs = {
         "hud_msg": ask_for_high_severity_summary_responses_1,
         "severity": ask_for_high_severity_summary_responses_2,
-        "countries": geolocate_ip_1_result_item_0,
-        "list_of_ip": geolocate_ip_1_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+        "list_of_ip": filtered_result_0_parameter_ip,
     }
 
     ################################################################################
