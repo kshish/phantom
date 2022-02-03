@@ -8,80 +8,68 @@ import json
 from datetime import datetime, timedelta
 
 
+################################################################################
+## Global Custom Code Start
+################################################################################
+
+
+
+
+################################################################################
+## Global Custom Code End
+################################################################################
+
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'my_geolocate' block
-    my_geolocate(container=container)
+    # call 'list_merge_5' block
+    list_merge_5(container=container)
 
     return
 
-def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_geolocate() called")
+def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_1() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    ################################################################################
-    # This is a demo
-    ################################################################################
-
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    list_merge_5_data = phantom.collect2(container=container, datapath=["list_merge_5:custom_function_result.data.*.item"])
 
     parameters = []
 
-    # build parameters list for 'my_geolocate' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
+    # build parameters list for 'geolocate_ip_1' call
+    for list_merge_5_data_item in list_merge_5_data:
+        if list_merge_5_data_item[0] is not None:
             parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
+                "ip": list_merge_5_data_item[0],
             })
 
     ################################################################################
     ## Custom Code Start
     ################################################################################
 
-    # Write your custom code here...
-
+    # Write your custom code here.	
+    phantom.debug(parameters)
+    phantom.debug("chris wuz here in the geo locate block")
     ################################################################################
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filtered_out_none)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=filter_out_none)
 
     return
 
 
-def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_4() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def ask_to_change_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("ask_to_change_severity() called")
+def ask_for_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("ask_for_high_severity() called")
 
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The container {0} with severity {1}\n\n{2}\n"""
+    message = """An IP in {0} container is outside our countries list.\n\n{1}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "container:severity",
         "format_1:formatted_data"
     ]
 
@@ -98,73 +86,66 @@ def ask_to_change_severity(action=None, success=None, container=None, results=No
             },
         },
         {
-            "prompt": "Please pick a color",
+            "prompt": "What message would you like on the HUD card",
             "options": {
-                "type": "range",
-                "min": 50,
-                "max": 1000,
+                "type": "message",
+            },
+        },
+        {
+            "prompt": "What Severity",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ],
             },
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_to_change_severity", parameters=parameters, response_types=response_types, callback=decision_5)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="ask_for_high_severity", parameters=parameters, response_types=response_types, callback=decide_on_response)
 
     return
 
 
-def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_5() called")
+def decide_on_response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decide_on_response() called")
+
+    ################################################################################
+    # this decision block evaluates the response from the prompt.  
+    ################################################################################
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["ask_to_change_severity:action_result.summary.responses.0", "!=", "No"]
+            ["ask_for_high_severity:action_result.summary.responses.0", "==", "Yes"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_soar_child_pin_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
 
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_2() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-def filtered_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filtered_out_none() called")
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None]
         ],
-        name="filtered_out_none:condition_1")
+        name="filter_out_none:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-        filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_and_multi_direction(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -172,12 +153,12 @@ def filtered_out_none(action=None, success=None, container=None, results=None, h
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("format_1() called")
 
-    template = """%%\nThe ip {0} is from {1}\n%%\n"""
+    template = """%%\nthe ip: {0} is from {1}\n%%"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"
     ]
 
     ################################################################################
@@ -192,47 +173,145 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
-    ask_to_change_severity(container=container)
+    ask_for_high_severity(container=container)
 
     return
 
 
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_2() called")
+def list_merge_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("list_merge_5() called")
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.cef.destinationAddress","artifact:*.cef.src_ip","artifact:*.id"])
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+    container_artifact_cef_item_2 = [item[2] for item in container_artifact_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": container_artifact_cef_item_1,
+        "input_3": container_artifact_cef_item_2,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=geolocate_ip_1)
+
+    return
+
+
+def playbook_soar_child_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_soar_child_pin_1() called")
+
+    ask_for_high_severity_result_data = phantom.collect2(container=container, datapath=["ask_for_high_severity:action_result.summary.responses.1","ask_for_high_severity:action_result.summary.responses.2"], action_results=results)
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip"], action_results=results)
+
+    ask_for_high_severity_summary_responses_1 = [item[0] for item in ask_for_high_severity_result_data]
+    ask_for_high_severity_summary_responses_2 = [item[1] for item in ask_for_high_severity_result_data]
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
+
+    inputs = {
+        "hud_msg": ask_for_high_severity_summary_responses_1,
+        "severity": ask_for_high_severity_summary_responses_2,
+        "countries": geolocate_ip_1_result_item_0,
+        "list_of_ip": geolocate_ip_1_parameter_ip,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "local/SOAR Child pin", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("local/SOAR Child pin", container=container, name="playbook_soar_child_pin_1", callback=prompt_2, inputs=inputs)
+
+    return
+
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_2() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """thoughts from Child PB {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_soar_child_pin_1:playbook_output:think"
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
+
+    return
+
+
+def filter_and_multi_direction(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_and_multi_direction() called")
+
+    ################################################################################
+    # this filter will cause the playbook to go into mulitple direction if ip our 
+    # in and outside of friendlies
+    ################################################################################
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
+        logical_operator="or",
         conditions=[
-            ["filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "==", "United States"]
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "Netherlands"],
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "==", "India"]
         ],
-        name="filter_2:condition_1")
+        name="filter_and_multi_direction:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        pin_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        pin_6(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids and results for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
         container=container,
+        logical_operator="and",
         conditions=[
-            ["filtered-data:filtered_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"]
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Netherlands"],
+            ["", "!=", "India"]
         ],
-        name="filter_2:condition_2")
+        name="filter_and_multi_direction:condition_2")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        outside_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
 
-def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_1() called")
-
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geolocate:action_result.parameter.ip"])
-
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_6() called")
 
     ################################################################################
     ## Custom Code Start
@@ -244,81 +323,7 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="One or more IPs in US", pin_style="blue", pin_type="card")
-
-    return
-
-
-def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_3() called")
-
-    outside_countries__as_list = phantom.get_format_data(name="outside_countries__as_list")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.pin(container=container, data=outside_countries__as_list, message=outside_countries__as_list, pin_style="red", pin_type="card")
-
-    return
-
-
-def outside_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("outside_countries() called")
-
-    template = """%%\n{0}\n%%"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name"
-    ]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.format(container=container, template=template, parameters=parameters, name="outside_countries")
-
-    outside_ips(container=container)
-
-    return
-
-
-def outside_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("outside_ips() called")
-
-    template = """%%\n{0}\n%%\n"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "filtered-data:filter_2:condition_2:my_geolocate:action_result.parameter.ip"
-    ]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.format(container=container, template=template, parameters=parameters, name="outside_ips")
-
-    pin_3(container=container)
+    phantom.pin()
 
     return
 
