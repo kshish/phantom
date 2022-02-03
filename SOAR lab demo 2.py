@@ -313,6 +313,11 @@ def filter_and_multi_direction(action=None, success=None, container=None, result
 def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_6() called")
 
+    filtered_result_0_data_filter_and_multi_direction = phantom.collect2(container=container, datapath=["filtered-data:filter_and_multi_direction:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_and_multi_direction:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_and_multi_direction]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_and_multi_direction]
+
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -323,7 +328,7 @@ def pin_6(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin()
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name)
 
     return
 
