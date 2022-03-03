@@ -28,7 +28,7 @@
                     "targetPort": "1_in"
                 }
             ],
-            "hash": "49e6c4045efa85ec81a4bc8a2f0e52300235f643",
+            "hash": "cc27cb393bebbbd578fd7176117202c5d4fdde1d",
             "nodes": {
                 "0": {
                     "data": {
@@ -254,7 +254,16 @@
                             "playbook_input:a_list"
                         ],
                         "responseTime": 1,
-                        "responses": [],
+                        "responses": [
+                            {
+                                "responsePrompt": "Please enter your thoughts",
+                                "responseType": "message"
+                            },
+                            {
+                                "responsePrompt": "Enter one more thought",
+                                "responseType": "message"
+                            }
+                        ],
                         "type": "prompt"
                     },
                     "errors": {},
@@ -289,12 +298,23 @@
             {
                 "contains": [],
                 "datapaths": [
-                    "prompt_1:action_result.status"
+                    "prompt_1:action_result.status",
+                    "prompt_1:action_result.summary.responses.0"
                 ],
                 "deduplicate": false,
                 "description": "",
                 "metadata": {},
                 "name": "a_message"
+            },
+            {
+                "contains": [],
+                "datapaths": [
+                    "prompt_1:action_result.summary.responses.1"
+                ],
+                "deduplicate": false,
+                "description": "",
+                "metadata": {},
+                "name": "thought"
             }
         ],
         "playbook_type": "data",
@@ -302,7 +322,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-03-03T17:44:15.470424+00:00",
+    "create_time": "2022-03-03T17:53:31.002751+00:00",
     "draft_mode": false,
     "labels": [
         "*"

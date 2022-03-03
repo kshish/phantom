@@ -58,7 +58,23 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         "playbook_input:a_list"
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters)
+    # responses
+    response_types = [
+        {
+            "prompt": "Please enter your thoughts",
+            "options": {
+                "type": "message",
+            },
+        },
+        {
+            "prompt": "Enter one more thought",
+            "options": {
+                "type": "message",
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types)
 
     return
 
@@ -66,12 +82,17 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 def on_finish(container, summary):
     phantom.debug("on_finish() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status","prompt_1:action_result.summary.responses.0","prompt_1:action_result.summary.responses.1"])
 
     prompt_1_result_item_0 = [item[0] for item in prompt_1_result_data]
+    prompt_1_summary_responses_0 = [item[1] for item in prompt_1_result_data]
+    prompt_1_summary_responses_1 = [item[2] for item in prompt_1_result_data]
+
+    a_message_combined_value = phantom.concatenate(prompt_1_result_item_0, prompt_1_summary_responses_0)
 
     output = {
-        "a_message": prompt_1_result_item_0,
+        "a_message": a_message_combined_value,
+        "thought": prompt_1_summary_responses_1,
     }
 
     ################################################################################
