@@ -42,9 +42,10 @@ def locate_source(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="locate_source", tags="webserver", callback=filter_out_none)
+    phantom.act("geolocate ip", parameters=parameters, name="locate_source", assets=["maxmind"], callback=filter_out_none)
 
     return
+
 
 def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("debug_1() called")

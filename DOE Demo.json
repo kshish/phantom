@@ -104,7 +104,7 @@
                     "targetPort": "19_in"
                 }
             ],
-            "hash": "46fad0e8708ebb7b7e2af9cdfacbbc6fe8c59b06",
+            "hash": "0c28b1da7aaacaf2c5f067dd3564533ce0930951",
             "nodes": {
                 "0": {
                     "data": {
@@ -448,7 +448,7 @@
                     "y": 1644.5
                 },
                 "2": {
-                    "customCode": "def locate_source(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug(\"locate_source() called\")\n\n    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n\n    my_ip_list_data = phantom.collect2(container=container, datapath=[\"my_ip_list:custom_function_result.data.*.item\"])\n\n    parameters = []\n\n    # build parameters list for 'locate_source' call\n    for my_ip_list_data_item in my_ip_list_data:\n        if my_ip_list_data_item[0] is not None:\n            parameters.append({\n                \"ip\": my_ip_list_data_item[0],\n            })\n\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # Write your custom code here...\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    phantom.act(\"geolocate ip\", parameters=parameters, name=\"locate_source\", tags=\"webserver\", callback=filter_out_none)\n\n    return",
+                    "customCode": null,
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
@@ -478,6 +478,7 @@
                     "errors": {},
                     "id": "2",
                     "type": "action",
+                    "userCode": null,
                     "x": 980,
                     "y": 440
                 },
@@ -873,7 +874,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-03-03T17:43:54.735164+00:00",
+    "create_time": "2022-03-03T17:48:58.256196+00:00",
     "draft_mode": false,
     "labels": [
         "*"
