@@ -1,0 +1,882 @@
+{
+    "blockly": false,
+    "blockly_xml": "<xml></xml>",
+    "category": "Uncategorized",
+    "coa": {
+        "data": {
+            "description": "",
+            "edges": [
+                {
+                    "id": "port_0_to_port_6",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
+                },
+                {
+                    "id": "port_6_to_port_2",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "2",
+                    "targetPort": "2_in"
+                },
+                {
+                    "id": "port_5_to_port_9",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_9_to_port_10",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "id": "port_11_to_port_12",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_2_to_port_16",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_16_to_port_5",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_17",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
+                },
+                {
+                    "id": "port_17_to_port_11",
+                    "sourceNode": "17",
+                    "sourcePort": "17_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_18",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
+                },
+                {
+                    "id": "port_18_to_port_19",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "19",
+                    "targetPort": "19_in"
+                }
+            ],
+            "hash": "46fad0e8708ebb7b7e2af9cdfacbbc6fe8c59b06",
+            "nodes": {
+                "0": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionName": "on_start",
+                        "id": "0",
+                        "type": "start"
+                    },
+                    "errors": {},
+                    "id": "0",
+                    "type": "start",
+                    "x": 1000,
+                    "y": -360.0000000000003
+                },
+                "1": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "on_finish",
+                        "id": "1",
+                        "type": "end"
+                    },
+                    "errors": {},
+                    "id": "1",
+                    "type": "end",
+                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
+                    "x": 880,
+                    "y": 1340
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 4,
+                        "functionName": "pin_4",
+                        "id": "10",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": "filtered-data:filter_out_none:condition_1:locate_source:action_result.parameter.ip",
+                                "message": "IP is from USA",
+                                "name": null,
+                                "pin_style": "blue",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "utility",
+                    "x": 820,
+                    "y": 1084.5
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Prompt for high severity",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 1,
+                        "functionName": "prompt_for_high_severity",
+                        "id": "11",
+                        "message": "The container {0} \n\n{1}",
+                        "parameters": [
+                            "container:name",
+                            "format_1:formatted_data"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Do you want to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "prompt",
+                    "x": 1360,
+                    "y": 1160
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "prompt_for_high_severity:action_result.summary.responses.0",
+                                        "value": "No"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "or",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "12",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "decision",
+                    "x": 1360,
+                    "y": 1300
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Filter out None",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "locate_source:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "filter out none",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "locate_source:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "filter_out_none",
+                        "id": "16",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 560
+                },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "17",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:locate_source:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name"
+                        ],
+                        "template": "%%\nip: {0} is from {1}\n%%\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "format",
+                    "x": 1280,
+                    "y": 1044.5
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_demo_child_pb_promote_1",
+                        "id": "18",
+                        "inputs": {
+                            "a_list": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:locate_source:action_result.data"
+                                ],
+                                "deduplicate": false
+                            },
+                            "country_name": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "myIp": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:locate_source:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "demo child pb promote",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "playbook",
+                    "x": 1280,
+                    "y": 1464.5
+                },
+                "19": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 2,
+                        "functionName": "prompt_2",
+                        "id": "19",
+                        "message": "response from child {0}",
+                        "parameters": [
+                            "playbook_demo_child_pb_promote_1:playbook_output:a_message"
+                        ],
+                        "responseTime": 30,
+                        "responses": [],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "19",
+                    "type": "prompt",
+                    "x": 1360,
+                    "y": 1644.5
+                },
+                "2": {
+                    "customCode": "def locate_source(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug(\"locate_source() called\")\n\n    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n\n    my_ip_list_data = phantom.collect2(container=container, datapath=[\"my_ip_list:custom_function_result.data.*.item\"])\n\n    parameters = []\n\n    # build parameters list for 'locate_source' call\n    for my_ip_list_data_item in my_ip_list_data:\n        if my_ip_list_data_item[0] is not None:\n            parameters.append({\n                \"ip\": my_ip_list_data_item[0],\n            })\n\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # Write your custom code here...\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    phantom.act(\"geolocate ip\", parameters=parameters, name=\"locate_source\", tags=\"webserver\", callback=filter_out_none)\n\n    return",
+                    "data": {
+                        "action": "geolocate ip",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "locate source",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "MaxMind",
+                        "connectorConfigs": [
+                            "maxmind"
+                        ],
+                        "connectorId": 93,
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "locate_source",
+                        "id": "2",
+                        "parameters": {
+                            "ip": "my_ip_list:custom_function_result.data.*.item"
+                        },
+                        "requiredParameters": [
+                            "ip"
+                        ],
+                        "tab": "byConnector",
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "2",
+                    "type": "action",
+                    "x": 980,
+                    "y": 440
+                },
+                "5": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "debug",
+                            "repoName": "community"
+                        },
+                        "functionId": 1,
+                        "functionName": "debug_1",
+                        "id": "5",
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "debug": {
+                                "description": "Print debug messages with the type and value of 0-10 different inputs. This is useful for checking the values of input data or the outputs of other playbook blocks.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "debug",
+                                "name": "debug"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "debug": {
+                                "input_1": "chris wuz here",
+                                "input_10": null,
+                                "input_2": "container:owner_name",
+                                "input_3": "container:label",
+                                "input_4": "artifact:*.cef.destinationAddress",
+                                "input_5": "locate_source:action_result.data",
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "utility",
+                    "x": 980,
+                    "y": 780
+                },
+                "6": {
+                    "data": {
+                        "advanced": {
+                            "customName": "my ip list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "list_merge",
+                            "repoName": "community"
+                        },
+                        "functionId": 2,
+                        "functionName": "my_ip_list",
+                        "id": "6",
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "list_merge": {
+                                "description": "Merge 2-10 different data paths into a single output data path. For example, if IP addresses are stored in the fields sourceAddress, destinationAddress, and deviceAddress, then those three fields could be merged together to form a single list of IP addresses.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "list_merge",
+                                "name": "list_merge"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "list_merge": {
+                                "input_1": "artifact:*.cef.destinationAddress",
+                                "input_10": null,
+                                "input_2": "artifact:*.cef.sourceAddress",
+                                "input_3": null,
+                                "input_4": null,
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "utility",
+                    "x": 980,
+                    "y": 240
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "At least one IP not from USA",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "all IP in USA",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "9",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "decision",
+                    "x": 1060,
+                    "y": 920
+                }
+            },
+            "notes": ""
+        },
+        "input_spec": null,
+        "output_spec": null,
+        "playbook_type": "automation",
+        "python_version": "3",
+        "schema": "5.0.3",
+        "version": "5.0.1.66250"
+    },
+    "create_time": "2022-03-03T17:43:54.735164+00:00",
+    "draft_mode": false,
+    "labels": [
+        "*"
+    ],
+    "tags": []
+}
