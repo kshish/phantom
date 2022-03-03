@@ -58,7 +58,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         "playbook_input:a_list"
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters)
 
     return
 
