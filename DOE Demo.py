@@ -315,11 +315,12 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """response from child {0}"""
+    message = """response from child {0}\nsecond thought{1}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "playbook_demo_child_pb_promote_1:playbook_output:a_message"
+        "playbook_demo_child_pb_promote_1:playbook_output:a_message",
+        "playbook_demo_child_pb_promote_1:playbook_output:thought"
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
