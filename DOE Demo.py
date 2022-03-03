@@ -362,6 +362,30 @@ def in_or_not_in_countries_list(action=None, success=None, container=None, resul
     if matched_artifacts_2 or matched_results_2:
         pin_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
+    # collect filtered artifact ids and results for 'if' condition 3
+    matched_artifacts_3, matched_results_3 = phantom.condition(
+        container=container,
+        conditions=[
+            [42, "==", 42]
+        ],
+        name="in_or_not_in_countries_list:condition_3")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_3 or matched_results_3:
+        pass
+
+    # collect filtered artifact ids and results for 'if' condition 5
+    matched_artifacts_5, matched_results_5 = phantom.condition(
+        container=container,
+        conditions=[
+            [1, "==", ""]
+        ],
+        name="in_or_not_in_countries_list:condition_5")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_5 or matched_results_5:
+        pass
+
     return
 
 
