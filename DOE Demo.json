@@ -123,10 +123,22 @@
                     "sourcePort": "10_out",
                     "targetNode": "23",
                     "targetPort": "23_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_16_to_port_24",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "24",
+                    "targetPort": "24_in"
                 }
             ],
             "globalCustomCode": "\nimport json\n\n",
-            "hash": "c9be0b41a258ffa5a4124a03743124e340e4c8db",
+            "hash": "428da781ac4c0f842d3dcc64fafb330cedfcffd2",
             "nodes": {
                 "0": {
                     "data": {
@@ -668,8 +680,8 @@
                                 "data": "filtered-data:in_or_not_in_countries_list:condition_2:locate_source:action_result.data.*.country_name",
                                 "message": "IP from outside Countries LIST",
                                 "name": null,
-                                "pin_style": null,
-                                "pin_type": null
+                                "pin_style": "red",
+                                "pin_type": "card"
                             }
                         }
                     },
@@ -698,6 +710,118 @@
                     "type": "format",
                     "x": 780,
                     "y": 1104.5
+                },
+                "24": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 6,
+                        "functionName": "pin_6",
+                        "id": "24",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": "filtered-data:filter_out_none:condition_2:locate_source:action_result.parameter.ip",
+                                "message": "Internal IPS",
+                                "name": null,
+                                "pin_style": "grey",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "24",
+                    "type": "utility",
+                    "x": 540,
+                    "y": 624.5
                 },
                 "5": {
                     "data": {
@@ -1043,7 +1167,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-03-03T19:11:01.591218+00:00",
+    "create_time": "2022-03-03T19:13:15.464110+00:00",
     "draft_mode": false,
     "labels": [
         "*"

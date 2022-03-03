@@ -236,7 +236,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        pass
+        pin_6(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
@@ -382,7 +382,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP from outside Countries LIST")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP from outside Countries LIST", pin_style="red", pin_type="card")
 
     format_1(container=container)
 
@@ -410,6 +410,28 @@ def format_2(action=None, success=None, container=None, results=None, handle=Non
     ################################################################################
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+
+    return
+
+
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_6() called")
+
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_2:locate_source:action_result.parameter.ip"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Internal IPS", pin_style="grey", pin_type="card")
 
     return
 
