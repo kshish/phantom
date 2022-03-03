@@ -8,6 +8,16 @@ import json
 from datetime import datetime, timedelta
 
 
+################################################################################
+## Global Custom Code Start
+################################################################################
+
+import json
+
+################################################################################
+## Global Custom Code End
+################################################################################
+
 def on_start(container):
     phantom.debug('on_start() called')
 
@@ -83,7 +93,7 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=decision_2)
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=in_or_not_in_countries_list)
 
     return
 
@@ -126,27 +136,6 @@ def my_ip_list(action=None, success=None, container=None, results=None, handle=N
     return
 
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_2() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name", "!=", "United States"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    pin_4(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
 def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_4() called")
 
@@ -165,6 +154,8 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="IP is from USA", pin_style="blue", pin_type="card")
+
+    format_2(container=container)
 
     return
 
@@ -323,7 +314,102 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
         "playbook_demo_child_pb_promote_1:playbook_output:thought"
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, callback=call_api_5)
+
+    return
+
+
+def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_5() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    return
+
+
+def in_or_not_in_countries_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("in_or_not_in_countries_list() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name", "in", "custom_list:Countries"]
+        ],
+        name="in_or_not_in_countries_list:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        pin_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_out_none:condition_1:locate_source:action_result.data.*.country_name", "not in", "custom_list:Countries"]
+        ],
+        name="in_or_not_in_countries_list:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_3() called")
+
+    filtered_result_0_data_in_or_not_in_countries_list = phantom.collect2(container=container, datapath=["filtered-data:in_or_not_in_countries_list:condition_2:locate_source:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_in_or_not_in_countries_list]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP from outside Countries LIST")
+
+    format_1(container=container)
+
+    return
+
+
+def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_2() called")
+
+    template = """{0}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        ""
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     return
 
