@@ -14,13 +14,6 @@
                     "targetPort": "2_in"
                 },
                 {
-                    "id": "port_2_to_port_7",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_9_to_port_10",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
@@ -62,10 +55,29 @@
                     "sourcePort": "7_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "id": "port_2_to_port_12",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_7",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
             "globalCustomCode": "\n\n",
-            "hash": "d92f1f6bec044d79efde131bbcba5f52f0245b23",
+            "hash": "b1fc519eba3d25a0eef6477eb02c5281e9085418",
             "nodes": {
                 "0": {
                     "customCode": null,
@@ -184,6 +196,36 @@
                     "type": "utility",
                     "x": 720,
                     "y": 1240
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "mygeo_locate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "12",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 640
                 },
                 "2": {
                     "data": {
@@ -394,19 +436,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "mygeo_locate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "mygeo_locate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "mygeo_locate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name",
                                         "value": "Mexico"
                                     }
                                 ],
@@ -441,7 +483,7 @@
                     "id": "7",
                     "type": "decision",
                     "x": 1060,
-                    "y": 700
+                    "y": 800
                 },
                 "8": {
                     "data": {
@@ -461,8 +503,8 @@
                     "errors": {},
                     "id": "8",
                     "type": "prompt",
-                    "x": 1300,
-                    "y": 860
+                    "x": 1320,
+                    "y": 960
                 },
                 "9": {
                     "data": {
@@ -497,8 +539,8 @@
                     "errors": {},
                     "id": "9",
                     "type": "prompt",
-                    "x": 780,
-                    "y": 860
+                    "x": 800,
+                    "y": 940
                 }
             },
             "notes": ""
@@ -510,7 +552,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-03-17T17:30:31.744665+00:00",
+    "create_time": "2022-03-17T17:32:24.652876+00:00",
     "draft_mode": false,
     "labels": [
         "*"

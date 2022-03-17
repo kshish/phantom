@@ -52,7 +52,7 @@ def mygeo_locate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="mygeo_locate", assets=["maxmind"], callback=decision_2)
+    phantom.act("geolocate ip", parameters=parameters, name="mygeo_locate", assets=["maxmind"], callback=filter_1)
 
     return
 
@@ -108,9 +108,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["mygeo_locate:action_result.data.*.country_name", "!=", "United States"],
-            ["mygeo_locate:action_result.data.*.country_name", "!=", "Canada"],
-            ["mygeo_locate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Mexico"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -208,6 +208,24 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["mygeo_locate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_1:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
