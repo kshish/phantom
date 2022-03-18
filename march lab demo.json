@@ -16,18 +16,6 @@
                 {
                     "conditions": [
                         {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_10_to_port_11",
-                    "sourceNode": "10",
-                    "sourcePort": "10_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
-                    "conditions": [
-                        {
                             "index": 1
                         }
                     ],
@@ -88,10 +76,29 @@
                     "sourcePort": "14_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_16",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "id": "port_16_to_port_17",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
                 }
             ],
             "globalCustomCode": "\n\n",
-            "hash": "0fcc34ad197af2c44d544e3836224dc49ae37e30",
+            "hash": "1df50eaf58536442b26c46201d82127f34284a24",
             "nodes": {
                 "0": {
                     "customCode": null,
@@ -158,58 +165,6 @@
                     "type": "decision",
                     "x": 800,
                     "y": 1360
-                },
-                "11": {
-                    "data": {
-                        "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 2,
-                        "functionName": "set_severity_2",
-                        "id": "11",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "11",
-                    "type": "utility",
-                    "x": 720,
-                    "y": 1580
                 },
                 "12": {
                     "data": {
@@ -431,6 +386,65 @@
                     "type": "utility",
                     "x": 980,
                     "y": 384.5
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_demo_promote_in_child_1",
+                        "id": "16",
+                        "inputs": {
+                            "gut_response": {
+                                "datapaths": [
+                                    "ask_for_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip_list": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "demo promote in child",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "playbook",
+                    "x": 720,
+                    "y": 1564.5
+                },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "Administrator",
+                        "functionId": 3,
+                        "functionName": "prompt_3",
+                        "id": "17",
+                        "message": "This is the response from child pb {1}{0}",
+                        "parameters": [
+                            "playbook_demo_promote_in_child_1:playbook_output:somethought",
+                            ""
+                        ],
+                        "responseTime": 30,
+                        "responses": [],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "prompt",
+                    "x": 800,
+                    "y": 1744.5
                 },
                 "2": {
                     "data": {
@@ -736,6 +750,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "What is your gut feeling on this?",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -756,7 +774,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-03-18T13:55:05.876823+00:00",
+    "create_time": "2022-03-18T14:58:32.815656+00:00",
     "draft_mode": false,
     "labels": [
         "*"

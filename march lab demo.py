@@ -164,6 +164,12 @@ def ask_for_high_severity(action=None, success=None, container=None, results=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "What is your gut feeling on this?",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -184,28 +190,8 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_demo_promote_in_child_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_2() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -290,6 +276,55 @@ def list_merge_3(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_3", callback=mygeo_locate)
+
+    return
+
+
+def playbook_demo_promote_in_child_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_demo_promote_in_child_1() called")
+
+    ask_for_high_severity_result_data = phantom.collect2(container=container, datapath=["ask_for_high_severity:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_none_values = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.parameter.ip"])
+
+    ask_for_high_severity_summary_responses_1 = [item[0] for item in ask_for_high_severity_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none_values]
+
+    inputs = {
+        "gut_response": ask_for_high_severity_summary_responses_1,
+        "ip_list": filtered_result_0_parameter_ip,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/demo promote in child", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/demo promote in child", container=container, name="playbook_demo_promote_in_child_1", callback=prompt_3, inputs=inputs)
+
+    return
+
+
+def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_3() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "Administrator"
+    message = """This is the response from child pb {1}{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_demo_promote_in_child_1:playbook_output:somethought",
+        ""
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters)
 
     return
 
