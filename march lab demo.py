@@ -52,7 +52,7 @@ def mygeo_locate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="mygeo_locate", assets=["maxmind"], callback=filter_1)
+    phantom.act("geolocate ip", parameters=parameters, name="mygeo_locate", assets=["maxmind"], callback=filter_out_none_values)
 
     return
 
@@ -108,9 +108,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:filter_1:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.data.*.country_name", "!=", "Mexico"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -151,8 +151,8 @@ def ask_for_high_severity(action=None, success=None, container=None, results=Non
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "mygeo_locate:action_result.parameter.ip",
-        "mygeo_locate:action_result.data.*.country_name"
+        "filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.parameter.ip",
+        "filtered-data:filter_out_none_values:condition_1:mygeo_locate:action_result.data.*.country_name"
     ]
 
     # responses
@@ -212,8 +212,8 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     return
 
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_1() called")
+def filter_out_none_values(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none_values() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -221,7 +221,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["mygeo_locate:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_1:condition_1")
+        name="filter_out_none_values:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
