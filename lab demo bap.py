@@ -42,35 +42,12 @@ def my_geo_locate(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate", assets=["maxmind"], callback=filter_out_none)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate", tags="webserver", callback=filter_out_none)
 
     return
 
-
-def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("debug_1() called")
-
-    name_value = container.get("name", None)
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
-
-    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
-    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
-
-    parameters = []
-
-    parameters.append({
-        "input_1": geolocate_ip_1_result_item_0,
-        "input_2": name_value,
-        "input_3": container_artifact_cef_item_0,
-        "input_4": None,
-        "input_5": None,
-        "input_6": None,
-        "input_7": None,
-        "input_8": None,
-        "input_9": None,
-        "input_10": None,
-    })
+def call_api_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_1() called")
 
     ################################################################################
     ## Custom Code Start
@@ -82,8 +59,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
-
     return
 
 
@@ -93,10 +68,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "==", "United States"],
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "==", "Canada"]
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "in", "custom_list:faveCountries"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -121,7 +94,7 @@ def prompt_with_ip_in_list(action=None, success=None, container=None, results=No
     # parameter list for template variable replacement
     parameters = []
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_with_ip_in_list", parameters=parameters)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_with_ip_in_list", parameters=parameters, callback=set_label_2)
 
     return
 
@@ -318,6 +291,26 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters)
+
+    return
+
+
+def set_label_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="events")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
