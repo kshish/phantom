@@ -138,7 +138,7 @@ def evaluate_change_severity(action=None, success=None, container=None, results=
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_for_severity:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_for_severity:action_result.summary.responses.0", "!=", "No"]
         ])
 
     # call connected blocks if condition 1 matched
