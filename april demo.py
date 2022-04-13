@@ -58,8 +58,11 @@ def decide_if_ip_is_in_usa(action=None, success=None, container=None, results=No
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
+        logical_operator="or",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "United States"]
+            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "==", "Canada"],
+            ["my_geolocate:action_result.data.*.country_name", "==", "Mexico"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -99,7 +102,7 @@ def prompt_for_severity(action=None, success=None, container=None, results=None,
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The Container {0} with severity {1} has IPs outside of friendly's list.\n\nIP: {2} is from {3}"""
+    message = """The Container {0} with severity {1} has IPs outside of friendly's list.\n\nIP: {2} is from {3} """
 
     # parameter list for template variable replacement
     parameters = [
