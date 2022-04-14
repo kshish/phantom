@@ -150,6 +150,7 @@ def evaluate_change_severity(action=None, success=None, container=None, results=
     # call connected blocks if condition 1 matched
     if found_match_1:
         playbook_april_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_8(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -308,6 +309,26 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=playbook_april_child_demo_1_output_some_thought_values, message="Response from Child Playbook", pin_style="blue", pin_type="card")
+
+    return
+
+
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="test")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 

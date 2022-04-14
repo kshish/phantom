@@ -109,9 +109,21 @@
                     "sourcePort": "19_out",
                     "targetNode": "1",
                     "targetPort": "1_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_6_to_port_20",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
                 }
             ],
-            "hash": "6e5948432ce2cbeb74ff3b5519364778111f7cc2",
+            "hash": "a1e03a3f691e73e2a2358008bc384dbe461dccb1",
             "nodes": {
                 "0": {
                     "data": {
@@ -142,8 +154,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n           for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1040,
-                    "y": 1600
+                    "x": 1020,
+                    "y": 1820
                 },
                 "10": {
                     "data": {
@@ -567,6 +579,64 @@
                     "x": 980,
                     "y": 520
                 },
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 8,
+                        "functionName": "set_label_8",
+                        "id": "20",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_label": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableLabels",
+                                        "description": "",
+                                        "label": "label",
+                                        "name": "label",
+                                        "placeholder": "Select a label",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set label",
+                                "name": "set_label",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_label": {
+                                "_internal": [
+                                    "container",
+                                    "trace"
+                                ],
+                                "label": "test"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "20",
+                    "type": "utility",
+                    "x": 1820,
+                    "y": 1424.5
+                },
                 "3": {
                     "data": {
                         "advanced": {
@@ -766,7 +836,7 @@
         "schema": "5.0.3",
         "version": "5.0.1.66250"
     },
-    "create_time": "2022-04-14T18:28:54.015945+00:00",
+    "create_time": "2022-04-14T18:32:40.566015+00:00",
     "draft_mode": false,
     "labels": [
         "*"
