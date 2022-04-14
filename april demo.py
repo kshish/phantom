@@ -180,7 +180,8 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["my_geolocate:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_1:condition_1")
+        name="filter_1:condition_1",
+        case_sensitive=False)
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
