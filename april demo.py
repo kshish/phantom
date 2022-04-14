@@ -191,11 +191,12 @@ def call_api_3(action=None, success=None, container=None, results=None, handle=N
 def list_merge_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("list_merge_4() called")
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.cef.sourceAddress","artifact:*.cef.deviceAddress","artifact:*.id"])
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.cef.sourceAddress","artifact:*.cef.deviceAddress","artifact:*.cef.dst","artifact:*.id"])
 
     container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
     container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
     container_artifact_cef_item_2 = [item[2] for item in container_artifact_data]
+    container_artifact_cef_item_3 = [item[3] for item in container_artifact_data]
 
     parameters = []
 
@@ -203,7 +204,7 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
         "input_1": container_artifact_cef_item_0,
         "input_2": container_artifact_cef_item_1,
         "input_3": container_artifact_cef_item_2,
-        "input_4": None,
+        "input_4": container_artifact_cef_item_3,
         "input_5": None,
         "input_6": None,
         "input_7": None,
