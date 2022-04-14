@@ -115,13 +115,19 @@ def prompt_for_severity(action=None, success=None, container=None, results=None,
     # responses
     response_types = [
         {
-            "prompt": "Would you like to change severity to High?",
+            "prompt": "Would you like to change severity to High and do other things?",
             "options": {
                 "type": "list",
                 "choices": [
                     "Yes",
                     "No"
                 ],
+            },
+        },
+        {
+            "prompt": "What comment would you like to attach to the container?",
+            "options": {
+                "type": "message",
             },
         }
     ]
@@ -143,29 +149,8 @@ def evaluate_change_severity(action=None, success=None, container=None, results=
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
-        geolocate_ip_2(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_april_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_2() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -185,28 +170,6 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_if_ip_is_in_usa(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-
-def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("geolocate_ip_2() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    parameters = []
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_2", assets=["maxmind"])
 
     return
 
@@ -290,6 +253,61 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_for_severity(container=container)
+
+    return
+
+
+def playbook_april_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_april_child_demo_1() called")
+
+    prompt_for_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity:action_result.summary.responses.1"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    prompt_for_severity_summary_responses_1 = [item[0] for item in prompt_for_severity_result_data]
+    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+
+    inputs = {
+        "comment": prompt_for_severity_summary_responses_1,
+        "my_ip": my_geolocate_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/April Child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/April Child demo", container=container, name="playbook_april_child_demo_1", callback=pin_7, inputs=inputs)
+
+    return
+
+
+def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_7() called")
+
+    playbook_april_child_demo_1_output_some_thought = phantom.collect2(container=container, datapath=["playbook_april_child_demo_1:playbook_output:some_thought"])
+
+    playbook_april_child_demo_1_output_some_thought_values = [item[0] for item in playbook_april_child_demo_1_output_some_thought]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=playbook_april_child_demo_1_output_some_thought_values, message="Response from Child Playbook")
 
     return
 
