@@ -307,7 +307,7 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=playbook_april_child_demo_1_output_some_thought_values, message="Response from Child Playbook")
+    phantom.pin(container=container, data=playbook_april_child_demo_1_output_some_thought_values, message="Response from Child Playbook", pin_style="blue", pin_type="card")
 
     return
 
