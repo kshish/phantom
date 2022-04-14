@@ -58,16 +58,16 @@ def decide_if_ip_is_in_usa(action=None, success=None, container=None, results=No
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "in", "custom_list:friendlies"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:friendlies"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+        format_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    format_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
