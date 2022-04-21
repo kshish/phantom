@@ -12,9 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_5",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "e3a49e677966ebd3e65f83daa0aeba1637e8361f",
+            "hash": "a2f572c4dc8e9dca1297ae5670004d1450d40c06",
             "nodes": {
                 "0": {
                     "data": {
@@ -53,6 +60,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "Locate Source",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +71,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "locate_source",
                         "id": "4",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -80,6 +89,39 @@
                     "type": "action",
                     "x": 980,
                     "y": 540
+                },
+                "5": {
+                    "data": {
+                        "action": "domain reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "VirusTotal v3",
+                        "connectorConfigs": [
+                            "myvt"
+                        ],
+                        "connectorId": "3fe4875d-a4a7-47d3-9ef1-f9e63a6653a4",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "domain_reputation_1",
+                        "id": "5",
+                        "parameters": {
+                            "domain": "artifact:*.cef.sourceDnsDomain"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "domain"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "action",
+                    "x": 990,
+                    "y": 684.5
                 }
             },
             "notes": ""
@@ -91,7 +133,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-04-21T19:37:29.078768+00:00",
+    "create_time": "2022-04-21T19:44:53.786880+00:00",
     "draft_mode": false,
     "labels": [
         "*"
