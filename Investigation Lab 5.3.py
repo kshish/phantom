@@ -17,6 +17,8 @@ def on_start(container):
     source_reputation(container=container)
     # call 'virus_search' block
     virus_search(container=container)
+    # call 'virus_search_old_vt' block
+    virus_search_old_vt(container=container)
 
     return
 
@@ -119,7 +121,7 @@ def virus_search(action=None, success=None, container=None, results=None, handle
 def join_debug_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("join_debug_2() called")
 
-    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search"]):
+    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search", "virus_search_old_vt"]):
         # call connected block "debug_2"
         debug_2(container=container, handle=handle)
 
@@ -132,10 +134,12 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
     locate_source_result_data = phantom.collect2(container=container, datapath=["locate_source:action_result.data.*.country_name","locate_source:action_result.parameter.context.artifact_id"], action_results=results)
     virus_search_result_data = phantom.collect2(container=container, datapath=["virus_search:action_result.summary","virus_search:action_result.parameter.context.artifact_id"], action_results=results)
     source_reputation_result_data = phantom.collect2(container=container, datapath=["source_reputation:action_result.summary","source_reputation:action_result.parameter.context.artifact_id"], action_results=results)
+    virus_search_old_vt_result_data = phantom.collect2(container=container, datapath=["virus_search_old_vt:action_result.summary.positives","virus_search_old_vt:action_result.parameter.context.artifact_id"], action_results=results)
 
     locate_source_result_item_0 = [item[0] for item in locate_source_result_data]
     virus_search_result_item_0 = [item[0] for item in virus_search_result_data]
     source_reputation_result_item_0 = [item[0] for item in source_reputation_result_data]
+    virus_search_old_vt_summary_positives = [item[0] for item in virus_search_old_vt_result_data]
 
     parameters = []
 
@@ -143,7 +147,7 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
         "input_1": locate_source_result_item_0,
         "input_2": virus_search_result_item_0,
         "input_3": source_reputation_result_item_0,
-        "input_4": None,
+        "input_4": virus_search_old_vt_summary_positives,
         "input_5": None,
         "input_6": None,
         "input_7": None,
@@ -170,7 +174,81 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
 def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("decision_1() called")
 
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["virus_search_old_vt:action_result.summary.positives", ">", 10]
+        ])
 
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        notify_soc_management(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+def virus_search_old_vt(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("virus_search_old_vt() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.fileHash","artifact:*.id"])
+
+    parameters = []
+
+    # build parameters list for 'virus_search_old_vt' call
+    for container_artifact_item in container_artifact_data:
+        if container_artifact_item[0] is not None:
+            parameters.append({
+                "hash": container_artifact_item[0],
+                "context": {'artifact_id': container_artifact_item[1]},
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("file reputation", parameters=parameters, name="virus_search_old_vt", assets=["myoldvt"], callback=join_debug_2)
+
+    return
+
+
+def notify_soc_management(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("notify_soc_management() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """A potentially malicious file download has been detected on a local server with IP address {0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.destinationAddress"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Notify SOC management?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types)
 
     return
 

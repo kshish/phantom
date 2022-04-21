@@ -54,9 +54,35 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_0_to_port_10",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "id": "port_10_to_port_8",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_11",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "7281c45745d16a18fe0027fcc24d09d1eb74c433",
+            "hash": "191cc25b81e593dcbbeed0f32794420960104a01",
             "nodes": {
                 "0": {
                     "data": {
@@ -71,7 +97,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 419.99999999999966
                 },
                 "1": {
                     "data": {
@@ -89,6 +115,78 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1180
+                },
+                "10": {
+                    "data": {
+                        "action": "file reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "Virus Search Old VT",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "VirusTotal",
+                        "connectorConfigs": [
+                            "myoldvt"
+                        ],
+                        "connectorId": "11f676a4-f3d4-4db0-8587-f4e942c07c7c",
+                        "connectorVersion": "v1",
+                        "functionId": 2,
+                        "functionName": "virus_search_old_vt",
+                        "id": "10",
+                        "parameters": {
+                            "hash": "artifact:*.cef.fileHash"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "hash"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "action",
+                    "x": 1540,
+                    "y": 580
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Notify SOC Management",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "approver": "admin",
+                        "functionId": 1,
+                        "functionName": "notify_soc_management",
+                        "id": "11",
+                        "message": "A potentially malicious file download has been detected on a local server with IP address {0}",
+                        "parameters": [
+                            "artifact:*.cef.destinationAddress"
+                        ],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Notify SOC management?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {
+                        "approver": "Approver not selected",
+                        "message": "Message content missing"
+                    },
+                    "id": "11",
+                    "type": "prompt",
+                    "x": 1230,
+                    "y": 1044.5
                 },
                 "4": {
                     "data": {
@@ -346,7 +444,7 @@
                                 "input_10": null,
                                 "input_2": "virus_search:action_result.summary",
                                 "input_3": "source_reputation:action_result.summary",
-                                "input_4": null,
+                                "input_4": "virus_search_old_vt:action_result.summary.positives",
                                 "input_5": null,
                                 "input_6": null,
                                 "input_7": null,
@@ -371,15 +469,30 @@
                                 "comparisons": [
                                     {
                                         "conditionIndex": 0,
+                                        "op": ">",
+                                        "param": "virus_search_old_vt:action_result.summary.positives",
+                                        "value": "10"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "Hi positives",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
                                         "op": "==",
                                         "param": "",
                                         "value": ""
                                     }
                                 ],
-                                "conditionIndex": 0,
-                                "display": "If",
+                                "conditionIndex": 1,
+                                "customName": "Lo positives",
+                                "display": "Else",
                                 "logic": "and",
-                                "type": "if"
+                                "type": "else"
                             }
                         ],
                         "functionId": 1,
@@ -403,7 +516,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-04-21T20:22:08.640728+00:00",
+    "create_time": "2022-04-21T20:34:51.644832+00:00",
     "draft_mode": false,
     "labels": [
         "*"
