@@ -19,9 +19,23 @@
                     "sourcePort": "4_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "id": "port_5_to_port_6",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
+                },
+                {
+                    "id": "port_6_to_port_8",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "a2f572c4dc8e9dca1297ae5670004d1450d40c06",
+            "hash": "0f29922138480fbd706f2cbd8a760140fc480084",
             "nodes": {
                 "0": {
                     "data": {
@@ -95,6 +109,8 @@
                         "action": "domain reputation",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "Source Reputation",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "VirusTotal v3",
@@ -104,7 +120,7 @@
                         "connectorId": "3fe4875d-a4a7-47d3-9ef1-f9e63a6653a4",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "domain_reputation_1",
+                        "functionName": "source_reputation",
                         "id": "5",
                         "parameters": {
                             "domain": "artifact:*.cef.sourceDnsDomain"
@@ -122,6 +138,207 @@
                     "type": "action",
                     "x": 990,
                     "y": 684.5
+                },
+                "6": {
+                    "data": {
+                        "action": "file reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "Virus Search",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "VirusTotal v3",
+                        "connectorConfigs": [
+                            "myvt"
+                        ],
+                        "connectorId": "3fe4875d-a4a7-47d3-9ef1-f9e63a6653a4",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "virus_search",
+                        "id": "6",
+                        "parameters": {
+                            "hash": "artifact:*.cef.fileHash"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "hash"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "action",
+                    "x": 980,
+                    "y": 824.5
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "debug",
+                            "repoName": "community"
+                        },
+                        "functionId": 2,
+                        "functionName": "debug_2",
+                        "id": "8",
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "debug": {
+                                "description": "Print debug messages with the type and value of 0-10 different inputs. This is useful for checking the values of input data or the outputs of other playbook blocks.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "debug",
+                                "name": "debug"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "debug": {
+                                "input_1": "locate_source:action_result.data.*.country_name",
+                                "input_10": null,
+                                "input_2": "virus_search:action_result.summary",
+                                "input_3": "source_reputation:action_result.summary",
+                                "input_4": null,
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "utility",
+                    "x": 640,
+                    "y": 940
                 }
             },
             "notes": ""
@@ -133,7 +350,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-04-21T19:44:53.786880+00:00",
+    "create_time": "2022-04-21T19:57:17.576894+00:00",
     "draft_mode": false,
     "labels": [
         "*"
