@@ -174,7 +174,7 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
 def join_check_positives(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("join_check_positives() called")
 
-    if phantom.completed(custom_function_names=["debug_2"]):
+    if phantom.completed(custom_function_names=["debug_2"], playbook_names=["playbook_log_file_hashes_5_3_1"]):
         # call connected block "check_positives"
         check_positives(container=container, handle=handle)
 
@@ -376,6 +376,10 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("add_comment_4() called")
 
+    notify_soc_management_result_data = phantom.collect2(container=container, datapath=["notify_soc_management:action_result.summary.responses.1"], action_results=results)
+
+    notify_soc_management_summary_responses_1 = [item[0] for item in notify_soc_management_result_data]
+
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -386,7 +390,7 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment()
+    phantom.comment(container=container, comment=notify_soc_management_summary_responses_1)
 
     promote_to_case(container=container)
 
@@ -422,11 +426,14 @@ def promote_to_case(action=None, success=None, container=None, results=None, han
     phantom.debug("promote_to_case() called")
 
     notify_soc_management_result_data = phantom.collect2(container=container, datapath=["notify_soc_management:action_result.summary.responses.1"], action_results=results)
+    playbook_log_file_hashes_5_3_1_output_hash_status = phantom.collect2(container=container, datapath=["playbook_log_file_hashes_5_3_1:playbook_output:hash_status"])
 
     notify_soc_management_summary_responses_1 = [item[0] for item in notify_soc_management_result_data]
+    playbook_log_file_hashes_5_3_1_output_hash_status_values = [item[0] for item in playbook_log_file_hashes_5_3_1_output_hash_status]
 
     inputs = {
         "promotion_reason": notify_soc_management_summary_responses_1,
+        "hash_history": playbook_log_file_hashes_5_3_1_output_hash_status_values,
     }
 
     ################################################################################
@@ -518,9 +525,7 @@ def playbook_log_file_hashes_5_3_1(action=None, success=None, container=None, re
     ################################################################################
 
     # call playbook "chris/Log File Hashes 5.3", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/Log File Hashes 5.3", container=container, inputs=inputs)
-
-    join_check_positives(container=container)
+    playbook_run_id = phantom.playbook("chris/Log File Hashes 5.3", container=container, name="playbook_log_file_hashes_5_3_1", callback=join_check_positives, inputs=inputs)
 
     return
 
