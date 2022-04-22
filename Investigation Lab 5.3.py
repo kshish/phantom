@@ -17,6 +17,8 @@ def on_start(container):
     source_reputation(container=container)
     # call 'virus_search_old_vt' block
     virus_search_old_vt(container=container)
+    # call 'playbook_1' block
+    playbook_1(container=container)
 
     return
 
@@ -480,6 +482,25 @@ def add_comment_set_status_6(action=None, success=None, container=None, results=
     phantom.set_status(container=container, status="closed")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_1() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "local/playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("local/playbook", container=container)
 
     return
 
