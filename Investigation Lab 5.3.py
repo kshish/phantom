@@ -181,11 +181,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        notify_soc_management(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     format_3(action=action, success=success, container=container, results=results, handle=handle)
+    source_country_filter(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -429,6 +429,24 @@ def playbook_case_promotion_lab_5_3_1(action=None, success=None, container=None,
 
     # call playbook "chris/Case Promotion Lab 5.3", returns the playbook_run_id
     playbook_run_id = phantom.playbook("chris/Case Promotion Lab 5.3", container=container, name="playbook_case_promotion_lab_5_3_1", inputs=inputs)
+
+    return
+
+
+def source_country_filter(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("source_country_filter() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["locate_source:action_result.data.*.country_name", "in", "custom_list:myList"]
+        ],
+        name="source_country_filter:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        notify_soc_management(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
