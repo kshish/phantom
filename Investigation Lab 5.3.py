@@ -440,13 +440,46 @@ def source_country_filter(action=None, success=None, container=None, results=Non
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["locate_source:action_result.data.*.country_name", "in", "custom_list:myList"]
+            ["locate_source:action_result.data.*.country_name", "in", "custom_list:Banned Countries"]
         ],
         name="source_country_filter:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         notify_soc_management(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["locate_source:action_result.data.*.country_name", "not in", "custom_list:Banned Countries"]
+        ],
+        name="source_country_filter:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        add_comment_set_status_6(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+
+def add_comment_set_status_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_set_status_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="High positives but low risk source")
+    phantom.set_status(container=container, status="closed")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
