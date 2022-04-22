@@ -57,6 +57,8 @@ def add_to_list_add_comment_1(action=None, success=None, container=None, results
     phantom.add_list(list_name="Log File Hashes", values=playbook_input_hash_values)
     phantom.comment(container=container, comment="File hash has been not been observed before")
 
+    new_hash_content(container=container)
+
     return
 
 
@@ -75,11 +77,108 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment="File hash has been observed before")
 
+    old_hash_content(container=container)
+
+    return
+
+
+def new_hash_content(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("new_hash_content() called")
+
+    template = """This file has not been oberved before"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        ""
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="new_hash_content")
+
+    join_concatenate_hash_status(container=container)
+
+    return
+
+
+def old_hash_content(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("old_hash_content() called")
+
+    template = """This file has been observed before"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        ""
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="old_hash_content")
+
+    join_concatenate_hash_status(container=container)
+
+    return
+
+
+def join_concatenate_hash_status(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_concatenate_hash_status() called")
+
+    # call connected block "concatenate_hash_status"
+    concatenate_hash_status(container=container, handle=handle)
+
+    return
+
+
+def concatenate_hash_status(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("concatenate_hash_status() called")
+
+    template = """{0} {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "new_hash_content:formatted_data",
+        "old_hash_content:formatted_data"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="concatenate_hash_status")
+
     return
 
 
 def on_finish(container, summary):
     phantom.debug("on_finish() called")
+
+    concatenate_hash_status = phantom.get_format_data(name="concatenate_hash_status")
+
+    output = {
+        "hash_status": concatenate_hash_status,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -99,5 +198,7 @@ def on_finish(container, summary):
     ################################################################################
     ## Custom Code End
     ################################################################################
+
+    phantom.save_playbook_output_data(output=output)
 
     return
