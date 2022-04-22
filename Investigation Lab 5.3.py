@@ -166,13 +166,23 @@ def debug_2(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_2", callback=decision_1)
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_2", callback=join_check_positives)
 
     return
 
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_1() called")
+def join_check_positives(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_check_positives() called")
+
+    if phantom.completed(custom_function_names=["debug_2"]):
+        # call connected block "check_positives"
+        check_positives(container=container, handle=handle)
+
+    return
+
+
+def check_positives(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("check_positives() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -378,7 +388,7 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
 
     phantom.comment()
 
-    playbook_case_promotion_lab_5_3_1(container=container)
+    promote_to_case(container=container)
 
     return
 
@@ -408,8 +418,8 @@ def add_comment_set_status_5(action=None, success=None, container=None, results=
     return
 
 
-def playbook_case_promotion_lab_5_3_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("playbook_case_promotion_lab_5_3_1() called")
+def promote_to_case(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case() called")
 
     notify_soc_management_result_data = phantom.collect2(container=container, datapath=["notify_soc_management:action_result.summary.responses.1"], action_results=results)
 
@@ -430,7 +440,7 @@ def playbook_case_promotion_lab_5_3_1(action=None, success=None, container=None,
     ################################################################################
 
     # call playbook "chris/Case Promotion Lab 5.3", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/Case Promotion Lab 5.3", container=container, name="playbook_case_promotion_lab_5_3_1", inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/Case Promotion Lab 5.3", container=container, name="promote_to_case", inputs=inputs)
 
     return
 
@@ -509,6 +519,8 @@ def playbook_log_file_hashes_5_3_1(action=None, success=None, container=None, re
 
     # call playbook "chris/Log File Hashes 5.3", returns the playbook_run_id
     playbook_run_id = phantom.playbook("chris/Log File Hashes 5.3", container=container, inputs=inputs)
+
+    join_check_positives(container=container)
 
     return
 
