@@ -19,7 +19,7 @@ def on_start(container):
 def compose_report(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("compose_report() called")
 
-    template = """A file has been detected that has been determined to be potentially malicious. A case has been opened. \n\n-**Case link**: {0}\n-**Event Name**: {1}\n-**Description**: {2}\n-**Source URL**: {3}\n-**Target Server**: {4}\n-**Suspicious File Path**: {5}\n-**Reason for promotion**: {6}"""
+    template = """A file has been detected that has been determined to be potentially malicious. A case has been opened. \n\n-**Case link**: {0}\n-**Event Name**: {1}\n-**Description**: {2}\n-**Source URL**: {3}\n-**Target Server**: {4}\n-**Suspicious File Path**: {5} (*{7}*)\n-**Reason for promotion**: {6}"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -29,7 +29,8 @@ def compose_report(action=None, success=None, container=None, results=None, hand
         "artifact:*.cef.sourceDnsDomain",
         "artifact:*.cef.destinationAddress",
         "artifact:*.cef.filePath",
-        "playbook_input:promotion_reason"
+        "playbook_input:promotion_reason",
+        "playbook_input:hash_history"
     ]
 
     ################################################################################
