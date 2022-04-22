@@ -376,6 +376,8 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
 
     phantom.comment()
 
+    playbook_case_promotion_lab_5_3_1(container=container)
+
     return
 
 
@@ -400,6 +402,33 @@ def add_comment_set_status_5(action=None, success=None, container=None, results=
     phantom.set_status(container=container, status="closed")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def playbook_case_promotion_lab_5_3_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_case_promotion_lab_5_3_1() called")
+
+    notify_soc_management_result_data = phantom.collect2(container=container, datapath=["notify_soc_management:action_result.summary.responses.1"], action_results=results)
+
+    notify_soc_management_summary_responses_1 = [item[0] for item in notify_soc_management_result_data]
+
+    inputs = {
+        "promotion_reason": notify_soc_management_summary_responses_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/Case Promotion Lab 5.3", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/Case Promotion Lab 5.3", container=container, name="playbook_case_promotion_lab_5_3_1", inputs=inputs)
 
     return
 
