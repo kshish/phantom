@@ -15,8 +15,6 @@ def on_start(container):
     locate_source(container=container)
     # call 'source_reputation' block
     source_reputation(container=container)
-    # call 'virus_search' block
-    virus_search(container=container)
     # call 'virus_search_old_vt' block
     virus_search_old_vt(container=container)
 
@@ -113,7 +111,7 @@ def virus_search(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("file reputation", parameters=parameters, name="virus_search", assets=["myvt"], callback=join_debug_2)
+    phantom.act("file reputation", parameters=parameters, name="virus_search", assets=["myvt"])
 
     return
 
@@ -121,7 +119,7 @@ def virus_search(action=None, success=None, container=None, results=None, handle
 def join_debug_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("join_debug_2() called")
 
-    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search", "virus_search_old_vt"]):
+    if phantom.completed(action_names=["locate_source", "source_reputation", "virus_search_old_vt"]):
         # call connected block "debug_2"
         debug_2(container=container, handle=handle)
 
@@ -186,6 +184,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         notify_soc_management(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # check for 'else' condition 2
+    format_3(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 
@@ -245,10 +246,160 @@ def notify_soc_management(action=None, success=None, container=None, results=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Reason for decision",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="notify_soc_management", parameters=parameters, response_types=response_types, callback=decision_2, drop_none=True)
+
+    return
+
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_2() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["notify_soc_management:action_result.status", "!=", "success"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        pin_3(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'elif' condition 2
+    found_match_2 = phantom.decision(
+        container=container,
+        conditions=[
+            ["notify_soc_management:action_result.summary.responses.0", "==", "Yes"]
+        ])
+
+    # call connected blocks if condition 2 matched
+    if found_match_2:
+        add_comment_4(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 3
+    add_comment_set_status_5(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_3() called")
+
+    template = """Virus Positives {0} are below threshold, closing event.\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "virus_search_old_vt:action_result.summary.positives"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+
+    add_comment_set_status_1(container=container)
+
+    return
+
+
+def add_comment_set_status_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_set_status_1() called")
+
+    format_3 = phantom.get_format_data(name="format_3")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=format_3)
+    phantom.set_status(container=container, status="closed")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data="User failed to respond within tie limit", message="Awaiting action", pin_style="red", pin_type="card")
+
+    return
+
+
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_4() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment()
+
+    return
+
+
+def add_comment_set_status_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_set_status_5() called")
+
+    notify_soc_management_result_data = phantom.collect2(container=container, datapath=["notify_soc_management:action_result.summary.responses.1"], action_results=results)
+
+    notify_soc_management_summary_responses_1 = [item[0] for item in notify_soc_management_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=notify_soc_management_summary_responses_1)
+    phantom.set_status(container=container, status="closed")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
