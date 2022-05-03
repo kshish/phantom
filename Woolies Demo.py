@@ -42,11 +42,10 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ################################################################################
     ## Custom Code End
     ################################################################################
-
+    phantom.debug(parameters)
     phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"])
 
     return
-
 
 def on_finish(container, summary):
     phantom.debug("on_finish() called")

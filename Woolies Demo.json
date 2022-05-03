@@ -14,7 +14,7 @@
                     "targetPort": "2_in"
                 }
             ],
-            "hash": "07b52532ce91583b3389b7d92a5429b12a1cd41b",
+            "hash": "286805cb24262b498c767afad005a2dfe3c95f47",
             "nodes": {
                 "0": {
                     "data": {
@@ -50,6 +50,7 @@
                     "y": 840
                 },
                 "2": {
+                    "customCode": "def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug(\"geolocate_ip_1() called\")\n\n    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n\n    container_artifact_data = phantom.collect2(container=container, datapath=[\"artifact:*.cef.sourceAddress\",\"artifact:*.id\"])\n\n    parameters = []\n\n    # build parameters list for 'geolocate_ip_1' call\n    for container_artifact_item in container_artifact_data:\n        if container_artifact_item[0] is not None:\n            parameters.append({\n                \"ip\": container_artifact_item[0],\n                \"context\": {'artifact_id': container_artifact_item[1]},\n            })\n\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # Write your custom code here...\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n    phantom.debug(parameters)\n    phantom.act(\"geolocate ip\", parameters=parameters, name=\"geolocate_ip_1\", assets=[\"maxmind\"])\n\n    return",
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
@@ -93,7 +94,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-03T01:35:42.327283+00:00",
+    "create_time": "2022-05-03T01:40:14.235479+00:00",
     "draft_mode": false,
     "labels": [
         "*"
