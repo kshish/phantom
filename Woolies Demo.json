@@ -50,9 +50,28 @@
                     "sourcePort": "4_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_7",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "91c08fef301eaea56525ef854b7e9c39e00f1eb0",
+            "hash": "c75b3a3ca96dfff0cc7bd4d15400b68c5d541b98",
             "nodes": {
                 "0": {
                     "data": {
@@ -294,6 +313,8 @@
                 "4": {
                     "data": {
                         "advanced": {
+                            "customName": "decide if in friendlies",
+                            "customNameId": 0,
                             "join": []
                         },
                         "conditions": [
@@ -335,7 +356,7 @@
                             }
                         ],
                         "functionId": 1,
-                        "functionName": "decision_1",
+                        "functionName": "decide_if_in_friendlies",
                         "id": "4",
                         "type": "decision"
                     },
@@ -450,8 +471,8 @@
                     "errors": {},
                     "id": "7",
                     "type": "utility",
-                    "x": 540,
-                    "y": 1120
+                    "x": 600,
+                    "y": 1220
                 },
                 "8": {
                     "data": {
@@ -469,8 +490,17 @@
                             "my_geolocate:action_result.parameter.ip",
                             "my_geolocate:action_result.data.*.country_name"
                         ],
-                        "responseTime": 30,
-                        "responses": [],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
                         "type": "prompt"
                     },
                     "errors": {},
@@ -478,6 +508,40 @@
                     "type": "prompt",
                     "x": 680,
                     "y": 844.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "customName": "decide on prompt response",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decide_on_prompt_response",
+                        "id": "9",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "decision",
+                    "x": 680,
+                    "y": 1044.5
                 }
             },
             "notes": ""
@@ -489,7 +553,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-03T03:19:06.994480+00:00",
+    "create_time": "2022-05-03T03:22:37.814819+00:00",
     "draft_mode": false,
     "labels": [
         "*"

@@ -53,7 +53,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decide_if_in_friendlies(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -97,8 +97,8 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     return
 
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_1() called")
+def decide_if_in_friendlies(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decide_if_in_friendlies() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -176,7 +176,39 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         "my_geolocate:action_result.data.*.country_name"
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to change severity to High?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decide_on_prompt_response)
+
+    return
+
+
+def decide_on_prompt_response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decide_on_prompt_response() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
