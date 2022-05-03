@@ -19,9 +19,28 @@
                     "sourcePort": "2_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "id": "port_2_to_port_4",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_4_to_port_6",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "76d16f6d4b6a2d0283b1f1e77b4ef850d429c6d0",
+            "hash": "408e57dcf9f0454d750f0db9c62ec5f8194cb51a",
             "nodes": {
                 "0": {
                     "data": {
@@ -53,8 +72,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
-                    "x": 980,
-                    "y": 840
+                    "x": 1000,
+                    "y": 1060
                 },
                 "2": {
                     "customCode": null,
@@ -62,6 +81,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -71,7 +92,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "2",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -255,8 +276,99 @@
                     "errors": {},
                     "id": "3",
                     "type": "utility",
+                    "x": 1440,
+                    "y": 680
+                },
+                "4": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "Australia"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IPs are friendlies",
+                                "display": "If",
+                                "logic": "or",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "4",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "decision",
+                    "x": 1060,
+                    "y": 740
+                },
+                "6": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "6",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "low"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "utility",
                     "x": 980,
-                    "y": 704.5
+                    "y": 924.5
                 }
             },
             "notes": ""
@@ -268,7 +380,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-03T02:06:37.394934+00:00",
+    "create_time": "2022-05-03T02:57:32.528193+00:00",
     "draft_mode": false,
     "labels": [
         "*"
