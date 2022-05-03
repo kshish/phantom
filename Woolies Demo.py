@@ -187,6 +187,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide an email address",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -202,7 +208,7 @@ def decide_on_prompt_response(action=None, success=None, container=None, results
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
         ])
 
     # call connected blocks if condition 1 matched
