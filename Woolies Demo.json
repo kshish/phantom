@@ -38,9 +38,21 @@
                     "sourcePort": "4_out",
                     "targetNode": "6",
                     "targetPort": "6_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_4_to_port_7",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "408e57dcf9f0454d750f0db9c62ec5f8194cb51a",
+            "hash": "bb8ebda44058f2d9bc1a43a99a363960d0a9a1ce",
             "nodes": {
                 "0": {
                     "data": {
@@ -305,6 +317,20 @@
                                 "display": "If",
                                 "logic": "or",
                                 "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "IPs are not in friendlies",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
                             }
                         ],
                         "functionId": 1,
@@ -367,8 +393,60 @@
                     "errors": {},
                     "id": "6",
                     "type": "utility",
-                    "x": 980,
-                    "y": 924.5
+                    "x": 1240,
+                    "y": 900
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 3,
+                        "functionName": "set_severity_3",
+                        "id": "7",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "utility",
+                    "x": 780,
+                    "y": 900
                 }
             },
             "notes": ""
@@ -380,7 +458,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-03T02:57:32.528193+00:00",
+    "create_time": "2022-05-03T03:00:18.389261+00:00",
     "draft_mode": false,
     "labels": [
         "*"

@@ -114,6 +114,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # check for 'else' condition 2
+    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 
@@ -131,6 +134,26 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     ################################################################################
 
     phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
