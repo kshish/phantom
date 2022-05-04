@@ -149,6 +149,7 @@ def decide_on_prompt_response(action=None, success=None, container=None, results
     # call connected blocks if condition 1 matched
     if found_match_1:
         playbook_woolies_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_7(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -290,6 +291,26 @@ def pin_6(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=playbook_woolies_child_pb_demo_1_output_emailstatus_values, message=playbook_woolies_child_pb_demo_1_output_responsefromchild_values, pin_style="grey", pin_type="card")
+
+    return
+
+
+def set_label_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_7() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="worm")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
