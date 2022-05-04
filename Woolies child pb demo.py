@@ -33,7 +33,7 @@ def set_severity_add_comment_promote_to_case_1(action=None, success=None, contai
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity()
+    phantom.set_severity(container=container, severity="high")
     phantom.comment(container=container, comment=playbook_input_commentfromanalyst_values)
     phantom.promote(container=container, template="Risk Investigation")
 
