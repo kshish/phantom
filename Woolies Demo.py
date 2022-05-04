@@ -53,7 +53,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    external_ips(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -111,11 +111,11 @@ def decide_if_in_friendlies(action=None, success=None, container=None, results=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+    format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -166,14 +166,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The container {0} with severity {1} IPs are outside of US and AUS\n\nIP: {2} is from {3}\n"""
+    message = """The container {0} with severity {1} IPs are outside of US and AUS\n\n{2}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
+        "format_ip_and_country_list:formatted_data"
     ]
 
     # responses
@@ -219,8 +218,8 @@ def decide_on_prompt_response(action=None, success=None, container=None, results
     return
 
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_1() called")
+def external_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("external_ips() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -228,7 +227,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["my_geolocate:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_1:condition_1")
+        name="external_ips:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
@@ -249,6 +248,34 @@ def call_api_4(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
     ## Custom Code End
     ################################################################################
+
+    return
+
+
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_ip_and_country_list() called")
+
+    template = """IP: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:external_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:external_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
+
+    prompt_1(container=container)
 
     return
 

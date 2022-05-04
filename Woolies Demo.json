@@ -33,18 +33,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_4_to_port_8",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "id": "port_8_to_port_9",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
@@ -88,9 +76,28 @@
                     "sourcePort": "3_out",
                     "targetNode": "11",
                     "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_4_to_port_12",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_8",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "bb6fc66fe5099154675404489cf31526c241659d",
+            "hash": "151519f6853dcfd555dd8586377b98babd289a46",
             "nodes": {
                 "0": {
                     "data": {
@@ -128,6 +135,8 @@
                 "10": {
                     "data": {
                         "advanced": {
+                            "customName": "External IPs",
+                            "customNameId": 0,
                             "join": []
                         },
                         "conditions": [
@@ -146,7 +155,7 @@
                             }
                         ],
                         "functionId": 1,
-                        "functionName": "filter_1",
+                        "functionName": "external_ips",
                         "id": "10",
                         "type": "filter"
                     },
@@ -171,6 +180,29 @@
                     "type": "utility",
                     "x": 1480,
                     "y": 744.5
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format IP and Country List",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "12",
+                        "parameters": [
+                            "filtered-data:external_ips:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:external_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "format",
+                    "x": 600,
+                    "y": 900
                 },
                 "2": {
                     "customCode": null,
@@ -538,7 +570,7 @@
                     "id": "7",
                     "type": "utility",
                     "x": 600,
-                    "y": 1220
+                    "y": 1340
                 },
                 "8": {
                     "data": {
@@ -549,12 +581,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "8",
-                        "message": "The container {0} with severity {1} IPs are outside of US and AUS\n\nIP: {2} is from {3}\n",
+                        "message": "The container {0} with severity {1} IPs are outside of US and AUS\n\n{2}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -577,7 +608,7 @@
                     "id": "8",
                     "type": "prompt",
                     "x": 680,
-                    "y": 840
+                    "y": 1040
                 },
                 "9": {
                     "data": {
@@ -611,7 +642,7 @@
                     "id": "9",
                     "type": "decision",
                     "x": 680,
-                    "y": 1044.5
+                    "y": 1220
                 }
             },
             "notes": ""
@@ -623,7 +654,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-04T00:03:56.146272+00:00",
+    "create_time": "2022-05-04T00:12:17.102618+00:00",
     "draft_mode": false,
     "labels": [
         "*"
