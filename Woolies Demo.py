@@ -42,56 +42,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=my_geolocate_callback)
-
-    return
-
-
-def my_geolocate_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_geolocate_callback() called")
-
-    
-    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    external_ips(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-
-
-    return
-
-
-def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("debug_1() called")
-
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
-
-    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
-    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
-
-    parameters = []
-
-    parameters.append({
-        "input_1": geolocate_ip_1_result_item_0,
-        "input_2": geolocate_ip_1_parameter_ip,
-        "input_3": None,
-        "input_4": None,
-        "input_5": None,
-        "input_6": None,
-        "input_7": None,
-        "input_8": None,
-        "input_9": None,
-        "input_10": None,
-    })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=call_api_4)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=external_ips)
 
     return
 
@@ -132,25 +83,7 @@ def set_severity_to_low(action=None, success=None, container=None, results=None,
     ## Custom Code End
     ################################################################################
 
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-def set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_to_high() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
+    phantom.set_severity(container=container, severity="low")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -175,7 +108,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # responses
     response_types = [
         {
-            "prompt": "Would you like to change severity to High?",
+            "prompt": "Would you like to promote to case",
             "options": {
                 "type": "list",
                 "choices": [
@@ -186,6 +119,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         },
         {
             "prompt": "Please provide an email address",
+            "options": {
+                "type": "message",
+            },
+        },
+        {
+            "prompt": "Please add a comment",
             "options": {
                 "type": "message",
             },
@@ -209,7 +148,7 @@ def decide_on_prompt_response(action=None, success=None, container=None, results
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_woolies_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -229,22 +168,6 @@ def external_ips(action=None, success=None, container=None, results=None, handle
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_if_in_friendlies(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-
-def call_api_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("call_api_4() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
 
     return
 
@@ -312,6 +235,61 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=my_geolocate)
+
+    return
+
+
+def playbook_woolies_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_woolies_child_pb_demo_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1","prompt_1:action_result.summary.responses.2"], action_results=results)
+    format_ip_and_country_list = phantom.get_format_data(name="format_ip_and_country_list")
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    prompt_1_summary_responses_2 = [item[1] for item in prompt_1_result_data]
+
+    inputs = {
+        "emailaddress": prompt_1_summary_responses_1,
+        "commentfromanalyst": prompt_1_summary_responses_2,
+        "ipandcountrylist": format_ip_and_country_list,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/Woolies child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/Woolies child pb demo", container=container, name="playbook_woolies_child_pb_demo_1", callback=pin_6, inputs=inputs)
+
+    return
+
+
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_6() called")
+
+    playbook_woolies_child_pb_demo_1_output_emailstatus = phantom.collect2(container=container, datapath=["playbook_woolies_child_pb_demo_1:playbook_output:emailstatus"])
+    playbook_woolies_child_pb_demo_1_output_responsefromchild = phantom.collect2(container=container, datapath=["playbook_woolies_child_pb_demo_1:playbook_output:responsefromchild"])
+
+    playbook_woolies_child_pb_demo_1_output_emailstatus_values = [item[0] for item in playbook_woolies_child_pb_demo_1_output_emailstatus]
+    playbook_woolies_child_pb_demo_1_output_responsefromchild_values = [item[0] for item in playbook_woolies_child_pb_demo_1_output_responsefromchild]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=playbook_woolies_child_pb_demo_1_output_emailstatus_values, message=playbook_woolies_child_pb_demo_1_output_responsefromchild_values, pin_style="grey", pin_type="card")
 
     return
 
