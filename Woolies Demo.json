@@ -47,7 +47,7 @@
                 {
                     "conditions": [
                         {
-                            "index": 1
+                            "index": 0
                         }
                     ],
                     "id": "port_4_to_port_12",
@@ -109,7 +109,7 @@
                     "targetPort": "19_in"
                 }
             ],
-            "hash": "7ee28e7fa83b5a077658d546fc7e29a20146a35e",
+            "hash": "2654bedf9466625c4f3e47d0082b5c84200877fd",
             "nodes": {
                 "0": {
                     "data": {
@@ -124,7 +124,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 219.99999999999994
+                    "y": 219.9999999999999
                 },
                 "1": {
                     "customCode": "def on_finish(container, summary):\n    phantom.debug(\"on_finish() called\")\n    phantom.debug(\"Chris wuz here\")\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    return",
@@ -627,15 +627,9 @@
                                 "comparisons": [
                                     {
                                         "conditionIndex": 0,
-                                        "op": "!=",
-                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
-                                        "value": "United States"
-                                    },
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "!=",
-                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
-                                        "value": "Australia"
+                                        "op": "not in",
+                                        "param": "filtered-data:external_ips:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "value": "custom_list:OC"
                                     }
                                 ],
                                 "conditionIndex": 0,
@@ -812,7 +806,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-04T01:38:28.393487+00:00",
+    "create_time": "2022-05-04T02:47:35.286365+00:00",
     "draft_mode": false,
     "labels": [
         "*"

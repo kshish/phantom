@@ -53,19 +53,17 @@ def decide_if_in_friendlies(action=None, success=None, container=None, results=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Australia"]
+            ["filtered-data:external_ips:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:OC"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-    format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -251,8 +249,8 @@ def playbook_woolies_child_pb_demo_1(action=None, success=None, container=None, 
 
     inputs = {
         "emailaddress": prompt_1_summary_responses_1,
-        "commentfromanalyst": prompt_1_summary_responses_2,
         "ipandcountrylist": format_ip_and_country_list,
+        "commentfromanalyst": prompt_1_summary_responses_2,
     }
 
     ################################################################################
