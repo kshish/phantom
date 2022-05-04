@@ -21,13 +21,6 @@
                     "targetPort": "3_in"
                 },
                 {
-                    "id": "port_2_to_port_4",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -69,9 +62,35 @@
                     "sourcePort": "9_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
+                },
+                {
+                    "id": "port_2_to_port_10",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_4",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
+                },
+                {
+                    "id": "port_3_to_port_11",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "1e951075ec6d0ae5c00da6ed3e91f9cb2aaed366",
+            "hash": "ac9a4b71410a92429b7527f71dd0b98704c90baf",
             "nodes": {
                 "0": {
                     "data": {
@@ -86,7 +105,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 340
                 },
                 "1": {
                     "customCode": "def on_finish(container, summary):\n    phantom.debug(\"on_finish() called\")\n    phantom.debug(\"Chris wuz here\")\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    return",
@@ -105,6 +124,53 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1060
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "External IPs",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "10",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 580
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 4,
+                        "functionName": "call_api_4",
+                        "id": "11",
+                        "type": "utility"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "utility",
+                    "x": 1480,
+                    "y": 744.5
                 },
                 "2": {
                     "customCode": null,
@@ -142,7 +208,7 @@
                     "type": "action",
                     "userCode": null,
                     "x": 980,
-                    "y": 580
+                    "y": 460
                 },
                 "3": {
                     "data": {
@@ -307,8 +373,8 @@
                     "errors": {},
                     "id": "3",
                     "type": "utility",
-                    "x": 1440,
-                    "y": 680
+                    "x": 1480,
+                    "y": 580
                 },
                 "4": {
                     "data": {
@@ -364,7 +430,7 @@
                     "id": "4",
                     "type": "decision",
                     "x": 1060,
-                    "y": 700
+                    "y": 720
                 },
                 "6": {
                     "data": {
@@ -557,7 +623,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-05-03T03:29:41.164780+00:00",
+    "create_time": "2022-05-04T00:01:05.482762+00:00",
     "draft_mode": false,
     "labels": [
         "*"
