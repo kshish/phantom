@@ -86,7 +86,85 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=decision_1)
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="or",
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", "Canada"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """The {0} with severity {1} is not from Friendlies list.\n\nIP: {2} is from {3}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to change severity to High?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types)
 
     return
 
