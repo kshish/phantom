@@ -139,8 +139,6 @@ def set_severity_low(action=None, success=None, container=None, results=None, ha
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
-
     container = phantom.get_container(container.get('id', None))
 
     decision_5(container=container)
@@ -174,6 +172,18 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide an email address",
+            "options": {
+                "type": "message",
+            },
+        },
+        {
+            "prompt": "Enter the subject",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -195,28 +205,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_demo_june_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_3() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -335,6 +325,76 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+def playbook_demo_june_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_demo_june_child_pb_1() called")
+
+    filtered_result_0_data_filter_non_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1","prompt_1:action_result.summary.responses.2"], action_results=results)
+
+    filtered_result_0_data = [item[0] for item in filtered_result_0_data_filter_non_internal_ips]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    prompt_1_summary_responses_2 = [item[1] for item in prompt_1_result_data]
+
+    inputs = {
+        "filtered_list": filtered_result_0_data,
+        "email_address": prompt_1_summary_responses_1,
+        "subject": prompt_1_summary_responses_2,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/demo june child pb", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/demo june child pb", container=container, name="playbook_demo_june_child_pb_1", callback=decision_6, inputs=inputs)
+
+    return
+
+
+def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_6() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_demo_june_child_pb_1:playbook_output:riskscore", ">", 50]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_sensitivity_6(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+def set_sensitivity_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_sensitivity_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="red")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
