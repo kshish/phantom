@@ -314,7 +314,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("format_1() called")
 
-    template = """IP: {0} is from {1}\n"""
+    template = """%%\nIP: {0} is from {1}\n%%\n"""
 
     # parameter list for template variable replacement
     parameters = [
