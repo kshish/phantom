@@ -109,105 +109,17 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "in", "custom_list:friendlies"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle)
+        pin_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_severity_low(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-def set_severity_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_low() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    container = phantom.get_container(container.get('id', None))
-
-    decision_5(container=container)
-
-    return
-
-
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_1() called")
-
-    # set user and message variables for phantom.prompt call
-
-    user = "admin"
-    message = """The {0} with severity {1} is not from Friendlies list.\n\n{2}"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "container:name",
-        "container:severity",
-        "format_1:formatted_data"
-    ]
-
-    # responses
-    response_types = [
-        {
-            "prompt": "Would you like to change severity to High?",
-            "options": {
-                "type": "list",
-                "choices": [
-                    "Yes",
-                    "No"
-                ],
-            },
-        },
-        {
-            "prompt": "Please provide an email address",
-            "options": {
-                "type": "message",
-            },
-        },
-        {
-            "prompt": "Enter the subject",
-            "options": {
-                "type": "message",
-            },
-        }
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
-
-    return
-
-
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_2() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
-        ],
-        case_sensitive=False)
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        playbook_demo_june_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
-        set_label_7(action=action, success=success, container=container, results=results, handle=handle)
-        return
+    pin_8(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -285,33 +197,12 @@ def call_api_5(action=None, success=None, container=None, results=None, handle=N
     return
 
 
-def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_5() called")
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_3() called")
 
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["geolocate_ip_1:action_result.data.*.mycount", "==", ""]
-        ])
+    filtered_result_0_data_filter_non_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
 
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        return
-
-    return
-
-
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("format_1() called")
-
-    template = """%%\nIP: {0} is from {1}\n%%\n"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"
-    ]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_non_internal_ips]
 
     ################################################################################
     ## Custom Code Start
@@ -323,28 +214,17 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     ## Custom Code End
     ################################################################################
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
-
-    prompt_1(container=container)
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP is from Friendlies ist", pin_style="blue", pin_type="card")
 
     return
 
 
-def playbook_demo_june_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("playbook_demo_june_child_pb_1() called")
+def pin_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_8() called")
 
-    filtered_result_0_data_filter_non_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data"])
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1","prompt_1:action_result.summary.responses.2"], action_results=results)
+    filtered_result_0_data_filter_non_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
 
-    filtered_result_0_data = [item[0] for item in filtered_result_0_data_filter_non_internal_ips]
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
-    prompt_1_summary_responses_2 = [item[1] for item in prompt_1_result_data]
-
-    inputs = {
-        "filtered_list": filtered_result_0_data,
-        "email_address": prompt_1_summary_responses_1,
-        "subject": prompt_1_summary_responses_2,
-    }
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_non_internal_ips]
 
     ################################################################################
     ## Custom Code Start
@@ -356,93 +236,7 @@ def playbook_demo_june_child_pb_1(action=None, success=None, container=None, res
     ## Custom Code End
     ################################################################################
 
-    # call playbook "chris/demo june child pb", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/demo june child pb", container=container, name="playbook_demo_june_child_pb_1", callback=decision_6, inputs=inputs)
-
-    return
-
-
-def decision_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_6() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["playbook_demo_june_child_pb_1:playbook_output:riskscore", ">", 50]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        set_sensitivity_6(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def set_sensitivity_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_sensitivity_6() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_sensitivity(container=container, sensitivity="red")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-def set_label_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_label_7() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_label(container=container, label="splunk")
-
-    container = phantom.get_container(container.get('id', None))
-
-    format_2(container=container)
-
-    return
-
-
-def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("format_2() called")
-
-    template = """{0}\n"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        ""
-    ]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="NOT friendly IP", pin_style="red", pin_type="card")
 
     return
 
