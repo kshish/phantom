@@ -43,7 +43,18 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=debug_1)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=geolocate_ip_1_callback)
+
+    return
+
+
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_1_callback() called")
+
+    
+    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_non_internal_ips(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -86,7 +97,7 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=decision_1)
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
@@ -99,8 +110,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -204,6 +215,24 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def filter_non_internal_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_non_internal_ips() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_non_internal_ips:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

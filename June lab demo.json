@@ -21,13 +21,6 @@
                     "targetPort": "3_in"
                 },
                 {
-                    "id": "port_3_to_port_4",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -69,9 +62,28 @@
                     "sourcePort": "7_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "id": "port_2_to_port_9",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_4",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "12adc155bb34fd68b714ab9e995b54881b63b27f",
+            "hash": "8e0cc4fc80a23b112e61921a488846b8c7409f44",
             "nodes": {
                 "0": {
                     "data": {
@@ -86,7 +98,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.99999999999966
+                    "y": 419.99999999999955
                 },
                 "1": {
                     "data": {
@@ -302,8 +314,8 @@
                     "errors": {},
                     "id": "3",
                     "type": "utility",
-                    "x": 980,
-                    "y": 804.5
+                    "x": 1280,
+                    "y": 780
                 },
                 "4": {
                     "data": {
@@ -316,13 +328,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -531,6 +543,39 @@
                     "type": "utility",
                     "x": 740,
                     "y": 1464.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter non internal ips",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "non internal IP list",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_non_internal_ips",
+                        "id": "9",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 804.5
                 }
             },
             "notes": ""
@@ -542,7 +587,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-06-07T16:22:06.552170+00:00",
+    "create_time": "2022-06-07T16:51:57.593606+00:00",
     "draft_mode": false,
     "labels": [
         "*"
