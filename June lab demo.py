@@ -111,7 +111,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data", "!=", "United States"],
+            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
             ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
         ])
 
