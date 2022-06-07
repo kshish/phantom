@@ -13,6 +13,8 @@ def on_start(container):
 
     # call 'list_merge_4' block
     list_merge_4(container=container)
+    # call 'call_api_5' block
+    call_api_5(container=container)
 
     return
 
@@ -109,13 +111,13 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["geolocate_ip_1:action_result.data", "!=", "United States"],
             ["filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        format_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -141,6 +143,8 @@ def set_severity_low(action=None, success=None, container=None, results=None, ha
 
     container = phantom.get_container(container.get('id', None))
 
+    decision_5(container=container)
+
     return
 
 
@@ -150,14 +154,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The {0} with severity {1} is not from Friendlies list.\n\nIP: {2} is from {3}"""
+    message = """The {0} with severity {1} is not from Friendlies list.\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+        "format_1:formatted_data"
     ]
 
     # responses
@@ -271,6 +274,67 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=geolocate_ip_1)
+
+    return
+
+
+def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_5() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    return
+
+
+def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_5() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.mycount", "==", ""]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        return
+
+    return
+
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """IP: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_non_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
