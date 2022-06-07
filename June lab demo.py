@@ -206,6 +206,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if found_match_1:
         playbook_demo_june_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_7(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -393,6 +394,26 @@ def set_sensitivity_6(action=None, success=None, container=None, results=None, h
     ################################################################################
 
     phantom.set_sensitivity(container=container, sensitivity="red")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def set_label_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_7() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="splunk")
 
     container = phantom.get_container(container.get('id', None))
 
