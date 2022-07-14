@@ -36,16 +36,28 @@ def my_geo_locate_ip_that_chris_put_in(action=None, success=None, container=None
     ################################################################################
     ## Custom Code Start
     ################################################################################
-    phantom.debug(parameters)
+
     # Write your custom code here...
 
     ################################################################################
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate_ip_that_chris_put_in", assets=["maxmind"], callback=debug_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate_ip_that_chris_put_in", assets=["maxmind"], callback=my_geo_locate_ip_that_chris_put_in_callback)
 
     return
+
+
+def my_geo_locate_ip_that_chris_put_in_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_geo_locate_ip_that_chris_put_in_callback() called")
+
+    
+    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
+
+    return
+
 
 def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("debug_1() called")
@@ -86,6 +98,49 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="or",
+        conditions=[
+            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "==", "United States"],
+            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "==", "Brazil"],
+            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "==", "Canada"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        return
+
+    # check for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """The container {0} has IP that is not from Friendlies list.\n\nIP: {1} is from {2}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
+        "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
 
     return
 
