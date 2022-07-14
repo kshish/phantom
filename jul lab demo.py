@@ -24,7 +24,7 @@ def my_geo_locate_ip_that_chris_put_in(action=None, success=None, container=None
     container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
 
     parameters = []
-    phantom.debug(parameters)
+
     # build parameters list for 'my_geo_locate_ip_that_chris_put_in' call
     for container_artifact_item in container_artifact_data:
         if container_artifact_item[0] is not None:
@@ -36,7 +36,7 @@ def my_geo_locate_ip_that_chris_put_in(action=None, success=None, container=None
     ################################################################################
     ## Custom Code Start
     ################################################################################
-
+    phantom.debug(parameters)
     # Write your custom code here...
 
     ################################################################################

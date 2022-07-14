@@ -21,7 +21,7 @@
                     "targetPort": "3_in"
                 }
             ],
-            "hash": "520774fcc01276cefb20475480f991bb4a6c451f",
+            "hash": "89d591930a23f39a82f8f364f5ceedf6ca1be850",
             "nodes": {
                 "0": {
                     "data": {
@@ -56,7 +56,7 @@
                     "y": 1000
                 },
                 "2": {
-                    "customCode": "def my_geo_locate_ip_that_chris_put_in(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug(\"my_geo_locate_ip_that_chris_put_in() called\")\n\n    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n\n    container_artifact_data = phantom.collect2(container=container, datapath=[\"artifact:*.cef.sourceAddress\",\"artifact:*.id\"])\n\n    parameters = []\n    phantom.debug(parameters)\n    # build parameters list for 'my_geo_locate_ip_that_chris_put_in' call\n    for container_artifact_item in container_artifact_data:\n        if container_artifact_item[0] is not None:\n            parameters.append({\n                \"ip\": container_artifact_item[0],\n                \"context\": {'artifact_id': container_artifact_item[1]},\n            })\n\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n\n    # Write your custom code here...\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    phantom.act(\"geolocate ip\", parameters=parameters, name=\"my_geo_locate_ip_that_chris_put_in\", assets=[\"maxmind\"], callback=debug_1)\n\n    return",
+                    "customCode": "def my_geo_locate_ip_that_chris_put_in(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):\n    phantom.debug(\"my_geo_locate_ip_that_chris_put_in() called\")\n\n    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))\n\n    container_artifact_data = phantom.collect2(container=container, datapath=[\"artifact:*.cef.sourceAddress\",\"artifact:*.id\"])\n\n    parameters = []\n\n    # build parameters list for 'my_geo_locate_ip_that_chris_put_in' call\n    for container_artifact_item in container_artifact_data:\n        if container_artifact_item[0] is not None:\n            parameters.append({\n                \"ip\": container_artifact_item[0],\n                \"context\": {'artifact_id': container_artifact_item[1]},\n            })\n\n    ################################################################################\n    ## Custom Code Start\n    ################################################################################\n    phantom.debug(parameters)\n    # Write your custom code here...\n\n    ################################################################################\n    ## Custom Code End\n    ################################################################################\n\n    phantom.act(\"geolocate ip\", parameters=parameters, name=\"my_geo_locate_ip_that_chris_put_in\", assets=[\"maxmind\"], callback=debug_1)\n\n    return",
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
@@ -268,7 +268,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-07-14T19:49:03.061324+00:00",
+    "create_time": "2022-07-14T19:49:52.639324+00:00",
     "draft_mode": false,
     "labels": [
         "*"
