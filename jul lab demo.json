@@ -78,14 +78,14 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_9_to_port_10",
+                    "id": "port_9_to_port_11",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "8c681817820081c34ab970cf9be9537a3f5b6ea6",
+            "hash": "eab84c486a4665340e4ed147e79fb27dffd4bb47",
             "nodes": {
                 "0": {
                     "data": {
@@ -100,7 +100,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 279.9999999999999
+                    "y": 279.9999999999998
                 },
                 "1": {
                     "data": {
@@ -119,58 +119,46 @@
                     "x": 1300,
                     "y": 1600
                 },
-                "10": {
+                "11": {
                     "data": {
                         "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
+                            "join": []
                         },
-                        "customFunction": null,
-                        "functionId": 3,
-                        "functionName": "set_severity_3",
-                        "id": "10",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
+                        "functionId": 1,
+                        "functionName": "playbook_jul_child_pb_1",
+                        "id": "11",
+                        "inputs": {
+                            "filtered_geolocate_list": {
+                                "datapaths": [
+                                    "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data"
                                 ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
+                                "deduplicate": false
+                            },
+                            "hud_msg": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            },
+                            "some_ip": {
+                                "datapaths": [
+                                    "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
                             }
                         },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
+                        "playbookName": "jul child pb",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
                     },
                     "errors": {},
-                    "id": "10",
-                    "type": "utility",
-                    "x": 980,
-                    "y": 1464.5
+                    "id": "11",
+                    "type": "playbook",
+                    "x": 990,
+                    "y": 1544.5
                 },
                 "2": {
                     "customCode": null,
@@ -459,6 +447,14 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responseOptions": [
+                                    1,
+                                    100
+                                ],
+                                "responsePrompt": "enter a number",
+                                "responseType": "range"
                             }
                         ],
                         "type": "prompt"
@@ -733,7 +729,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-07-15T17:08:57.119096+00:00",
+    "create_time": "2022-07-15T18:36:45.504206+00:00",
     "draft_mode": false,
     "labels": [
         "*"
