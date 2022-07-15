@@ -19,6 +19,8 @@ def on_start(container):
 def pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_1() called")
 
+    name_value = container.get("name", None)
+
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -29,7 +31,7 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, message="Chris wuz here")
+    phantom.pin(container=container, data=name_value, message="Chris wuz here", pin_style="grey", pin_type="card")
 
     return
 
