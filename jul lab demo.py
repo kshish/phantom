@@ -262,6 +262,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if found_match_1:
         playbook_jul_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -271,17 +272,17 @@ def playbook_jul_child_pb_1(action=None, success=None, container=None, results=N
     phantom.debug("playbook_jul_child_pb_1() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
-    filtered_result_0_data_geolocate_filtered_in_public = phantom.collect2(container=container, datapath=["filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data"])
     my_geo_locate_ip_that_chris_put_in_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip"], action_results=results)
+    filtered_result_0_data_geolocate_filtered_in_public = phantom.collect2(container=container, datapath=["filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data"])
 
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
-    filtered_result_0_data = [item[0] for item in filtered_result_0_data_geolocate_filtered_in_public]
     my_geo_locate_ip_that_chris_put_in_parameter_ip = [item[0] for item in my_geo_locate_ip_that_chris_put_in_result_data]
+    filtered_result_0_data = [item[0] for item in filtered_result_0_data_geolocate_filtered_in_public]
 
     inputs = {
         "hud_msg": prompt_1_summary_responses_1,
-        "filtered_geolocate_list": filtered_result_0_data,
         "some_ip": my_geo_locate_ip_that_chris_put_in_parameter_ip,
+        "filtered_geolocate_list": filtered_result_0_data,
     }
 
     ################################################################################
@@ -318,6 +319,26 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=playbook_jul_child_pb_1_output_awesomeness_number_from_childpb_values, message=playbook_jul_child_pb_1_output_awesomeness_number_from_childpb_values, pin_style="red", pin_type="card")
+
+    return
+
+
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="splunk")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
