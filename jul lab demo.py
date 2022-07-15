@@ -96,7 +96,7 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=code_1)
 
     return
 
@@ -242,6 +242,19 @@ def geolocate_filtered_in_public(action=None, success=None, container=None, resu
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "==", None]
+        ],
+        name="geolocate_filtered_in_public:condition_2",
+        case_sensitive=True)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_5(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
     return
 
 
@@ -336,6 +349,48 @@ def set_label_3(action=None, success=None, container=None, results=None, handle=
     phantom.set_label(container=container, label="splunk")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def code_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("code_1() called")
+
+    list_merge_2__result = phantom.collect2(container=container, datapath=["list_merge_2:custom_function_result.data"])
+
+    list_merge_2_data = [item[0] for item in list_merge_2__result]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    return
+
+
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    filtered_result_0_data_geolocate_filtered_in_public = phantom.collect2(container=container, datapath=["filtered-data:geolocate_filtered_in_public:condition_2:my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_geolocate_filtered_in_public]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="There are Unknown IPs", pin_style="red", pin_type="card")
 
     return
 
