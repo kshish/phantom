@@ -33,6 +33,28 @@ def pin_1(action=None, success=None, container=None, results=None, handle=None, 
 
     phantom.pin(container=container, data=name_value, message="Chris wuz here", pin_style="grey", pin_type="card")
 
+    promote_to_case_2(container=container)
+
+    return
+
+
+def promote_to_case_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Account Compromise")
+
+    container = phantom.get_container(container.get('id', None))
+
     return
 
 
