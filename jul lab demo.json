@@ -14,13 +14,6 @@
                     "targetPort": "3_in"
                 },
                 {
-                    "id": "port_2_to_port_4",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "id": "port_0_to_port_6",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -35,6 +28,13 @@
                     "targetPort": "2_in"
                 },
                 {
+                    "id": "port_7_to_port_5",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
+                },
+                {
                     "conditions": [
                         {
                             "index": 0
@@ -47,14 +47,26 @@
                     "targetPort": "7_in"
                 },
                 {
-                    "id": "port_7_to_port_5",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
+                    "id": "port_2_to_port_8",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_4",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "dc561ce9675a5a0150b17252c23798381bb9105e",
+            "hash": "ba019e352faeecf321eb46a2df86468c4a341d71",
             "nodes": {
                 "0": {
                     "data": {
@@ -289,8 +301,8 @@
                     "errors": {},
                     "id": "3",
                     "type": "utility",
-                    "x": 1320,
-                    "y": 720
+                    "x": 1460,
+                    "y": 680
                 },
                 "4": {
                     "data": {
@@ -303,19 +315,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
+                                        "param": "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
+                                        "param": "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
                                         "value": "Brazil"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
+                                        "param": "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -350,7 +362,7 @@
                     "id": "4",
                     "type": "decision",
                     "x": 1060,
-                    "y": 740
+                    "y": 840
                 },
                 "5": {
                     "data": {
@@ -364,7 +376,7 @@
                         "message": "The container {0} has IP that is not from Friendlies list.\n\n{1}\n",
                         "parameters": [
                             "container:name",
-                            "format_1:formatted_data"
+                            "format_1:formatted_data.*"
                         ],
                         "responseTime": 30,
                         "responses": [],
@@ -374,7 +386,7 @@
                     "id": "5",
                     "type": "prompt",
                     "x": 1060,
-                    "y": 1060
+                    "y": 1120
                 },
                 "6": {
                     "data": {
@@ -551,8 +563,8 @@
                         "functionName": "format_1",
                         "id": "7",
                         "parameters": [
-                            "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
-                            "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+                            "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
+                            "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
                         ],
                         "template": "%%\nIP: {0} is from {1}\n%%",
                         "type": "format"
@@ -561,7 +573,41 @@
                     "id": "7",
                     "type": "format",
                     "x": 980,
-                    "y": 904.5
+                    "y": 1000
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "case_sensitive": true,
+                            "customName": "Geolocate filtered in public",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name",
+                                        "value": "None"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "public IPs",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "geolocate_filtered_in_public",
+                        "id": "8",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 660
                 }
             },
             "notes": ""
@@ -573,7 +619,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-07-15T16:40:14.351992+00:00",
+    "create_time": "2022-07-15T16:52:38.202407+00:00",
     "draft_mode": false,
     "labels": [
         "*"

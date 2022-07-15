@@ -52,7 +52,7 @@ def my_geo_locate_ip_that_chris_put_in_callback(action=None, success=None, conta
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    geolocate_filtered_in_public(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -109,9 +109,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "Brazil"],
-            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "Brazil"],
+            ["filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", "Canada"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -133,7 +133,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "format_1:formatted_data"
+        "format_1:formatted_data.*"
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
@@ -186,8 +186,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
-        "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+        "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
+        "filtered-data:geolocate_filtered_in_public:condition_1:my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
     ]
 
     ################################################################################
@@ -203,6 +203,25 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+def geolocate_filtered_in_public(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_filtered_in_public() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name", "!=", None]
+        ],
+        name="geolocate_filtered_in_public:condition_1",
+        case_sensitive=True)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
