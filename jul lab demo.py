@@ -116,7 +116,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        format_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -128,13 +128,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "admin"
-    message = """The container {0} has IP that is not from Friendlies list.\n\nIP: {1} is from {2}"""
+    message = """The container {0} has IP that is not from Friendlies list.\n\n{1}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
-        "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+        "format_1:formatted_data"
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
@@ -176,6 +175,34 @@ def list_merge_2(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_2", callback=my_geo_locate_ip_that_chris_put_in)
+
+    return
+
+
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """IP: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
+        "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 

@@ -21,18 +21,6 @@
                     "targetPort": "4_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_4_to_port_5",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "id": "port_0_to_port_6",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -45,9 +33,28 @@
                     "sourcePort": "6_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_4_to_port_7",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
+                },
+                {
+                    "id": "port_7_to_port_5",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "7f1b02233a56103d34e257d1f6499d9f6424ce14",
+            "hash": "58b9fe6a15276d051af603bd1b6d20376f775370",
             "nodes": {
                 "0": {
                     "data": {
@@ -62,7 +69,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 280
+                    "y": 279.9999999999999
                 },
                 "1": {
                     "data": {
@@ -354,11 +361,10 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "5",
-                        "message": "The container {0} has IP that is not from Friendlies list.\n\nIP: {1} is from {2}",
+                        "message": "The container {0} has IP that is not from Friendlies list.\n\n{1}\n",
                         "parameters": [
                             "container:name",
-                            "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
-                            "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 30,
                         "responses": [],
@@ -368,7 +374,7 @@
                     "id": "5",
                     "type": "prompt",
                     "x": 1060,
-                    "y": 960
+                    "y": 1060
                 },
                 "6": {
                     "data": {
@@ -535,6 +541,27 @@
                     "type": "utility",
                     "x": 980,
                     "y": 424.5
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "7",
+                        "parameters": [
+                            "my_geo_locate_ip_that_chris_put_in:action_result.parameter.ip",
+                            "my_geo_locate_ip_that_chris_put_in:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "format",
+                    "x": 980,
+                    "y": 904.5
                 }
             },
             "notes": ""
@@ -546,7 +573,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-07-15T16:29:32.970950+00:00",
+    "create_time": "2022-07-15T16:39:15.845468+00:00",
     "draft_mode": false,
     "labels": [
         "*"
