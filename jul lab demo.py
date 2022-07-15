@@ -295,7 +295,29 @@ def playbook_jul_child_pb_1(action=None, success=None, container=None, results=N
     ################################################################################
 
     # call playbook "chris/jul child pb", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/jul child pb", container=container, name="playbook_jul_child_pb_1", inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/jul child pb", container=container, name="playbook_jul_child_pb_1", callback=pin_4, inputs=inputs)
+
+    return
+
+
+def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_4() called")
+
+    playbook_jul_child_pb_1_output_awesomeness_number_from_childpb = phantom.collect2(container=container, datapath=["playbook_jul_child_pb_1:playbook_output:awesomeness_number_from_childpb"])
+
+    playbook_jul_child_pb_1_output_awesomeness_number_from_childpb_values = [item[0] for item in playbook_jul_child_pb_1_output_awesomeness_number_from_childpb]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=playbook_jul_child_pb_1_output_awesomeness_number_from_childpb_values, message=playbook_jul_child_pb_1_output_awesomeness_number_from_childpb_values, pin_style="red", pin_type="card")
 
     return
 
