@@ -95,7 +95,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "==", "United States"]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
         ],
         case_sensitive=False)
 
@@ -123,7 +123,7 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -143,7 +143,7 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="high")
+    phantom.set_severity(container=container, severity="low")
 
     container = phantom.get_container(container.get('id', None))
 
