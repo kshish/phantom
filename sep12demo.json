@@ -14,21 +14,38 @@
                     "targetPort": "4_in"
                 },
                 {
-                    "id": "port_4_to_port_6",
+                    "id": "port_4_to_port_8",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 },
                 {
-                    "id": "port_6_to_port_7",
-                    "sourceNode": "6",
-                    "sourcePort": "6_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_8_to_port_10",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "13546ab27521f5f207b0fd7d68abd339570ac3bd",
+            "hash": "f0b91394660c2b8828f35bfe1fb5e1fea0446d3e",
             "nodes": {
                 "0": {
                     "data": {
@@ -61,6 +78,58 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1000
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 3,
+                        "functionName": "set_severity_3",
+                        "id": "10",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "utility",
+                    "x": 1220,
+                    "y": 700
                 },
                 "4": {
                     "data": {
@@ -95,45 +164,6 @@
                     "type": "action",
                     "x": 920,
                     "y": 320
-                },
-                "6": {
-                    "data": {
-                        "action": "send email",
-                        "actionType": "generic",
-                        "advanced": {
-                            "join": []
-                        },
-                        "connector": "SMTP",
-                        "connectorConfigs": [
-                            "myfakeemailserver"
-                        ],
-                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                        "connectorVersion": "v1",
-                        "functionId": 1,
-                        "functionName": "send_email_1",
-                        "id": "6",
-                        "parameters": {
-                            "body": "geolocate_ip_1:action_result.data.*.country_name",
-                            "subject": "container:name",
-                            "to": "artifact:*.cef.cn1"
-                        },
-                        "requiredParameters": [
-                            {
-                                "data_type": "string",
-                                "field": "to"
-                            },
-                            {
-                                "data_type": "string",
-                                "field": "body"
-                            }
-                        ],
-                        "type": "action"
-                    },
-                    "errors": {},
-                    "id": "6",
-                    "type": "action",
-                    "x": 920,
-                    "y": 564.5
                 },
                 "7": {
                     "data": {
@@ -298,8 +328,108 @@
                     "errors": {},
                     "id": "7",
                     "type": "utility",
-                    "x": 1260,
-                    "y": 744.5
+                    "x": 1440,
+                    "y": 420
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "case_sensitive": false,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IP is from USA",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "Not in USA",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "8",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "decision",
+                    "x": 1010,
+                    "y": 504.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "9",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "low"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "utility",
+                    "x": 640,
+                    "y": 704.5
                 }
             },
             "notes": ""
@@ -311,7 +441,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-09-12T19:09:54.819680+00:00",
+    "create_time": "2022-09-12T19:55:42.140556+00:00",
     "draft_mode": false,
     "labels": [
         "*"
