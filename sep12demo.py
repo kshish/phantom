@@ -97,17 +97,17 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         logical_operator="and",
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None]
         ],
         case_sensitive=False)
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
