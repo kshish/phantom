@@ -80,7 +80,47 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("send email", parameters=parameters, name="send_email_1", assets=["myfakeemailserver"])
+    phantom.act("send email", parameters=parameters, name="send_email_1", assets=["myfakeemailserver"], callback=debug_1)
+
+    return
+
+
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
+    send_email_1_result_data = phantom.collect2(container=container, datapath=["send_email_1:action_result.status","send_email_1:action_result.message","send_email_1:action_result.parameter.context.artifact_id"], action_results=results)
+
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
+    send_email_1_result_item_0 = [item[0] for item in send_email_1_result_data]
+    send_email_1_result_message = [item[1] for item in send_email_1_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": geolocate_ip_1_result_item_0,
+        "input_2": send_email_1_result_item_0,
+        "input_3": send_email_1_result_message,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
