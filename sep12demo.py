@@ -145,7 +145,7 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
