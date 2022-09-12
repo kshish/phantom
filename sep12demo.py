@@ -91,8 +91,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("decision_2() called")
 
-    label_value = container.get("label", None)
-
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
@@ -108,18 +106,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # check for 'elif' condition 2
-    found_match_2 = phantom.decision(
-        container=container,
-        conditions=[
-            [label_value, "==", "Events"]
-        ],
-        case_sensitive=False)
-
-    # call connected blocks if condition 2 matched
-    if found_match_2:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
+    # check for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
