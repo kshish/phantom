@@ -12,9 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_6",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "e3a49e677966ebd3e65f83daa0aeba1637e8361f",
+            "hash": "3c99a028768abf7d22dcd6076febdba4f543c83b",
             "nodes": {
                 "0": {
                     "data": {
@@ -29,7 +36,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 940,
-                    "y": 140
+                    "y": 139.99999999999994
                 },
                 "1": {
                     "data": {
@@ -44,7 +51,7 @@
                     "errors": {},
                     "id": "1",
                     "type": "end",
-                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    # summary_json = phantom.get_summary()\n    # if 'result' in summary_json:\n        # for action_result in summary_json['result']:\n            # if 'action_run_id' in action_result:\n                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                # phantom.debug(action_results)\n\n",
+                    "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1000,
                     "y": 1000
                 },
@@ -81,6 +88,45 @@
                     "type": "action",
                     "x": 920,
                     "y": 304.5
+                },
+                "6": {
+                    "data": {
+                        "action": "send email",
+                        "actionType": "generic",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "SMTP",
+                        "connectorConfigs": [
+                            "myfakeemailserver"
+                        ],
+                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "send_email_1",
+                        "id": "6",
+                        "parameters": {
+                            "body": "geolocate_ip_1:action_result.data.*.country_name",
+                            "subject": "container:name",
+                            "to": "artifact:*.cef.cn1"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "to"
+                            },
+                            {
+                                "data_type": "string",
+                                "field": "body"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "action",
+                    "x": 920,
+                    "y": 564.5
                 }
             },
             "notes": ""
@@ -92,7 +138,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-09-12T18:21:30.882940+00:00",
+    "create_time": "2022-09-12T18:41:28.085809+00:00",
     "draft_mode": false,
     "labels": [
         "*"
