@@ -91,11 +91,15 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("decision_2() called")
 
+    label_value = container.get("label", None)
+
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
+        logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
         ],
         case_sensitive=False)
 
@@ -104,8 +108,18 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # check for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    # check for 'elif' condition 2
+    found_match_2 = phantom.decision(
+        container=container,
+        conditions=[
+            [label_value, "==", "Events"]
+        ],
+        case_sensitive=False)
+
+    # call connected blocks if condition 2 matched
+    if found_match_2:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
@@ -146,6 +160,57 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     phantom.set_severity(container=container, severity="low")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "Administrator"
+    message = """Some IP(s) in container are from outside USA\n\nIP: {0} is from: {1}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "artifact:*.cef.sourceAddress",
+        "geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to change severity to High?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_5)
+
+    return
+
+
+def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_5() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
