@@ -187,6 +187,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # check for 'else' condition 2
     playbook_sep12demochild_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -279,15 +280,15 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
 def playbook_sep12demochild_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_sep12demochild_1() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filtering_out_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filtering_out_internal_ips]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
-        "hud_msg": prompt_1_summary_responses_1,
         "ip": filtered_result_0_parameter_ip,
+        "hud_msg": prompt_1_summary_responses_1,
     }
 
     ################################################################################
@@ -320,6 +321,26 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
+
+    return
+
+
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="malware")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
