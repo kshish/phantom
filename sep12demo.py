@@ -43,7 +43,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=filter_2)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=filtering_out_internal_ips)
 
     return
 
@@ -95,17 +95,17 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
+            ["filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
         ],
         case_sensitive=False)
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+    format_a_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -156,12 +156,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "Administrator"
-    message = """Some IP(s) in container are from outside USA\n\nIP: {0} is from: {1}"""
+    message = """Some IP(s) in container are from outside USA\n\n{1}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+        "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "format_a_ip_and_country_list:formatted_data"
     ]
 
     # responses
@@ -203,8 +203,8 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
     return
 
 
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_2() called")
+def filtering_out_internal_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filtering_out_internal_ips() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -212,11 +212,39 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_2:condition_1")
+        name="filtering_out_internal_ips:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+def format_a_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_a_ip_and_country_list() called")
+
+    template = """IP: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_a_ip_and_country_list")
+
+    prompt_1(container=container)
 
     return
 

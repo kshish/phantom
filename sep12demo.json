@@ -78,17 +78,24 @@
                 {
                     "conditions": [
                         {
-                            "index": 0
+                            "index": 1
                         }
                     ],
-                    "id": "port_8_to_port_13",
+                    "id": "port_8_to_port_17",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
+                },
+                {
+                    "id": "port_17_to_port_13",
+                    "sourceNode": "17",
+                    "sourcePort": "17_out",
                     "targetNode": "13",
                     "targetPort": "13_in"
                 }
             ],
-            "hash": "e1e744271c6e9aba99f52c0e2884a5c45bb8b9cb",
+            "hash": "5df236dbcb9d145cc79bada2b281698194740c10",
             "nodes": {
                 "0": {
                     "data": {
@@ -184,10 +191,10 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "13",
-                        "message": "Some IP(s) in container are from outside USA\n\nIP: {0} is from: {1}",
+                        "message": "Some IP(s) in container are from outside USA\n\n{1}",
                         "parameters": [
-                            "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "format_a_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -206,7 +213,7 @@
                     "id": "13",
                     "type": "prompt",
                     "x": 1280,
-                    "y": 800
+                    "y": 820
                 },
                 "14": {
                     "data": {
@@ -256,6 +263,8 @@
                 "16": {
                     "data": {
                         "advanced": {
+                            "customName": "filtering out internal IPs",
+                            "customNameId": 0,
                             "join": []
                         },
                         "conditions": [
@@ -273,7 +282,7 @@
                             }
                         ],
                         "functionId": 2,
-                        "functionName": "filter_2",
+                        "functionName": "filtering_out_internal_ips",
                         "id": "16",
                         "type": "filter"
                     },
@@ -282,6 +291,29 @@
                     "type": "filter",
                     "x": 980,
                     "y": 404.5
+                },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format a ip and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_a_ip_and_country_list",
+                        "id": "17",
+                        "parameters": [
+                            "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "format",
+                    "x": 1200,
+                    "y": 704.5
                 },
                 "4": {
                     "data": {
@@ -495,7 +527,7 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     }
                                 ],
@@ -530,7 +562,7 @@
                     "id": "8",
                     "type": "decision",
                     "x": 1000,
-                    "y": 560
+                    "y": 540
                 },
                 "9": {
                     "data": {
@@ -595,7 +627,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-09-13T16:46:32.597073+00:00",
+    "create_time": "2022-09-13T16:55:13.105506+00:00",
     "draft_mode": false,
     "labels": [
         "*"
