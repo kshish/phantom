@@ -301,7 +301,25 @@ def playbook_sep12demochild_1(action=None, success=None, container=None, results
     ################################################################################
 
     # call playbook "chris/sep12demochild", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/sep12demochild", container=container, name="playbook_sep12demochild_1", inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/sep12demochild", container=container, name="playbook_sep12demochild_1", callback=prompt_2, inputs=inputs)
+
+    return
+
+
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_2() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "admin"
+    message = """{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_sep12demochild_1:playbook_output:response"
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
 
     return
 
