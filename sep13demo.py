@@ -97,7 +97,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
+            ["filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         case_sensitive=False)
 
