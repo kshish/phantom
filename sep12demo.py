@@ -43,7 +43,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=decision_2)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=filter_2)
 
     return
 
@@ -94,10 +94,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"]
         ],
         case_sensitive=False)
 
@@ -162,8 +160,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "artifact:*.cef.sourceAddress",
-        "geolocate_ip_1:action_result.data.*.country_name"
+        "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name"
     ]
 
     # responses
@@ -180,7 +178,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_5)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_5, drop_none=False)
 
     return
 
@@ -201,6 +199,24 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # check for 'else' condition 2
     set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_2() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_2:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

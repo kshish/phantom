@@ -14,13 +14,6 @@
                     "targetPort": "4_in"
                 },
                 {
-                    "id": "port_4_to_port_8",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -31,18 +24,6 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
-                },
-                {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_8_to_port_13",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "13",
-                    "targetPort": "13_in"
                 },
                 {
                     "id": "port_13_to_port_14",
@@ -74,9 +55,40 @@
                     "sourcePort": "14_out",
                     "targetNode": "1",
                     "targetPort": "1_in"
+                },
+                {
+                    "id": "port_4_to_port_16",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_16_to_port_8",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_13",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
                 }
             ],
-            "hash": "8a516e6f1bbdeb065550c24387847005e16cc49f",
+            "hash": "e1e744271c6e9aba99f52c0e2884a5c45bb8b9cb",
             "nodes": {
                 "0": {
                     "data": {
@@ -91,7 +103,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 940,
-                    "y": 139.99999999999983
+                    "y": 139.99999999999977
                 },
                 "1": {
                     "data": {
@@ -165,6 +177,7 @@
                 "13": {
                     "data": {
                         "advanced": {
+                            "drop_none": false,
                             "join": []
                         },
                         "approver": "Administrator",
@@ -173,8 +186,8 @@
                         "id": "13",
                         "message": "Some IP(s) in container are from outside USA\n\nIP: {0} is from: {1}",
                         "parameters": [
-                            "artifact:*.cef.sourceAddress",
-                            "geolocate_ip_1:action_result.data.*.country_name"
+                            "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -193,7 +206,7 @@
                     "id": "13",
                     "type": "prompt",
                     "x": 1280,
-                    "y": 704.5
+                    "y": 800
                 },
                 "14": {
                     "data": {
@@ -238,7 +251,37 @@
                     "id": "14",
                     "type": "decision",
                     "x": 1280,
-                    "y": 904.5
+                    "y": 960
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "filter_2",
+                        "id": "16",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "filter",
+                    "x": 980,
+                    "y": 404.5
                 },
                 "4": {
                     "data": {
@@ -454,12 +497,6 @@
                                         "op": "!=",
                                         "param": "geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
-                                    },
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": "None"
                                     }
                                 ],
                                 "conditionIndex": 0,
@@ -471,7 +508,7 @@
                             {
                                 "comparisons": [
                                     {
-                                        "conditionIndex": 4,
+                                        "conditionIndex": 1,
                                         "op": "==",
                                         "param": "",
                                         "value": ""
@@ -493,7 +530,7 @@
                     "id": "8",
                     "type": "decision",
                     "x": 1000,
-                    "y": 500
+                    "y": 560
                 },
                 "9": {
                     "data": {
@@ -558,7 +595,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-09-12T20:33:21.278003+00:00",
+    "create_time": "2022-09-13T16:46:32.597073+00:00",
     "draft_mode": false,
     "labels": [
         "*"
