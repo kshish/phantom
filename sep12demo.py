@@ -132,26 +132,6 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     return
 
 
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_3() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("prompt_1() called")
 
@@ -177,6 +157,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "What message would you like on the HUD card",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -200,7 +186,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    playbook_sep12demochild_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -286,6 +272,36 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=geolocate_ip_1)
+
+    return
+
+
+def playbook_sep12demochild_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_sep12demochild_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filtering_out_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filtering_out_internal_ips:condition_1:geolocate_ip_1:action_result.parameter.ip"])
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filtering_out_internal_ips]
+
+    inputs = {
+        "hud_msg": prompt_1_summary_responses_1,
+        "ip": filtered_result_0_parameter_ip,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/sep12demochild", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/sep12demochild", container=container, name="playbook_sep12demochild_1", inputs=inputs)
 
     return
 
