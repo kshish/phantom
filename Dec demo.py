@@ -47,7 +47,17 @@ def my_geo(action=None, success=None, container=None, results=None, handle=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geo", assets=["maxmind"], callback=send_email_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geo", assets=["maxmind"], callback=join_send_email_1)
+
+    return
+
+
+def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_send_email_1() called")
+
+    if phantom.completed(action_names=["my_geo", "whois_ip_1", "my_lookup_ip"]):
+        # call connected block "send_email_1"
+        send_email_1(container=container, handle=handle)
 
     return
 
@@ -119,7 +129,7 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
     ## Custom Code End
     ################################################################################
 
-    phantom.act("whois ip", parameters=parameters, name="whois_ip_1", assets=["whois"])
+    phantom.act("whois ip", parameters=parameters, name="whois_ip_1", assets=["whois"], callback=join_send_email_1)
 
     return
 
@@ -151,7 +161,7 @@ def my_lookup_ip(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("lookup ip", parameters=parameters, name="my_lookup_ip", assets=["google_dns"])
+    phantom.act("lookup ip", parameters=parameters, name="my_lookup_ip", assets=["google_dns"], callback=join_send_email_1)
 
     return
 
@@ -167,12 +177,12 @@ def on_finish(container, summary):
     # summary of all the action and/or all details of actions
     # can be collected here.
 
-    # summary_json = phantom.get_summary()
-    # if 'result' in summary_json:
-        # for action_result in summary_json['result']:
-            # if 'action_run_id' in action_result:
-                # action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
-                # phantom.debug(action_results)
+    summary_json = phantom.get_summary()
+    if 'result' in summary_json:
+        for action_result in summary_json['result']:
+            if 'action_run_id' in action_result:
+                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)
+                phantom.debug(action_results)
 
     ################################################################################
     ## Custom Code End
