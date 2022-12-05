@@ -14,41 +14,6 @@
                     "targetPort": "2_in"
                 },
                 {
-                    "id": "port_2_to_port_3",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
-                    "id": "port_0_to_port_4",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
-                    "id": "port_0_to_port_5",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
-                    "id": "port_4_to_port_3",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
-                    "id": "port_5_to_port_3",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
                     "id": "port_2_to_port_6",
                     "sourceNode": "2",
                     "sourcePort": "2_out",
@@ -56,21 +21,38 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_5_to_port_6",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
+                    "id": "port_2_to_port_7",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 },
                 {
-                    "id": "port_4_to_port_6",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_7_to_port_8",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_1",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "1",
+                    "targetPort": "1_in"
                 }
             ],
-            "hash": "2a64263b4d562029044d62afc2433a2c3acae612",
+            "hash": "c6026ef0af9ebf3e9ae66f40138747fc11f80024",
             "nodes": {
                 "0": {
                     "data": {
@@ -84,8 +66,8 @@
                     "errors": {},
                     "id": "0",
                     "type": "start",
-                    "x": 1000,
-                    "y": 420
+                    "x": 150,
+                    "y": 0
                 },
                 "1": {
                     "data": {
@@ -101,8 +83,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1000,
-                    "y": 1060
+                    "x": 280,
+                    "y": 600
                 },
                 "2": {
                     "data": {
@@ -136,118 +118,8 @@
                     "errors": {},
                     "id": "2",
                     "type": "action",
-                    "x": 980,
-                    "y": 624.5
-                },
-                "3": {
-                    "data": {
-                        "action": "send email",
-                        "actionType": "generic",
-                        "advanced": {
-                            "join": [],
-                            "notRequiredJoins": []
-                        },
-                        "connector": "SMTP",
-                        "connectorConfigs": [
-                            "myemailserver"
-                        ],
-                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
-                        "connectorVersion": "v1",
-                        "functionId": 1,
-                        "functionName": "send_email_1",
-                        "id": "3",
-                        "parameters": {
-                            "body": "my_geo:action_result.data.*.country_name",
-                            "cc": "artifact:*.cef.cs1",
-                            "from": "donotreply@splunk.com",
-                            "subject": "geolocate_ip_1:action_result.parameter.ip",
-                            "to": "churyn@spunk.com"
-                        },
-                        "requiredParameters": [
-                            {
-                                "data_type": "string",
-                                "field": "to"
-                            },
-                            {
-                                "data_type": "string",
-                                "field": "body"
-                            }
-                        ],
-                        "type": "action"
-                    },
-                    "errors": {},
-                    "id": "3",
-                    "type": "action",
-                    "x": 980,
-                    "y": 840
-                },
-                "4": {
-                    "data": {
-                        "action": "whois ip",
-                        "actionType": "investigate",
-                        "advanced": {
-                            "join": []
-                        },
-                        "connector": "WHOIS",
-                        "connectorConfigs": [
-                            "whois"
-                        ],
-                        "connectorId": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
-                        "connectorVersion": "v1",
-                        "functionId": 1,
-                        "functionName": "whois_ip_1",
-                        "id": "4",
-                        "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
-                        },
-                        "requiredParameters": [
-                            {
-                                "data_type": "string",
-                                "field": "ip"
-                            }
-                        ],
-                        "type": "action"
-                    },
-                    "errors": {},
-                    "id": "4",
-                    "type": "action",
-                    "x": 1320,
-                    "y": 620
-                },
-                "5": {
-                    "data": {
-                        "action": "lookup ip",
-                        "actionType": "investigate",
-                        "advanced": {
-                            "customName": "my lookup ip",
-                            "customNameId": 0,
-                            "join": []
-                        },
-                        "connector": "DNS",
-                        "connectorConfigs": [
-                            "google_dns"
-                        ],
-                        "connectorId": "876ab991-313e-48e7-bccd-e8c9650c239c",
-                        "connectorVersion": "v1",
-                        "functionId": 1,
-                        "functionName": "my_lookup_ip",
-                        "id": "5",
-                        "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
-                        },
-                        "requiredParameters": [
-                            {
-                                "data_type": "string",
-                                "field": "ip"
-                            }
-                        ],
-                        "type": "action"
-                    },
-                    "errors": {},
-                    "id": "5",
-                    "type": "action",
-                    "x": 640,
-                    "y": 620
+                    "x": 130,
+                    "y": 132
                 },
                 "6": {
                     "data": {
@@ -399,9 +271,9 @@
                                 "input_1": "my_geo:action_result.data.*.country_iso_code",
                                 "input_10": null,
                                 "input_2": "my_geo:action_result.data.*.country_name",
-                                "input_3": null,
-                                "input_4": null,
-                                "input_5": null,
+                                "input_3": "my_lookup_ip:action_result.status",
+                                "input_4": "whois_ip_1:action_result.status",
+                                "input_5": "whois_ip_1:action_result.message",
                                 "input_6": null,
                                 "input_7": null,
                                 "input_8": null,
@@ -412,8 +284,94 @@
                     "errors": {},
                     "id": "6",
                     "type": "utility",
-                    "x": 1480,
-                    "y": 980
+                    "x": 0,
+                    "y": 304
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo:action_result.data.*.country_name",
+                                        "value": "Brazil"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo:action_result.data.*.country_name",
+                                        "value": "Australia"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IPs are outside countries",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "IPs from our Countries",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "7",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "decision",
+                    "x": 340,
+                    "y": 280
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "Administrator",
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "8",
+                        "message": "The container {0} with severity {1} has IPs outside our countries.\n\nIP: {2} is from {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geo:action_result.parameter.ip",
+                            "my_geo:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 30,
+                        "responses": [],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "prompt",
+                    "x": 220,
+                    "y": 476
                 }
             },
             "notes": ""
@@ -425,7 +383,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-12-05T20:19:42.030939+00:00",
+    "create_time": "2022-12-05T21:15:11.443019+00:00",
     "draft_mode": false,
     "labels": [
         "*"

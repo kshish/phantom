@@ -13,10 +13,6 @@ def on_start(container):
 
     # call 'my_geo' block
     my_geo(container=container)
-    # call 'whois_ip_1' block
-    whois_ip_1(container=container)
-    # call 'my_lookup_ip' block
-    my_lookup_ip(container=container)
 
     return
 
@@ -56,155 +52,9 @@ def my_geo_callback(action=None, success=None, container=None, results=None, han
     phantom.debug("my_geo_callback() called")
 
     
-    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
-
-    return
-
-
-def join_send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("join_send_email_1() called")
-
-    if phantom.completed(action_names=["my_geo", "whois_ip_1", "my_lookup_ip"]):
-        # call connected block "send_email_1"
-        send_email_1(container=container, handle=handle)
-
-    return
-
-
-def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("send_email_1() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.cs1","artifact:*.id"])
-    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.data.*.country_name","my_geo:action_result.parameter.context.artifact_id"], action_results=results)
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
-
-    parameters = []
-
-    # build parameters list for 'send_email_1' call
-    for container_artifact_item in container_artifact_data:
-        for my_geo_result_item in my_geo_result_data:
-            for geolocate_ip_1_result_item in geolocate_ip_1_result_data:
-                if my_geo_result_item[0] is not None:
-                    parameters.append({
-                        "cc": container_artifact_item[0],
-                        "to": "churyn@spunk.com",
-                        "body": my_geo_result_item[0],
-                        "subject": geolocate_ip_1_result_item[0],
-                        "from": "donotreply@splunk.com",
-                        "context": {'artifact_id': geolocate_ip_1_result_item[1]},
-                    })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("send email", parameters=parameters, name="send_email_1", assets=["myemailserver"])
-
-    return
-
-
-def whois_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("whois_ip_1() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
-
-    parameters = []
-
-    # build parameters list for 'whois_ip_1' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
-            parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
-            })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("whois ip", parameters=parameters, name="whois_ip_1", assets=["whois"], callback=whois_ip_1_callback)
-
-    return
-
-
-def whois_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("whois_ip_1_callback() called")
-
-    
-    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-
-
-    return
-
-
-def my_lookup_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_lookup_ip() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
-
-    parameters = []
-
-    # build parameters list for 'my_lookup_ip' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
-            parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
-            })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("lookup ip", parameters=parameters, name="my_lookup_ip", assets=["google_dns"], callback=my_lookup_ip_callback)
-
-    return
-
-
-def my_lookup_ip_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_lookup_ip_callback() called")
-
-    
-    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-
-
-    return
-
-
-def join_debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("join_debug_1() called")
-
-    if phantom.completed(action_names=["my_geo", "whois_ip_1", "my_lookup_ip"]):
-        # call connected block "debug_1"
-        debug_1(container=container, handle=handle)
 
     return
 
@@ -213,18 +63,23 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     phantom.debug("debug_1() called")
 
     my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.data.*.country_iso_code","my_geo:action_result.data.*.country_name","my_geo:action_result.parameter.context.artifact_id"], action_results=results)
+    my_lookup_ip_result_data = phantom.collect2(container=container, datapath=["my_lookup_ip:action_result.status","my_lookup_ip:action_result.parameter.context.artifact_id"], action_results=results)
+    whois_ip_1_result_data = phantom.collect2(container=container, datapath=["whois_ip_1:action_result.status","whois_ip_1:action_result.message","whois_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
 
     my_geo_result_item_0 = [item[0] for item in my_geo_result_data]
     my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
+    my_lookup_ip_result_item_0 = [item[0] for item in my_lookup_ip_result_data]
+    whois_ip_1_result_item_0 = [item[0] for item in whois_ip_1_result_data]
+    whois_ip_1_result_message = [item[1] for item in whois_ip_1_result_data]
 
     parameters = []
 
     parameters.append({
         "input_1": my_geo_result_item_0,
         "input_2": my_geo_result_item_1,
-        "input_3": None,
-        "input_4": None,
-        "input_5": None,
+        "input_3": my_lookup_ip_result_item_0,
+        "input_4": whois_ip_1_result_item_0,
+        "input_5": whois_ip_1_result_message,
         "input_6": None,
         "input_7": None,
         "input_8": None,
@@ -243,6 +98,48 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="and",
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geo:action_result.data.*.country_name", "!=", "Brazil"],
+            ["my_geo:action_result.data.*.country_name", "!=", "Australia"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "Administrator"
+    message = """The container {0} with severity {1} has IPs outside our countries.\n\nIP: {2} is from {3}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "my_geo:action_result.parameter.ip",
+        "my_geo:action_result.data.*.country_name"
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters)
 
     return
 
