@@ -40,19 +40,26 @@
                     "targetPort": "8_in"
                 },
                 {
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
                     "conditions": [
                         {
-                            "index": 1
+                            "index": 0
                         }
                     ],
-                    "id": "port_7_to_port_1",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "1",
-                    "targetPort": "1_in"
+                    "id": "port_9_to_port_10",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "c6026ef0af9ebf3e9ae66f40138747fc11f80024",
+            "hash": "e4d2a3494410b2bea6ce026cc830914187394cee",
             "nodes": {
                 "0": {
                     "data": {
@@ -83,8 +90,60 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 280,
-                    "y": 600
+                    "x": 580,
+                    "y": 700
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "10",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "utility",
+                    "x": 140,
+                    "y": 844.5
                 },
                 "2": {
                     "data": {
@@ -319,21 +378,6 @@
                                 "display": "If",
                                 "logic": "and",
                                 "type": "if"
-                            },
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 1,
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 1,
-                                "customName": "IPs from our Countries",
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
                             }
                         ],
                         "functionId": 1,
@@ -363,8 +407,17 @@
                             "my_geo:action_result.parameter.ip",
                             "my_geo:action_result.data.*.country_name"
                         ],
-                        "responseTime": 30,
-                        "responses": [],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
                         "type": "prompt"
                     },
                     "errors": {},
@@ -372,6 +425,40 @@
                     "type": "prompt",
                     "x": 220,
                     "y": 476
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "case_sensitive": false,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "said yes",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "9",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "decision",
+                    "x": 220,
+                    "y": 664.5
                 }
             },
             "notes": ""
@@ -383,7 +470,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-12-05T21:15:32.975723+00:00",
+    "create_time": "2022-12-05T21:23:07.997134+00:00",
     "draft_mode": false,
     "labels": [
         "*"
