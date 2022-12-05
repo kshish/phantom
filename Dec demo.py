@@ -47,7 +47,18 @@ def my_geo(action=None, success=None, container=None, results=None, handle=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geo", assets=["maxmind"], callback=join_send_email_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geo", assets=["maxmind"], callback=my_geo_callback)
+
+    return
+
+
+def my_geo_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_geo_callback() called")
+
+    
+    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -129,7 +140,18 @@ def whois_ip_1(action=None, success=None, container=None, results=None, handle=N
     ## Custom Code End
     ################################################################################
 
-    phantom.act("whois ip", parameters=parameters, name="whois_ip_1", assets=["whois"], callback=join_send_email_1)
+    phantom.act("whois ip", parameters=parameters, name="whois_ip_1", assets=["whois"], callback=whois_ip_1_callback)
+
+    return
+
+
+def whois_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("whois_ip_1_callback() called")
+
+    
+    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -161,7 +183,66 @@ def my_lookup_ip(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("lookup ip", parameters=parameters, name="my_lookup_ip", assets=["google_dns"], callback=join_send_email_1)
+    phantom.act("lookup ip", parameters=parameters, name="my_lookup_ip", assets=["google_dns"], callback=my_lookup_ip_callback)
+
+    return
+
+
+def my_lookup_ip_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_lookup_ip_callback() called")
+
+    
+    join_send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    join_debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
+
+    return
+
+
+def join_debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_debug_1() called")
+
+    if phantom.completed(action_names=["my_geo", "whois_ip_1", "my_lookup_ip"]):
+        # call connected block "debug_1"
+        debug_1(container=container, handle=handle)
+
+    return
+
+
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.data.*.country_iso_code","my_geo:action_result.data.*.country_name","my_geo:action_result.parameter.context.artifact_id"], action_results=results)
+
+    my_geo_result_item_0 = [item[0] for item in my_geo_result_data]
+    my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": my_geo_result_item_0,
+        "input_2": my_geo_result_item_1,
+        "input_3": None,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
