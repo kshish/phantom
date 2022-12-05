@@ -12,9 +12,30 @@
                     "sourcePort": "0_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
+                },
+                {
+                    "id": "port_2_to_port_3",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
+                },
+                {
+                    "id": "port_0_to_port_4",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
+                },
+                {
+                    "id": "port_0_to_port_5",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "e3a49e677966ebd3e65f83daa0aeba1637e8361f",
+            "hash": "2b56eac05a0554cd0aaf21b89ad96658f136690a",
             "nodes": {
                 "0": {
                     "data": {
@@ -29,7 +50,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 420
                 },
                 "1": {
                     "data": {
@@ -53,6 +74,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geo",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +85,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geo",
                         "id": "2",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -80,6 +103,115 @@
                     "type": "action",
                     "x": 980,
                     "y": 624.5
+                },
+                "3": {
+                    "data": {
+                        "action": "send email",
+                        "actionType": "generic",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "SMTP",
+                        "connectorConfigs": [
+                            "myemailserver"
+                        ],
+                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "send_email_1",
+                        "id": "3",
+                        "parameters": {
+                            "body": "my_geo:action_result.data.*.country_name",
+                            "cc": "artifact:*.cef.cs1",
+                            "from": "donotreply@splunk.com",
+                            "subject": "geolocate_ip_1:action_result.parameter.ip",
+                            "to": "churyn@spunk.com"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "to"
+                            },
+                            {
+                                "data_type": "string",
+                                "field": "body"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "3",
+                    "type": "action",
+                    "x": 980,
+                    "y": 840
+                },
+                "4": {
+                    "data": {
+                        "action": "whois ip",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "WHOIS",
+                        "connectorConfigs": [
+                            "whois"
+                        ],
+                        "connectorId": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "whois_ip_1",
+                        "id": "4",
+                        "parameters": {
+                            "ip": "artifact:*.cef.sourceAddress"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "ip"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "action",
+                    "x": 1320,
+                    "y": 620
+                },
+                "5": {
+                    "data": {
+                        "action": "lookup ip",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "my lookup ip",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "DNS",
+                        "connectorConfigs": [
+                            "google_dns"
+                        ],
+                        "connectorId": "876ab991-313e-48e7-bccd-e8c9650c239c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "my_lookup_ip",
+                        "id": "5",
+                        "parameters": {
+                            "ip": "artifact:*.cef.sourceAddress"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "ip"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "action",
+                    "x": 640,
+                    "y": 620
                 }
             },
             "notes": ""
@@ -91,7 +223,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-12-05T19:40:32.310538+00:00",
+    "create_time": "2022-12-05T20:07:01.477216+00:00",
     "draft_mode": false,
     "labels": [
         "*"
