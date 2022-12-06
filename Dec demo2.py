@@ -186,10 +186,10 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_2() called")
 
-    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip","my_geo:action_result.data.*.country_name"], action_results=results)
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geo:action_result.parameter.ip","filtered-data:filter_2:condition_1:my_geo:action_result.data.*.country_name"])
 
-    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
-    my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_2]
 
     ################################################################################
     ## Custom Code Start
@@ -201,7 +201,7 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_parameter_ip, message=my_geo_result_item_1, pin_style="blue", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="blue", pin_type="card")
 
     return
 
@@ -209,10 +209,10 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip","my_geo:action_result.data.*.country_name"], action_results=results)
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:my_geo:action_result.parameter.ip","filtered-data:filter_2:condition_2:my_geo:action_result.data.*.country_name"])
 
-    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
-    my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_2]
 
     ################################################################################
     ## Custom Code Start
@@ -224,7 +224,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_parameter_ip, message=my_geo_result_item_1, pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
 
     return
 
