@@ -107,11 +107,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["my_geo:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geo:action_result.data.*.country_name", "!=", "Brazil"],
-            ["my_geo:action_result.data.*.country_name", "!=", "Australia"]
+            ["my_geo:action_result.data.*.country_name", "not in", "custom_list:some list"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -231,21 +228,21 @@ def format_2(action=None, success=None, container=None, results=None, handle=Non
 def playbook_sep12demochild_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_sep12demochild_1() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip"])
     list_merge_7_data = phantom.collect2(container=container, datapath=["list_merge_7:custom_function_result.data.*.item"])
     my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip"], action_results=results)
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
     list_merge_7_data___item = [item[0] for item in list_merge_7_data]
     my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     ip_combined_value = phantom.concatenate(filtered_result_0_parameter_ip, list_merge_7_data___item, my_geo_parameter_ip)
 
     inputs = {
-        "hud_msg": prompt_1_summary_responses_1,
         "ip": ip_combined_value,
+        "hud_msg": prompt_1_summary_responses_1,
     }
 
     ################################################################################
