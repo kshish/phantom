@@ -52,7 +52,7 @@ def my_geo_callback(action=None, success=None, container=None, results=None, han
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -101,166 +101,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     return
 
 
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_1() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["my_geo:action_result.data.*.country_name", "not in", "custom_list:some list"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        filter_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_1() called")
-
-    # set user and message variables for phantom.prompt call
-
-    user = "Administrator"
-    message = """The container {0} with severity {1} has IPs outside our countries.\n\n{2}\n"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "container:name",
-        "container:severity",
-        "format_2:formatted_data"
-    ]
-
-    # responses
-    response_types = [
-        {
-            "prompt": "Would you like to change severity to High?",
-            "options": {
-                "type": "list",
-                "choices": [
-                    "Yes",
-                    "No"
-                ],
-            },
-        },
-        {
-            "prompt": "What message would you like on the HUD card",
-            "options": {
-                "type": "message",
-            },
-        }
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2, drop_none=False)
-
-    return
-
-
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_2() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
-        ],
-        case_sensitive=False)
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        playbook_sep12demochild_1(action=action, success=success, container=container, results=results, handle=handle)
-        set_label_8(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_1() called")
-
-    # collect filtered artifact ids and results for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        conditions=[
-            ["my_geo:action_result.data.*.country_name", "!=", ""]
-        ],
-        name="filter_1:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        format_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    return
-
-
-def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("format_2() called")
-
-    template = """%%\nIP: {0} is from: {1}\n%%\n"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geo:action_result.data.*.country_name"
-    ]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.format(container=container, template=template, parameters=parameters, name="format_2")
-
-    prompt_1(container=container)
-
-    return
-
-
-def playbook_sep12demochild_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("playbook_sep12demochild_1() called")
-
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip"])
-    list_merge_7_data = phantom.collect2(container=container, datapath=["list_merge_7:custom_function_result.data.*.item"])
-    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip"], action_results=results)
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
-
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
-    list_merge_7_data___item = [item[0] for item in list_merge_7_data]
-    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
-
-    ip_combined_value = phantom.concatenate(filtered_result_0_parameter_ip, list_merge_7_data___item, my_geo_parameter_ip)
-
-    inputs = {
-        "ip": ip_combined_value,
-        "hud_msg": prompt_1_summary_responses_1,
-    }
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    # call playbook "chris/sep12demochild", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/sep12demochild", container=container, name="playbook_sep12demochild_1", callback=prompt_3, inputs=inputs)
-
-    return
-
-
 def list_merge_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("list_merge_7() called")
 
@@ -299,26 +139,55 @@ def list_merge_7(action=None, success=None, container=None, results=None, handle
     return
 
 
-def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_3() called")
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_2() called")
 
-    # set user and message variables for phantom.prompt call
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "in", "custom_list:some list"]
+        ],
+        name="filter_2:condition_1")
 
-    user = "Administrator"
-    message = """The response from child pb was:\n{0}"""
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        pin_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
-    # parameter list for template variable replacement
-    parameters = [
-        "playbook_sep12demochild_1:playbook_output:response"
-    ]
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "not in", "custom_list:some list"]
+        ],
+        name="filter_2:condition_2")
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters)
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    # collect filtered artifact ids and results for 'if' condition 3
+    matched_artifacts_3, matched_results_3 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo:action_result.data.*.country_name", "==", ""]
+        ],
+        name="filter_2:condition_3")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_3 or matched_results_3:
+        pass
 
     return
 
 
-def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_label_8() called")
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_2() called")
+
+    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip","my_geo:action_result.data.*.country_name"], action_results=results)
+
+    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
+    my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
 
     ################################################################################
     ## Custom Code Start
@@ -330,9 +199,30 @@ def set_label_8(action=None, success=None, container=None, results=None, handle=
     ## Custom Code End
     ################################################################################
 
-    phantom.set_label(container=container, label="ioc")
+    phantom.pin(container=container, data=my_geo_parameter_ip, message=my_geo_result_item_1, pin_style="blue", pin_type="card")
 
-    container = phantom.get_container(container.get('id', None))
+    return
+
+
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_3() called")
+
+    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip","my_geo:action_result.data.*.country_name"], action_results=results)
+
+    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
+    my_geo_result_item_1 = [item[1] for item in my_geo_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=my_geo_parameter_ip, message=my_geo_result_item_1, pin_style="red", pin_type="card")
 
     return
 
