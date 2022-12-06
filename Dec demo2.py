@@ -11,8 +11,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'my_geo' block
-    my_geo(container=container)
+    # call 'list_merge_7' block
+    list_merge_7(container=container)
 
     return
 
@@ -21,16 +21,15 @@ def my_geo(action=None, success=None, container=None, results=None, handle=None,
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    list_merge_7_data = phantom.collect2(container=container, datapath=["list_merge_7:custom_function_result.data.*.item"])
 
     parameters = []
 
     # build parameters list for 'my_geo' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
+    for list_merge_7_data_item in list_merge_7_data:
+        if list_merge_7_data_item[0] is not None:
             parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
+                "ip": list_merge_7_data_item[0],
             })
 
     ################################################################################
@@ -149,6 +148,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "What message would you like on the HUD card",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -170,28 +175,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_sep12demochild_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_2() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -238,6 +223,98 @@ def format_2(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_2")
 
     prompt_1(container=container)
+
+    return
+
+
+def playbook_sep12demochild_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_sep12demochild_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip"])
+    list_merge_7_data = phantom.collect2(container=container, datapath=["list_merge_7:custom_function_result.data.*.item"])
+    my_geo_result_data = phantom.collect2(container=container, datapath=["my_geo:action_result.parameter.ip"], action_results=results)
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
+    list_merge_7_data___item = [item[0] for item in list_merge_7_data]
+    my_geo_parameter_ip = [item[0] for item in my_geo_result_data]
+
+    ip_combined_value = phantom.concatenate(filtered_result_0_parameter_ip, list_merge_7_data___item, my_geo_parameter_ip)
+
+    inputs = {
+        "hud_msg": prompt_1_summary_responses_1,
+        "ip": ip_combined_value,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/sep12demochild", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/sep12demochild", container=container, name="playbook_sep12demochild_1", callback=prompt_3, inputs=inputs)
+
+    return
+
+
+def list_merge_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("list_merge_7() called")
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.cef.sourceAddress","artifact:*.id"])
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": container_artifact_cef_item_1,
+        "input_3": None,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_7", callback=my_geo)
+
+    return
+
+
+def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("prompt_3() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = "Administrator"
+    message = """The response from child pb was:\n{0}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_sep12demochild_1:playbook_output:response"
+    ]
+
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters)
 
     return
 
