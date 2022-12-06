@@ -169,8 +169,10 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     # collect filtered artifact ids and results for 'if' condition 3
     matched_artifacts_3, matched_results_3 = phantom.condition(
         container=container,
+        logical_operator="or",
         conditions=[
-            ["my_geo:action_result.data.*.country_name", "==", ""]
+            ["my_geo:action_result.data.*.country_name", "==", ""],
+            ["my_geo:action_result.data.*.country_name", "==", "Null"]
         ],
         name="filter_2:condition_3")
 
