@@ -28,18 +28,6 @@
                     "targetPort": "7_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_8",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "id": "port_8_to_port_9",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
@@ -57,9 +45,33 @@
                     "sourcePort": "9_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_7_to_port_11",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_11_to_port_8",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "a135523ba122ea63faf70aad8510cae63e4ec1d2",
+            "hash": "4444540b2dfc523915dd52b74173c71fc833583a",
             "nodes": {
                 "0": {
                     "data": {
@@ -74,7 +86,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 150,
-                    "y": 0
+                    "y": -6.394884621840902e-14
                 },
                 "1": {
                     "data": {
@@ -144,6 +156,36 @@
                     "type": "utility",
                     "x": 140,
                     "y": 844.5
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "11",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "filter",
+                    "x": 200,
+                    "y": 424.5
                 },
                 "2": {
                     "data": {
@@ -394,6 +436,7 @@
                 "8": {
                     "data": {
                         "advanced": {
+                            "drop_none": false,
                             "join": []
                         },
                         "approver": "Administrator",
@@ -404,8 +447,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geo:action_result.parameter.ip",
-                            "my_geo:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:my_geo:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:my_geo:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -424,7 +467,7 @@
                     "id": "8",
                     "type": "prompt",
                     "x": 220,
-                    "y": 476
+                    "y": 540
                 },
                 "9": {
                     "data": {
@@ -470,7 +513,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2022-12-05T21:25:54.449258+00:00",
+    "create_time": "2022-12-06T17:49:55.318298+00:00",
     "draft_mode": false,
     "labels": [
         "*"
