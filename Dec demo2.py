@@ -172,7 +172,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
         logical_operator="or",
         conditions=[
             ["my_geo:action_result.data.*.country_name", "==", ""],
-            ["my_geo:action_result.data.*.country_name", "==", "Null"]
+            ["my_geo:action_result.data.*.country_name", "==", "null"]
         ],
         name="filter_2:condition_3")
 
