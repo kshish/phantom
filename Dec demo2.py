@@ -176,6 +176,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if found_match_1:
         playbook_sep12demochild_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_8(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -315,6 +316,26 @@ def prompt_3(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters)
+
+    return
+
+
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="ioc")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
