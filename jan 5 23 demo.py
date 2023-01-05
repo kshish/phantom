@@ -45,7 +45,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"])
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=join_debug_1)
 
     return
 
@@ -77,7 +77,60 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"])
+    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"], callback=join_debug_1)
+
+    return
+
+
+def join_debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_debug_1() called")
+
+    if phantom.completed(action_names=["my_geolocate", "whois_domain_1"]):
+        # call connected block "debug_1"
+        debug_1(container=container, handle=handle)
+
+    return
+
+
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    name_value = container.get("name", None)
+    label_value = container.get("label", None)
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.id"])
+    whois_domain_1_result_data = phantom.collect2(container=container, datapath=["whois_domain_1:action_result.data.*.status","whois_domain_1:action_result.parameter.context.artifact_id"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    whois_domain_1_result_item_0 = [item[0] for item in whois_domain_1_result_data]
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": "Chris wuz here",
+        "input_2": name_value,
+        "input_3": label_value,
+        "input_4": container_artifact_cef_item_0,
+        "input_5": whois_domain_1_result_item_0,
+        "input_6": my_geolocate_result_item_0,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
