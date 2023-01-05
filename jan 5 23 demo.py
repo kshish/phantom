@@ -128,7 +128,14 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("join_decision_1() called")
 
-    if phantom.completed(action_names=["my_geolocate", "whois_domain_1"]):
+    # if the joined function has already been called, do nothing
+    if phantom.get_run_data(key="join_decision_1_called"):
+        return
+
+    if phantom.completed(action_names=["my_geolocate"]):
+        # save the state that the joined function has now been called
+        phantom.save_run_data(key="join_decision_1_called", value="decision_1")
+
         # call connected block "decision_1"
         decision_1(container=container, handle=handle)
 
@@ -205,6 +212,12 @@ def prompt_for_severity_set_to_high(action=None, success=None, container=None, r
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Reason?",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -247,6 +260,30 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    add_comment_4(container=container)
+
+    return
+
+
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_4() called")
+
+    prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
+
+    prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=prompt_for_severity_set_to_high_summary_responses_1)
 
     return
 
