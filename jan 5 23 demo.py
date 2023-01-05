@@ -11,13 +11,15 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate' block
+    my_geolocate(container=container)
+    # call 'whois_domain_1' block
+    whois_domain_1(container=container)
 
     return
 
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("geolocate_ip_1() called")
+def my_geolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_geolocate() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -25,7 +27,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     parameters = []
 
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate' call
     for container_artifact_item in container_artifact_data:
         if container_artifact_item[0] is not None:
             parameters.append({
@@ -43,7 +45,39 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"])
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"])
+
+    return
+
+
+def whois_domain_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("whois_domain_1() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceDnsDomain","artifact:*.id"])
+
+    parameters = []
+
+    # build parameters list for 'whois_domain_1' call
+    for container_artifact_item in container_artifact_data:
+        if container_artifact_item[0] is not None:
+            parameters.append({
+                "domain": container_artifact_item[0],
+                "context": {'artifact_id': container_artifact_item[1]},
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"])
 
     return
 

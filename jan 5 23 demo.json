@@ -12,9 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_0_to_port_5",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "a184a399fc887ed4b4076223ae7d9b22b1ee2672",
+            "hash": "47f100fd415f27c994105d7e32ce0f9cb1616b91",
             "nodes": {
                 "0": {
                     "data": {
@@ -29,7 +36,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 420
                 },
                 "1": {
                     "data": {
@@ -53,6 +60,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +71,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "4",
                         "parameters": {
                             "ip": "artifact:*.cef.sourceAddress"
@@ -81,6 +90,39 @@
                     "type": "action",
                     "x": 980,
                     "y": 644.5
+                },
+                "5": {
+                    "data": {
+                        "action": "whois domain",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "WHOIS",
+                        "connectorConfigs": [
+                            "whois"
+                        ],
+                        "connectorId": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "whois_domain_1",
+                        "id": "5",
+                        "parameters": {
+                            "domain": "artifact:*.cef.sourceDnsDomain"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "domain"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "action",
+                    "x": 1300,
+                    "y": 640
                 }
             },
             "notes": ""
@@ -92,7 +134,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-05T19:24:14.804373+00:00",
+    "create_time": "2023-01-05T19:44:33.908084+00:00",
     "draft_mode": false,
     "labels": [
         "*"
