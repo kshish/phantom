@@ -13,6 +13,8 @@ def on_start(container):
 
     # call 'add_comment_1' block
     add_comment_1(container=container)
+    # call 'promote_to_case_4' block
+    promote_to_case_4(container=container)
 
     return
 
@@ -35,13 +37,13 @@ def add_comment_1(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment=playbook_input_reason_values)
 
-    set_sensitivity_set_severity_2(container=container)
+    set_severity_set_sensitivity_2(container=container)
 
     return
 
 
-def set_sensitivity_set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_sensitivity_set_severity_2() called")
+def set_severity_set_sensitivity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_set_sensitivity_2() called")
 
     ################################################################################
     ## Custom Code Start
@@ -53,8 +55,8 @@ def set_sensitivity_set_severity_2(action=None, success=None, container=None, re
     ## Custom Code End
     ################################################################################
 
-    phantom.set_sensitivity(container=container, sensitivity="red")
     phantom.set_severity(container=container, severity="high")
+    phantom.set_sensitivity(container=container, sensitivity="red")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -121,6 +123,26 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+
+    return
+
+
+def promote_to_case_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case_4() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Data Breach")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
