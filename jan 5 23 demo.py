@@ -171,27 +171,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_to_low() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
+    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -386,17 +366,17 @@ def add_comment_8(action=None, success=None, container=None, results=None, handl
 def playbook_jan_6_23_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_jan_6_23_child_demo_1() called")
 
-    prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
     my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
+    prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"])
 
-    prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
     my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
+    prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
     filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
 
     inputs = {
-        "reason": prompt_for_severity_set_to_high_summary_responses_1,
         "ip": my_geolocate_parameter_ip,
+        "reason": prompt_for_severity_set_to_high_summary_responses_1,
         "countries": filtered_result_0_data___country_name,
     }
 
@@ -460,6 +440,26 @@ def add_comment_9(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=format_3)
+
+    return
+
+
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="friendlies")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
