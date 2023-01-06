@@ -59,13 +59,6 @@
                     "targetPort": "14_in"
                 },
                 {
-                    "id": "port_14_to_port_9",
-                    "sourceNode": "14",
-                    "sourcePort": "14_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_0_to_port_16",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -130,9 +123,54 @@
                     "sourcePort": "7_out",
                     "targetNode": "23",
                     "targetPort": "23_in"
+                },
+                {
+                    "id": "port_14_to_port_24",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "24",
+                    "targetPort": "24_in"
+                },
+                {
+                    "id": "port_24_to_port_25",
+                    "sourceNode": "24",
+                    "sourcePort": "24_out",
+                    "targetNode": "25",
+                    "targetPort": "25_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_25_to_port_26",
+                    "sourceNode": "25",
+                    "sourcePort": "25_out",
+                    "targetNode": "26",
+                    "targetPort": "26_in"
+                },
+                {
+                    "id": "port_26_to_port_27",
+                    "sourceNode": "26",
+                    "sourcePort": "26_out",
+                    "targetNode": "27",
+                    "targetPort": "27_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_27_to_port_28",
+                    "sourceNode": "27",
+                    "sourcePort": "27_out",
+                    "targetNode": "28",
+                    "targetPort": "28_in"
                 }
             ],
-            "hash": "536fc2e980857be82757bf89c74eed0237613919",
+            "hash": "856d12cdff321b79a052b1e89a5f742e5326dc53",
             "nodes": {
                 "0": {
                     "data": {
@@ -163,8 +201,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1140,
-                    "y": 1420
+                    "x": 1840,
+                    "y": 1440
                 },
                 "10": {
                     "data": {
@@ -252,8 +290,8 @@
                     "errors": {},
                     "id": "14",
                     "type": "format",
-                    "x": 740,
-                    "y": 860
+                    "x": 840,
+                    "y": 880
                 },
                 "16": {
                     "data": {
@@ -685,6 +723,181 @@
                     "x": 1400,
                     "y": 884.5
                 },
+                "24": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "Administrator",
+                        "functionId": 2,
+                        "functionName": "prompt_2",
+                        "id": "24",
+                        "message": "Here's the list\n\n{0}",
+                        "parameters": [
+                            "format_ip_and_country_list:formatted_data"
+                        ],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to add a country to the list",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "24",
+                    "type": "prompt",
+                    "x": 1080,
+                    "y": 1064.5
+                },
+                "25": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_2:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "25",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "25",
+                    "type": "decision",
+                    "x": 1080,
+                    "y": 1264.5
+                },
+                "26": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": "Administrator",
+                        "functionId": 3,
+                        "functionName": "prompt_3",
+                        "id": "26",
+                        "message": "",
+                        "parameters": [],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responsePrompt": "Please provide the country to add",
+                                "responseType": "message"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {
+                        "message": "Message content missing"
+                    },
+                    "id": "26",
+                    "type": "prompt",
+                    "x": 1080,
+                    "y": 1424.5
+                },
+                "27": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_3:action_result.status",
+                                        "value": "success"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 4,
+                        "functionName": "decision_4",
+                        "id": "27",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "27",
+                    "type": "decision",
+                    "x": 1100,
+                    "y": 1564.5
+                },
+                "28": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "add_to_list_2",
+                        "id": "28",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "add_list": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "lists",
+                                        "description": "",
+                                        "label": "list",
+                                        "name": "list_name",
+                                        "placeholder": "Select a list",
+                                        "renderType": "combobox",
+                                        "required": true
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "values",
+                                        "placeholder": "Enter data",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    }
+                                ],
+                                "label": "add to list",
+                                "name": "add_list"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "add_list": {
+                                "list_name": "allowed countries",
+                                "values": "prompt_3:action_result.summary.responses.0"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "28",
+                    "type": "utility",
+                    "x": 1000,
+                    "y": 1764.5
+                },
                 "4": {
                     "customCode": null,
                     "data": {
@@ -1010,8 +1223,8 @@
                     "errors": {},
                     "id": "9",
                     "type": "prompt",
-                    "x": 820,
-                    "y": 1000
+                    "x": 560,
+                    "y": 1120
                 }
             },
             "notes": ""
@@ -1023,7 +1236,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-06T20:29:05.746265+00:00",
+    "create_time": "2023-01-06T20:33:29.336894+00:00",
     "draft_mode": false,
     "labels": [
         "*"
