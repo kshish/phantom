@@ -447,7 +447,7 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
 def add_comment_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("add_comment_9() called")
 
-    format_3__as_list = phantom.get_format_data(name="format_3__as_list")
+    format_3 = phantom.get_format_data(name="format_3")
 
     ################################################################################
     ## Custom Code Start
@@ -459,7 +459,7 @@ def add_comment_9(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment=format_3__as_list)
+    phantom.comment(container=container, comment=format_3)
 
     return
 
