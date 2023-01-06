@@ -549,7 +549,7 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        add_to_list_2(action=action, success=success, container=container, results=results, handle=handle)
+        decision_5(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -573,6 +573,24 @@ def add_to_list_2(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.add_list(list_name="allowed countries", values=prompt_3_summary_responses_0)
+
+    return
+
+
+def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_5() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_3:action_result.summary.responses.0", "not in", "custom_list:allowed countries"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        add_to_list_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
