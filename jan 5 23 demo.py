@@ -87,7 +87,7 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"], callback=join_decision_1)
+    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"])
 
     return
 
@@ -131,44 +131,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
-
-    return
-
-
-def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("join_decision_1() called")
-
-    # if the joined function has already been called, do nothing
-    if phantom.get_run_data(key="join_decision_1_called"):
-        return
-
-    if phantom.completed(action_names=["my_geolocate"]):
-        # save the state that the joined function has now been called
-        phantom.save_run_data(key="join_decision_1_called", value="decision_1")
-
-        # call connected block "decision_1"
-        decision_1(container=container, handle=handle)
-
-    return
-
-
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_1() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:allowed countries"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -243,7 +205,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        join_decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        pass
 
     return
 
@@ -555,12 +517,8 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
     return
 
 
-def add_to_list_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("add_to_list_2() called")
-
-    prompt_3_result_data = phantom.collect2(container=container, datapath=["prompt_3:action_result.summary.responses.0"], action_results=results)
-
-    prompt_3_summary_responses_0 = [item[0] for item in prompt_3_result_data]
+def remove_list_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("remove_list_2() called")
 
     ################################################################################
     ## Custom Code Start
@@ -572,7 +530,7 @@ def add_to_list_2(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.add_list(list_name="allowed countries", values=prompt_3_summary_responses_0)
+    phantom.remove_list(list_name="")
 
     return
 
@@ -589,7 +547,7 @@ def decision_5(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        add_to_list_2(action=action, success=success, container=container, results=results, handle=handle)
+        remove_list_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
