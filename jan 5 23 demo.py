@@ -45,7 +45,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=join_decision_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_out_none)
 
     return
 
@@ -150,9 +150,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -221,7 +221,7 @@ def prompt_for_severity_set_to_high(action=None, success=None, container=None, r
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_for_severity_set_to_high", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_for_severity_set_to_high", parameters=parameters, response_types=response_types, callback=decision_2, drop_none=False)
 
     return
 
@@ -284,6 +284,24 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=prompt_for_severity_set_to_high_summary_responses_1)
+
+    return
+
+
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_out_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        join_decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
