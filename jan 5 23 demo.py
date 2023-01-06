@@ -197,8 +197,8 @@ def prompt_for_severity_set_to_high(action=None, success=None, container=None, r
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
