@@ -44,7 +44,18 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_out_none)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=my_geolocate_callback)
+
+    return
+
+
+def my_geolocate_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_geolocate_callback() called")
+
+    
+    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    format_comment(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -236,52 +247,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_jan_6_23_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_to_high() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    add_comment_4(container=container)
-
-    return
-
-
-def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("add_comment_4() called")
-
-    prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
-
-    prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.comment(container=container, comment=prompt_for_severity_set_to_high_summary_responses_1)
 
     return
 
@@ -367,6 +334,132 @@ def list_merge_6(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_6", callback=my_geolocate)
+
+    return
+
+
+def format_comment(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_comment() called")
+
+    template = """blah blah blah {0} blah blah blah\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geolocate:action_result.summary.country"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_comment")
+
+    add_comment_8(container=container)
+
+    return
+
+
+def add_comment_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="this can be a hard wired msg")
+
+    return
+
+
+def playbook_jan_6_23_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_jan_6_23_child_demo_1() called")
+
+    prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
+    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
+
+    inputs = {
+        "reason": prompt_for_severity_set_to_high_summary_responses_1,
+        "ip": my_geolocate_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "Chris/jan 6 23 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/jan 6 23 child demo", container=container, name="playbook_jan_6_23_child_demo_1", callback=format_3, inputs=inputs)
+
+    return
+
+
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_3() called")
+
+    template = """{0} with risk score {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_jan_6_23_child_demo_1:playbook_output:thoughts",
+        "playbook_jan_6_23_child_demo_1:playbook_output:some_reisk_score"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+
+    add_comment_9(container=container)
+
+    return
+
+
+def add_comment_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_9() called")
+
+    format_3__as_list = phantom.get_format_data(name="format_3__as_list")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=format_3__as_list)
 
     return
 
