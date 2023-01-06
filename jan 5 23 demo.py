@@ -159,7 +159,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "custom_list:allowed countries"]
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:allowed countries"]
         ])
 
     # call connected blocks if condition 1 matched
