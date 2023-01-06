@@ -33,18 +33,6 @@
                     "targetPort": "8_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_9",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_9_to_port_10",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
@@ -95,9 +83,28 @@
                     "sourcePort": "13_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_14",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_9",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "6b83ef0f58a62ac06da6e21b7a9093669c2b32a8",
+            "hash": "a047ffd2ee12dd9e4f0bd9c4d5dd86bca1c42cee",
             "nodes": {
                 "0": {
                     "data": {
@@ -311,6 +318,29 @@
                     "type": "filter",
                     "x": 1020,
                     "y": 544.5
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format ip and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "14",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "format",
+                    "x": 740,
+                    "y": 860
                 },
                 "4": {
                     "customCode": null,
@@ -609,8 +639,8 @@
                     "errors": {},
                     "id": "7",
                     "type": "decision",
-                    "x": 1060,
-                    "y": 804.5
+                    "x": 1040,
+                    "y": 720
                 },
                 "8": {
                     "data": {
@@ -678,11 +708,10 @@
                         "functionId": 1,
                         "functionName": "prompt_for_severity_set_to_high",
                         "id": "9",
-                        "message": "The event {0} has IP(s) off continent.\n\nIP: {1} is from: {2}",
+                        "message": "The event {0} has IP(s) off continent.\n\n{1}",
                         "parameters": [
                             "container:name",
-                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -705,7 +734,7 @@
                     "id": "9",
                     "type": "prompt",
                     "x": 820,
-                    "y": 944.5
+                    "y": 1000
                 }
             },
             "notes": ""
@@ -717,7 +746,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-06T17:46:15.447018+00:00",
+    "create_time": "2023-01-06T17:52:24.027919+00:00",
     "draft_mode": false,
     "labels": [
         "*"
