@@ -87,7 +87,7 @@ def whois_domain_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"])
+    phantom.act("whois domain", parameters=parameters, name="whois_domain_1", assets=["whois"], callback=join_decision_1)
 
     return
 
@@ -131,6 +131,67 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+
+    return
+
+
+def join_decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("join_decision_1() called")
+
+    # if the joined function has already been called, do nothing
+    if phantom.get_run_data(key="join_decision_1_called"):
+        return
+
+    if phantom.completed(action_names=["my_geolocate"]):
+        # save the state that the joined function has now been called
+        phantom.save_run_data(key="join_decision_1_called", value="decision_1")
+
+        # call connected block "decision_1"
+        decision_1(container=container, handle=handle)
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="and",
+        conditions=[
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_to_low() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -205,7 +266,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        pass
+        join_decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -233,7 +294,7 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
-    prompt_2(container=container)
+    prompt_for_severity_set_to_high(container=container)
 
     return
 
@@ -325,17 +386,17 @@ def add_comment_8(action=None, success=None, container=None, results=None, handl
 def playbook_jan_6_23_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_jan_6_23_child_demo_1() called")
 
-    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
     prompt_for_severity_set_to_high_result_data = phantom.collect2(container=container, datapath=["prompt_for_severity_set_to_high:action_result.summary.responses.1"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
     filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"])
 
-    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
     prompt_for_severity_set_to_high_summary_responses_1 = [item[0] for item in prompt_for_severity_set_to_high_result_data]
+    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
     filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
 
     inputs = {
-        "ip": my_geolocate_parameter_ip,
         "reason": prompt_for_severity_set_to_high_summary_responses_1,
+        "ip": my_geolocate_parameter_ip,
         "countries": filtered_result_0_data___country_name,
     }
 
@@ -399,156 +460,6 @@ def add_comment_9(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=format_3)
-
-    return
-
-
-def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_label_3() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_label(container=container, label="friendlies")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_2() called")
-
-    # set user and message variables for phantom.prompt call
-
-    user = "Administrator"
-    message = """Here's the list\n\n{0}"""
-
-    # parameter list for template variable replacement
-    parameters = [
-        "format_ip_and_country_list:formatted_data"
-    ]
-
-    # responses
-    response_types = [
-        {
-            "prompt": "Would you like to add a country to the list",
-            "options": {
-                "type": "list",
-                "choices": [
-                    "Yes",
-                    "No"
-                ],
-            },
-        }
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types, callback=decision_3)
-
-    return
-
-
-def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_3() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["prompt_2:action_result.summary.responses.0", "==", "Yes"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        prompt_3(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def prompt_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("prompt_3() called")
-
-    # set user and message variables for phantom.prompt call
-
-    user = "Administrator"
-    message = """"""
-
-    # parameter list for template variable replacement
-    parameters = []
-
-    # responses
-    response_types = [
-        {
-            "prompt": "Please provide the country to add",
-            "options": {
-                "type": "message",
-            },
-        }
-    ]
-
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_3", parameters=parameters, response_types=response_types, callback=decision_4)
-
-    return
-
-
-def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_4() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["prompt_3:action_result.status", "==", "success"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        decision_5(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    return
-
-
-def remove_list_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("remove_list_2() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.remove_list(list_name="")
-
-    return
-
-
-def decision_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_5() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["prompt_3:action_result.summary.responses.0", "not in", "custom_list:allowed countries"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        remove_list_2(action=action, success=success, container=container, results=results, handle=handle)
-        return
 
     return
 
