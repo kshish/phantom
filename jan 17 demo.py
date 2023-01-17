@@ -106,21 +106,21 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["mygeolocate:action_result.data.*.country_name", "==", "United States"],
-            ["mygeolocate:action_result.data.*.country_name", "==", "Argentina"],
-            ["mygeolocate:action_result.data.*.country_name", "==", "United Kingdom"],
-            ["mygeolocate:action_result.data.*.country_name", "==", "Israel"]
+            ["mygeolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["mygeolocate:action_result.data.*.country_name", "!=", "Argentina"],
+            ["mygeolocate:action_result.data.*.country_name", "!=", "United Kingdom"],
+            ["mygeolocate:action_result.data.*.country_name", "!=", "Israel"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
