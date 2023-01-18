@@ -149,6 +149,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "What message would you like on the HUD card",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -172,27 +178,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
+    playbook_jan_18_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -297,6 +283,99 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     prompt_1(container=container)
+
+    return
+
+
+def playbook_jan_18_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_jan_18_child_demo_1() called")
+
+    geolocator_result_data = phantom.collect2(container=container, datapath=["geolocator:action_result.parameter.ip"], action_results=results)
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+
+    geolocator_parameter_ip = [item[0] for item in geolocator_result_data]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+
+    inputs = {
+        "myip": geolocator_parameter_ip,
+        "msg": prompt_1_summary_responses_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/jan 18 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/jan 18 child demo", container=container, name="playbook_jan_18_child_demo_1", callback=decision_1, inputs=inputs)
+
+    return
+
+
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_jan_18_child_demo_1:playbook_output:riskscore", ">", 49]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        add_comment_4(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    set_sensitivity_6(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_4() called")
+
+    playbook_jan_18_child_demo_1_output_reason = phantom.collect2(container=container, datapath=["playbook_jan_18_child_demo_1:playbook_output:reason"])
+
+    playbook_jan_18_child_demo_1_output_reason_values = [item[0] for item in playbook_jan_18_child_demo_1_output_reason]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_jan_18_child_demo_1_output_reason_values)
+
+    return
+
+
+def set_sensitivity_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_sensitivity_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="white")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
