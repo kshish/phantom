@@ -130,7 +130,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "Administrator"
-    message = """The event: {0} has IP(s) outside of our list.\n\n{1}"""
+    message = """The event: {0} has IP(s) outside of our list.  \n\n{1}"""
 
     # parameter list for template variable replacement
     parameters = [
