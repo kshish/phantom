@@ -130,7 +130,7 @@
                 {
                     "conditions": [
                         {
-                            "index": 1
+                            "index": 3
                         }
                     ],
                     "id": "port_16_to_port_18",
@@ -138,9 +138,40 @@
                     "sourcePort": "16_out",
                     "targetNode": "18",
                     "targetPort": "18_in"
+                },
+                {
+                    "id": "port_17_to_port_19",
+                    "sourceNode": "17",
+                    "sourcePort": "17_out",
+                    "targetNode": "19",
+                    "targetPort": "19_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_16_to_port_20",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "id": "port_16_to_port_21",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "21",
+                    "targetPort": "21_in"
                 }
             ],
-            "hash": "49dd6dbc13ac3f0ae7e484049e6eb5f3f5fbe9e7",
+            "hash": "bc4f1a6d4b7b726c1847f2c1481845d72dfcd1b1",
             "nodes": {
                 "0": {
                     "data": {
@@ -496,11 +527,11 @@
                                         "conditionIndex": 0,
                                         "op": ">",
                                         "param": "playbook_jan_18_child_demo_1:playbook_output:riskscore",
-                                        "value": "49"
+                                        "value": "80"
                                     }
                                 ],
                                 "conditionIndex": 0,
-                                "customName": "risk score is high",
+                                "customName": "risk score is very high",
                                 "display": "If",
                                 "logic": "and",
                                 "type": "if"
@@ -509,13 +540,43 @@
                                 "comparisons": [
                                     {
                                         "conditionIndex": 1,
+                                        "op": ">",
+                                        "param": "playbook_jan_18_child_demo_1:playbook_output:riskscore",
+                                        "value": "60"
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "risk score is high",
+                                "display": "Else If",
+                                "logic": "and",
+                                "type": "elif"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 2,
+                                        "op": ">",
+                                        "param": "playbook_jan_18_child_demo_1:playbook_output:riskscore",
+                                        "value": "40"
+                                    }
+                                ],
+                                "conditionIndex": 2,
+                                "customName": "risk score is medium",
+                                "display": "Else If",
+                                "logic": "and",
+                                "type": "elif"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 3,
                                         "op": "==",
                                         "param": "",
                                         "value": ""
                                     }
                                 ],
-                                "conditionIndex": 1,
-                                "customName": "Low risk score",
+                                "conditionIndex": 3,
+                                "customName": "risk score is low",
                                 "display": "Else",
                                 "logic": "and",
                                 "type": "else"
@@ -590,7 +651,7 @@
                     "errors": {},
                     "id": "17",
                     "type": "utility",
-                    "x": 1380,
+                    "x": 1060,
                     "y": 1780
                 },
                 "18": {
@@ -642,7 +703,163 @@
                     "errors": {},
                     "id": "18",
                     "type": "utility",
-                    "x": 1660,
+                    "x": 2060,
+                    "y": 1720
+                },
+                "19": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 7,
+                        "functionName": "set_sensitivity_7",
+                        "id": "19",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_sensitivity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSensitivity",
+                                        "description": "",
+                                        "label": "sensitivity",
+                                        "name": "sensitivity",
+                                        "placeholder": "Select sensitivity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set sensitivity",
+                                "name": "set_sensitivity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_sensitivity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "sensitivity": "red"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "19",
+                    "type": "utility",
+                    "x": 1060,
+                    "y": 1984.5
+                },
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 8,
+                        "functionName": "set_sensitivity_8",
+                        "id": "20",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_sensitivity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSensitivity",
+                                        "description": "",
+                                        "label": "sensitivity",
+                                        "name": "sensitivity",
+                                        "placeholder": "Select sensitivity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set sensitivity",
+                                "name": "set_sensitivity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_sensitivity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "sensitivity": "amber"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "20",
+                    "type": "utility",
+                    "x": 1360,
+                    "y": 2000
+                },
+                "21": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 9,
+                        "functionName": "set_sensitivity_9",
+                        "id": "21",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_sensitivity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSensitivity",
+                                        "description": "",
+                                        "label": "sensitivity",
+                                        "name": "sensitivity",
+                                        "placeholder": "Select sensitivity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set sensitivity",
+                                "name": "set_sensitivity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_sensitivity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "sensitivity": "green"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "21",
+                    "type": "utility",
+                    "x": 1780,
                     "y": 1780
                 },
                 "3": {
@@ -1008,7 +1225,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-18T15:49:03.101049+00:00",
+    "create_time": "2023-01-18T15:56:51.569872+00:00",
     "draft_mode": false,
     "labels": [
         "*"

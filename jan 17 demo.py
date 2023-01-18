@@ -324,7 +324,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["playbook_jan_18_child_demo_1:playbook_output:riskscore", ">", 49]
+            ["playbook_jan_18_child_demo_1:playbook_output:riskscore", ">", 80]
         ])
 
     # call connected blocks if condition 1 matched
@@ -332,7 +332,31 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         add_comment_4(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # check for 'else' condition 2
+    # check for 'elif' condition 2
+    found_match_2 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_jan_18_child_demo_1:playbook_output:riskscore", ">", 60]
+        ])
+
+    # call connected blocks if condition 2 matched
+    if found_match_2:
+        set_sensitivity_8(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'elif' condition 3
+    found_match_3 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_jan_18_child_demo_1:playbook_output:riskscore", ">", 40]
+        ])
+
+    # call connected blocks if condition 3 matched
+    if found_match_3:
+        set_sensitivity_9(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 4
     set_sensitivity_6(action=action, success=success, container=container, results=results, handle=handle)
 
     return
@@ -357,6 +381,8 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment=playbook_jan_18_child_demo_1_output_reason_values)
 
+    set_sensitivity_7(container=container)
+
     return
 
 
@@ -374,6 +400,66 @@ def set_sensitivity_6(action=None, success=None, container=None, results=None, h
     ################################################################################
 
     phantom.set_sensitivity(container=container, sensitivity="white")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def set_sensitivity_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_sensitivity_7() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="red")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def set_sensitivity_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_sensitivity_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="amber")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def set_sensitivity_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_sensitivity_9() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="green")
 
     container = phantom.get_container(container.get('id', None))
 
