@@ -105,12 +105,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "Argentina"],
-            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "United Kingdom"],
-            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "Israel"]
+            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -290,15 +286,15 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 def playbook_jan_18_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_jan_18_child_demo_1() called")
 
-    geolocator_result_data = phantom.collect2(container=container, datapath=["geolocator:action_result.parameter.ip"], action_results=results)
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    geolocator_result_data = phantom.collect2(container=container, datapath=["geolocator:action_result.parameter.ip"], action_results=results)
 
-    geolocator_parameter_ip = [item[0] for item in geolocator_result_data]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    geolocator_parameter_ip = [item[0] for item in geolocator_result_data]
 
     inputs = {
-        "myip": geolocator_parameter_ip,
         "msg": prompt_1_summary_responses_1,
+        "myip": geolocator_parameter_ip,
     }
 
     ################################################################################
