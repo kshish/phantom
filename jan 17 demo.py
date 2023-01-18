@@ -443,6 +443,8 @@ def set_sensitivity_8(action=None, success=None, container=None, results=None, h
 
     container = phantom.get_container(container.get('id', None))
 
+    set_label_10(container=container)
+
     return
 
 
@@ -462,8 +464,6 @@ def set_sensitivity_9(action=None, success=None, container=None, results=None, h
     phantom.set_sensitivity(container=container, sensitivity="green")
 
     container = phantom.get_container(container.get('id', None))
-
-    set_label_10(container=container)
 
     return
 
