@@ -52,7 +52,7 @@ def geolocator_callback(action=None, success=None, container=None, results=None,
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -549,6 +549,24 @@ def pin_12(action=None, success=None, container=None, results=None, handle=None,
     ################################################################################
 
     phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) not in our list", pin_style="red", pin_type="card")
+
+    return
+
+
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("decision_2() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["geolocator:action_result.status", "==", "success"]
+        ])
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        filter_out_none(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
