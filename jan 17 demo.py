@@ -99,27 +99,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     return
 
 
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("decision_2() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "not in", "custom_list:countries"]
-        ])
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("prompt_1() called")
 
@@ -244,13 +223,37 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["geolocator:action_result.data.*.country_name", "!=", ""]
+            ["geolocator:action_result.data.*.country_name", "==", ""]
         ],
         name="filter_out_none:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        pass
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocator:action_result.data.*.country_name", "in", "custom_list:countries"]
+        ],
+        name="filter_out_none:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pass
+
+    # collect filtered artifact ids and results for 'if' condition 3
+    matched_artifacts_3, matched_results_3 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocator:action_result.data.*.country_name", "not in", "custom_list:countries"]
+        ],
+        name="filter_out_none:condition_3")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_3 or matched_results_3:
+        pass
 
     return
 
