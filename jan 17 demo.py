@@ -548,7 +548,7 @@ def pin_12(action=None, success=None, container=None, results=None, handle=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) not in our list")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) not in our list", pin_style="red", pin_type="card")
 
     return
 
