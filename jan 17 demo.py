@@ -11,13 +11,13 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'mygeolocate' block
-    mygeolocate(container=container)
+    # call 'geolocator' block
+    geolocator(container=container)
 
     return
 
-def mygeolocate(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("mygeolocate() called")
+def geolocator(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocator() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -25,7 +25,7 @@ def mygeolocate(action=None, success=None, container=None, results=None, handle=
 
     parameters = []
 
-    # build parameters list for 'mygeolocate' call
+    # build parameters list for 'geolocator' call
     for container_artifact_item in container_artifact_data:
         if container_artifact_item[0] is not None:
             parameters.append({
@@ -43,13 +43,13 @@ def mygeolocate(action=None, success=None, container=None, results=None, handle=
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="mygeolocate", assets=["maxmind"], callback=mygeolocate_callback)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocator", assets=["maxmind"], callback=geolocator_callback)
 
     return
 
 
-def mygeolocate_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("mygeolocate_callback() called")
+def geolocator_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocator_callback() called")
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
@@ -108,10 +108,10 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["mygeolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["mygeolocate:action_result.data.*.country_name", "!=", "Argentina"],
-            ["mygeolocate:action_result.data.*.country_name", "!=", "United Kingdom"],
-            ["mygeolocate:action_result.data.*.country_name", "!=", "Israel"]
+            ["geolocator:action_result.data.*.country_name", "!=", "United States"],
+            ["geolocator:action_result.data.*.country_name", "!=", "Argentina"],
+            ["geolocator:action_result.data.*.country_name", "!=", "United Kingdom"],
+            ["geolocator:action_result.data.*.country_name", "!=", "Israel"]
         ])
 
     # call connected blocks if condition 1 matched
