@@ -7,13 +7,6 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_0_to_port_3",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
                     "id": "port_3_to_port_5",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -81,9 +74,23 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_0_to_port_12",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_3",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
                 }
             ],
-            "hash": "5fdc4458456d707d96d362e47842f01a7f5c594c",
+            "hash": "9eb6da9391349da647f9d5d7d79b68905e61b53a",
             "nodes": {
                 "0": {
                     "data": {
@@ -98,7 +105,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 420
+                    "y": 400
                 },
                 "1": {
                     "data": {
@@ -114,8 +121,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1340,
-                    "y": 1260
+                    "x": 960,
+                    "y": 1300
                 },
                 "10": {
                     "data": {
@@ -168,8 +175,174 @@
                     "errors": {},
                     "id": "10",
                     "type": "utility",
-                    "x": 1220,
-                    "y": 1044.5
+                    "x": 1460,
+                    "y": 956
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "list_merge",
+                            "repoName": "community"
+                        },
+                        "functionId": 5,
+                        "functionName": "list_merge_5",
+                        "id": "12",
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "list_merge": {
+                                "description": "Merge 2-10 different data paths into a single output data path. For example, if IP addresses are stored in the fields sourceAddress, destinationAddress, and deviceAddress, then those three fields could be merged together to form a single list of IP addresses.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "list_merge",
+                                "name": "list_merge"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "list_merge": {
+                                "input_1": "artifact:*.cef.destinationAddress",
+                                "input_10": null,
+                                "input_2": "artifact:*.cef.sourceAddress",
+                                "input_3": null,
+                                "input_4": null,
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "utility",
+                    "x": 980,
+                    "y": 504.5
                 },
                 "3": {
                     "data": {
@@ -190,7 +363,7 @@
                         "functionName": "geolocator",
                         "id": "3",
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "list_merge_5:custom_function_result.data.*.item"
                         },
                         "requiredParameters": [
                             {
@@ -205,7 +378,7 @@
                     "id": "3",
                     "type": "action",
                     "x": 980,
-                    "y": 580
+                    "y": 600
                 },
                 "5": {
                     "data": {
@@ -470,8 +643,8 @@
                     "errors": {},
                     "id": "7",
                     "type": "prompt",
-                    "x": 860,
-                    "y": 924.5
+                    "x": 920,
+                    "y": 960
                 },
                 "8": {
                     "data": {
@@ -517,8 +690,8 @@
                     "errors": {},
                     "id": "8",
                     "type": "decision",
-                    "x": 860,
-                    "y": 1124.5
+                    "x": 1280,
+                    "y": 1120
                 },
                 "9": {
                     "data": {
@@ -571,8 +744,8 @@
                     "errors": {},
                     "id": "9",
                     "type": "utility",
-                    "x": 780,
-                    "y": 1324.5
+                    "x": 1360,
+                    "y": 1300
                 }
             },
             "notes": ""
@@ -584,7 +757,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-18T14:17:46.303729+00:00",
+    "create_time": "2023-01-18T14:20:58.242704+00:00",
     "draft_mode": false,
     "labels": [
         "*"
