@@ -52,7 +52,7 @@ def geolocator_callback(action=None, success=None, container=None, results=None,
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -107,10 +107,10 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["geolocator:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocator:action_result.data.*.country_name", "!=", "Argentina"],
-            ["geolocator:action_result.data.*.country_name", "!=", "United Kingdom"],
-            ["geolocator:action_result.data.*.country_name", "!=", "Israel"]
+            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "Argentina"],
+            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "United Kingdom"],
+            ["filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name", "!=", "Israel"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -135,8 +135,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "geolocator:action_result.parameter.ip",
-        "geolocator:action_result.data.*.country_name"
+        "filtered-data:filter_out_none:condition_1:geolocator:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name"
     ]
 
     # responses
@@ -252,6 +252,24 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=geolocator)
+
+    return
+
+
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocator:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_out_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

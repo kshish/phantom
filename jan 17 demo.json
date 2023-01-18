@@ -14,13 +14,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "id": "port_3_to_port_6",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 0
@@ -88,9 +81,28 @@
                     "sourcePort": "12_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "id": "port_3_to_port_13",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_13_to_port_6",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "9eb6da9391349da647f9d5d7d79b68905e61b53a",
+            "hash": "0c473e4e2e283438a4737a29e1e2c402abe62d01",
             "nodes": {
                 "0": {
                     "data": {
@@ -344,6 +356,38 @@
                     "x": 980,
                     "y": 504.5
                 },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter out none",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocator:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_out_none",
+                        "id": "13",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "filter",
+                    "x": 1040,
+                    "y": 700
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -557,25 +601,25 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocator:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocator:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name",
                                         "value": "Argentina"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocator:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name",
                                         "value": "United Kingdom"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocator:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name",
                                         "value": "Israel"
                                     }
                                 ],
@@ -610,7 +654,7 @@
                     "id": "6",
                     "type": "decision",
                     "x": 1060,
-                    "y": 760
+                    "y": 820
                 },
                 "7": {
                     "data": {
@@ -624,8 +668,8 @@
                         "message": "The event: {0} has IP(s) outside of our list.\n\nIP: {1} is from: {2}",
                         "parameters": [
                             "container:name",
-                            "geolocator:action_result.parameter.ip",
-                            "geolocator:action_result.data.*.country_name"
+                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -670,6 +714,7 @@
                             {
                                 "comparisons": [
                                     {
+                                        "conditionIndex": 1,
                                         "op": "==",
                                         "param": "",
                                         "value": ""
@@ -757,7 +802,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-18T14:20:58.242704+00:00",
+    "create_time": "2023-01-18T14:30:15.812886+00:00",
     "draft_mode": false,
     "labels": [
         "*"
