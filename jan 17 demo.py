@@ -229,7 +229,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        pass
+        pin_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids and results for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -241,7 +241,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
-        pass
+        pin_11(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     # collect filtered artifact ids and results for 'if' condition 3
     matched_artifacts_3, matched_results_3 = phantom.condition(
@@ -253,7 +253,7 @@ def filter_out_none(action=None, success=None, container=None, results=None, han
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_3 or matched_results_3:
-        pass
+        pin_12(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_3, filtered_results=matched_results_3)
 
     return
 
@@ -483,6 +483,72 @@ def set_label_10(action=None, success=None, container=None, results=None, handle
     phantom.set_label(container=container, label="tier-1")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_2() called")
+
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:geolocator:action_result.parameter.ip"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Internal IP(s)", pin_style="grey", pin_type="card")
+
+    return
+
+
+def pin_11(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_11() called")
+
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_2:geolocator:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) in our list", pin_style="blue", pin_type="card")
+
+    return
+
+
+def pin_12(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_12() called")
+
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_3:geolocator:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) not in our list")
 
     return
 
