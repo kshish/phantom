@@ -14,18 +14,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_6_to_port_7",
-                    "sourceNode": "6",
-                    "sourcePort": "6_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -100,9 +88,28 @@
                     "sourcePort": "13_out",
                     "targetNode": "6",
                     "targetPort": "6_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_6_to_port_14",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_7",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "0c473e4e2e283438a4737a29e1e2c402abe62d01",
+            "hash": "7d7426717bcb266687d2678fd70f4b4828ddf70d",
             "nodes": {
                 "0": {
                     "data": {
@@ -133,8 +140,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 960,
-                    "y": 1300
+                    "x": 940,
+                    "y": 1380
                 },
                 "10": {
                     "data": {
@@ -387,6 +394,29 @@
                     "type": "filter",
                     "x": 1040,
                     "y": 700
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format IP and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "14",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "format",
+                    "x": 840,
+                    "y": 980
                 },
                 "3": {
                     "data": {
@@ -665,11 +695,10 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "7",
-                        "message": "The event: {0} has IP(s) outside of our list.\n\nIP: {1} is from: {2}",
+                        "message": "The event: {0} has IP(s) outside of our list.\n\n{1}",
                         "parameters": [
                             "container:name",
-                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.parameter.ip",
-                            "filtered-data:filter_out_none:condition_1:geolocator:action_result.data.*.country_name"
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -688,7 +717,7 @@
                     "id": "7",
                     "type": "prompt",
                     "x": 920,
-                    "y": 960
+                    "y": 1100
                 },
                 "8": {
                     "data": {
@@ -736,7 +765,7 @@
                     "id": "8",
                     "type": "decision",
                     "x": 1280,
-                    "y": 1120
+                    "y": 1240
                 },
                 "9": {
                     "data": {
@@ -790,7 +819,7 @@
                     "id": "9",
                     "type": "utility",
                     "x": 1360,
-                    "y": 1300
+                    "y": 1380
                 }
             },
             "notes": ""
@@ -802,7 +831,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-18T14:30:15.812886+00:00",
+    "create_time": "2023-01-18T14:36:05.555222+00:00",
     "draft_mode": false,
     "labels": [
         "*"
