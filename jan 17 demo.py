@@ -463,6 +463,28 @@ def set_sensitivity_9(action=None, success=None, container=None, results=None, h
 
     container = phantom.get_container(container.get('id', None))
 
+    set_label_10(container=container)
+
+    return
+
+
+def set_label_10(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_10() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="tier-1")
+
+    container = phantom.get_container(container.get('id', None))
+
     return
 
 
