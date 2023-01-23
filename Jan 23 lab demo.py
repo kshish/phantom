@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 def on_start(container):
     phantom.debug('on_start() called')
+    phantom.debug("chris wuz here")
 
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
