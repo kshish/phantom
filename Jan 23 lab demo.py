@@ -112,7 +112,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         logical_operator="and",
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"],
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
         ])
 
     # call connected blocks if condition 1 matched
