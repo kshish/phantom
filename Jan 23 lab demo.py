@@ -188,7 +188,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_2:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_2:action_result.summary.responses.0", "!=", "No"]
         ])
 
     # call connected blocks if condition 1 matched
