@@ -54,7 +54,7 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_out_none(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -111,17 +111,17 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"]
         ])
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+    format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -152,14 +152,13 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = "Administrator"
-    message = """The event {0} with severity {1}\n\nIP(s) are outside of our list\n\nIP: {2} is from {3}\n"""
+    message = """The event {0} with severity {1}\n\nIP(s) are outside of our list\n\n{2}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+        "format_ip_and_country_list:formatted_data"
     ]
 
     # responses
@@ -219,8 +218,8 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
     return
 
 
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_1() called")
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -228,11 +227,39 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_1:condition_1")
+        name="filter_out_none:condition_1")
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_ip_and_country_list() called")
+
+    template = """ip: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
+
+    prompt_2(container=container)
 
     return
 

@@ -33,18 +33,6 @@
                     "targetPort": "7_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_8",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "id": "port_8_to_port_9",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
@@ -81,9 +69,28 @@
                     "sourcePort": "11_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_12",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_8",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "045f8063dc91df77ec0b93330bfafcf1fc7daf59",
+            "hash": "ef9b15fe3481879fd31a3c88d4d6ec72ad0a01bb",
             "nodes": {
                 "0": {
                     "customCode": "def on_start(container):\n    phantom.debug('on_start() called')\n    phantom.debug(\"chris wuz here\")\n\n    # call 'geolocate_ip_1' block\n    geolocate_ip_1(container=container)\n\n    return",
@@ -170,11 +177,13 @@
                     "id": "10",
                     "type": "utility",
                     "x": 840,
-                    "y": 1300
+                    "y": 1360
                 },
                 "11": {
                     "data": {
                         "advanced": {
+                            "customName": "filter out none",
+                            "customNameId": 0,
                             "join": []
                         },
                         "conditions": [
@@ -192,7 +201,7 @@
                             }
                         ],
                         "functionId": 1,
-                        "functionName": "filter_1",
+                        "functionName": "filter_out_none",
                         "id": "11",
                         "type": "filter"
                     },
@@ -200,7 +209,30 @@
                     "id": "11",
                     "type": "filter",
                     "x": 1020,
-                    "y": 684.5
+                    "y": 680
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format ip and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "12",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "ip: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "format",
+                    "x": 840,
+                    "y": 960
                 },
                 "3": {
                     "customCode": null,
@@ -415,13 +447,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -521,12 +553,11 @@
                         "functionId": 2,
                         "functionName": "prompt_2",
                         "id": "8",
-                        "message": "The event {0} with severity {1}\n\nIP(s) are outside of our list\n\nIP: {2} is from {3}\n",
+                        "message": "The event {0} with severity {1}\n\nIP(s) are outside of our list\n\n{2}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -545,7 +576,7 @@
                     "id": "8",
                     "type": "prompt",
                     "x": 920,
-                    "y": 964.5
+                    "y": 1080
                 },
                 "9": {
                     "data": {
@@ -578,7 +609,7 @@
                     "id": "9",
                     "type": "decision",
                     "x": 920,
-                    "y": 1124.5
+                    "y": 1220
                 }
             },
             "notes": ""
@@ -590,7 +621,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-24T17:36:48.973225+00:00",
+    "create_time": "2023-01-24T17:43:07.868959+00:00",
     "draft_mode": false,
     "labels": [
         "*"
