@@ -21,13 +21,6 @@
                     "targetPort": "4_in"
                 },
                 {
-                    "id": "port_3_to_port_5",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -69,9 +62,28 @@
                     "sourcePort": "9_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
+                },
+                {
+                    "id": "port_3_to_port_11",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_11_to_port_5",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "13c061839533bc0735102b8fdf3c8dd81379088c",
+            "hash": "045f8063dc91df77ec0b93330bfafcf1fc7daf59",
             "nodes": {
                 "0": {
                     "customCode": "def on_start(container):\n    phantom.debug('on_start() called')\n    phantom.debug(\"chris wuz here\")\n\n    # call 'geolocate_ip_1' block\n    geolocate_ip_1(container=container)\n\n    return",
@@ -87,7 +99,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 419.9999999999997
                 },
                 "1": {
                     "data": {
@@ -160,6 +172,36 @@
                     "x": 840,
                     "y": 1300
                 },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "11",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "filter",
+                    "x": 1020,
+                    "y": 684.5
+                },
                 "3": {
                     "customCode": null,
                     "data": {
@@ -194,7 +236,7 @@
                     "type": "action",
                     "userCode": "    phantom.debug(parameters)\n    # Write your custom code here...\n\n",
                     "x": 980,
-                    "y": 620
+                    "y": 540
                 },
                 "4": {
                     "data": {
@@ -373,19 +415,14 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Canada"
-                                    },
-                                    {
-                                        "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
-                                        "value": ""
                                     }
                                 ],
                                 "conditionIndex": 0,
@@ -418,8 +455,8 @@
                     "errors": {},
                     "id": "5",
                     "type": "decision",
-                    "x": 1060,
-                    "y": 780
+                    "x": 1040,
+                    "y": 800
                 },
                 "7": {
                     "data": {
@@ -488,8 +525,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "geolocate_ip_1:action_result.parameter.ip",
-                            "geolocate_ip_1:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -553,7 +590,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-01-23T21:26:43.628116+00:00",
+    "create_time": "2023-01-24T17:36:48.973225+00:00",
     "draft_mode": false,
     "labels": [
         "*"
