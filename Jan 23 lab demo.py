@@ -170,6 +170,12 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide an email address",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -190,28 +196,8 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_jan_24_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_to_high() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -297,6 +283,85 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=geolocate_ip_1)
+
+    return
+
+
+def playbook_jan_24_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_jan_24_child_demo_1() called")
+
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
+
+    prompt_2_summary_responses_1 = [item[0] for item in prompt_2_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_none]
+
+    inputs = {
+        "emailaddress": prompt_2_summary_responses_1,
+        "ip": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/jan 24 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/jan 24 child demo", container=container, name="playbook_jan_24_child_demo_1", callback=format_comment, inputs=inputs)
+
+    return
+
+
+def format_comment(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_comment() called")
+
+    template = """risk score is {0}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_jan_24_child_demo_1:playbook_output:riskscore"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_comment")
+
+    add_comment_7(container=container)
+
+    return
+
+
+def add_comment_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_7() called")
+
+    format_comment = phantom.get_format_data(name="format_comment")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=format_comment)
 
     return
 
