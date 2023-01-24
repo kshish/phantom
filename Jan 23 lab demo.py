@@ -119,27 +119,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_to_low() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
+    set_label_8(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -362,6 +342,26 @@ def add_comment_7(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=format_comment)
+
+    return
+
+
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="tier-1")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
