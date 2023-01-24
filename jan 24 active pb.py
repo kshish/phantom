@@ -53,6 +53,28 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment="active playbook was triggered")
 
+    promote_to_case_3(container=container)
+
+    return
+
+
+def promote_to_case_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Response Template 1")
+
+    container = phantom.get_container(container.get('id', None))
+
     return
 
 
