@@ -21,13 +21,6 @@
                     "targetPort": "4_in"
                 },
                 {
-                    "id": "port_3_to_port_5",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -69,9 +62,28 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_3_to_port_10",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_5",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "591fa97c512abf4d4c6e18dc4075dc84bf94998d",
+            "hash": "380499e7129c74df2e32aaaa25f880b2fff2ddfd",
             "nodes": {
                 "0": {
                     "data": {
@@ -86,7 +98,7 @@
                     "id": "0",
                     "type": "start",
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 419.99999999999966
                 },
                 "1": {
                     "data": {
@@ -104,6 +116,39 @@
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
                     "x": 1060,
                     "y": 1380
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter countries",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "filter out none",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_countries",
+                        "id": "10",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "filter",
+                    "x": 980,
+                    "y": 644.5
                 },
                 "3": {
                     "data": {
@@ -139,7 +184,7 @@
                     "id": "3",
                     "type": "action",
                     "x": 980,
-                    "y": 604.5
+                    "y": 520
                 },
                 "4": {
                     "data": {
@@ -318,19 +363,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Brazil"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -434,8 +479,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -553,7 +598,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-02-06T21:30:20.420040+00:00",
+    "create_time": "2023-02-07T17:52:33.625672+00:00",
     "draft_mode": false,
     "labels": [
         "*"
