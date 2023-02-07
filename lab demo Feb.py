@@ -107,11 +107,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Brazil"],
-            ["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:mylist"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -270,18 +267,18 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
 def playbook_feb_23_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_feb_23_child_demo_1() called")
 
+    list_merge_4_data = phantom.collect2(container=container, datapath=["list_merge_4:custom_function_result.data.*.item"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name"], action_results=results)
-    list_merge_4_data = phantom.collect2(container=container, datapath=["list_merge_4:custom_function_result.data.*.item"])
 
+    list_merge_4_data___item = [item[0] for item in list_merge_4_data]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
-    list_merge_4_data___item = [item[0] for item in list_merge_4_data]
 
     inputs = {
+        "ip": list_merge_4_data___item,
         "reason": prompt_1_summary_responses_1,
         "country_name": my_geolocate_result_item_0,
-        "ip": list_merge_4_data___item,
     }
 
     ################################################################################
