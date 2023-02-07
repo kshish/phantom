@@ -33,18 +33,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_7",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -81,9 +69,28 @@
                     "sourcePort": "10_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_5_to_port_11",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_7",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "380499e7129c74df2e32aaaa25f880b2fff2ddfd",
+            "hash": "37c0b2e6becbe923e53da83c8b2818341683e97b",
             "nodes": {
                 "0": {
                     "data": {
@@ -97,8 +104,8 @@
                     "errors": {},
                     "id": "0",
                     "type": "start",
-                    "x": 1000,
-                    "y": 419.99999999999966
+                    "x": 160,
+                    "y": 0
                 },
                 "1": {
                     "data": {
@@ -114,8 +121,8 @@
                     "id": "1",
                     "type": "end",
                     "userCode": "\n    # This function is called after all actions are completed.\n    # summary of all the action and/or all details of actions\n    # can be collected here.\n\n    summary_json = phantom.get_summary()\n    if 'result' in summary_json:\n        for action_result in summary_json['result']:\n            if 'action_run_id' in action_result:\n                action_results = phantom.get_action_results(action_run_id=action_result['action_run_id'], result_data=False, flatten=False)\n                phantom.debug(action_results)\n\n",
-                    "x": 1060,
-                    "y": 1380
+                    "x": 460,
+                    "y": 0
                 },
                 "10": {
                     "data": {
@@ -147,8 +154,31 @@
                     "errors": {},
                     "id": "10",
                     "type": "filter",
-                    "x": 980,
-                    "y": 644.5
+                    "x": 340,
+                    "y": 296
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format pretty list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_pretty_list",
+                        "id": "11",
+                        "parameters": [
+                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "format",
+                    "x": 450,
+                    "y": 656
                 },
                 "3": {
                     "data": {
@@ -183,8 +213,8 @@
                     "errors": {},
                     "id": "3",
                     "type": "action",
-                    "x": 980,
-                    "y": 520
+                    "x": 140,
+                    "y": 148
                 },
                 "4": {
                     "data": {
@@ -349,8 +379,8 @@
                     "errors": {},
                     "id": "4",
                     "type": "utility",
-                    "x": 1340,
-                    "y": 720
+                    "x": 0,
+                    "y": 312
                 },
                 "5": {
                     "data": {
@@ -409,8 +439,8 @@
                     "errors": {},
                     "id": "5",
                     "type": "decision",
-                    "x": 1060,
-                    "y": 780
+                    "x": 360,
+                    "y": 476
                 },
                 "6": {
                     "data": {
@@ -463,8 +493,8 @@
                     "errors": {},
                     "id": "6",
                     "type": "utility",
-                    "x": 1240,
-                    "y": 924.5
+                    "x": 110,
+                    "y": 656
                 },
                 "7": {
                     "data": {
@@ -475,12 +505,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "7",
-                        "message": "The {0} with severity level: {1}\n\nIP: {2} is from {3}",
+                        "message": "The {0} with severity level: {1}\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_pretty_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -498,8 +527,8 @@
                     "errors": {},
                     "id": "7",
                     "type": "prompt",
-                    "x": 880,
-                    "y": 924.5
+                    "x": 530,
+                    "y": 804
                 },
                 "8": {
                     "data": {
@@ -531,8 +560,8 @@
                     "errors": {},
                     "id": "8",
                     "type": "decision",
-                    "x": 880,
-                    "y": 1100
+                    "x": 530,
+                    "y": 984
                 },
                 "9": {
                     "data": {
@@ -585,8 +614,8 @@
                     "errors": {},
                     "id": "9",
                     "type": "utility",
-                    "x": 800,
-                    "y": 1284.5
+                    "x": 450,
+                    "y": 1164
                 }
             },
             "notes": ""
@@ -598,7 +627,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-02-07T17:52:33.625672+00:00",
+    "create_time": "2023-02-07T17:58:40.053597+00:00",
     "draft_mode": false,
     "labels": [
         "*"
