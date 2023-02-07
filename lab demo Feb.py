@@ -315,7 +315,29 @@ def playbook_feb_23_child_demo_1(action=None, success=None, container=None, resu
     ################################################################################
 
     # call playbook "chris/feb 23 child demo", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/feb 23 child demo", container=container, name="playbook_feb_23_child_demo_1", inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/feb 23 child demo", container=container, name="playbook_feb_23_child_demo_1", callback=add_comment_5, inputs=inputs)
+
+    return
+
+
+def add_comment_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_5() called")
+
+    playbook_feb_23_child_demo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_feb_23_child_demo_1:playbook_output:thoughts"])
+
+    playbook_feb_23_child_demo_1_output_thoughts_values = [item[0] for item in playbook_feb_23_child_demo_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_feb_23_child_demo_1_output_thoughts_values)
 
     return
 
