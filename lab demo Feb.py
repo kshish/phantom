@@ -120,27 +120,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_to_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-def set_to_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_to_low_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
+    set_label_6(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -338,6 +318,26 @@ def add_comment_5(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_feb_23_child_demo_1_output_thoughts_values)
+
+    return
+
+
+def set_label_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="malware")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
