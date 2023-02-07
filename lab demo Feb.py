@@ -171,6 +171,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please also type in reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -191,28 +197,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_to_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_feb_23_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-def set_to_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_to_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -297,6 +283,39 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate)
+
+    return
+
+
+def playbook_feb_23_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_feb_23_child_demo_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name"], action_results=results)
+    list_merge_4_data = phantom.collect2(container=container, datapath=["list_merge_4:custom_function_result.data.*.item"])
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+    list_merge_4_data___item = [item[0] for item in list_merge_4_data]
+
+    inputs = {
+        "reason": prompt_1_summary_responses_1,
+        "country_name": my_geolocate_result_item_0,
+        "ip": list_merge_4_data___item,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/feb 23 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/feb 23 child demo", container=container, name="playbook_feb_23_child_demo_1", inputs=inputs)
 
     return
 

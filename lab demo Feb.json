@@ -33,18 +33,6 @@
                     "targetPort": "8_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_8_to_port_9",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_3_to_port_10",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -95,9 +83,21 @@
                     "sourcePort": "12_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_13",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
                 }
             ],
-            "hash": "765cc3e7417fff50c9513e765491b3b0e4db5898",
+            "hash": "216566ba3689ce19a72b2f6a3a04a517b253d207",
             "nodes": {
                 "0": {
                     "data": {
@@ -352,6 +352,47 @@
                     "type": "utility",
                     "x": 140,
                     "y": 4.500000000000007
+                },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_feb_23_child_demo_1",
+                        "id": "13",
+                        "inputs": {
+                            "country_name": {
+                                "datapaths": [
+                                    "my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip": {
+                                "datapaths": [
+                                    "list_merge_4:custom_function_result.data.*.item"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "feb 23 child demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "playbook",
+                    "x": 440,
+                    "y": 1124.5
                 },
                 "3": {
                     "data": {
@@ -693,6 +734,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please also type in reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -733,62 +778,8 @@
                     "errors": {},
                     "id": "8",
                     "type": "decision",
-                    "x": 530,
-                    "y": 984
-                },
-                "9": {
-                    "data": {
-                        "advanced": {
-                            "customName": "Set to High severity",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_to_high_severity",
-                        "id": "9",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "9",
-                    "type": "utility",
-                    "x": 450,
-                    "y": 1164
+                    "x": 520,
+                    "y": 960
                 }
             },
             "notes": ""
@@ -800,7 +791,7 @@
         "schema": "5.0.6",
         "version": "5.3.0.84310"
     },
-    "create_time": "2023-02-07T18:07:27.389517+00:00",
+    "create_time": "2023-02-07T19:10:05.415496+00:00",
     "draft_mode": false,
     "labels": [
         "*"
