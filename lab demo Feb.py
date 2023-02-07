@@ -113,11 +113,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        pin_2(action=action, success=success, container=container, results=results, handle=handle)
+        pin_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    pin_3(action=action, success=success, container=container, results=results, handle=handle)
+    pin_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
