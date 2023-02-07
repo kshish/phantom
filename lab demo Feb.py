@@ -321,9 +321,9 @@ def set_label_6(action=None, success=None, container=None, results=None, handle=
 def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_2() called")
 
-    filtered_result_0_data_filter_countries = phantom.collect2(container=container, datapath=["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_name"])
 
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_countries]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
 
     ################################################################################
     ## Custom Code Start
@@ -343,9 +343,9 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    filtered_result_0_data_filter_countries = phantom.collect2(container=container, datapath=["filtered-data:filter_countries:condition_1:my_geolocate:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name"])
 
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_countries]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
 
     ################################################################################
     ## Custom Code Start
