@@ -84,7 +84,45 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1", callback=debug_2)
+
+    return
+
+
+@phantom.playbook_block()
+def debug_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_2() called")
+
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.longitude","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": my_geolocate_result_item_0,
+        "input_2": None,
+        "input_3": None,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_2")
 
     return
 
