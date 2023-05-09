@@ -415,7 +415,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     matched_artifacts_2, matched_results_2 = phantom.condition(
         container=container,
         conditions=[
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "custom_list:countries"]
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         name="filter_2:condition_2")
 
