@@ -332,7 +332,19 @@ def my_geolocate_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_1", assets=["maxmind"], callback=rows_with_countrys)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_1", assets=["maxmind"], callback=my_geolocate_1_callback)
+
+    return
+
+
+@phantom.playbook_block()
+def my_geolocate_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("my_geolocate_1_callback() called")
+
+    
+    rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
