@@ -21,16 +21,16 @@ def on_start(container):
 def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("debug_1() called")
 
-    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name","my_geolocate:action_result.data.*.latitude","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
 
-    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
-    my_geolocate_result_item_1 = [item[1] for item in my_geolocate_result_data]
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
 
     parameters = []
 
     parameters.append({
-        "input_1": my_geolocate_result_item_0,
-        "input_2": my_geolocate_result_item_1,
+        "input_1": geolocate_ip_1_result_item_0,
+        "input_2": geolocate_ip_1_parameter_ip,
         "input_3": None,
         "input_4": None,
         "input_5": None,
