@@ -481,6 +481,8 @@ def pin_10(action=None, success=None, container=None, results=None, handle=None,
 
     phantom.pin(container=container, data=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
 
+    set_label_12(container=container)
+
     return
 
 
@@ -499,6 +501,27 @@ def pin_11(action=None, success=None, container=None, results=None, handle=None,
     ################################################################################
 
     phantom.pin(container=container, message="Internal", pin_style="grey", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_12(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_12() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="tier-1")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
