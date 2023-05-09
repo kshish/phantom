@@ -226,7 +226,7 @@ def rows_with_countrys(action=None, success=None, container=None, results=None, 
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+            ["my_geolocate_1:action_result.data.*.country_name", "!=", ""]
         ],
         name="rows_with_countrys:condition_1")
 
