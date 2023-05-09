@@ -7,13 +7,6 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_2_to_port_4",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "id": "port_4_to_port_5",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -50,13 +43,6 @@
                     "sourcePort": "6_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
-                },
-                {
-                    "id": "port_2_to_port_11",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
                 },
                 {
                     "conditions": [
@@ -97,14 +83,21 @@
                     "targetPort": "13_in"
                 },
                 {
-                    "id": "port_13_to_port_2",
+                    "id": "port_13_to_port_14",
                     "sourceNode": "13",
                     "sourcePort": "13_out",
-                    "targetNode": "2",
-                    "targetPort": "2_in"
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_11",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "9c1859531d20d07ebf3e66b7cb3b4f19fb35caff",
+            "hash": "584f0bb4372b8fc475921673434aa05820cb2b30",
             "nodes": {
                 "0": {
                     "data": {
@@ -120,7 +113,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 220
+                    "y": 219.99999999999994
                 },
                 "1": {
                     "data": {
@@ -222,7 +215,11 @@
                     "errors": {},
                     "id": "11",
                     "type": "filter",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath configuration."
+                        ]
+                    },
                     "x": 1040,
                     "y": 660
                 },
@@ -421,13 +418,13 @@
                     "x": 980,
                     "y": 384.5
                 },
-                "2": {
+                "14": {
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
                             "customName": "my geolocate",
-                            "customNameId": 0,
+                            "customNameId": 1,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -437,10 +434,10 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "my_geolocate",
-                        "id": "2",
+                        "functionName": "my_geolocate_1",
+                        "id": "14",
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "merge_ips:custom_function_result.data.*.item"
                         },
                         "requiredParameters": [
                             {
@@ -448,15 +445,14 @@
                                 "field": "ip"
                             }
                         ],
-                        "tab": "byAction",
                         "type": "action"
                     },
                     "errors": {},
-                    "id": "2",
+                    "id": "14",
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 520
+                    "y": 524.5
                 },
                 "4": {
                     "data": {
@@ -625,7 +621,11 @@
                     "errors": {},
                     "id": "4",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1340,
                     "y": 680
                 },
@@ -1006,7 +1006,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-09T17:05:28.600150+00:00",
+    "create_time": "2023-05-09T17:13:47.349261+00:00",
     "draft_mode": false,
     "labels": [
         "*"
