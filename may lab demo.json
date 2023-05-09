@@ -28,18 +28,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_6_to_port_7",
-                    "sourceNode": "6",
-                    "sourcePort": "6_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -88,9 +76,28 @@
                     "sourcePort": "11_out",
                     "targetNode": "6",
                     "targetPort": "6_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_6_to_port_12",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_7",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "167e9e83873cc83a31b8a6bb58db6d919de89f09",
+            "hash": "50860c8824ca0d7c1b199a81839ce5860be123de",
             "nodes": {
                 "0": {
                     "data": {
@@ -211,6 +218,28 @@
                     "warnings": {},
                     "x": 1040,
                     "y": 660
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "12",
+                        "parameters": [
+                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "{0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 780,
+                    "y": 944.5
                 },
                 "2": {
                     "data": {
@@ -674,12 +703,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "7",
-                        "message": "At least one of the IPs is outside of our countries list.\n\n{0} with severity {1} has the following IP(s) and countries.\n\n{2} is from: {3}",
+                        "message": "At least one of the IPs is outside of our countries list.\n\n{0} with severity {1} has the following IP(s) and countries.\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -699,7 +727,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 860,
-                    "y": 960
+                    "y": 1120
                 },
                 "8": {
                     "data": {
@@ -733,7 +761,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 860,
-                    "y": 1124.5
+                    "y": 1240
                 },
                 "9": {
                     "data": {
@@ -786,7 +814,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 780,
-                    "y": 1304.5
+                    "y": 1400
                 }
             },
             "notes": ""
@@ -798,7 +826,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-09T16:49:50.582841+00:00",
+    "create_time": "2023-05-09T16:54:47.120697+00:00",
     "draft_mode": false,
     "labels": [
         "*"
