@@ -286,7 +286,7 @@ def rows_with_countrys(action=None, success=None, container=None, results=None, 
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("format_1() called")
 
-    template = """{0} is from {1}\n"""
+    template = """%%\n{0} is from {1}\n%%\n"""
 
     # parameter list for template variable replacement
     parameters = [
