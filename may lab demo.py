@@ -101,13 +101,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Poland"],
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Italy"],
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Philippines"]
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "in", "custom_list:countries"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -317,17 +312,17 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
 def playbook_may_2023_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_may_2023_child_demo_1() called")
 
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.data.*.country_name"], action_results=results)
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip"], action_results=results)
 
+    geolocate_ip_1_parameter_ip = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_result_item_1 = [item[1] for item in geolocate_ip_1_result_data]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
-    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
-    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
 
     inputs = {
-        "reason": prompt_1_summary_responses_1,
-        "countries": geolocate_ip_1_result_item_0,
         "ips": geolocate_ip_1_parameter_ip,
+        "reason": prompt_1_summary_responses_1,
+        "countries": geolocate_ip_1_result_item_1,
     }
 
     ################################################################################
