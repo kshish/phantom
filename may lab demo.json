@@ -116,9 +116,21 @@
                     "sourcePort": "23_out",
                     "targetNode": "25",
                     "targetPort": "25_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_11_to_port_26",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "26",
+                    "targetPort": "26_in"
                 }
             ],
-            "hash": "02b6dbd5823378cde21ab020b69e038213e62a22",
+            "hash": "6baeb10445d525b66eb9be175531bf29a9074687",
             "nodes": {
                 "0": {
                     "data": {
@@ -134,7 +146,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 179.9999999999999
+                    "y": 179.99999999999983
                 },
                 "1": {
                     "data": {
@@ -172,6 +184,17 @@
                                 ],
                                 "conditionIndex": 0,
                                 "customName": "geolocatable IPs",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
                                 "logic": "and"
                             }
                         ],
@@ -1040,6 +1063,119 @@
                     "x": 1140,
                     "y": 1024.5
                 },
+                "26": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 11,
+                        "functionName": "pin_11",
+                        "id": "26",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": null,
+                                "message": "Internal",
+                                "name": null,
+                                "pin_style": "grey",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "26",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 460,
+                    "y": 804.5
+                },
                 "4": {
                     "data": {
                         "advanced": {
@@ -1473,7 +1609,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-09T20:10:25.753821+00:00",
+    "create_time": "2023-05-09T20:17:30.406423+00:00",
     "draft_mode": false,
     "labels": [
         "*"

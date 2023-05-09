@@ -171,6 +171,18 @@ def rows_with_countrys(action=None, success=None, container=None, results=None, 
     if matched_artifacts_1 or matched_results_1:
         filter_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", ""]
+        ],
+        name="rows_with_countrys:condition_2")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_11(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
     return
 
 
@@ -468,6 +480,25 @@ def pin_10(action=None, success=None, container=None, results=None, handle=None,
     ################################################################################
 
     phantom.pin(container=container, data=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def pin_11(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_11() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, message="Internal", pin_style="grey", pin_type="card")
 
     return
 
