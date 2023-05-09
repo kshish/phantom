@@ -342,8 +342,8 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
     phantom.debug("geolocate_ip_1_callback() called")
 
     
-    rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
