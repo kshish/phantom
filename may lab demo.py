@@ -103,11 +103,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Poland"],
-            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Italy"],
-            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Philippines"]
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Poland"],
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Italy"],
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Philippines"]
         ])
 
     # call connected blocks if condition 1 matched
