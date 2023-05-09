@@ -169,7 +169,7 @@ def rows_with_countrys(action=None, success=None, container=None, results=None, 
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        pass
 
     return
 
@@ -391,83 +391,6 @@ def set_label_8(action=None, success=None, container=None, results=None, handle=
     phantom.set_label(container=container, label="tier-1")
 
     container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-@phantom.playbook_block()
-def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_2() called")
-
-    # collect filtered artifact ids and results for 'if' condition 1
-    matched_artifacts_1, matched_results_1 = phantom.condition(
-        container=container,
-        conditions=[
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "in", "custom_list:countries"]
-        ],
-        name="filter_2:condition_1")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_1 or matched_results_1:
-        pin_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
-
-    # collect filtered artifact ids and results for 'if' condition 2
-    matched_artifacts_2, matched_results_2 = phantom.condition(
-        container=container,
-        conditions=[
-            ["filtered-data:rows_with_countrys:condition_1:geolocate_ip_1:action_result.data.*.country_name", "not in", "custom_list:countries"]
-        ],
-        name="filter_2:condition_2")
-
-    # call connected blocks if filtered artifacts or results
-    if matched_artifacts_2 or matched_results_2:
-        pin_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
-
-    return
-
-
-@phantom.playbook_block()
-def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_3() called")
-
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="in our list", pin_style="blue", pin_type="card")
-
-    return
-
-
-@phantom.playbook_block()
-def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_4() called")
-
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:geolocate_ip_1:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="Not in our List", pin_style="red", pin_type="card")
 
     return
 
