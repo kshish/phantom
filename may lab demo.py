@@ -116,7 +116,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_severity_4(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_8(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -178,27 +178,6 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     if found_match_1:
         playbook_may_2023_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_4() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -431,8 +410,10 @@ def pin_6(action=None, success=None, container=None, results=None, handle=None, 
     phantom.debug("pin_6() called")
 
     geolocate_ip_2_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_2:action_result.data.*.country_name"], action_results=results)
+    playbook_may_2023_child_demo_1_output_some_ip = phantom.collect2(container=container, datapath=["playbook_may_2023_child_demo_1:playbook_output:some_ip"])
 
     geolocate_ip_2_result_item_0 = [item[0] for item in geolocate_ip_2_result_data]
+    playbook_may_2023_child_demo_1_output_some_ip_values = [item[0] for item in playbook_may_2023_child_demo_1_output_some_ip]
 
     ################################################################################
     ## Custom Code Start
@@ -444,7 +425,28 @@ def pin_6(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=geolocate_ip_2_result_item_0, pin_style="blue", pin_type="card")
+    phantom.pin(container=container, data=geolocate_ip_2_result_item_0, message=playbook_may_2023_child_demo_1_output_some_ip_values, pin_style="blue", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="tier-1")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
