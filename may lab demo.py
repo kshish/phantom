@@ -467,7 +467,7 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="Not in our List", pin_style="red", pin_type="card")
 
     return
 
