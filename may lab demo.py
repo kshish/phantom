@@ -149,6 +149,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Reason for High Severity",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -170,29 +176,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_may_2023_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_3() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -345,6 +330,121 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
     rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_may_2023_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_may_2023_child_demo_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip"], action_results=results)
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
+
+    inputs = {
+        "reason": prompt_1_summary_responses_1,
+        "countries": geolocate_ip_1_result_item_0,
+        "ips": geolocate_ip_1_parameter_ip,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "utils/may 2023 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("utils/may 2023 child demo", container=container, name="playbook_may_2023_child_demo_1", callback=pin_5, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    playbook_may_2023_child_demo_1_output_some_ip = phantom.collect2(container=container, datapath=["playbook_may_2023_child_demo_1:playbook_output:some_ip"])
+    playbook_may_2023_child_demo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_may_2023_child_demo_1:playbook_output:thoughts"])
+
+    playbook_may_2023_child_demo_1_output_some_ip_values = [item[0] for item in playbook_may_2023_child_demo_1_output_some_ip]
+    playbook_may_2023_child_demo_1_output_thoughts_values = [item[0] for item in playbook_may_2023_child_demo_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=playbook_may_2023_child_demo_1_output_some_ip_values, message=playbook_may_2023_child_demo_1_output_thoughts_values, pin_style="red", pin_type="card")
+
+    geolocate_ip_2(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_2() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    playbook_may_2023_child_demo_1_output_some_ip = phantom.collect2(container=container, datapath=["playbook_may_2023_child_demo_1:playbook_output:some_ip"])
+
+    parameters = []
+
+    # build parameters list for 'geolocate_ip_2' call
+    for playbook_may_2023_child_demo_1_output_some_ip_item in playbook_may_2023_child_demo_1_output_some_ip:
+        if playbook_may_2023_child_demo_1_output_some_ip_item[0] is not None:
+            parameters.append({
+                "ip": playbook_may_2023_child_demo_1_output_some_ip_item[0],
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_2", assets=["maxmind"], callback=pin_6)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_6() called")
+
+    geolocate_ip_2_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_2:action_result.data.*.country_name"], action_results=results)
+
+    geolocate_ip_2_result_item_0 = [item[0] for item in geolocate_ip_2_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=geolocate_ip_2_result_item_0, pin_style="blue", pin_type="card")
 
     return
 
