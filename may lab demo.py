@@ -56,7 +56,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -148,11 +148,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Poland"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Italy"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Philippines"]
+            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Poland"],
+            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Italy"],
+            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Philippines"]
         ])
 
     # call connected blocks if condition 1 matched
@@ -180,8 +180,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
@@ -260,6 +260,25 @@ def set_severity_4(action=None, success=None, container=None, results=None, hand
     phantom.set_severity(container=container, severity="low")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def rows_with_countrys(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("rows_with_countrys() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="rows_with_countrys:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

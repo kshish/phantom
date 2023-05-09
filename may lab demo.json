@@ -28,13 +28,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "id": "port_2_to_port_6",
-                    "sourceNode": "2",
-                    "sourcePort": "2_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 0
@@ -76,9 +69,28 @@
                     "sourcePort": "6_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
+                },
+                {
+                    "id": "port_2_to_port_11",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_11_to_port_6",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "669a4c5dbabee8ad7a24b105417699587cffead9",
+            "hash": "167e9e83873cc83a31b8a6bb58db6d919de89f09",
             "nodes": {
                 "0": {
                     "data": {
@@ -94,7 +106,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 420
                 },
                 "1": {
                     "data": {
@@ -166,6 +178,40 @@
                     "x": 1100,
                     "y": 944.5
                 },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "customName": "rows with countrys",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "geolocatable IPs",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "rows_with_countrys",
+                        "id": "11",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 660
+                },
                 "2": {
                     "data": {
                         "action": "geolocate ip",
@@ -201,7 +247,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 600
+                    "y": 520
                 },
                 "4": {
                     "data": {
@@ -554,31 +600,31 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Poland"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Italy"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Philippines"
                                     }
                                 ],
@@ -614,7 +660,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 784.5
+                    "y": 800
                 },
                 "7": {
                     "data": {
@@ -632,8 +678,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:rows_with_countrys:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -653,7 +699,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 860,
-                    "y": 940
+                    "y": 960
                 },
                 "8": {
                     "data": {
@@ -752,7 +798,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-09T16:41:00.689158+00:00",
+    "create_time": "2023-05-09T16:49:50.582841+00:00",
     "draft_mode": false,
     "labels": [
         "*"
