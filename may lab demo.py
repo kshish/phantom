@@ -226,7 +226,7 @@ def rows_with_countrys(action=None, success=None, container=None, results=None, 
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["my_geolocate_1:action_result.data.*.country_name", "!=", ""]
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", ""]
         ],
         name="rows_with_countrys:condition_1")
 
@@ -300,14 +300,14 @@ def merge_ips(action=None, success=None, container=None, results=None, handle=No
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="merge_ips", callback=my_geolocate_1)
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="merge_ips", callback=geolocate_ip_1)
 
     return
 
 
 @phantom.playbook_block()
-def my_geolocate_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_geolocate_1() called")
+def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_1() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -315,7 +315,7 @@ def my_geolocate_1(action=None, success=None, container=None, results=None, hand
 
     parameters = []
 
-    # build parameters list for 'my_geolocate_1' call
+    # build parameters list for 'geolocate_ip_1' call
     for merge_ips_data_item in merge_ips_data:
         if merge_ips_data_item[0] is not None:
             parameters.append({
@@ -332,14 +332,14 @@ def my_geolocate_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_1", assets=["maxmind"], callback=my_geolocate_1_callback)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=geolocate_ip_1_callback)
 
     return
 
 
 @phantom.playbook_block()
-def my_geolocate_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_geolocate_1_callback() called")
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_1_callback() called")
 
     
     rows_with_countrys(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
