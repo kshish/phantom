@@ -39,18 +39,6 @@
                     "targetPort": "13_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_11_to_port_14",
-                    "sourceNode": "11",
-                    "sourcePort": "11_out",
-                    "targetNode": "14",
-                    "targetPort": "14_in"
-                },
-                {
                     "id": "port_14_to_port_15",
                     "sourceNode": "14",
                     "sourcePort": "14_out",
@@ -101,9 +89,28 @@
                     "sourcePort": "22_out",
                     "targetNode": "11",
                     "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "id": "port_11_to_port_23",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "23",
+                    "targetPort": "23_in"
+                },
+                {
+                    "id": "port_23_to_port_14",
+                    "sourceNode": "23",
+                    "sourcePort": "23_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
                 }
             ],
-            "hash": "1648f3f985cb6910c8f08853f4efd58423e4b9fb",
+            "hash": "129c24102c06d8c2df5ad86c7ffc200ea17dda82",
             "nodes": {
                 "0": {
                     "data": {
@@ -304,8 +311,8 @@
                     "id": "10",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1520,
-                    "y": 880
+                    "x": 1580,
+                    "y": 860
                 },
                 "11": {
                     "data": {
@@ -628,12 +635,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "14",
-                        "message": "Container {0} with severity {1} has one or more IP(s) outside of our list.\n\nIP: {2} is from {3}",
+                        "message": "Container {0} with severity {1} has one or more IP(s) outside of our list.\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.parameter.ip",
-                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -653,7 +659,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 1360,
-                    "y": 864.5
+                    "y": 980
                 },
                 "15": {
                     "data": {
@@ -687,7 +693,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1360,
-                    "y": 1040
+                    "y": 1100
                 },
                 "16": {
                     "data": {
@@ -739,8 +745,8 @@
                     "id": "16",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1180,
-                    "y": 1184.5
+                    "x": 1280,
+                    "y": 1260
                 },
                 "20": {
                     "data": {
@@ -984,6 +990,28 @@
                     "x": 1040,
                     "y": 580
                 },
+                "23": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "23",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "23",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1280,
+                    "y": 860
+                },
                 "9": {
                     "data": {
                         "advanced": {
@@ -1156,7 +1184,7 @@
                             "Connect block to playbook flow."
                         ]
                     },
-                    "x": 1520,
+                    "x": 1580,
                     "y": 680
                 }
             },
@@ -1169,7 +1197,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-31T16:57:30.472774+00:00",
+    "create_time": "2023-05-31T17:01:51.164687+00:00",
     "draft_mode": false,
     "labels": [
         "*"
