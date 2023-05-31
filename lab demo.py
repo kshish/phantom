@@ -103,9 +103,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geo_locate:action_result.data.*.country_name", "!=", "Canada"],
-            ["my_geo_locate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Canada"],
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Mexico"]
         ],
         case_sensitive=False)
 
@@ -119,8 +119,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate:action_result.data.*.country_name", "!=", "France"],
-            ["my_geo_locate:action_result.data.*.country_name", "!=", "Belgium"]
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "France"],
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Belgium"]
         ],
         case_sensitive=False)
 
@@ -139,9 +139,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    my_geo_locate_result_data = phantom.collect2(container=container, datapath=["my_geo_locate:action_result.data.*.country_name"], action_results=results)
+    my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
 
-    my_geo_locate_result_item_0 = [item[0] for item in my_geo_locate_result_data]
+    my_geo_locate_1_result_item_0 = [item[0] for item in my_geo_locate_1_result_data]
 
     ################################################################################
     ## Custom Code Start
@@ -153,7 +153,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_locate_result_item_0, message="IP is in our primary list", pin_style="blue", pin_type="card")
+    phantom.pin(container=container, data=my_geo_locate_1_result_item_0, message="IP is in our primary list", pin_style="blue", pin_type="card")
 
     return
 
@@ -162,9 +162,9 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_4() called")
 
-    my_geo_locate_result_data = phantom.collect2(container=container, datapath=["my_geo_locate:action_result.data.*.country_name"], action_results=results)
+    my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
 
-    my_geo_locate_result_item_0 = [item[0] for item in my_geo_locate_result_data]
+    my_geo_locate_1_result_item_0 = [item[0] for item in my_geo_locate_1_result_data]
 
     ################################################################################
     ## Custom Code Start
@@ -176,7 +176,7 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_locate_result_item_0, pin_style="grey", pin_type="card")
+    phantom.pin(container=container, data=my_geo_locate_1_result_item_0, pin_style="grey", pin_type="card")
 
     return
 
@@ -195,8 +195,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:severity",
-        "my_geo_locate:action_result.parameter.ip",
-        "my_geo_locate:action_result.data.*.country_name"
+        "my_geo_locate_1:action_result.parameter.ip",
+        "my_geo_locate_1:action_result.data.*.country_name"
     ]
 
     # responses
