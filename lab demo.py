@@ -130,30 +130,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 3
-    pin_3(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_3() called")
-
-    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP is in our primary list", pin_style="blue", pin_type="card")
+    set_label_5(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -365,16 +342,16 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 def playbook_lab5_may_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_lab5_may_demo_1() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.parameter.ip","my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     my_geo_locate_1_parameter_ip = [item[0] for item in my_geo_locate_1_result_data]
     my_geo_locate_1_result_item_1 = [item[1] for item in my_geo_locate_1_result_data]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
-        "reason": prompt_1_summary_responses_1,
         "ips": my_geo_locate_1_parameter_ip,
+        "reason": prompt_1_summary_responses_1,
         "countries": my_geo_locate_1_result_item_1,
     }
 
@@ -413,6 +390,27 @@ def add_comment_10(action=None, success=None, container=None, results=None, hand
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_lab5_may_demo_1_output_thoughts_values)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_5() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="notinourlist")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
