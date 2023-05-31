@@ -209,6 +209,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -230,29 +236,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_5(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_lab5_may_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_5() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -372,6 +357,62 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_lab5_may_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_lab5_may_demo_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.parameter.ip","my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    my_geo_locate_1_parameter_ip = [item[0] for item in my_geo_locate_1_result_data]
+    my_geo_locate_1_result_item_1 = [item[1] for item in my_geo_locate_1_result_data]
+
+    inputs = {
+        "reason": prompt_1_summary_responses_1,
+        "ips": my_geo_locate_1_parameter_ip,
+        "countries": my_geo_locate_1_result_item_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "util/lab5 may demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("util/lab5 may demo", container=container, name="playbook_lab5_may_demo_1", callback=add_comment_10, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_10(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_10() called")
+
+    playbook_lab5_may_demo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_lab5_may_demo_1:playbook_output:thoughts"])
+
+    playbook_lab5_may_demo_1_output_thoughts_values = [item[0] for item in playbook_lab5_may_demo_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_lab5_may_demo_1_output_thoughts_values)
 
     return
 
