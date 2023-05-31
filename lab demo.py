@@ -103,9 +103,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Canada"],
-            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "Mexico"]
         ],
         case_sensitive=False)
 
@@ -119,8 +119,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "France"],
-            ["my_geo_locate_1:action_result.data.*.country_name", "!=", "Belgium"]
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "France"],
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "Belgium"]
         ],
         case_sensitive=False)
 
@@ -139,9 +139,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"])
 
-    my_geo_locate_1_result_item_0 = [item[0] for item in my_geo_locate_1_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
 
     ################################################################################
     ## Custom Code Start
@@ -153,7 +153,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_locate_1_result_item_0, message="IP is in our primary list", pin_style="blue", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP is in our primary list", pin_style="blue", pin_type="card")
 
     return
 
@@ -162,9 +162,9 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("pin_4() called")
 
-    my_geo_locate_1_result_data = phantom.collect2(container=container, datapath=["my_geo_locate_1:action_result.data.*.country_name"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"])
 
-    my_geo_locate_1_result_item_0 = [item[0] for item in my_geo_locate_1_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
 
     ################################################################################
     ## Custom Code Start
@@ -176,7 +176,7 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=my_geo_locate_1_result_item_0, pin_style="grey", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, pin_style="grey", pin_type="card")
 
     return
 
@@ -195,8 +195,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:severity",
-        "my_geo_locate_1:action_result.parameter.ip",
-        "my_geo_locate_1:action_result.data.*.country_name"
+        "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"
     ]
 
     # responses
@@ -324,7 +324,26 @@ def my_geo_locate_1(action=None, success=None, container=None, results=None, han
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate_1", assets=["maxmind"], callback=decision_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geo_locate_1", assets=["maxmind"], callback=filter_out_none)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_out_none(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_out_none() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo_locate_1:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_out_none:condition_1")
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

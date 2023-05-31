@@ -84,14 +84,26 @@
                     "targetPort": "21_in"
                 },
                 {
-                    "id": "port_21_to_port_11",
+                    "id": "port_21_to_port_22",
                     "sourceNode": "21",
                     "sourcePort": "21_out",
+                    "targetNode": "22",
+                    "targetPort": "22_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_22_to_port_11",
+                    "sourceNode": "22",
+                    "sourcePort": "22_out",
                     "targetNode": "11",
                     "targetPort": "11_in"
                 }
             ],
-            "hash": "fcebd221f92025c2861c860574e4050ce5271b43",
+            "hash": "1648f3f985cb6910c8f08853f4efd58423e4b9fb",
             "nodes": {
                 "0": {
                     "data": {
@@ -307,19 +319,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                         "value": "Canada"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                         "value": "Mexico"
                                     }
                                 ],
@@ -334,13 +346,13 @@
                                     {
                                         "conditionIndex": 1,
                                         "op": "!=",
-                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                         "value": "France"
                                     },
                                     {
                                         "conditionIndex": 1,
                                         "op": "!=",
-                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                         "value": "Belgium"
                                     }
                                 ],
@@ -476,7 +488,7 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "my_geo_locate_1:action_result.data.*.country_name",
+                                "data": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                 "message": "IP is in our primary list",
                                 "name": null,
                                 "pin_style": "blue",
@@ -589,7 +601,7 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "my_geo_locate_1:action_result.data.*.country_name",
+                                "data": "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name",
                                 "message": null,
                                 "name": null,
                                 "pin_style": "grey",
@@ -620,8 +632,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geo_locate_1:action_result.parameter.ip",
-                            "my_geo_locate_1:action_result.data.*.country_name"
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -936,7 +948,41 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 504.5
+                    "y": 460
+                },
+                "22": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Filter out none",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo_locate_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "country list",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_out_none",
+                        "id": "22",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "22",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 580
                 },
                 "9": {
                     "data": {
@@ -1123,7 +1169,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-31T16:51:25.977449+00:00",
+    "create_time": "2023-05-31T16:57:30.472774+00:00",
     "draft_mode": false,
     "labels": [
         "*"
