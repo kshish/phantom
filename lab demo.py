@@ -114,46 +114,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         format_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
-    # check for 'elif' condition 2
-    found_match_2 = phantom.decision(
-        container=container,
-        logical_operator="and",
-        conditions=[
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "France"],
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name", "!=", "Belgium"]
-        ],
-        case_sensitive=False)
-
-    # call connected blocks if condition 2 matched
-    if found_match_2:
-        pin_4(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 3
+    # check for 'else' condition 2
     set_label_5(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def pin_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_4() called")
-
-    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate_1:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, pin_style="grey", pin_type="card")
 
     return
 
