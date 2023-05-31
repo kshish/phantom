@@ -4,35 +4,15 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
+            "customCode": null,
             "description": "",
             "edges": [
-                {
-                    "id": "port_0_to_port_4",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
-                    "id": "port_4_to_port_9",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
                 {
                     "id": "port_9_to_port_10",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
-                },
-                {
-                    "id": "port_4_to_port_11",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
                 },
                 {
                     "conditions": [
@@ -88,9 +68,30 @@
                     "sourcePort": "15_out",
                     "targetNode": "16",
                     "targetPort": "16_in"
+                },
+                {
+                    "id": "port_0_to_port_20",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
+                },
+                {
+                    "id": "port_20_to_port_21",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "21",
+                    "targetPort": "21_in"
+                },
+                {
+                    "id": "port_21_to_port_11",
+                    "sourceNode": "21",
+                    "sourcePort": "21_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "fa62eed2127304de63426529f0ac51a5163f3018",
+            "hash": "7708471c6f2c734cf88a58f082c4a2c38236c34f",
             "nodes": {
                 "0": {
                     "data": {
@@ -106,7 +107,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 379.9999999999998
+                    "y": 200
                 },
                 "1": {
                     "data": {
@@ -314,6 +315,12 @@
                                         "op": "!=",
                                         "param": "my_geo_locate:action_result.data.*.country_name",
                                         "value": "Canada"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geo_locate:action_result.data.*.country_name",
+                                        "value": "Mexico"
                                     }
                                 ],
                                 "conditionIndex": 0,
@@ -367,7 +374,11 @@
                     "errors": {},
                     "id": "11",
                     "type": "decision",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath configuration."
+                        ]
+                    },
                     "x": 1060,
                     "y": 720
                 },
@@ -480,7 +491,11 @@
                     "errors": {},
                     "id": "12",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath configuration."
+                        ]
+                    },
                     "x": 580,
                     "y": 860
                 },
@@ -593,7 +608,11 @@
                     "errors": {},
                     "id": "13",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath configuration."
+                        ]
+                    },
                     "x": 980,
                     "y": 900
                 },
@@ -632,7 +651,11 @@
                     "errors": {},
                     "id": "14",
                     "type": "prompt",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath configuration."
+                        ]
+                    },
                     "x": 1360,
                     "y": 864.5
                 },
@@ -723,13 +746,185 @@
                     "x": 1180,
                     "y": 1184.5
                 },
-                "4": {
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "list_merge",
+                            "repoName": "community"
+                        },
+                        "functionId": 8,
+                        "functionName": "list_merge_8",
+                        "id": "20",
+                        "selectMore": false,
+                        "tab": "customFunctions",
+                        "type": "utility",
+                        "utilities": {
+                            "list_merge": {
+                                "description": "Merge 2-10 different data paths into a single output data path. For example, if IP addresses are stored in the fields sourceAddress, destinationAddress, and deviceAddress, then those three fields could be merged together to form a single list of IP addresses.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "list_merge",
+                                "name": "list_merge"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "list_merge": {
+                                "input_1": [
+                                    "artifact:*.cef.destinationAddress"
+                                ],
+                                "input_10": null,
+                                "input_2": [
+                                    "artifact:*.cef.sourceAddress"
+                                ],
+                                "input_3": null,
+                                "input_4": null,
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "20",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 980,
+                    "y": 364.5
+                },
+                "21": {
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
                             "customName": "my geo locate",
-                            "customNameId": 0,
+                            "customNameId": 1,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -739,10 +934,10 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "my_geo_locate",
-                        "id": "4",
+                        "functionName": "my_geo_locate_1",
+                        "id": "21",
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "list_merge_8:custom_function_result.data.*.item"
                         },
                         "requiredParameters": [
                             {
@@ -750,15 +945,14 @@
                                 "field": "ip"
                             }
                         ],
-                        "tab": "byAction",
                         "type": "action"
                     },
                     "errors": {},
-                    "id": "4",
+                    "id": "21",
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 560
+                    "y": 504.5
                 },
                 "9": {
                     "data": {
@@ -927,7 +1121,11 @@
                     "errors": {},
                     "id": "9",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1520,
                     "y": 680
                 }
@@ -941,7 +1139,7 @@
         "schema": "5.0.8",
         "version": "5.5.0.108488"
     },
-    "create_time": "2023-05-30T20:31:50.227713+00:00",
+    "create_time": "2023-05-31T16:36:39.395984+00:00",
     "draft_mode": false,
     "labels": [
         "*"
