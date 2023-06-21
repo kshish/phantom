@@ -12,8 +12,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'list_merge_5' block
-    list_merge_5(container=container)
+    # call 'call_api_5' block
+    call_api_5(container=container)
 
     return
 
@@ -152,7 +152,7 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 
     container = phantom.get_container(container.get('id', None))
 
-    call_api_4(container=container)
+    add_comment_4(container=container)
 
     return
 
@@ -185,6 +185,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a comment",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -207,29 +213,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_jun2023childdemo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_3() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -237,6 +222,10 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
 @phantom.playbook_block()
 def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("filter_1() called")
+
+    ################################################################################
+    # This is a 
+    ################################################################################
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -284,8 +273,8 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 
 
 @phantom.playbook_block()
-def call_api_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("call_api_4() called")
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_4() called")
 
     ################################################################################
     ## Custom Code Start
@@ -296,33 +285,19 @@ def call_api_4(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
     ## Custom Code End
     ################################################################################
+
+    phantom.comment(container=container)
 
     return
 
 
 @phantom.playbook_block()
-def list_merge_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("list_merge_5() called")
+def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_5() called")
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.cef.sourceAddress","artifact:*.id"])
-
-    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
-    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
-
-    parameters = []
-
-    parameters.append({
-        "input_1": container_artifact_cef_item_0,
-        "input_2": container_artifact_cef_item_1,
-        "input_3": None,
-        "input_4": None,
-        "input_5": None,
-        "input_6": None,
-        "input_7": None,
-        "input_8": None,
-        "input_9": None,
-        "input_10": None,
-    })
+    ################################################################################
+    # This will merge multiple fields
+    ################################################################################
 
     ################################################################################
     ## Custom Code Start
@@ -334,7 +309,97 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=geolocate_ip_1)
+    geolocate_ip_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_jun2023childdemo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_jun2023childdemo_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
+
+    inputs = {
+        "some_comment": prompt_1_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/jun2023childdemo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/jun2023childdemo", container=container, name="playbook_jun2023childdemo_1", callback=add_comment_6, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_6() called")
+
+    playbook_jun2023childdemo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_jun2023childdemo_1:playbook_output:thoughts"])
+
+    playbook_jun2023childdemo_1_output_thoughts_values = [item[0] for item in playbook_jun2023childdemo_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_jun2023childdemo_1_output_thoughts_values)
+
+    geolocate_ip_2(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_2() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    playbook_jun2023childdemo_1_output_some_ip_back = phantom.collect2(container=container, datapath=["playbook_jun2023childdemo_1:playbook_output:some_ip_back"])
+
+    parameters = []
+
+    # build parameters list for 'geolocate_ip_2' call
+    for playbook_jun2023childdemo_1_output_some_ip_back_item in playbook_jun2023childdemo_1_output_some_ip_back:
+        if playbook_jun2023childdemo_1_output_some_ip_back_item[0] is not None:
+            parameters.append({
+                "ip": playbook_jun2023childdemo_1_output_some_ip_back_item[0],
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_2", assets=["maxmind"])
 
     return
 
