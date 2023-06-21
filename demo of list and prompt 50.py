@@ -124,7 +124,7 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
     # set user and message variables for phantom.prompt call
 
     user = None
-    role = "admin"
+    role = "Administrator"
     message = """Yes, the {0} color is in the list"""
 
     # parameter list for template variable replacement
