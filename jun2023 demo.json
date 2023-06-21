@@ -33,18 +33,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_7",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -81,9 +69,28 @@
                     "sourcePort": "10_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_11",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_7",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "883e6c75e7070982345bb15af87af237c5b1033f",
+            "hash": "b531b5e670360802ba08146e8304fee8fa41f1a3",
             "nodes": {
                 "0": {
                     "data": {
@@ -148,6 +155,28 @@
                     "warnings": {},
                     "x": 1040,
                     "y": 760
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "11",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1220,
+                    "y": 1044.5
                 },
                 "3": {
                     "data": {
@@ -497,12 +526,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "7",
-                        "message": "The container {0} with severity {1} has IP(s) from countries outside our list.\n\nIP: {2} is from: {3}",
+                        "message": "The container {0} with severity {1} has IP(s) from countries outside our list.\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -522,7 +550,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 1300,
-                    "y": 1080
+                    "y": 1160
                 },
                 "8": {
                     "data": {
@@ -621,7 +649,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-06-21T13:48:56.183370+00:00",
+    "create_time": "2023-06-21T13:53:34.377491+00:00",
     "draft_mode": false,
     "labels": [
         "*"
