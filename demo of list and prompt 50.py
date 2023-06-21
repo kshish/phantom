@@ -8,6 +8,7 @@ import json
 from datetime import datetime, timedelta
 
 
+@phantom.playbook_block()
 def on_start(container):
     phantom.debug('on_start() called')
 
@@ -16,12 +17,14 @@ def on_start(container):
 
     return
 
+@phantom.playbook_block()
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("prompt_1() called")
 
     # set user and message variables for phantom.prompt call
 
-    user = "admin"
+    user = None
+    role = "Administrator"
     message = """Please enter in a color"""
 
     # parameter list for template variable replacement
@@ -37,11 +40,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_1)
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_1)
 
     return
 
 
+@phantom.playbook_block()
 def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("decision_1() called")
 
@@ -50,7 +54,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         conditions=[
             ["prompt_1:action_result.status", "==", "success"]
-        ])
+        ],
+        delimiter=",")
 
     # call connected blocks if condition 1 matched
     if found_match_1:
@@ -60,6 +65,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     return
 
 
+@phantom.playbook_block()
 def string_to_lowercase_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("string_to_lowercase_1() called")
 
@@ -88,6 +94,7 @@ def string_to_lowercase_1(action=None, success=None, container=None, results=Non
     return
 
 
+@phantom.playbook_block()
 def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("decision_2() called")
 
@@ -96,7 +103,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         conditions=[
             ["string_to_lowercase_1:custom_function_result.data.lowercase_string", "in", "custom_list:mycolors"]
-        ])
+        ],
+        delimiter=",")
 
     # call connected blocks if condition 1 matched
     if found_match_1:
@@ -109,12 +117,14 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     return
 
 
+@phantom.playbook_block()
 def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("prompt_2() called")
 
     # set user and message variables for phantom.prompt call
 
-    user = "admin"
+    user = None
+    role = "admin"
     message = """Yes, the {0} color is in the list"""
 
     # parameter list for template variable replacement
@@ -122,11 +132,12 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
         "string_to_lowercase_1:custom_function_result.data.lowercase_string"
     ]
 
-    phantom.prompt2(container=container, user=user, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters)
 
     return
 
 
+@phantom.playbook_block()
 def add_to_list_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("add_to_list_2() called")
 
@@ -149,6 +160,7 @@ def add_to_list_2(action=None, success=None, container=None, results=None, handl
     return
 
 
+@phantom.playbook_block()
 def on_finish(container, summary):
     phantom.debug("on_finish() called")
 
