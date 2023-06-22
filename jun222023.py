@@ -38,7 +38,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ################################################################################
     ## Custom Code Start
     ################################################################################
-
+    phantom.debug(parameters)
     # Write your custom code here...
 
     ################################################################################
