@@ -154,8 +154,8 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
     parameters = [
         "container:name",
         "container:severity",
-        "geolocate_ip_1:action_result.parameter.ip",
-        "geolocate_ip_1:action_result.data.*.country_name"
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
     ]
 
     # responses
