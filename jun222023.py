@@ -111,14 +111,14 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    severity_low(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_to_lowsev(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def severity_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("severity_low() called")
+def set_label_to_lowsev(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_to_lowsev() called")
 
     ################################################################################
     ## Custom Code Start
