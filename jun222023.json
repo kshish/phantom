@@ -14,13 +14,6 @@
                     "targetPort": "3_in"
                 },
                 {
-                    "id": "port_3_to_port_5",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -62,9 +55,28 @@
                     "sourcePort": "8_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_3_to_port_10",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_5",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
                 }
             ],
-            "hash": "c8538c24f0dc9ad2d3946d1b480bd2fac8dceddb",
+            "hash": "fc5fd1e7aa04e344200e5f25a1ca9f9e959ecd0a",
             "nodes": {
                 "0": {
                     "data": {
@@ -79,8 +91,8 @@
                     "id": "0",
                     "type": "start",
                     "warnings": {},
-                    "x": 1000,
-                    "y": 419.99999999999966
+                    "x": 1020,
+                    "y": 360
                 },
                 "1": {
                     "data": {
@@ -98,6 +110,37 @@
                     "warnings": {},
                     "x": 1040,
                     "y": 1200
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "10",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1060,
+                    "y": 624.5
                 },
                 "3": {
                     "data": {
@@ -133,7 +176,7 @@
                     "userCode": "    phantom.debug(parameters)\n    # Write your custom code here...\n\n",
                     "warnings": {},
                     "x": 1000,
-                    "y": 600
+                    "y": 520
                 },
                 "4": {
                     "data": {
@@ -310,7 +353,11 @@
                     "errors": {},
                     "id": "4",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1540,
                     "y": 660
                 },
@@ -325,13 +372,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -495,11 +542,7 @@
                     "errors": {},
                     "id": "8",
                     "type": "decision",
-                    "warnings": {
-                        "config": [
-                            "Reconfigure invalid datapath."
-                        ]
-                    },
+                    "warnings": {},
                     "x": 1340,
                     "y": 1080
                 },
@@ -568,7 +611,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-06-22T20:28:26.216177+00:00",
+    "create_time": "2023-06-23T16:47:06.182949+00:00",
     "draft_mode": false,
     "labels": [
         "*"
