@@ -12,8 +12,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'list_merge_4' block
+    list_merge_4(container=container)
 
     return
 
@@ -23,16 +23,15 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    list_merge_4__result = phantom.collect2(container=container, datapath=["list_merge_4:custom_function_result.data.item"])
 
     parameters = []
 
     # build parameters list for 'geolocate_ip_1' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
+    for list_merge_4__result_item in list_merge_4__result:
+        if list_merge_4__result_item[0] is not None:
             parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
+                "ip": list_merge_4__result_item[0],
             })
 
     ################################################################################
@@ -148,7 +147,7 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
 
     user = None
     role = "Administrator"
-    message = """The container {0} with severity {1}.\n\n{2}"""
+    message = """The container {0} with severity {1}.\n\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -262,6 +261,80 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_for_high_severity(container=container)
+    send_email_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def send_email_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("send_email_1() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    format_1__as_list = phantom.get_format_data(name="format_1__as_list")
+
+    parameters = []
+
+    # build parameters list for 'send_email_1' call
+    for format_1__item in format_1__as_list:
+        if format_1__item is not None:
+            parameters.append({
+                "body": format_1__item,
+                "to": "",
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("send email", parameters=parameters, name="send_email_1", assets=["myemailserverfake"])
+
+    return
+
+
+@phantom.playbook_block()
+def list_merge_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("list_merge_4() called")
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.cef.destinationAddress","artifact:*.cef.deviceAddress","artifact:*.id"])
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+    container_artifact_cef_item_2 = [item[2] for item in container_artifact_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": container_artifact_cef_item_1,
+        "input_3": container_artifact_cef_item_2,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=geolocate_ip_1)
 
     return
 
