@@ -26,18 +26,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_7",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -74,9 +62,28 @@
                     "sourcePort": "10_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_11",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_7",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "fc228a7c15b90756221cc88392b4cf38d3df4a0a",
+            "hash": "bdd28e4d14568aecde604f55498910ed9f144255",
             "nodes": {
                 "0": {
                     "data": {
@@ -92,7 +99,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1020,
-                    "y": 360
+                    "y": 359.9999999999999
                 },
                 "1": {
                     "data": {
@@ -141,6 +148,28 @@
                     "warnings": {},
                     "x": 1060,
                     "y": 624.5
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "11",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from Country: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1260,
+                    "y": 800
                 },
                 "3": {
                     "data": {
@@ -353,7 +382,11 @@
                     "errors": {},
                     "id": "4",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1540,
                     "y": 660
                 },
@@ -481,12 +514,11 @@
                         "functionId": 1,
                         "functionName": "prompt_for_high_severity",
                         "id": "7",
-                        "message": "The container {0} with severity {1}.\n\nIP: {2} country: {3}",
+                        "message": "The container {0} with severity {1}.\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -607,7 +639,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-06-23T16:48:33.534799+00:00",
+    "create_time": "2023-06-23T16:56:30.386921+00:00",
     "draft_mode": false,
     "labels": [
         "*"
