@@ -56,6 +56,29 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment="we are in the sevlow pb")
 
+    promote_to_case_3(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="NIST 800-61")
+
+    container = phantom.get_container(container.get('id', None))
+
     return
 
 
