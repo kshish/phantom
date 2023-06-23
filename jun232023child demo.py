@@ -89,6 +89,8 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 
     phantom.pin(container=container, data=playbook_input_countries_values, message=playbook_input_ips_values, pin_style="red", pin_type="card")
 
+    promote_to_case_4(container=container)
+
     return
 
 
@@ -121,6 +123,27 @@ def file_reputation_1(action=None, success=None, container=None, results=None, h
     ################################################################################
 
     phantom.act("file reputation", parameters=parameters, name="file_reputation_1", assets=["myvt"])
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("promote_to_case_4() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="NIST 800-61")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
