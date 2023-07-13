@@ -19,9 +19,59 @@
                     "sourcePort": "3_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_3_to_port_5",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "5",
+                    "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_5_to_port_6",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_7",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
+                },
+                {
+                    "id": "port_7_to_port_8",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "8dd870e9bd9dce7cbe5f6afa76d3fe34dee327b4",
+            "hash": "45df945e7c163d1acea15c56ad63971fce4e4d34",
             "nodes": {
                 "0": {
                     "data": {
@@ -37,7 +87,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 419.9999999999994
                 },
                 "1": {
                     "data": {
@@ -52,8 +102,8 @@
                     "id": "1",
                     "type": "end",
                     "warnings": {},
-                    "x": 1000,
-                    "y": 1000
+                    "x": 1040,
+                    "y": 1600
                 },
                 "3": {
                     "data": {
@@ -88,7 +138,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 624.5
+                    "y": 620
                 },
                 "4": {
                     "data": {
@@ -262,8 +312,250 @@
                     "id": "4",
                     "type": "utility",
                     "warnings": {},
-                    "x": 980,
-                    "y": 784.5
+                    "x": 1280,
+                    "y": 740
+                },
+                "5": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Germany"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "Turkey"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IP is in our list",
+                                "display": "If",
+                                "logic": "or",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "IP is not in our list",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "5",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "5",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 1060,
+                    "y": 804.5
+                },
+                "6": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "6",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "low"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1170,
+                    "y": 1024.5
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Prompt for High severity",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_for_high_severity",
+                        "id": "7",
+                        "message": "The container {0} with severity {1} has IPs outside our list\n\nIP: {2} is from {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "geolocate_ip_1:action_result.parameter.ip",
+                            "geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 840,
+                    "y": 1040
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "case_sensitive": false,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_for_high_severity:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "Said Yes",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "8",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 840,
+                    "y": 1224.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 3,
+                        "functionName": "set_severity_3",
+                        "id": "9",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 760,
+                    "y": 1420
                 }
             },
             "notes": ""
@@ -275,7 +567,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-07-13T16:24:31.823488+00:00",
+    "create_time": "2023-07-13T18:40:17.389302+00:00",
     "draft_mode": false,
     "labels": [
         "*"
