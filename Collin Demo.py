@@ -178,6 +178,12 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -201,6 +207,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        playbook_child_collin_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -292,6 +299,61 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=geolocate_ip_1)
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_child_collin_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_child_collin_demo_1() called")
+
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
+    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_none]
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
+
+    inputs = {
+        "ip_list": [],
+        "country_list": filtered_result_0_data___country_name,
+        "reason": prompt_for_high_severity_summary_responses_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "Chris/child Collin demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/child Collin demo", container=container, name="playbook_child_collin_demo_1", callback=pin_3, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_3() called")
+
+    playbook_child_collin_demo_1_output_response = phantom.collect2(container=container, datapath=["playbook_child_collin_demo_1:playbook_output:response"])
+
+    playbook_child_collin_demo_1_output_response_values = [item[0] for item in playbook_child_collin_demo_1_output_response]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data="The above is a reason", message=playbook_child_collin_demo_1_output_response_values, pin_style="grey", pin_type="card")
 
     return
 

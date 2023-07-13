@@ -83,9 +83,28 @@
                     "sourcePort": "12_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_13",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "id": "port_13_to_port_14",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
                 }
             ],
-            "hash": "482f0225935eab682e6d6337079d5f34ff2a41f2",
+            "hash": "af60c0869182cd1053041d547f13b021101bda58",
             "nodes": {
                 "0": {
                     "data": {
@@ -101,7 +120,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 280
+                    "y": 279.9999999999999
                 },
                 "1": {
                     "data": {
@@ -349,6 +368,159 @@
                     "warnings": {},
                     "x": 990,
                     "y": 424.5
+                },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_child_Collin_demo_1",
+                        "id": "13",
+                        "inputs": {
+                            "Reason": {
+                                "datapaths": [
+                                    "prompt_for_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            },
+                            "country_list": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip_list": {
+                                "datapaths": [],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "child Collin demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "Chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 1240,
+                    "y": 1344.5
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 3,
+                        "functionName": "pin_3",
+                        "id": "14",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": "The above is a reason",
+                                "message": "playbook_child_collin_demo_1:playbook_output:response",
+                                "name": null,
+                                "pin_style": "grey",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1240,
+                    "y": 1504.5
                 },
                 "3": {
                     "data": {
@@ -706,6 +878,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -762,7 +938,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-07-13T21:09:43.208927+00:00",
+    "create_time": "2023-07-13T21:14:27.147330+00:00",
     "draft_mode": false,
     "labels": [
         "*"
