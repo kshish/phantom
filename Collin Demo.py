@@ -440,7 +440,7 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Private IP(s)")
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Private IP(s)", pin_style="grey", pin_type="card")
 
     return
 
