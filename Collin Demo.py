@@ -312,8 +312,8 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 
 
 @phantom.playbook_block()
-def set_label_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_label_5() called")
+def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_5() called")
 
     ################################################################################
     ## Custom Code Start
@@ -324,8 +324,6 @@ def set_label_5(action=None, success=None, container=None, results=None, handle=
     ################################################################################
     ## Custom Code End
     ################################################################################
-
-    phantom.set_label(container=container, label="test")
 
     container = phantom.get_container(container.get('id', None))
 
