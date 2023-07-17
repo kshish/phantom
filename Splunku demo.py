@@ -123,14 +123,14 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    pin_set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+    pin_set_severity_set_label_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def pin_set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_set_severity_2() called")
+def pin_set_severity_set_label_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_set_severity_set_label_2() called")
 
     my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name"], action_results=results)
 
@@ -148,6 +148,7 @@ def pin_set_severity_2(action=None, success=None, container=None, results=None, 
 
     phantom.pin(container=container, data=my_geolocate_result_item_0, message="IP(s) are in our list", pin_style="blue", pin_type="card")
     phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="friendly ips")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -333,17 +334,17 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
 def playbook_splunk_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_splunk_child_demo_1() called")
 
-    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip","my_geolocate:action_result.data.*.country_name"], action_results=results)
     prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip","my_geolocate:action_result.data.*.country_name"], action_results=results)
 
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
     my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
     my_geolocate_result_item_1 = [item[1] for item in my_geolocate_result_data]
-    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
 
     inputs = {
+        "reason": prompt_for_high_severity_summary_responses_1,
         "ip_list": my_geolocate_parameter_ip,
         "countries_list": my_geolocate_result_item_1,
-        "reason": prompt_for_high_severity_summary_responses_1,
     }
 
     ################################################################################
