@@ -207,6 +207,12 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Justification",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -229,29 +235,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_4(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_splunk_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_4() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -340,6 +325,39 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_splunk_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_splunk_child_demo_1() called")
+
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip","my_geolocate:action_result.data.*.country_name"], action_results=results)
+    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
+
+    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
+    my_geolocate_result_item_1 = [item[1] for item in my_geolocate_result_data]
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
+
+    inputs = {
+        "ip_list": my_geolocate_parameter_ip,
+        "countries_list": my_geolocate_result_item_1,
+        "reason": prompt_for_high_severity_summary_responses_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "utils/Splunk child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("utils/Splunk child demo", container=container, name="playbook_splunk_child_demo_1", inputs=inputs)
 
     return
 

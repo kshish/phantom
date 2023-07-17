@@ -46,18 +46,6 @@
                     "targetPort": "12_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_12_to_port_13",
-                    "sourceNode": "12",
-                    "sourcePort": "12_out",
-                    "targetNode": "13",
-                    "targetPort": "13_in"
-                },
-                {
                     "id": "port_4_to_port_14",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -103,9 +91,21 @@
                     "sourcePort": "16_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_17",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
                 }
             ],
-            "hash": "2ec9d2a20b81e7e7674f6e848c5a847549d2d6af",
+            "hash": "46315050753ec6b484f080ee579b9f92efbf5925",
             "nodes": {
                 "0": {
                     "data": {
@@ -121,7 +121,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 140,
-                    "y": -120.00000000000006
+                    "y": -120.00000000000011
                 },
                 "1": {
                     "data": {
@@ -137,7 +137,7 @@
                     "type": "end",
                     "warnings": {},
                     "x": 460,
-                    "y": -6.394884621840902e-14
+                    "y": -1.2789769243681803e-13
                 },
                 "10": {
                     "data": {
@@ -281,6 +281,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Justification",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -325,59 +329,6 @@
                     "warnings": {},
                     "x": 530,
                     "y": 1132
-                },
-                "13": {
-                    "data": {
-                        "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 4,
-                        "functionName": "set_severity_4",
-                        "id": "13",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "13",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 450,
-                    "y": 1312
                 },
                 "14": {
                     "data": {
@@ -602,6 +553,48 @@
                     "warnings": {},
                     "x": 120,
                     "y": 24.5
+                },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_Splunk_child_demo_1",
+                        "id": "17",
+                        "inputs": {
+                            "countries_list": {
+                                "datapaths": [
+                                    "my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip_list": {
+                                "datapaths": [
+                                    "my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason": {
+                                "datapaths": [
+                                    "prompt_for_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "Splunk child demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "utils",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 460,
+                    "y": 1364.5
                 },
                 "4": {
                     "data": {
@@ -1028,7 +1021,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-07-17T20:31:27.916182+00:00",
+    "create_time": "2023-07-17T21:20:24.236084+00:00",
     "draft_mode": false,
     "labels": [
         "*"
