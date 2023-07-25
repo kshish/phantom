@@ -40,18 +40,6 @@
                     "targetPort": "10_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_9_to_port_11",
-                    "sourceNode": "9",
-                    "sourcePort": "9_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
                     "id": "port_4_to_port_12",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -104,14 +92,26 @@
                     "targetPort": "8_in"
                 },
                 {
-                    "id": "port_11_to_port_16",
-                    "sourceNode": "11",
-                    "sourcePort": "11_out",
-                    "targetNode": "16",
-                    "targetPort": "16_in"
+                    "id": "port_10_to_port_17",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_18",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
                 }
             ],
-            "hash": "8d3c747238506d707a2ce4456e13cb1dd9bbe020",
+            "hash": "d5fbb97a00bc99204b40f076a74bf15a4779023f",
             "nodes": {
                 "0": {
                     "data": {
@@ -319,65 +319,10 @@
                     "x": 580,
                     "y": 1148
                 },
-                "11": {
-                    "data": {
-                        "advanced": {
-                            "customName": "set high severity",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 4,
-                        "functionName": "set_high_severity",
-                        "id": "11",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "11",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 320,
-                    "y": 1320
-                },
                 "12": {
                     "data": {
                         "advanced": {
-                            "customName": "filter_Out_external_IP",
+                            "customName": "filter_in_external_IP",
                             "customNameId": 0,
                             "join": []
                         },
@@ -397,7 +342,7 @@
                             }
                         ],
                         "functionId": 1,
-                        "functionName": "filter_out_external_ip",
+                        "functionName": "filter_in_external_ip",
                         "id": "12",
                         "type": "filter"
                     },
@@ -589,8 +534,8 @@
                         "functionName": "format_1",
                         "id": "14",
                         "parameters": [
-                            "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "template": "%%\nIP: {0} is from {1}\n%%",
                         "type": "format"
@@ -602,118 +547,70 @@
                     "x": 450,
                     "y": 804
                 },
-                "16": {
+                "17": {
                     "data": {
                         "advanced": {
                             "join": []
                         },
-                        "functionId": 7,
-                        "functionName": "pin_7",
-                        "id": "16",
+                        "customFunction": null,
+                        "functionId": 8,
+                        "functionName": "call_api_8",
+                        "id": "17",
                         "selectMore": false,
-                        "tab": "apis",
+                        "tab": "customFunctions",
                         "type": "utility",
-                        "utilities": {
-                            "pin": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "description": "",
-                                        "label": "message",
-                                        "name": "message",
-                                        "placeholder": "Enter a message",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "data",
-                                        "name": "data",
-                                        "placeholder": "Enter a value",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "card",
-                                            "data"
-                                        ],
-                                        "description": "",
-                                        "label": "pin type",
-                                        "name": "pin_type",
-                                        "placeholder": "Select pin type",
-                                        "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "grey",
-                                            "blue",
-                                            "red"
-                                        ],
-                                        "description": "",
-                                        "label": "pin color",
-                                        "name": "pin_style",
-                                        "placeholder": "Select pin color",
-                                        "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "name",
-                                        "name": "name",
-                                        "placeholder": "Use a named pin",
-                                        "renderType": "input",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "author",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "truncate",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "trace",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "pin",
-                                "name": "pin"
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "pin": {
-                                "_internal": [
-                                    "container",
-                                    "author",
-                                    "truncate",
-                                    "trace"
-                                ],
-                                "data": "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
-                                "message": "IP(s) outside our list",
-                                "name": null,
-                                "pin_style": "red",
-                                "pin_type": "card"
-                            }
-                        }
+                        "utilities": {},
+                        "utilityType": null,
+                        "values": {}
                     },
                     "errors": {},
-                    "id": "16",
+                    "id": "17",
                     "type": "utility",
                     "warnings": {},
+                    "x": 580,
+                    "y": 1304.5
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_jluy2023_child_pb_demo_1",
+                        "id": "18",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_for_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "jluy2023 child pb demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "Chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "playbook",
+                    "warnings": {},
                     "x": 320,
-                    "y": 1464.5
+                    "y": 1324.5
                 },
                 "4": {
                     "data": {
@@ -941,19 +838,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Mexico"
                                     }
                                 ],
@@ -1076,6 +973,11 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responseOptions": [],
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -1131,7 +1033,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-07-25T17:05:08.340097+00:00",
+    "create_time": "2023-07-25T18:02:53.690148+00:00",
     "draft_mode": false,
     "labels": [
         "*"

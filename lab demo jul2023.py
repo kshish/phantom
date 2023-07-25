@@ -56,7 +56,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    filter_out_external_ip(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_in_external_ip(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -114,9 +114,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
         ],
         delimiter=None)
 
@@ -180,6 +180,12 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -214,7 +220,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_jluy2023_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -255,37 +261,14 @@ def debug_3(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3")
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3", callback=call_api_8)
 
     return
 
 
 @phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    pin_7(container=container)
-
-    return
-
-
-@phantom.playbook_block()
-def filter_out_external_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("filter_out_external_ip() called")
+def filter_in_external_ip(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("filter_in_external_ip() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -293,7 +276,7 @@ def filter_out_external_ip(action=None, success=None, container=None, results=No
         conditions=[
             ["my_geolocate:action_result.data.*.country_name", "!=", ""]
         ],
-        name="filter_out_external_ip:condition_1",
+        name="filter_in_external_ip:condition_1",
         delimiter=None)
 
     # call connected blocks if filtered artifacts or results
@@ -350,8 +333,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     ################################################################################
@@ -372,12 +355,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_7() called")
-
-    filtered_result_0_data_filter_out_external_ip = phantom.collect2(container=container, datapath=["filtered-data:filter_out_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_out_external_ip]
+def call_api_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("call_api_8() called")
 
     ################################################################################
     ## Custom Code Start
@@ -389,7 +368,38 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) outside our list", pin_style="red", pin_type="card")
+    return
+
+
+@phantom.playbook_block()
+def playbook_jluy2023_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_jluy2023_child_pb_demo_1() called")
+
+    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_in_external_ip = phantom.collect2(container=container, datapath=["filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_in_external_ip]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_in_external_ip]
+
+    inputs = {
+        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "Chris/jluy2023 child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/jluy2023 child pb demo", container=container, name="playbook_jluy2023_child_pb_demo_1", inputs=inputs)
 
     return
 
