@@ -145,7 +145,7 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="low")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -375,17 +375,17 @@ def call_api_8(action=None, success=None, container=None, results=None, handle=N
 def playbook_jluy2023_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_jluy2023_child_pb_demo_1() called")
 
-    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_in_external_ip = phantom.collect2(container=container, datapath=["filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_in_external_ip:condition_1:my_geolocate:action_result.data.*.country_name"])
+    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
 
-    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_in_external_ip]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_in_external_ip]
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
 
     inputs = {
-        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
+        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
     }
 
     ################################################################################
