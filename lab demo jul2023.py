@@ -261,7 +261,7 @@ def debug_3(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3", callback=call_api_8)
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3")
 
     return
 
@@ -350,23 +350,6 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_for_high_severity(container=container)
-
-    return
-
-
-@phantom.playbook_block()
-def call_api_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("call_api_8() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
 
     return
 
