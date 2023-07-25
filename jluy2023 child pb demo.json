@@ -35,7 +35,7 @@
                     "targetPort": "1_in"
                 }
             ],
-            "hash": "6020cc302aae0b91f9b879009c1f92035e7c7f53",
+            "hash": "93b0c55a831ec54a84c4c48df7d6a8a3b07bc39b",
             "nodes": {
                 "0": {
                     "data": {
@@ -51,7 +51,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 419.9999999999998
                 },
                 "1": {
                     "data": {
@@ -76,7 +76,7 @@
                             "refreshNotableData": true
                         },
                         "functionId": 1,
-                        "functionName": "set_severity_pin_1",
+                        "functionName": "set_severity_pin_promote_to_case_1",
                         "id": "2",
                         "selectMore": false,
                         "tab": "apis",
@@ -158,6 +158,44 @@
                                 "label": "pin",
                                 "name": "pin"
                             },
+                            "promote": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": [
+                                            "NIST 800-61",
+                                            "Response Template 1",
+                                            "Account Compromise",
+                                            "Data Breach",
+                                            "Network Indicator Enrichment",
+                                            "Risk Investigation",
+                                            "Risk Response",
+                                            "Self-Replicating Malware",
+                                            "Suspicious Email",
+                                            "Vulnerability Disclosure"
+                                        ],
+                                        "description": "",
+                                        "label": "template",
+                                        "name": "template",
+                                        "placeholder": "Select a template",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "promote to case",
+                                "name": "promote",
+                                "refreshNotableData": true
+                            },
                             "set_severity": {
                                 "description": "",
                                 "fields": [
@@ -190,11 +228,18 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "playbook_input:ips",
+                                "data": "playbook_input:countries",
                                 "message": "IPs outside our Countries list",
                                 "name": null,
                                 "pin_style": "red",
                                 "pin_type": "card"
+                            },
+                            "promote": {
+                                "_internal": [
+                                    "container",
+                                    "trace"
+                                ],
+                                "template": "Risk Response"
                             },
                             "set_severity": {
                                 "_internal": [
@@ -344,7 +389,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-07-25T17:55:27.890846+00:00",
+    "create_time": "2023-07-25T19:07:45.645154+00:00",
     "draft_mode": false,
     "labels": [
         "*"

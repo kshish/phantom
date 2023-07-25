@@ -12,18 +12,18 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'set_severity_pin_1' block
-    set_severity_pin_1(container=container)
+    # call 'set_severity_pin_promote_to_case_1' block
+    set_severity_pin_promote_to_case_1(container=container)
 
     return
 
 @phantom.playbook_block()
-def set_severity_pin_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_pin_1() called")
+def set_severity_pin_promote_to_case_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_pin_promote_to_case_1() called")
 
-    playbook_input_ips = phantom.collect2(container=container, datapath=["playbook_input:ips"])
+    playbook_input_countries = phantom.collect2(container=container, datapath=["playbook_input:countries"])
 
-    playbook_input_ips_values = [item[0] for item in playbook_input_ips]
+    playbook_input_countries_values = [item[0] for item in playbook_input_countries]
 
     ################################################################################
     ## Custom Code Start
@@ -36,7 +36,8 @@ def set_severity_pin_1(action=None, success=None, container=None, results=None, 
     ################################################################################
 
     phantom.set_severity(container=container, severity="high")
-    phantom.pin(container=container, data=playbook_input_ips_values, message="IPs outside our Countries list", pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=playbook_input_countries_values, message="IPs outside our Countries list", pin_style="red", pin_type="card")
+    phantom.promote(container=container, template="Risk Response")
 
     container = phantom.get_container(container.get('id', None))
 
