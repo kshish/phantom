@@ -14,8 +14,6 @@ def on_start(container):
 
     # call 'geolocate_ip_1' block
     geolocate_ip_1(container=container)
-    # call 'my_domain_lookup' block
-    my_domain_lookup(container=container)
 
     return
 
@@ -60,36 +58,6 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
     decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
-
-    return
-
-
-@phantom.playbook_block()
-def my_domain_lookup(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("my_domain_lookup() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    label_value = container.get("label", None)
-
-    parameters = []
-
-    if label_value is not None:
-        parameters.append({
-            "domain": label_value,
-        })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("lookup domain", parameters=parameters, name="my_domain_lookup", assets=["google_dns"])
 
     return
 
