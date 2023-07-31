@@ -198,7 +198,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "N*"]
         ],
         delimiter=None)
 
