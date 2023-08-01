@@ -27,18 +27,6 @@
                     "targetPort": "7_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_6_to_port_8",
-                    "sourceNode": "6",
-                    "sourcePort": "6_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "id": "port_8_to_port_9",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
@@ -89,9 +77,28 @@
                     "sourcePort": "12_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_6_to_port_13",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "id": "port_13_to_port_8",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "4fdc48c422ef5a7d3d929c7e9c3d97ee1e32d447",
+            "hash": "54522f67cfe4eba96ec2fa20529d164e81dccf87",
             "nodes": {
                 "0": {
                     "data": {
@@ -384,6 +391,28 @@
                     "x": 980,
                     "y": 420
                 },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "13",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1260,
+                    "y": 820
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -658,7 +687,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 780
+                    "y": 760
                 },
                 "7": {
                     "data": {
@@ -725,12 +754,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "8",
-                        "message": "The event {0} with severity {1}\n\nIP: {2} is from: {3}",
+                        "message": "The event {0} with severity {1}\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -796,7 +824,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-08-01T14:01:32.395262+00:00",
+    "create_time": "2023-08-01T14:04:43.126227+00:00",
     "draft_mode": false,
     "labels": [
         "*"
