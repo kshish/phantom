@@ -112,11 +112,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Italy"],
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "India"]
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "not in", "custom_list:Countries"]
         ],
         delimiter=None)
 
