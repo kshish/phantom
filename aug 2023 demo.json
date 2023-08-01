@@ -34,18 +34,6 @@
                     "targetPort": "9_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_9_to_port_10",
-                    "sourceNode": "9",
-                    "sourcePort": "9_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
-                },
-                {
                     "id": "port_3_to_port_11",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -96,9 +84,28 @@
                     "sourcePort": "13_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_14",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_16",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
                 }
             ],
-            "hash": "f845f56de3725c85252f7ccc4de1f4293c19794d",
+            "hash": "df728813f93e0769955f32ffe83a3314051e2104",
             "nodes": {
                 "0": {
                     "data": {
@@ -114,7 +121,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 320
+                    "y": 319.9999999999999
                 },
                 "1": {
                     "data": {
@@ -132,61 +139,6 @@
                     "warnings": {},
                     "x": 980,
                     "y": 1420
-                },
-                "10": {
-                    "customCode": null,
-                    "data": {
-                        "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_severity_3",
-                        "id": "10",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "10",
-                    "type": "utility",
-                    "userCode": "    phantom.debug(container)\n    # Write your custom code here...\n\n",
-                    "warnings": {},
-                    "x": 1220,
-                    "y": 1320
                 },
                 "11": {
                     "data": {
@@ -414,6 +366,110 @@
                     "warnings": {},
                     "x": 1220,
                     "y": 900
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_aug_2023_child_pb_demo_1",
+                        "id": "14",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "aug 2023 child pb demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 1220,
+                    "y": 1320
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 5,
+                        "functionName": "add_comment_5",
+                        "id": "16",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "comment": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "comment",
+                                        "name": "comment",
+                                        "placeholder": "Enter a comment",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add comment",
+                                "name": "comment"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "comment": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "trace"
+                                ],
+                                "comment": "playbook_aug_2023_child_pb_demo_1:playbook_output:thoughts"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1220,
+                    "y": 1504.5
                 },
                 "3": {
                     "data": {
@@ -771,6 +827,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason for high severity",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -826,7 +886,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-08-01T14:09:00.244382+00:00",
+    "create_time": "2023-08-01T15:06:12.399120+00:00",
     "draft_mode": false,
     "labels": [
         "*"
