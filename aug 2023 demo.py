@@ -122,7 +122,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle)
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -160,13 +160,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The event {0} with severity {1}\n\n{2}"""
+    message = """The event {0} with severity {1}\n\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "format_1:formatted_data"
+        "format_ip_and_country_list:formatted_data"
     ]
 
     # responses
@@ -289,8 +289,8 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
 
 
 @phantom.playbook_block()
-def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("format_1() called")
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_ip_and_country_list() called")
 
     template = """%%\nIP: {0} is from: {1}\n%%"""
 
@@ -310,7 +310,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     ## Custom Code End
     ################################################################################
 
-    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     prompt_1(container=container)
 
