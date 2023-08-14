@@ -13,7 +13,6 @@ from datetime import datetime, timedelta
 ################################################################################
 
 
-import mymodule
 ################################################################################
 ## Global Custom Code End
 ################################################################################
@@ -69,8 +68,8 @@ def execute_program_1(action=None, success=None, container=None, results=None, h
     parameters = []
 
     parameters.append({
-        "ip_hostname": "127.0.0.1",
         "command": "ps",
+        "ip_hostname": "127.0.0.1",
     })
 
     ################################################################################
