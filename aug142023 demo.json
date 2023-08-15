@@ -29,13 +29,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_3_to_port_7",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -77,10 +70,29 @@
                     "sourcePort": "11_out",
                     "targetNode": "12",
                     "targetPort": "12_in"
+                },
+                {
+                    "id": "port_3_to_port_13",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_13_to_port_7",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
             "globalCustomCode": "\n\n",
-            "hash": "8421d2ecb9e78cf821175e6639db82fe11932706",
+            "hash": "24a9596ac9fbe2dcb708bbe72a1ccd49bce7fb9a",
             "nodes": {
                 "0": {
                     "data": {
@@ -96,7 +108,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.99999999999943
+                    "y": 320
                 },
                 "1": {
                     "data": {
@@ -117,6 +129,7 @@
                 "10": {
                     "data": {
                         "advanced": {
+                            "drop_none": true,
                             "join": []
                         },
                         "approver": {
@@ -130,8 +143,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "geolocate_ip_1:action_result.parameter.ip",
-                            "geolocate_ip_1:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -184,11 +197,7 @@
                     "errors": {},
                     "id": "11",
                     "type": "decision",
-                    "warnings": {
-                        "config": [
-                            "Reconfigure invalid datapath."
-                        ]
-                    },
+                    "warnings": {},
                     "x": 1360,
                     "y": 1064.5
                 },
@@ -245,6 +254,38 @@
                     "x": 1280,
                     "y": 1284.5
                 },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "IPs with country",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "13",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 580
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -277,7 +318,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 540
+                    "y": 460
                 },
                 "4": {
                     "data": {
@@ -504,13 +545,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "China"
                                     }
                                 ],
@@ -536,6 +577,16 @@
                                 "type": "else"
                             }
                         ],
+                        "customDatapaths": {
+                            "geolocate_ip_1": {
+                                "action_result.data.*.continent_name.ccode": {
+                                    "contains": [],
+                                    "isCustomDatapath": true,
+                                    "label": "action_result.data.*.continent_name.ccode",
+                                    "value": "geolocate_ip_1:action_result.data.*.continent_name.ccode"
+                                }
+                            }
+                        },
                         "functionId": 1,
                         "functionName": "decision_1",
                         "id": "7",
@@ -611,7 +662,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-08-14T20:27:49.979527+00:00",
+    "create_time": "2023-08-15T16:49:24.225843+00:00",
     "draft_mode": false,
     "labels": [
         "*"
