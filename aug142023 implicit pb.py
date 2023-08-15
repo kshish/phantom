@@ -56,6 +56,29 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
 
     phantom.comment(container=container, comment="TThis is low severity")
 
+    set_status_3(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def set_status_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_status_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_status(container=container, status="closed")
+
+    container = phantom.get_container(container.get('id', None))
+
     return
 
 
