@@ -16,6 +16,8 @@ def on_start(container):
     add_comment_1(container=container)
     # call 'set_severity_2' block
     set_severity_2(container=container)
+    # call 'debug_4' block
+    debug_4(container=container)
 
     return
 
@@ -116,6 +118,48 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+
+    return
+
+
+@phantom.playbook_block()
+def debug_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_4() called")
+
+    playbook_input_reason_for_high_severity = phantom.collect2(container=container, datapath=["playbook_input:reason_for_high_severity"])
+    playbook_input_ips = phantom.collect2(container=container, datapath=["playbook_input:ips"])
+    playbook_input_countries = phantom.collect2(container=container, datapath=["playbook_input:countries"])
+
+    playbook_input_reason_for_high_severity_values = [item[0] for item in playbook_input_reason_for_high_severity]
+    playbook_input_ips_values = [item[0] for item in playbook_input_ips]
+    playbook_input_countries_values = [item[0] for item in playbook_input_countries]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": playbook_input_reason_for_high_severity_values,
+        "input_2": playbook_input_ips_values,
+        "input_3": playbook_input_countries_values,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_4")
 
     return
 
