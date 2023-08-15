@@ -41,18 +41,6 @@
                     "targetPort": "9_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_10",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
-                },
-                {
                     "id": "port_10_to_port_11",
                     "sourceNode": "10",
                     "sourcePort": "10_out",
@@ -89,10 +77,29 @@
                     "sourcePort": "13_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_14",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_10",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
             "globalCustomCode": "\n\n",
-            "hash": "24a9596ac9fbe2dcb708bbe72a1ccd49bce7fb9a",
+            "hash": "0509e13dc9d945342389ae5f84bfa1b85448bce0",
             "nodes": {
                 "0": {
                     "data": {
@@ -139,12 +146,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "10",
-                        "message": "The {0} event with severity {1} has IP(s) outside our list.\n\nIP: {2} from Country: {3}\n\nThe container name again {0}",
+                        "message": "The {0} event with severity {1} has IP(s) outside our list.\n\n{2}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -163,8 +169,8 @@
                     "id": "10",
                     "type": "prompt",
                     "warnings": {},
-                    "x": 1360,
-                    "y": 880
+                    "x": 1320,
+                    "y": 960
                 },
                 "11": {
                     "data": {
@@ -198,8 +204,8 @@
                     "id": "11",
                     "type": "decision",
                     "warnings": {},
-                    "x": 1360,
-                    "y": 1064.5
+                    "x": 1320,
+                    "y": 1080
                 },
                 "12": {
                     "data": {
@@ -251,8 +257,8 @@
                     "id": "12",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1280,
-                    "y": 1284.5
+                    "x": 1240,
+                    "y": 1280
                 },
                 "13": {
                     "data": {
@@ -285,6 +291,28 @@
                     "warnings": {},
                     "x": 1040,
                     "y": 580
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "14",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP {0} is from {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1240,
+                    "y": 864.5
                 },
                 "3": {
                     "data": {
@@ -662,7 +690,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-08-15T16:49:24.225843+00:00",
+    "create_time": "2023-08-15T16:53:55.184848+00:00",
     "draft_mode": false,
     "labels": [
         "*"

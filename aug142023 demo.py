@@ -160,11 +160,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+    format_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -198,14 +198,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The {0} event with severity {1} has IP(s) outside our list.\n\nIP: {2} from Country: {3}\n\nThe container name again {0}"""
+    message = """The {0} event with severity {1} has IP(s) outside our list.\n\n{2}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+        "format_1:formatted_data"
     ]
 
     # responses
@@ -285,6 +284,35 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """IP {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
