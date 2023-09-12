@@ -127,14 +127,14 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
         return
 
     # check for 'else' condition 2
-    set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_severity_2() called")
+def set_label_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_2() called")
 
     ################################################################################
     ## Custom Code Start
@@ -146,7 +146,7 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="ourlist")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -360,17 +360,17 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 def playbook_sep_2023_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_sep_2023_child_pb_demo_1() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
 
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
+        "reason": prompt_1_summary_responses_1,
         "ip_list": filtered_result_0_parameter_ip,
         "country_list": filtered_result_0_data___country_name,
-        "reason": prompt_1_summary_responses_1,
     }
 
     ################################################################################
