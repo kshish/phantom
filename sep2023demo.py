@@ -113,11 +113,8 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "India"]
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         delimiter=None)
 
