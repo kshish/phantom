@@ -22,13 +22,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_3_to_port_7",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -82,10 +75,29 @@
                     "sourcePort": "10_out",
                     "targetNode": "1",
                     "targetPort": "1_in"
+                },
+                {
+                    "id": "port_3_to_port_12",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_7",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
             "globalCustomCode": "",
-            "hash": "f432e673211296ef7447d7f07300067e1532402a",
+            "hash": "4892560d1d50bef7796e28262ee9efbc8e6a429b",
             "nodes": {
                 "0": {
                     "data": {
@@ -101,7 +113,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.99999999999903
+                    "y": 419.9999999999989
                 },
                 "1": {
                     "data": {
@@ -221,6 +233,39 @@
                     "x": 1440,
                     "y": 1460
                 },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter out none",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "None"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_out_none",
+                        "id": "12",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 660
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -255,7 +300,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 620
+                    "y": 520
                 },
                 "6": {
                     "data": {
@@ -432,8 +477,8 @@
                     "id": "6",
                     "type": "utility",
                     "warnings": {},
-                    "x": 640,
-                    "y": 800
+                    "x": 260,
+                    "y": 660
                 },
                 "7": {
                     "data": {
@@ -446,19 +491,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Mexico"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -565,8 +610,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -598,7 +643,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-10-30T20:22:34.886212+00:00",
+    "create_time": "2023-10-31T16:40:53.233395+00:00",
     "draft_mode": false,
     "labels": [
         "*"
