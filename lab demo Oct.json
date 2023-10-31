@@ -36,18 +36,6 @@
                 {
                     "conditions": [
                         {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_10_to_port_11",
-                    "sourceNode": "10",
-                    "sourcePort": "10_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
-                    "conditions": [
-                        {
                             "index": 1
                         }
                     ],
@@ -108,10 +96,36 @@
                     "sourcePort": "14_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_0_to_port_15",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "15",
+                    "targetPort": "15_in"
+                },
+                {
+                    "id": "port_15_to_port_16",
+                    "sourceNode": "15",
+                    "sourcePort": "15_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_18",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
                 }
             ],
             "globalCustomCode": "",
-            "hash": "b32e40edb5ac27ff1a01ed967a201ac9cbb2f46c",
+            "hash": "56515de1685119d97050b478b8a1be7161ef47f7",
             "nodes": {
                 "0": {
                     "data": {
@@ -127,7 +141,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 239.9999999999999
+                    "y": 239.99999999999966
                 },
                 "1": {
                     "data": {
@@ -190,66 +204,9 @@
                     "errors": {},
                     "id": "10",
                     "type": "decision",
-                    "warnings": {
-                        "config": [
-                            "Reconfigure invalid datapath."
-                        ]
-                    },
+                    "warnings": {},
                     "x": 1340,
                     "y": 1220
-                },
-                "11": {
-                    "data": {
-                        "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_severity_3",
-                        "id": "11",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "11",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 1440,
-                    "y": 1460
                 },
                 "12": {
                     "data": {
@@ -455,7 +412,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 980,
-                    "y": 364.5
+                    "y": 360
                 },
                 "14": {
                     "data": {
@@ -480,6 +437,111 @@
                     "warnings": {},
                     "x": 1260,
                     "y": 960
+                },
+                "15": {
+                    "data": {
+                        "action": "file reputation",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "VirusTotal",
+                        "connectorConfigs": [
+                            "mvt"
+                        ],
+                        "connectorId": "11f676a4-f3d4-4db0-8587-f4e942c07c7c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "file_reputation_1",
+                        "id": "15",
+                        "parameters": {
+                            "hash": {
+                                "parameters": [
+                                    "artifact:*.cef.fileHash",
+                                    "artifact:*.cef.fileHashMd5"
+                                ],
+                                "template": "{0}\n{1}\n"
+                            }
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "hash"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "15",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 540,
+                    "y": 424.5
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": null,
+                        "functionId": 5,
+                        "functionName": "call_api_5",
+                        "id": "16",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {},
+                        "utilityType": null,
+                        "values": {}
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 540,
+                    "y": 540
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "playbook_demo_child_oct_2",
+                        "id": "18",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "demo child oct",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 1660,
+                    "y": 1544.5
                 },
                 "3": {
                     "data": {
@@ -836,6 +898,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -843,11 +909,7 @@
                     "errors": {},
                     "id": "9",
                     "type": "prompt",
-                    "warnings": {
-                        "config": [
-                            "Reconfigure invalid datapath."
-                        ]
-                    },
+                    "warnings": {},
                     "x": 1340,
                     "y": 1060
                 }
@@ -861,7 +923,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2023-10-31T16:55:18.161609+00:00",
+    "create_time": "2023-10-31T18:18:44.364020+00:00",
     "draft_mode": false,
     "labels": [
         "*"
