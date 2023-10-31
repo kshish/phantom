@@ -22,8 +22,6 @@ def on_start(container):
 
     # call 'list_merge_4' block
     list_merge_4(container=container)
-    # call 'file_reputation_1' block
-    file_reputation_1(container=container)
 
     return
 
@@ -308,64 +306,6 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     prompt_1(container=container)
-
-    return
-
-
-@phantom.playbook_block()
-def file_reputation_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("file_reputation_1() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    hash_formatted_string = phantom.format(
-        container=container,
-        template="""{0}\n{1}\n""",
-        parameters=[
-            "artifact:*.cef.fileHash",
-            "artifact:*.cef.fileHashMd5"
-        ])
-
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.fileHash","artifact:*.cef.fileHashMd5","artifact:*.id"])
-
-    parameters = []
-
-    # build parameters list for 'file_reputation_1' call
-    for container_artifact_item in container_artifact_data:
-        if hash_formatted_string is not None:
-            parameters.append({
-                "hash": hash_formatted_string,
-                "context": {'artifact_id': container_artifact_item[2]},
-            })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("file reputation", parameters=parameters, name="file_reputation_1", assets=["mvt"], callback=call_api_5)
-
-    return
-
-
-@phantom.playbook_block()
-def call_api_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("call_api_5() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
 
     return
 
