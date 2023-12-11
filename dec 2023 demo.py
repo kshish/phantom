@@ -202,7 +202,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         logical_operator="or",
         conditions=[
             ["prompt_for_high_severity:action_result.summary.responses.0", "==", "Yes"],
-            ["prompt_for_high_severity:action_result.status", "==", "Failed"]
+            ["prompt_for_high_severity:action_result.status", "==", "failed"]
         ],
         delimiter=None)
 
