@@ -119,7 +119,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         logical_operator="and",
         conditions=[
             ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Brazil"]
+            ["my_geolocate:action_result.data.*.country_name", "!=", "Brazil"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "Canada"]
         ],
         delimiter=None)
 
