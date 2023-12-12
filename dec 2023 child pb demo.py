@@ -83,7 +83,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=playbook_input_countries_values, message="IP(s) outside our list")
+    phantom.pin(container=container, data=playbook_input_countries_values, message="IP(s) outside our list", pin_style="red", pin_type="card")
 
     prompt_1(container=container)
 
