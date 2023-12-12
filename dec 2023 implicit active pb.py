@@ -35,6 +35,27 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
 
     container = phantom.get_container(container.get('id', None))
 
+    add_comment_2(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="This is from implicit active pb")
+
     return
 
 
