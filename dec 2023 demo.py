@@ -225,31 +225,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_dec_2023_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    add_comment_pin_7(container=container)
 
     return
 
@@ -382,12 +359,21 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
 
 
 @phantom.playbook_block()
-def add_comment_pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("add_comment_pin_7() called")
+def playbook_dec_2023_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_dec_2023_child_pb_demo_1() called")
 
     prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"])
 
     prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_none]
+
+    inputs = {
+        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -399,8 +385,65 @@ def add_comment_pin_7(action=None, success=None, container=None, results=None, h
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment=prompt_for_high_severity_summary_responses_1)
-    phantom.pin(container=container, data=prompt_for_high_severity_summary_responses_1, message="Reason from Analyst", pin_style="grey", pin_type="card")
+    # call playbook "Chris/dec 2023 child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/dec 2023 child pb demo", container=container, name="playbook_dec_2023_child_pb_demo_1", callback=add_comment_6, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_6() called")
+
+    playbook_dec_2023_child_pb_demo_1_output_thoughts_from_child_pb = phantom.collect2(container=container, datapath=["playbook_dec_2023_child_pb_demo_1:playbook_output:thoughts_from_child_pb"])
+
+    playbook_dec_2023_child_pb_demo_1_output_thoughts_from_child_pb_values = [item[0] for item in playbook_dec_2023_child_pb_demo_1_output_thoughts_from_child_pb]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_dec_2023_child_pb_demo_1_output_thoughts_from_child_pb_values)
+
+    geolocate_ip_2(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def geolocate_ip_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("geolocate_ip_2() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    playbook_dec_2023_child_pb_demo_1_output_ip_from_child_pb = phantom.collect2(container=container, datapath=["playbook_dec_2023_child_pb_demo_1:playbook_output:ip_from_child_pb"])
+
+    parameters = []
+
+    # build parameters list for 'geolocate_ip_2' call
+    for playbook_dec_2023_child_pb_demo_1_output_ip_from_child_pb_item in playbook_dec_2023_child_pb_demo_1_output_ip_from_child_pb:
+        if playbook_dec_2023_child_pb_demo_1_output_ip_from_child_pb_item[0] is not None:
+            parameters.append({
+                "ip": playbook_dec_2023_child_pb_demo_1_output_ip_from_child_pb_item[0],
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_2", assets=["maxmind"])
 
     return
 
