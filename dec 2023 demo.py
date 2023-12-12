@@ -148,7 +148,7 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="notable - cleartext")
 
     container = phantom.get_container(container.get('id', None))
 
