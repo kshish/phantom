@@ -19,9 +19,28 @@
                     "sourcePort": "4_out",
                     "targetNode": "6",
                     "targetPort": "6_in"
+                },
+                {
+                    "id": "port_4_to_port_7",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_7_to_port_9",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "55e7f3471b07228b02a94d61508100f5208bcb85",
+            "hash": "7d37434971f81b9df3b9887237126bf4574c2ff5",
             "nodes": {
                 "0": {
                     "data": {
@@ -60,6 +79,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -69,7 +90,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "4",
                         "loop": {
                             "enabled": false,
@@ -97,7 +118,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 544.5
+                    "y": 540
                 },
                 "6": {
                     "data": {
@@ -279,9 +300,92 @@
                     "errors": {},
                     "id": "6",
                     "type": "utility",
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath."
+                        ]
+                    },
+                    "x": 1500,
+                    "y": 680
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "Canada"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "Not in our list",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "7",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "decision",
                     "warnings": {},
-                    "x": 980,
-                    "y": 700
+                    "x": 1060,
+                    "y": 740
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "9",
+                        "message": "The container {0} with severity {1} has an ip {2} is from {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 800,
+                    "y": 880
                 }
             },
             "notes": ""
@@ -293,7 +397,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-01-30T19:40:13.618555+00:00",
+    "create_time": "2024-01-30T20:31:39.479028+00:00",
     "draft_mode": false,
     "labels": [
         "*"
