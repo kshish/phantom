@@ -122,6 +122,9 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
+    # check for 'else' condition 2
+    set_label_7(action=action, success=success, container=container, results=results, handle=handle)
+
     return
 
 
@@ -329,6 +332,27 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_jan_2024_child_pb_demo_1_output_their_thoughts_values)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_7() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="notable")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
