@@ -258,23 +258,17 @@ def playbook_jan_2024_child_pb_demo_1(action=None, success=None, container=None,
     phantom.debug("playbook_jan_2024_child_pb_demo_1() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
-    filtered_result_0_data_filter_out_non_public_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
-    filtered_result_1_data_filter_by_list = phantom.collect2(container=container, datapath=["filtered-data:filter_by_list:condition_2:my_geolocate:action_result.parameter.ip","filtered-data:filter_by_list:condition_2:my_geolocate:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_by_list = phantom.collect2(container=container, datapath=["filtered-data:filter_by_list:condition_2:my_geolocate:action_result.parameter.ip","filtered-data:filter_by_list:condition_2:my_geolocate:action_result.data.*.country_name"])
     format_ip_and_country_list = phantom.get_format_data(name="format_ip_and_country_list")
 
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_non_public_ips]
-    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_non_public_ips]
-    filtered_result_1_parameter_ip = [item[0] for item in filtered_result_1_data_filter_by_list]
-    filtered_result_1_data___country_name = [item[1] for item in filtered_result_1_data_filter_by_list]
-
-    ips_combined_value = phantom.concatenate(filtered_result_0_parameter_ip, filtered_result_1_parameter_ip)
-    countries_combined_value = phantom.concatenate(filtered_result_0_data___country_name, filtered_result_1_data___country_name)
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_by_list]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_by_list]
 
     inputs = {
         "reason": prompt_1_summary_responses_1,
-        "ips": ips_combined_value,
-        "countries": countries_combined_value,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
         "filtered_ips_countries": format_ip_and_country_list,
     }
 
