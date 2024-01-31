@@ -21,13 +21,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_4_to_port_7",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 0
@@ -57,9 +50,28 @@
                     "sourcePort": "10_out",
                     "targetNode": "11",
                     "targetPort": "11_in"
+                },
+                {
+                    "id": "port_4_to_port_12",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_7",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "b0b2785e34964bc436be4529e3e4f5177d8c6791",
+            "hash": "a4734a57f08eb401fe2c0e295585f8d50ddf64fc",
             "nodes": {
                 "0": {
                     "data": {
@@ -75,7 +87,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 260
                 },
                 "1": {
                     "data": {
@@ -190,6 +202,39 @@
                     "x": 730,
                     "y": 1244.5
                 },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter out non public ips",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_out_non_public_ips",
+                        "id": "12",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 580
+                },
                 "4": {
                     "data": {
                         "action": "geolocate ip",
@@ -234,7 +279,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 540
+                    "y": 440
                 },
                 "6": {
                     "data": {
@@ -421,8 +466,8 @@
                             "Reconfigure invalid datapath."
                         ]
                     },
-                    "x": 1500,
-                    "y": 680
+                    "x": 1560,
+                    "y": 540
                 },
                 "7": {
                     "data": {
@@ -435,13 +480,13 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -480,8 +525,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_out_non_public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -513,7 +558,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-01-30T20:43:48.016620+00:00",
+    "create_time": "2024-01-31T17:41:18.391033+00:00",
     "draft_mode": false,
     "labels": [
         "*"
