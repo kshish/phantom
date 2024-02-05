@@ -38,6 +38,50 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ################################################################################
     ## Custom Code Start
     ################################################################################
+    phantom.debug(parameters)
+    phantom.debug(container)
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=debug_1)
+
+    return
+
+
+@phantom.playbook_block()
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    name_value = container.get("name", None)
+    severity_value = container.get("severity", None)
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_parameter_ip = [item[1] for item in geolocate_ip_1_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": name_value,
+        "input_3": severity_value,
+        "input_4": geolocate_ip_1_result_item_0,
+        "input_5": geolocate_ip_1_parameter_ip,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
 
     # Write your custom code here...
 
@@ -45,7 +89,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"])
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
@@ -57,7 +101,7 @@ def on_finish(container, summary):
     ################################################################################
     ## Custom Code Start
     ################################################################################
-
+    phantom.debug("Chris wuz here")
     # Write your custom code here...
 
     ################################################################################
