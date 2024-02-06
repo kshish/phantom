@@ -123,7 +123,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_for_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        format_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -161,14 +161,13 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
 
     user = None
     role = "Administrator"
-    message = """Container {0} with {1} has the following IP(s) in corresponding countries:\n\nIP: {2} is from {3}"""
+    message = """Container {0} with {1} has the following IP(s) in corresponding countries:\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:public_ips:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+        "format_3:formatted_data"
     ]
 
     # responses
@@ -286,6 +285,35 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("format_3() called")
+
+    template = """IP: {0} is from {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:public_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+
+    prompt_for_high_severity(container=container)
 
     return
 
