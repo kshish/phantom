@@ -124,6 +124,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if found_match_1:
         format_3(action=action, success=success, container=container, results=results, handle=handle)
+        set_label_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -332,17 +333,17 @@ def pin_5(action=None, success=None, container=None, results=None, handle=None, 
 def playbook_child_feb_2024_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_child_feb_2024_demo_1() called")
 
-    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_public_ips = phantom.collect2(container=container, datapath=["filtered-data:public_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
+    prompt_for_high_severity_result_data = phantom.collect2(container=container, datapath=["prompt_for_high_severity:action_result.summary.responses.1"], action_results=results)
 
-    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_public_ips]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_public_ips]
+    prompt_for_high_severity_summary_responses_1 = [item[0] for item in prompt_for_high_severity_result_data]
 
     inputs = {
-        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
+        "reason_for_high_severity": prompt_for_high_severity_summary_responses_1,
     }
 
     ################################################################################
@@ -380,6 +381,27 @@ def add_comment_6(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_child_feb_2024_demo_1_output_their_thoughts_values)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="in_our_list")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
