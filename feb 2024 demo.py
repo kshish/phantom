@@ -57,7 +57,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    public_ips(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -115,10 +115,10 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Turkey"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"],
+            ["filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Turkey"],
+            ["filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Mexico"]
         ],
         delimiter=None)
 
@@ -168,8 +168,8 @@ def prompt_for_high_severity(action=None, success=None, container=None, results=
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:public_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
@@ -228,6 +228,26 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def public_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("public_ips() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="public_ips:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
