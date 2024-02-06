@@ -33,18 +33,6 @@
                     "targetPort": "8_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_8_to_port_9",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_3_to_port_10",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -102,9 +90,28 @@
                     "sourcePort": "6_out",
                     "targetNode": "13",
                     "targetPort": "13_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_8_to_port_14",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_15",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "15",
+                    "targetPort": "15_in"
                 }
             ],
-            "hash": "064fbee39d02213f05ba899815a2adcde80e850a",
+            "hash": "cbcaddb9af82a72acd7063e8dcdeb3814f5920b1",
             "nodes": {
                 "0": {
                     "data": {
@@ -120,7 +127,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 160
+                    "y": 159.99999999999994
                 },
                 "1": {
                     "data": {
@@ -478,6 +485,110 @@
                     "warnings": {},
                     "x": 660,
                     "y": 1164.5
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "playbook_child_feb_2024_demo_1",
+                        "id": "14",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:public_ips:condition_1:my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_for_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "playbookName": "child feb 2024 demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "Chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 1340,
+                    "y": 1340
+                },
+                "15": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 6,
+                        "functionName": "add_comment_6",
+                        "id": "15",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "comment": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "comment",
+                                        "name": "comment",
+                                        "placeholder": "Enter a comment",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add comment",
+                                "name": "comment"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "comment": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "trace"
+                                ],
+                                "comment": "playbook_child_feb_2024_demo_1:playbook_output:their_thoughts"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "15",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1340,
+                    "y": 1580
                 },
                 "3": {
                     "data": {
@@ -845,6 +956,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -889,61 +1004,6 @@
                     "warnings": {},
                     "x": 1420,
                     "y": 1140
-                },
-                "9": {
-                    "data": {
-                        "advanced": {
-                            "customName": "set high severity",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_high_severity",
-                        "id": "9",
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "9",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 1340,
-                    "y": 1340
                 }
             },
             "notes": ""
@@ -955,7 +1015,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2024-02-06T17:49:31.743530+00:00",
+    "create_time": "2024-02-06T18:40:13.355828+00:00",
     "draft_mode": false,
     "labels": [
         "*"
