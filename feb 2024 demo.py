@@ -12,8 +12,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'my_geolocate' block
-    my_geolocate(container=container)
+    # call 'list_merge_4' block
+    list_merge_4(container=container)
 
     return
 
@@ -23,16 +23,15 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    list_merge_4__result = phantom.collect2(container=container, datapath=["list_merge_4:custom_function_result.data.item"])
 
     parameters = []
 
     # build parameters list for 'my_geolocate' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
+    for list_merge_4__result_item in list_merge_4__result:
+        if list_merge_4__result_item[0] is not None:
             parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
+                "ip": list_merge_4__result_item[0],
             })
 
     ################################################################################
@@ -248,6 +247,45 @@ def public_ips(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def list_merge_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("list_merge_4() called")
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.cef.destinationAddress","artifact:*.id"])
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": container_artifact_cef_item_1,
+        "input_3": None,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate)
 
     return
 
