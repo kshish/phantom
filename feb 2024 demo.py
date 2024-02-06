@@ -150,6 +150,8 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
 
     container = phantom.get_container(container.get('id', None))
 
+    pin_5(container=container)
+
     return
 
 
@@ -314,6 +316,29 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_3")
 
     prompt_for_high_severity(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    filtered_result_0_data_public_ips = phantom.collect2(container=container, datapath=["filtered-data:public_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_public_ips]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IPs in our list", pin_style="blue", pin_type="card")
 
     return
 
