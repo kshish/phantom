@@ -14,6 +14,8 @@ def on_start(container):
 
     # call 'add_comment_1' block
     add_comment_1(container=container)
+    # call 'set_severity_3' block
+    set_severity_3(container=container)
 
     return
 
@@ -93,6 +95,27 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     ]
 
     phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types)
+
+    return
+
+
+@phantom.playbook_block()
+def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("set_severity_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
