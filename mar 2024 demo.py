@@ -181,6 +181,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -217,6 +223,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # call connected blocks if condition 1 matched
     if found_match_1:
         set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        add_comment_6(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -365,6 +372,29 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_6() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=prompt_1_summary_responses_1)
 
     return
 
