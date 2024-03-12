@@ -222,8 +222,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
-        add_comment_6(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_mar_2024_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -263,27 +262,6 @@ def debug_3(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3")
-
-    return
-
-
-@phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -377,12 +355,21 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def add_comment_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("add_comment_6() called")
+def playbook_mar_2024_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_mar_2024_child_pb_demo_1() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
 
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
+
+    inputs = {
+        "reason_for_high_severity": prompt_1_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -394,20 +381,19 @@ def add_comment_6(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment=prompt_1_summary_responses_1)
-
-    pin_7(container=container)
+    # call playbook "Chris/mar 2024 child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/mar 2024 child pb demo", container=container, name="playbook_mar_2024_child_pb_demo_1", callback=add_note_8, inputs=inputs)
 
     return
 
 
 @phantom.playbook_block()
-def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("pin_7() called")
+def add_note_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_note_8() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"])
+    playbook_mar_2024_child_pb_demo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_mar_2024_child_pb_demo_1:playbook_output:thoughts"])
 
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+    playbook_mar_2024_child_pb_demo_1_output_thoughts_values = [item[0] for item in playbook_mar_2024_child_pb_demo_1_output_thoughts]
 
     ################################################################################
     ## Custom Code Start
@@ -419,7 +405,7 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) not in our list", pin_style="red", pin_type="card")
+    phantom.add_note(container=container, content=playbook_mar_2024_child_pb_demo_1_output_thoughts_values, note_format="markdown", note_type="general", title="This is a note from the child pb")
 
     return
 
