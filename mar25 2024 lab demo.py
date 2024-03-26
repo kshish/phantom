@@ -291,7 +291,7 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
 def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("format_ip_and_country_list() called")
 
-    template = """IP: {0} is from {1}\n\n"""
+    template = """%%\nIP: {0} is from {1}\n%%\n"""
 
     # parameter list for template variable replacement
     parameters = [
