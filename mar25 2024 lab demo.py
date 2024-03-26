@@ -381,7 +381,7 @@ def filter_by_in_or_out_of_list(action=None, success=None, container=None, resul
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["filtered-data:filter_out_private_ips:condition_2:my_geolocate:action_result.data.*.country_name", "in", "custom_list:countries"]
+            ["filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.data.*.country_name", "in", "custom_list:countries"]
         ],
         name="filter_by_in_or_out_of_list:condition_1",
         delimiter=None)
@@ -394,7 +394,7 @@ def filter_by_in_or_out_of_list(action=None, success=None, container=None, resul
     matched_artifacts_2, matched_results_2 = phantom.condition(
         container=container,
         conditions=[
-            ["filtered-data:filter_out_private_ips:condition_2:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
+            ["filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         name="filter_by_in_or_out_of_list:condition_2",
         delimiter=None)
