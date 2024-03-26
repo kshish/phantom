@@ -95,9 +95,21 @@
                     "sourcePort": "13_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_11_to_port_14",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
                 }
             ],
-            "hash": "0b9a18b9c8058e54ca1ab3d484a0c3b7ee6d177f",
+            "hash": "321f4e9afaef02076c227c77c137f74281a03464",
             "nodes": {
                 "0": {
                     "data": {
@@ -129,8 +141,8 @@
                     "type": "end",
                     "userCode": "    phantom.debug(container)\n    phantom.debug(summary)\n    # Write your custom code here...\n\n",
                     "warnings": {},
-                    "x": 1000,
-                    "y": 1140
+                    "x": 1020,
+                    "y": 1180
                 },
                 "10": {
                     "data": {
@@ -205,6 +217,20 @@
                                     }
                                 ],
                                 "conditionIndex": 0,
+                                "customName": "public IPs",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "Non public IPs",
                                 "logic": "and"
                             }
                         ],
@@ -414,6 +440,119 @@
                     "warnings": {},
                     "x": 1380,
                     "y": 980
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 4,
+                        "functionName": "pin_4",
+                        "id": "14",
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": "filtered-data:filter_out_private_ips:condition_2:my_geolocate:action_result.parameter.ip",
+                                "message": "There's a private IP",
+                                "name": null,
+                                "pin_style": "grey",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 80,
+                    "y": 864.5
                 },
                 "4": {
                     "data": {
@@ -825,7 +964,7 @@
         "schema": "5.0.10",
         "version": "6.0.1.123902"
     },
-    "create_time": "2024-03-26T16:53:07.850987+00:00",
+    "create_time": "2024-03-26T16:59:13.490711+00:00",
     "draft_mode": false,
     "labels": [
         "*"
