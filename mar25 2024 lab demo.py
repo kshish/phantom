@@ -208,7 +208,7 @@ def filter_out_private_ips(action=None, success=None, container=None, results=No
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        pass
+        filter_by_in_or_out_of_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids and results for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -222,7 +222,6 @@ def filter_out_private_ips(action=None, success=None, container=None, results=No
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_2 or matched_results_2:
         pin_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
-        filter_by_in_or_out_of_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
