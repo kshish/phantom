@@ -179,6 +179,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -201,29 +207,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_mar26_2024_child_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -348,6 +333,62 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="There's a private IP", pin_style="grey", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_mar26_2024_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("playbook_mar26_2024_child_demo_1() called")
+
+    filtered_result_0_data_filter_out_private_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_private_ips]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_private_ips]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+
+    inputs = {
+        "ip_list": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+        "reason": prompt_1_summary_responses_1,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/mar26 2024 child demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/mar26 2024 child demo", container=container, name="playbook_mar26_2024_child_demo_1", callback=add_comment_6, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
+    phantom.debug("add_comment_6() called")
+
+    playbook_mar26_2024_child_demo_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_mar26_2024_child_demo_1:playbook_output:thoughts"])
+
+    playbook_mar26_2024_child_demo_1_output_thoughts_values = [item[0] for item in playbook_mar26_2024_child_demo_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_mar26_2024_child_demo_1_output_thoughts_values)
 
     return
 
