@@ -144,7 +144,7 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="lowsev")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -341,17 +341,17 @@ def pin_4(action=None, success=None, container=None, results=None, handle=None, 
 def playbook_mar26_2024_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, **kwargs):
     phantom.debug("playbook_mar26_2024_child_demo_1() called")
 
-    filtered_result_0_data_filter_out_private_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_private_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_private_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
 
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_private_ips]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_private_ips]
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
+        "reason": prompt_1_summary_responses_1,
         "ip_list": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
-        "reason": prompt_1_summary_responses_1,
     }
 
     ################################################################################
