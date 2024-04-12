@@ -25,7 +25,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """this is a line\n\nthis a second line\n\n\nthird line"""
+    message = """this is a line\n\nthis a second line\n  \n  \n  \nthird line"""
 
     # parameter list for template variable replacement
     parameters = []
