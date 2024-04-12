@@ -7,14 +7,21 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_0_to_port_2",
+                    "id": "port_0_to_port_3",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
+                },
+                {
+                    "id": "port_3_to_port_2",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
                 }
             ],
-            "hash": "ed3f7b6b1def3572f10a1eba0d3bd8bbb4c584d7",
+            "hash": "9ef2938d5012faea2f1714a3bf88280fc025621f",
             "nodes": {
                 "0": {
                     "data": {
@@ -60,8 +67,10 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "2",
-                        "message": "this is a line.  \n\nthis a second line\n  \n  \n\n  \nthird line",
-                        "parameters": [],
+                        "message": "this is a line.  \n\nthis a second line\n  \n  {0}\n\n  \nthird line",
+                        "parameters": [
+                            "format_1:formatted_data"
+                        ],
                         "responseTime": 30,
                         "responses": [],
                         "type": "prompt"
@@ -71,7 +80,28 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 1040,
-                    "y": 744.5
+                    "y": 740
+                },
+                "3": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "3",
+                        "parameters": [
+                            "container:name"
+                        ],
+                        "template": "test {0}\n  \n  \ntest 2  \n\n\nt3",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "3",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 970,
+                    "y": 584.5
                 }
             },
             "notes": ""
@@ -83,7 +113,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-04-12T15:59:19.700785+00:00",
+    "create_time": "2024-04-12T16:50:50.428855+00:00",
     "draft_mode": false,
     "labels": [
         "*"
