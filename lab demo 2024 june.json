@@ -111,7 +111,7 @@
                     "targetPort": "17_in"
                 }
             ],
-            "hash": "095daae3fe32719ee2931212dd6a5c2fa0c7ad87",
+            "hash": "49df7f89d1b27118f18e2356453a49631e7928e6",
             "nodes": {
                 "0": {
                     "data": {
@@ -370,8 +370,8 @@
                         "functionName": "format_ip_and_country_list",
                         "id": "12",
                         "parameters": [
-                            "filtered-data:filter_2:condition_1:my_geo_locate:action_result.parameter.ip",
-                            "filtered-data:filter_2:condition_1:my_geo_locate:action_result.data.*.country_name"
+                            "filtered-data:filter_in_or_out:condition_1:my_geo_locate:action_result.parameter.ip",
+                            "filtered-data:filter_in_or_out:condition_1:my_geo_locate:action_result.data.*.country_name"
                         ],
                         "template": "%%\nIP: {0} is from: {1}\n%%",
                         "type": "format"
@@ -394,13 +394,13 @@
                         "inputs": {
                             "countries": {
                                 "datapaths": [
-                                    "filtered-data:filter_2:condition_2:my_geo_locate:action_result.data.*.country_name"
+                                    "filtered-data:filter_in_or_out:condition_2:my_geo_locate:action_result.data.*.country_name"
                                 ],
                                 "deduplicate": false
                             },
                             "ips": {
                                 "datapaths": [
-                                    "filtered-data:filter_2:condition_2:my_geo_locate:action_result.parameter.ip"
+                                    "filtered-data:filter_in_or_out:condition_2:my_geo_locate:action_result.parameter.ip"
                                 ],
                                 "deduplicate": false
                             },
@@ -508,6 +508,8 @@
                 "15": {
                     "data": {
                         "advanced": {
+                            "customName": "filter in or out",
+                            "customNameId": 0,
                             "join": []
                         },
                         "conditions": [
@@ -539,7 +541,7 @@
                             }
                         ],
                         "functionId": 2,
-                        "functionName": "filter_2",
+                        "functionName": "filter_in_or_out",
                         "id": "15",
                         "type": "filter"
                     },
@@ -548,7 +550,7 @@
                     "type": "filter",
                     "warnings": {},
                     "x": 1040,
-                    "y": 864.5
+                    "y": 860
                 },
                 "16": {
                     "data": {
@@ -719,7 +721,7 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "filtered-data:filter_2:condition_2:my_geo_locate:action_result.data.*.country_name",
+                                "data": "filtered-data:filter_in_or_out:condition_1:my_geo_locate:action_result.data.*.country_name",
                                 "message": "Countries in our list",
                                 "name": null,
                                 "pin_style": "blue",
@@ -732,7 +734,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 1400,
-                    "y": 1184.5
+                    "y": 1180
                 },
                 "3": {
                     "data": {
@@ -1047,7 +1049,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-06-21T19:35:31.144412+00:00",
+    "create_time": "2024-06-21T19:37:10.804430+00:00",
     "draft_mode": false,
     "labels": [
         "*"
