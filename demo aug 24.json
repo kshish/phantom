@@ -12,9 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "id": "port_0_to_port_4",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "3dbb5ae2a0fb598f164535ea0a42f0d5d013270e",
+            "hash": "893aa3f13e031d92a1af469d30eff7c831a286a9",
             "nodes": {
                 "0": {
                     "data": {
@@ -53,6 +60,9 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geo locate",
+                            "customNameId": 0,
+                            "description": "this action looks up an ip and returns public ip info",
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +72,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geo_locate",
                         "id": "3",
                         "loop": {
                             "enabled": false,
@@ -91,6 +101,49 @@
                     "warnings": {},
                     "x": 980,
                     "y": 584.5
+                },
+                "4": {
+                    "data": {
+                        "action": "lookup ip",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "DNS",
+                        "connectorConfigs": [
+                            "google_dns"
+                        ],
+                        "connectorId": "876ab991-313e-48e7-bccd-e8c9650c239c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "lookup_ip_1",
+                        "id": "4",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "ip": "artifact:*.cef.destinationAddress"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "ip"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 1360,
+                    "y": 580
                 }
             },
             "notes": ""
@@ -102,7 +155,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-08-08T17:46:55.527662+00:00",
+    "create_time": "2024-08-08T17:59:21.352378+00:00",
     "draft_mode": false,
     "labels": [
         "*"
