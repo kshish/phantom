@@ -208,31 +208,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    return
-
-
-@phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    pin_5(container=container)
 
     return
 
@@ -328,10 +305,8 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 
 
 @phantom.playbook_block()
-def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("pin_5() called")
-
-    format_ip_and_country_list = phantom.get_format_data(name="format_ip_and_country_list")
+def playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_1() called")
 
     ################################################################################
     ## Custom Code Start
@@ -343,7 +318,8 @@ def pin_5(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=format_ip_and_country_list, message="IPs not in our list of countries", pin_style="red", pin_type="card")
+    # call playbook "local/playbook", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("local/playbook", container=container)
 
     return
 
