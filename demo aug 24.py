@@ -128,11 +128,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_low(action=action, success=success, container=container, results=results, handle=handle)
+    format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -166,12 +166,13 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """IP is not in our list of countries.\n\nIP: {0} is from: {1}"""
+    message = """The container {0} with severity {1}\n\nIP is not in our list of countries.\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip",
-        "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"
+        "container:name",
+        "container:severity",
+        "format_ip_and_country_list:formatted_data"
     ]
 
     # responses
@@ -291,6 +292,35 @@ def list_merge_3(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_3", callback=my_geo_locate)
+
+    return
+
+
+@phantom.playbook_block()
+def format_ip_and_country_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_ip_and_country_list() called")
+
+    template = """IP: {0} is from: {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip",
+        "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
+
+    prompt_2(container=container)
 
     return
 

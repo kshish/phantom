@@ -26,18 +26,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_9",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_9_to_port_10",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
@@ -88,9 +76,28 @@
                     "sourcePort": "13_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_14",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_9",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "3746b76167dc0ba65a615f292c539f2b126a80cf",
+            "hash": "31f0277b57f03b9109b96aff1bf6c4bab1104848",
             "nodes": {
                 "0": {
                     "data": {
@@ -106,7 +113,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 220
+                    "y": 219.99999999999994
                 },
                 "1": {
                     "data": {
@@ -156,8 +163,8 @@
                     "id": "10",
                     "type": "decision",
                     "warnings": {},
-                    "x": 760,
-                    "y": 1100
+                    "x": 740,
+                    "y": 1320
                 },
                 "11": {
                     "data": {
@@ -220,8 +227,8 @@
                     "id": "11",
                     "type": "utility",
                     "warnings": {},
-                    "x": 500,
-                    "y": 1260
+                    "x": 440,
+                    "y": 1520
                 },
                 "12": {
                     "data": {
@@ -440,6 +447,30 @@
                     "warnings": {},
                     "x": 980,
                     "y": 384.5
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format ip and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "14",
+                        "parameters": [
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip",
+                            "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 660,
+                    "y": 964.5
                 },
                 "3": {
                     "data": {
@@ -822,10 +853,11 @@
                         "functionId": 2,
                         "functionName": "prompt_2",
                         "id": "9",
-                        "message": "IP is not in our list of countries.\n\nIP: {0} is from: {1}",
+                        "message": "The container {0} with severity {1}\n\nIP is not in our list of countries.\n\n{2}",
                         "parameters": [
-                            "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip",
-                            "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"
+                            "container:name",
+                            "container:severity",
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -844,8 +876,8 @@
                     "id": "9",
                     "type": "prompt",
                     "warnings": {},
-                    "x": 760,
-                    "y": 924.5
+                    "x": 740,
+                    "y": 1160
                 }
             },
             "notes": ""
@@ -857,7 +889,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-08-09T16:43:43.731305+00:00",
+    "create_time": "2024-08-09T16:50:07.451303+00:00",
     "draft_mode": false,
     "labels": [
         "*"
