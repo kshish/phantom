@@ -117,12 +117,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "!=", "Italy"],
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "!=", "Canada"],
-            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "!=", "Mexico"]
+            ["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         delimiter=None)
 
@@ -293,17 +289,17 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 def playbook_aug_24_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_aug_24_child_pb_demo_1() called")
 
-    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip","filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"])
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.1"], action_results=results)
 
-    prompt_2_summary_responses_1 = [item[0] for item in prompt_2_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_none]
+    prompt_2_summary_responses_1 = [item[0] for item in prompt_2_result_data]
 
     inputs = {
-        "reason_for_high_severity": prompt_2_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
+        "reason_for_high_severity": prompt_2_summary_responses_1,
     }
 
     ################################################################################
