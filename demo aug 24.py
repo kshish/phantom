@@ -232,6 +232,8 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
 
     container = phantom.get_container(container.get('id', None))
 
+    pin_5(container=container)
+
     return
 
 
@@ -321,6 +323,27 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     prompt_2(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    format_ip_and_country_list = phantom.get_format_data(name="format_ip_and_country_list")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=format_ip_and_country_list, message="IPs not in our list of countries", pin_style="red", pin_type="card")
 
     return
 
