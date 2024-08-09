@@ -186,6 +186,12 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -208,7 +214,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        playbook_1(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_aug_24_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -305,8 +311,21 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 
 
 @phantom.playbook_block()
-def playbook_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("playbook_1() called")
+def playbook_aug_24_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_aug_24_child_pb_demo_1() called")
+
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_none = phantom.collect2(container=container, datapath=["filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip","filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"])
+
+    prompt_2_summary_responses_1 = [item[0] for item in prompt_2_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_none]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_none]
+
+    inputs = {
+        "reason_for_high_severity": prompt_2_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -318,8 +337,57 @@ def playbook_1(action=None, success=None, container=None, results=None, handle=N
     ## Custom Code End
     ################################################################################
 
-    # call playbook "local/playbook", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("local/playbook", container=container)
+    # call playbook "chris2/aug 24 child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris2/aug 24 child pb demo", container=container, name="playbook_aug_24_child_pb_demo_1", callback=format_1, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_4() called")
+
+    format_1 = phantom.get_format_data(name="format_1")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=format_1)
+
+    return
+
+
+@phantom.playbook_block()
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """Risk score {0}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_aug_24_child_pb_demo_1:playbook_output:risk_score"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    add_comment_4(container=container)
 
     return
 

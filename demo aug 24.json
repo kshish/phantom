@@ -95,9 +95,23 @@
                     "sourcePort": "10_out",
                     "targetNode": "16",
                     "targetPort": "16_in"
+                },
+                {
+                    "id": "port_16_to_port_18",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
+                },
+                {
+                    "id": "port_18_to_port_17",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
                 }
             ],
-            "hash": "6046fe977b8eb1eb329b5da512a8f374daa54f5e",
+            "hash": "35a7bfb96f99eef0b5a10141364712eb03fd50f4",
             "nodes": {
                 "0": {
                     "data": {
@@ -113,7 +127,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 219.99999999999994
+                    "y": 219.9999999999999
                 },
                 "1": {
                     "data": {
@@ -414,8 +428,28 @@
                             "join": []
                         },
                         "functionId": 1,
-                        "functionName": "playbook_1",
+                        "functionName": "playbook_aug_24_child_pb_demo_1",
                         "id": "16",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:filter_out_none:condition_1:my_geo_locate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_2:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
                         "loop": {
                             "enabled": false,
                             "exitAfterUnit": "m",
@@ -425,6 +459,11 @@
                             "pauseUnit": "m",
                             "pauseValue": 2
                         },
+                        "playbookName": "aug 24 child pb demo",
+                        "playbookRepo": 3,
+                        "playbookRepoName": "chris2",
+                        "playbookType": "data",
+                        "synchronous": true,
                         "type": "playbook"
                     },
                     "errors": {},
@@ -433,6 +472,98 @@
                     "warnings": {},
                     "x": 640,
                     "y": 1540
+                },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 4,
+                        "functionName": "add_comment_4",
+                        "id": "17",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "comment": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "comment",
+                                        "name": "comment",
+                                        "placeholder": "Enter a comment",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add comment",
+                                "name": "comment"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "comment": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "trace"
+                                ],
+                                "comment": "format_1:formatted_data"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 640,
+                    "y": 1740
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "18",
+                        "parameters": [
+                            "playbook_aug_24_child_pb_demo_1:playbook_output:risk_score"
+                        ],
+                        "template": "Risk score {0}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 650,
+                    "y": 1644.5
                 },
                 "3": {
                     "data": {
@@ -830,6 +961,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -851,7 +986,7 @@
         "schema": "5.0.11",
         "version": "6.2.0.355"
     },
-    "create_time": "2024-08-09T17:54:20.507753+00:00",
+    "create_time": "2024-08-09T17:59:08.345170+00:00",
     "draft_mode": false,
     "labels": [
         "*"
