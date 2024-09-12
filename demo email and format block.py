@@ -150,15 +150,15 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
-    send_email_formated_data_with_dot_asterisk(container=container)
-    send_email_with_formated_data_and_no_asterisk(container=container)
+    send_email_formatted_data_with_dot_asterisk(container=container)
+    send_email_with_formatted_data_and_no_asterisk(container=container)
 
     return
 
 
 @phantom.playbook_block()
-def send_email_formated_data_with_dot_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("send_email_formated_data_with_dot_asterisk() called")
+def send_email_formatted_data_with_dot_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("send_email_formatted_data_with_dot_asterisk() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -167,7 +167,7 @@ def send_email_formated_data_with_dot_asterisk(action=None, success=None, contai
 
     parameters = []
 
-    # build parameters list for 'send_email_formated_data_with_dot_asterisk' call
+    # build parameters list for 'send_email_formatted_data_with_dot_asterisk' call
     for prompt_2_result_item in prompt_2_result_data:
         for format_1__item in format_1__as_list:
             if prompt_2_result_item[0] is not None and format_1__item is not None:
@@ -188,7 +188,7 @@ def send_email_formated_data_with_dot_asterisk(action=None, success=None, contai
     ## Custom Code End
     ################################################################################
 
-    phantom.act("send email", parameters=parameters, name="send_email_formated_data_with_dot_asterisk", assets=["mygmail"])
+    phantom.act("send email", parameters=parameters, name="send_email_formatted_data_with_dot_asterisk", assets=["mygmail"])
 
     return
 
@@ -222,8 +222,8 @@ def prompt_2(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def send_email_with_formated_data_and_no_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("send_email_with_formated_data_and_no_asterisk() called")
+def send_email_with_formatted_data_and_no_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("send_email_with_formatted_data_and_no_asterisk() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -232,7 +232,7 @@ def send_email_with_formated_data_and_no_asterisk(action=None, success=None, con
 
     parameters = []
 
-    # build parameters list for 'send_email_with_formated_data_and_no_asterisk' call
+    # build parameters list for 'send_email_with_formatted_data_and_no_asterisk' call
     for prompt_2_result_item in prompt_2_result_data:
         if prompt_2_result_item[0] is not None and format_1 is not None:
             parameters.append({
@@ -252,7 +252,7 @@ def send_email_with_formated_data_and_no_asterisk(action=None, success=None, con
     ## Custom Code End
     ################################################################################
 
-    phantom.act("send email", parameters=parameters, name="send_email_with_formated_data_and_no_asterisk", assets=["mygmail"])
+    phantom.act("send email", parameters=parameters, name="send_email_with_formatted_data_and_no_asterisk", assets=["mygmail"])
 
     return
 
