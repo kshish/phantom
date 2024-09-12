@@ -151,7 +151,6 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     send_email_formatted_data_with_dot_asterisk(container=container)
-    send_email_with_formatted_data_and_no_asterisk(container=container)
 
     return
 
@@ -188,7 +187,7 @@ def send_email_formatted_data_with_dot_asterisk(action=None, success=None, conta
     ## Custom Code End
     ################################################################################
 
-    phantom.act("send email", parameters=parameters, name="send_email_formatted_data_with_dot_asterisk", assets=["mygmail"])
+    phantom.act("send email", parameters=parameters, name="send_email_formatted_data_with_dot_asterisk", assets=["mygmail"], callback=send_email_with_formatted_data_and_no_asterisk)
 
     return
 
