@@ -12,8 +12,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'list_merge_1' block
-    list_merge_1(container=container)
+    # call 'prompt_2' block
+    prompt_2(container=container)
 
     return
 
@@ -83,7 +83,19 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=send_email_1)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=geolocate_ip_1_callback)
+
+    return
+
+
+@phantom.playbook_block()
+def geolocate_ip_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("geolocate_ip_1_callback() called")
+
+    
+    send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -94,18 +106,18 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.email","artifact:*.id"])
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.0","prompt_2:action_result.parameter.context.artifact_id"], action_results=results)
     geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
 
     parameters = []
 
     # build parameters list for 'send_email_1' call
-    for container_artifact_item in container_artifact_data:
+    for prompt_2_result_item in prompt_2_result_data:
         for geolocate_ip_1_result_item in geolocate_ip_1_result_data:
-            if container_artifact_item[0] is not None and geolocate_ip_1_result_item[0] is not None:
+            if prompt_2_result_item[0] is not None and geolocate_ip_1_result_item[0] is not None:
                 parameters.append({
-                    "from": "gary@splunk.com",
-                    "to": container_artifact_item[0],
+                    "from": "",
+                    "to": prompt_2_result_item[0],
                     "subject": "straight from geolocate",
                     "body": geolocate_ip_1_result_item[0],
                     "context": {'artifact_id': geolocate_ip_1_result_item[1]},
@@ -122,6 +134,137 @@ def send_email_1(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.act("send email", parameters=parameters, name="send_email_1", assets=["mygmail"])
+
+    return
+
+
+@phantom.playbook_block()
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """%%\nIP: {0} is from {1}\n%%\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "geolocate_ip_1:action_result.parameter.ip",
+        "geolocate_ip_1:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    send_email_formated_data_with_dot_asterisk(container=container)
+    send_email_with_formated_data_and_no_asterisk(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def send_email_formated_data_with_dot_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("send_email_formated_data_with_dot_asterisk() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.0","prompt_2:action_result.parameter.context.artifact_id"], action_results=results)
+    format_1__as_list = phantom.get_format_data(name="format_1__as_list")
+
+    parameters = []
+
+    # build parameters list for 'send_email_formated_data_with_dot_asterisk' call
+    for prompt_2_result_item in prompt_2_result_data:
+        for format_1__item in format_1__as_list:
+            if prompt_2_result_item[0] is not None and format_1__item is not None:
+                parameters.append({
+                    "to": prompt_2_result_item[0],
+                    "subject": "Using formatted_data.* in the body",
+                    "body": format_1__item,
+                    "context": {'artifact_id': prompt_2_result_item[1]},
+                })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("send email", parameters=parameters, name="send_email_formated_data_with_dot_asterisk", assets=["mygmail"])
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_2() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = None
+    role = "Administrator"
+    message = """"""
+
+    # parameter list for template variable replacement
+    parameters = []
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Please provide the email address you would like to send ",
+            "options": {
+                "type": "message",
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_2", parameters=parameters, response_types=response_types, callback=list_merge_1)
+
+    return
+
+
+@phantom.playbook_block()
+def send_email_with_formated_data_and_no_asterisk(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("send_email_with_formated_data_and_no_asterisk() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    prompt_2_result_data = phantom.collect2(container=container, datapath=["prompt_2:action_result.summary.responses.0","prompt_2:action_result.parameter.context.artifact_id"], action_results=results)
+    format_1 = phantom.get_format_data(name="format_1")
+
+    parameters = []
+
+    # build parameters list for 'send_email_with_formated_data_and_no_asterisk' call
+    for prompt_2_result_item in prompt_2_result_data:
+        if prompt_2_result_item[0] is not None and format_1 is not None:
+            parameters.append({
+                "to": prompt_2_result_item[0],
+                "subject": "Formated_data no asterisk",
+                "body": format_1,
+                "context": {'artifact_id': prompt_2_result_item[1]},
+            })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("send email", parameters=parameters, name="send_email_with_formated_data_and_no_asterisk", assets=["mygmail"])
 
     return
 

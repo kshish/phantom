@@ -7,13 +7,6 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_0_to_port_3",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
                     "id": "port_3_to_port_4",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -26,9 +19,44 @@
                     "sourcePort": "4_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "id": "port_4_to_port_6",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
+                },
+                {
+                    "id": "port_6_to_port_7",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
+                },
+                {
+                    "id": "port_0_to_port_8",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_8_to_port_3",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
+                },
+                {
+                    "id": "port_6_to_port_9",
+                    "sourceNode": "6",
+                    "sourcePort": "6_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "9882e79e5d44b0067f631c1f4e3071fdc21444ac",
+            "hash": "a93ad57cf9c3f75b6365b68277e177ee12a81970",
             "nodes": {
                 "0": {
                     "data": {
@@ -44,7 +72,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 280
                 },
                 "1": {
                     "data": {
@@ -60,7 +88,7 @@
                     "type": "end",
                     "warnings": {},
                     "x": 1000,
-                    "y": 1240
+                    "y": 1420
                 },
                 "3": {
                     "data": {
@@ -240,7 +268,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 980,
-                    "y": 620
+                    "y": 580
                 },
                 "4": {
                     "data": {
@@ -283,7 +311,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 760
+                    "y": 720
                 },
                 "5": {
                     "data": {
@@ -322,9 +350,9 @@
                         },
                         "parameters": {
                             "body": "geolocate_ip_1:action_result.data.*.country_name",
-                            "from": "gary@splunk.com",
+                            "from": "",
                             "subject": "straight from geolocate",
-                            "to": "artifact:*.cef.email"
+                            "to": "prompt_2:action_result.summary.responses.0"
                         },
                         "requiredParameters": [
                             {
@@ -342,8 +370,164 @@
                     "id": "5",
                     "type": "action",
                     "warnings": {},
-                    "x": 1460,
-                    "y": 944.5
+                    "x": 1500,
+                    "y": 860
+                },
+                "6": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "6",
+                        "parameters": [
+                            "geolocate_ip_1:action_result.parameter.ip",
+                            "geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "%%\nIP: {0} is from {1}\n%%\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 980,
+                    "y": 924.5
+                },
+                "7": {
+                    "data": {
+                        "action": "send email",
+                        "actionType": "generic",
+                        "advanced": {
+                            "customName": "send email formated_data with dot asterisk",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "SMTP",
+                        "connectorConfigs": [
+                            "mygmail"
+                        ],
+                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                        "connectorVersion": "v1",
+                        "functionId": 2,
+                        "functionName": "send_email_formated_data_with_dot_asterisk",
+                        "id": "7",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "body": "format_1:formatted_data.*",
+                            "subject": "Using formatted_data.* in the body",
+                            "to": "prompt_2:action_result.summary.responses.0"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "to"
+                            },
+                            {
+                                "data_type": "string",
+                                "field": "body"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 720,
+                    "y": 1100
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 2,
+                        "functionName": "prompt_2",
+                        "id": "8",
+                        "message": "",
+                        "parameters": [],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "responsePrompt": "Please provide the email address you would like to send ",
+                                "responseType": "message"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {
+                        "message": "Add message content."
+                    },
+                    "id": "8",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 1060,
+                    "y": 424.5
+                },
+                "9": {
+                    "data": {
+                        "action": "send email",
+                        "actionType": "generic",
+                        "advanced": {
+                            "customName": "send email with formated_data and NO asterisk",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "SMTP",
+                        "connectorConfigs": [
+                            "mygmail"
+                        ],
+                        "connectorId": "45bb6f37-4478-499b-b4a3-51ecfa62b78c",
+                        "connectorVersion": "v1",
+                        "functionId": 3,
+                        "functionName": "send_email_with_formated_data_and_no_asterisk",
+                        "id": "9",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "body": "format_1:formatted_data",
+                            "subject": "Formated_data no asterisk",
+                            "to": "prompt_2:action_result.summary.responses.0"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "to"
+                            },
+                            {
+                                "data_type": "string",
+                                "field": "body"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 1240,
+                    "y": 1100
                 }
             },
             "notes": ""
@@ -356,7 +540,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-09-12T19:37:14.085396+00:00",
+    "create_time": "2024-09-12T19:49:52.705799+00:00",
     "draft_mode": false,
     "labels": [
         "*"
