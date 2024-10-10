@@ -89,7 +89,7 @@ def my_whois_callback(action=None, success=None, container=None, results=None, h
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decide_if_ip_is_in_our_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -141,8 +141,8 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 
 
 @phantom.playbook_block()
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_1() called")
+def decide_if_ip_is_in_our_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_if_ip_is_in_our_list() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
