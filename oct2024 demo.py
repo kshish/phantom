@@ -157,11 +157,11 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
