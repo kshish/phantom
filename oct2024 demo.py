@@ -147,11 +147,11 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "==", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "==", "Philipines"],
-            ["my_geolocate:action_result.data.*.country_name", "==", "Taiwan"]
+            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "Philipines"],
+            ["my_geolocate:action_result.data.*.country_name", "!=", "Taiwan"]
         ],
         delimiter=None)
 
