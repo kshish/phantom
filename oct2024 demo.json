@@ -68,6 +68,18 @@
                 {
                     "conditions": [
                         {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_11_to_port_1",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "1",
+                    "targetPort": "1_in"
+                },
+                {
+                    "conditions": [
+                        {
                             "index": 0
                         }
                     ],
@@ -78,7 +90,7 @@
                     "targetPort": "9_in"
                 }
             ],
-            "hash": "4c54bfb13bd17b53ef094f2e1c11fb2a088e2b72",
+            "hash": "dc79bb417d9b70b447b6bf4a5ceb81c90b95ba6b",
             "nodes": {
                 "0": {
                     "customCode": "@phantom.playbook_block()\ndef on_start(container):\n    phantom.debug('on_start() called')\n    phantom.debug(\"chris was here\")\n    # call 'my_geolocate' block\n    my_geolocate(container=container)\n\n    return",
@@ -159,7 +171,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 780,
-                    "y": 1164.5
+                    "y": 1160
                 },
                 "11": {
                     "data": {
@@ -172,16 +184,30 @@
                                 "comparisons": [
                                     {
                                         "conditionIndex": 0,
-                                        "op": "==",
+                                        "op": "!=",
                                         "param": "prompt_1:action_result.summary.responses.0",
-                                        "value": "Yes"
+                                        "value": "No"
                                     }
                                 ],
                                 "conditionIndex": 0,
-                                "customName": "Response was Yes",
+                                "customName": "Response was yes or failed",
                                 "display": "If",
-                                "logic": "and",
+                                "logic": "or",
                                 "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "said no",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
                             }
                         ],
                         "functionId": 2,
@@ -666,8 +692,8 @@
                     "id": "9",
                     "type": "utility",
                     "warnings": {},
-                    "x": 700,
-                    "y": 1560
+                    "x": 460,
+                    "y": 1540
                 }
             },
             "notes": ""
@@ -680,7 +706,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-10T20:19:10.192456+00:00",
+    "create_time": "2024-10-10T20:28:00.993730+00:00",
     "draft_mode": false,
     "labels": [
         "*"
