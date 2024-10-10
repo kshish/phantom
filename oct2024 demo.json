@@ -12,11 +12,19 @@
                     "sourcePort": "0_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "id": "port_3_to_port_4",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "3dbb5ae2a0fb598f164535ea0a42f0d5d013270e",
+            "hash": "c8cd2de79371b3de0d74992706ff14a9c564e4a9",
             "nodes": {
                 "0": {
+                    "customCode": "@phantom.playbook_block()\ndef on_start(container):\n    phantom.debug('on_start() called')\n    phantom.debug(\"chris was here\")\n    # call 'my_geolocate' block\n    my_geolocate(container=container)\n\n    return",
                     "data": {
                         "advanced": {
                             "join": []
@@ -28,9 +36,13 @@
                     "errors": {},
                     "id": "0",
                     "type": "start",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 419.9999999999998
                 },
                 "1": {
                     "data": {
@@ -44,7 +56,11 @@
                     "errors": {},
                     "id": "1",
                     "type": "end",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1000,
                     "y": 1000
                 },
@@ -53,6 +69,8 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -62,7 +80,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "3",
                         "loop": {
                             "enabled": false,
@@ -90,6 +108,53 @@
                     "warnings": {},
                     "x": 980,
                     "y": 584.5
+                },
+                "4": {
+                    "customCode": null,
+                    "data": {
+                        "action": "whois domain",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "customName": "my whois",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "connector": "WHOIS",
+                        "connectorConfigs": [
+                            "whois"
+                        ],
+                        "connectorId": "e6723c2e-06ef-415a-8098-62c46c1cb71f",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "my_whois",
+                        "id": "4",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "domain": "artifact:*.cef.sourceDnsDomain"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "domain"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "action",
+                    "userCode": null,
+                    "warnings": {},
+                    "x": 980,
+                    "y": 764.5
                 }
             },
             "notes": ""
@@ -102,7 +167,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-10T18:13:50.047650+00:00",
+    "create_time": "2024-10-10T18:33:23.524225+00:00",
     "draft_mode": false,
     "labels": [
         "*"
