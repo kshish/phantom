@@ -146,11 +146,8 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Philipines"],
-            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Taiwan"]
+            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         delimiter=None)
 
