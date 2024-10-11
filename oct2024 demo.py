@@ -187,29 +187,6 @@ def set_severity_to_low(action=None, success=None, container=None, results=None,
 
 
 @phantom.playbook_block()
-def set_severity_to_high(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_to_high() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    add_comment_5(container=container)
-
-    return
-
-
-@phantom.playbook_block()
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("prompt_1() called")
 
@@ -237,6 +214,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -260,8 +243,10 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    # check for 'else' condition 2
+    playbook_oct2024_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -356,10 +341,21 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def add_comment_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("add_comment_5() called")
+def playbook_oct2024_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_oct2024_child_pb_1() called")
 
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.parameter.ip"], action_results=results)
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     format_1 = phantom.get_format_data(name="format_1")
+
+    my_geolocate_parameter_ip = [item[0] for item in my_geolocate_result_data]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+
+    inputs = {
+        "list_of_ip_and_country": format_1,
+        "ips": my_geolocate_parameter_ip,
+        "reason_for_high_severity": prompt_1_summary_responses_1,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -371,7 +367,8 @@ def add_comment_5(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment=format_1)
+    # call playbook "chris/oct2024 child pb", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/oct2024 child pb", container=container, name="playbook_oct2024_child_pb_1", inputs=inputs)
 
     return
 

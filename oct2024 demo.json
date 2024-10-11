@@ -52,18 +52,6 @@
                     "targetPort": "1_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_11_to_port_9",
-                    "sourceNode": "11",
-                    "sourcePort": "11_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_3_to_port_12",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -116,14 +104,19 @@
                     "targetPort": "10_in"
                 },
                 {
-                    "id": "port_9_to_port_16",
-                    "sourceNode": "9",
-                    "sourcePort": "9_out",
-                    "targetNode": "16",
-                    "targetPort": "16_in"
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_11_to_port_17",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
                 }
             ],
-            "hash": "ed116dbd9eba621a27a8e08b49b559f45c240be2",
+            "hash": "b214334478165e4f56fade125d5a16b1cfab4343",
             "nodes": {
                 "0": {
                     "customCode": null,
@@ -194,6 +187,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -492,14 +489,34 @@
                     "x": 700,
                     "y": 1160
                 },
-                "16": {
+                "17": {
                     "data": {
                         "advanced": {
                             "join": []
                         },
-                        "functionId": 5,
-                        "functionName": "add_comment_5",
-                        "id": "16",
+                        "functionId": 1,
+                        "functionName": "playbook_oct2024_child_pb_1",
+                        "id": "17",
+                        "inputs": {
+                            "Reason for high severity": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "list of ip and country": {
+                                "datapaths": [
+                                    "format_1:formatted_data"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
                         "loop": {
                             "enabled": false,
                             "exitAfterUnit": "m",
@@ -509,61 +526,22 @@
                             "pauseUnit": "m",
                             "pauseValue": 2
                         },
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "comment": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "description": "",
-                                        "label": "comment",
-                                        "name": "comment",
-                                        "placeholder": "Enter a comment",
-                                        "renderType": "datapath",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "author",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "trace",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "add comment",
-                                "name": "comment"
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "comment": {
-                                "_internal": [
-                                    "container",
-                                    "author",
-                                    "trace"
-                                ],
-                                "comment": "format_1:formatted_data"
-                            }
-                        }
+                        "playbookName": "oct2024 child pb",
+                        "playbookRepo": 4,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
                     },
                     "errors": {},
-                    "id": "16",
-                    "type": "utility",
+                    "id": "17",
+                    "type": "playbook",
                     "warnings": {},
-                    "x": 460,
-                    "y": 1960
+                    "x": 280,
+                    "y": 1764.5
                 },
                 "3": {
+                    "customCode": null,
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
@@ -604,6 +582,7 @@
                     "errors": {},
                     "id": "3",
                     "type": "action",
+                    "userCode": null,
                     "warnings": {},
                     "x": 980,
                     "y": 280
@@ -971,70 +950,6 @@
                     "warnings": {},
                     "x": 1420,
                     "y": 1124.5
-                },
-                "9": {
-                    "data": {
-                        "advanced": {
-                            "customName": "set severity to high",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_severity_to_high",
-                        "id": "9",
-                        "loop": {
-                            "enabled": false,
-                            "exitAfterUnit": "m",
-                            "exitAfterValue": 10,
-                            "exitConditionEnabled": false,
-                            "exitLoopAfter": 2,
-                            "pauseUnit": "m",
-                            "pauseValue": 2
-                        },
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "9",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 460,
-                    "y": 1740
                 }
             },
             "notes": ""
@@ -1047,7 +962,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-11T17:16:51.394149+00:00",
+    "create_time": "2024-10-11T18:19:54.638104+00:00",
     "draft_mode": false,
     "labels": [
         "*"
