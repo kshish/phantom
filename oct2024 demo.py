@@ -45,7 +45,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=my_whois)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_in_public_ips)
 
     return
 
@@ -149,9 +149,9 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Philipines"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Taiwan"]
+            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Philipines"],
+            ["filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Taiwan"]
         ],
         delimiter=None)
 
@@ -262,6 +262,26 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     if found_match_1:
         set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    return
+
+
+@phantom.playbook_block()
+def filter_in_public_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_in_public_ips() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_in_public_ips:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        my_whois(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

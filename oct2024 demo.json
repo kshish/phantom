@@ -14,13 +14,6 @@
                     "targetPort": "3_in"
                 },
                 {
-                    "id": "port_3_to_port_4",
-                    "sourceNode": "3",
-                    "sourcePort": "3_out",
-                    "targetNode": "4",
-                    "targetPort": "4_in"
-                },
-                {
                     "id": "port_4_to_port_5",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -88,9 +81,28 @@
                     "sourcePort": "11_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
+                },
+                {
+                    "id": "port_3_to_port_12",
+                    "sourceNode": "3",
+                    "sourcePort": "3_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_4",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "916944b7589212881a8b241565fe75f3718b008e",
+            "hash": "b5dc00ce2d9d06b362ec1b69444afb13bc034ddd",
             "nodes": {
                 "0": {
                     "customCode": "@phantom.playbook_block()\ndef on_start(container):\n    phantom.debug('on_start() called')\n    phantom.debug(\"chris was here\")\n    # call 'my_geolocate' block\n    my_geolocate(container=container)\n\n    return",
@@ -111,7 +123,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 419.9999999999996
+                    "y": 60
                 },
                 "1": {
                     "data": {
@@ -222,6 +234,40 @@
                     "x": 780,
                     "y": 1360
                 },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "customName": "filter in public IPs",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "keep public IPs",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_in_public_ips",
+                        "id": "12",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 460
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -265,7 +311,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 580
+                    "y": 280
                 },
                 "4": {
                     "customCode": null,
@@ -517,19 +563,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Philipines"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Taiwan"
                                     }
                                 ],
@@ -565,7 +611,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 964.5
+                    "y": 960
                 },
                 "8": {
                     "data": {
@@ -706,7 +752,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-11T16:20:31.038457+00:00",
+    "create_time": "2024-10-11T16:49:39.376808+00:00",
     "draft_mode": false,
     "labels": [
         "*"
