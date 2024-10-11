@@ -156,11 +156,11 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+    format_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -215,14 +215,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """Container {0} from department {1} has IPs outside our list of countries.\n\nIP: {2} is from: {3}"""
+    message = """Container {0} from department {1} has IPs outside our list of countries.\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:Department",
-        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+        "format_1:formatted_data"
     ]
 
     # responses
@@ -321,6 +320,35 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """IP: {0} is from: {1}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
