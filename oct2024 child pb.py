@@ -115,6 +115,8 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
 
     phantom.pin(container=container, data=playbook_input_ips_values, message="Here's the ips", pin_style="red", pin_type="card")
 
+    promote_to_case_5(container=container)
+
     return
 
 
@@ -137,6 +139,27 @@ def add_comment_4(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_input_reason_for_high_severity_values)
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("promote_to_case_5() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Account Compromise")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
