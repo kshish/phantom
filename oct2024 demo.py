@@ -222,8 +222,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:Department",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_in_public_ips:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
