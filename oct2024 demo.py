@@ -216,7 +216,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """Container {0} with severity {1} has IPs outside our list of countries.\n\nIP: {2} is from: {3}"""
+    message = """Container {0} from department {1} has IPs outside our list of countries.\n\nIP: {2} is from: {3}"""
 
     # parameter list for template variable replacement
     parameters = [
