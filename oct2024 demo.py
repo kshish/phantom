@@ -204,6 +204,8 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
 
     container = phantom.get_container(container.get('id', None))
 
+    add_comment_5(container=container)
+
     return
 
 
@@ -221,7 +223,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:Department",
-        "format_1:formatted_data"
+        "format_1:formatted_data.*"
     ]
 
     # responses
@@ -349,6 +351,27 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_5() called")
+
+    format_1 = phantom.get_format_data(name="format_1")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=format_1)
 
     return
 
