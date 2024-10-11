@@ -11,9 +11,9 @@ from datetime import datetime, timedelta
 @phantom.playbook_block()
 def on_start(container):
     phantom.debug('on_start() called')
-    phantom.debug("chris was here")
-    # call 'my_geolocate' block
-    my_geolocate(container=container)
+
+    # call 'list_merge_4' block
+    list_merge_4(container=container)
 
     return
 
