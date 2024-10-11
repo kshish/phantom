@@ -243,10 +243,8 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        playbook_oct2024_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
         return
-
-    # check for 'else' condition 2
-    playbook_oct2024_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
