@@ -366,7 +366,30 @@ def playbook_oct2024_child_pb_1(action=None, success=None, container=None, resul
     ################################################################################
 
     # call playbook "chris/oct2024 child pb", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/oct2024 child pb", container=container, name="playbook_oct2024_child_pb_1", inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/oct2024 child pb", container=container, name="playbook_oct2024_child_pb_1", callback=add_note_6, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_note_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_note_6() called")
+
+    playbook_oct2024_child_pb_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_oct2024_child_pb_1:playbook_output:thoughts"])
+
+    playbook_oct2024_child_pb_1_output_thoughts_values = [item[0] for item in playbook_oct2024_child_pb_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.add_note(container=container, content=playbook_oct2024_child_pb_1_output_thoughts_values, note_format="markdown", note_type="general", title="These are notes from child pb")
 
     return
 
