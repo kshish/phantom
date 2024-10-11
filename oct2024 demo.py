@@ -221,7 +221,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "container:severity",
+        "container:department",
         "my_geolocate:action_result.parameter.ip",
         "my_geolocate:action_result.data.*.country_name"
     ]
