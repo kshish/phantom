@@ -160,28 +160,7 @@ def decide_if_ip_is_in_our_list(action=None, success=None, container=None, resul
         return
 
     # check for 'else' condition 2
-    set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_to_low() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
+    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -350,8 +329,8 @@ def playbook_oct2024_child_pb_1(action=None, success=None, container=None, resul
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
-        "list_of_ip_and_country": format_1,
         "ips": my_geolocate_parameter_ip,
+        "list_of_ip_and_country": format_1,
         "reason_for_high_severity": prompt_1_summary_responses_1,
     }
 
@@ -390,6 +369,27 @@ def add_note_6(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
 
     phantom.add_note(container=container, content=playbook_oct2024_child_pb_1_output_thoughts_values, note_format="markdown", note_type="general", title="These are notes from child pb")
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="setlowsev")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
