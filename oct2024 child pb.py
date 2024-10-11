@@ -39,6 +39,7 @@ def add_comment_1(action=None, success=None, container=None, results=None, handl
 
     set_severity_2(container=container)
     pin_3(container=container)
+    add_comment_4(container=container)
 
     return
 
@@ -113,6 +114,29 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=playbook_input_ips_values, message="Here's the ips", pin_style="red", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_4() called")
+
+    playbook_input_reason_for_high_severity = phantom.collect2(container=container, datapath=["playbook_input:reason_for_high_severity"])
+
+    playbook_input_reason_for_high_severity_values = [item[0] for item in playbook_input_reason_for_high_severity]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_input_reason_for_high_severity_values)
 
     return
 
