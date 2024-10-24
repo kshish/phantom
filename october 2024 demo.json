@@ -45,14 +45,33 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_8_to_port_10",
+                    "id": "port_8_to_port_11",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_12",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_10",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
                 }
             ],
-            "hash": "773a854493464d697f3a45e00921d8503ff2f2b3",
+            "hash": "835cb2c6fee49b7c1a897480b4fce332927d16d3",
             "nodes": {
                 "0": {
                     "customCode": null,
@@ -156,8 +175,80 @@
                     "id": "10",
                     "type": "utility",
                     "warnings": {},
-                    "x": 740,
-                    "y": 1000
+                    "x": 600,
+                    "y": 1340
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "11",
+                        "message": "Hey!!!! The container {0} with {1} severity has IPs outside our list.\n\nIP is: {2} from: {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "you_geolocate:action_result.parameter.ip",
+                            "you_geolocate:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 680,
+                    "y": 964.5
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "12",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 680,
+                    "y": 1144.5
                 },
                 "4": {
                     "data": {
@@ -526,7 +617,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-24T19:59:08.656120+00:00",
+    "create_time": "2024-10-24T20:08:40.589885+00:00",
     "draft_mode": false,
     "labels": [
         "*"
