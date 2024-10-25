@@ -14,13 +14,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_4_to_port_8",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -76,9 +69,28 @@
                     "sourcePort": "13_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_14",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_14_to_port_8",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "ee892749722eec818fce84e8ecd65eaf0f14235d",
+            "hash": "f6773885a3d4c1808355f62f9bc7d59b9e71eb7a",
             "nodes": {
                 "0": {
                     "customCode": null,
@@ -201,8 +213,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "you_geolocate:action_result.parameter.ip",
-                            "you_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:you_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:you_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -222,7 +234,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": 680,
-                    "y": 964.5
+                    "y": 1000
                 },
                 "12": {
                     "data": {
@@ -440,7 +452,38 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 980,
-                    "y": 480
+                    "y": 460
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "you_geolocate:action_result.data.*.country_name",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "14",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 700
                 },
                 "4": {
                     "data": {
@@ -485,7 +528,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 640
+                    "y": 580
                 },
                 "6": {
                     "data": {
@@ -684,19 +727,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "you_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:you_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "you_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:you_geolocate:action_result.data.*.country_name",
                                         "value": "Mexico"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "you_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:you_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -732,7 +775,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 824.5
+                    "y": 860
                 },
                 "9": {
                     "data": {
@@ -809,7 +852,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-25T16:32:51.844950+00:00",
+    "create_time": "2024-10-25T16:41:29.706655+00:00",
     "draft_mode": false,
     "labels": [
         "*"
