@@ -185,13 +185,14 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The container {0} with {1} severity has IP(s) outside our list.\n\nIP: {2}"""
+    message = """The container {0} with {1} severity has IP(s) outside our list.\n\nIP: {2} is from: {3}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate:action_result.parameter.ip"
+        "my_geolocate:action_result.parameter.ip",
+        "my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
