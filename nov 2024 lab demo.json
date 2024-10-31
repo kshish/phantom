@@ -45,14 +45,33 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_5_to_port_7",
+                    "id": "port_5_to_port_8",
                     "sourceNode": "5",
                     "sourcePort": "5_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_7",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
                 }
             ],
-            "hash": "2a5ff11edc17333a483a12fef8d397fd5c4a8777",
+            "hash": "e7cd6132e6815c31ab180eb103d1333d673405da",
             "nodes": {
                 "0": {
                     "data": {
@@ -91,8 +110,8 @@
                             "Connect block to playbook flow."
                         ]
                     },
-                    "x": 1000,
-                    "y": 1140
+                    "x": 1180,
+                    "y": 1480
                 },
                 "2": {
                     "data": {
@@ -512,8 +531,80 @@
                     "id": "7",
                     "type": "utility",
                     "warnings": {},
-                    "x": 780,
-                    "y": 1000
+                    "x": 740,
+                    "y": 1400
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "8",
+                        "message": "The container {0} with {1} severity has IP(s) outside our list.\n\nIP: {2}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 820,
+                    "y": 1004.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "said yes",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "9",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 820,
+                    "y": 1160
                 }
             },
             "notes": ""
@@ -526,7 +617,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-10-31T17:05:56.750068+00:00",
+    "create_time": "2024-10-31T17:17:35.316311+00:00",
     "draft_mode": false,
     "labels": [
         "*"
