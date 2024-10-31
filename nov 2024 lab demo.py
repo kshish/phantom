@@ -23,7 +23,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.deviceAddress","artifact:*.id"])
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
 
     parameters = []
 
