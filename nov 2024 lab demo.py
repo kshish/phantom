@@ -129,30 +129,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_low_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
-
-    add_comment_add_note_5(container=container)
+    set_label_8(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -311,30 +288,6 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def add_comment_add_note_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("add_comment_add_note_5() called")
-
-    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data"], action_results=results)
-
-    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.comment(container=container, comment="chris was here")
-    phantom.add_note(container=container, content=my_geolocate_result_item_0, note_format="markdown", note_type="general", title="this is a note title")
-
-    return
-
-
-@phantom.playbook_block()
 def playbook_nov_2024_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_nov_2024_child_pb_demo_1() called")
 
@@ -437,6 +390,27 @@ def format_risk_score_msg(action=None, success=None, container=None, results=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_risk_score_msg")
 
     add_comment_7(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label()
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
