@@ -28,18 +28,6 @@
                     "targetPort": "10_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_10_to_port_5",
-                    "sourceNode": "10",
-                    "sourcePort": "10_out",
-                    "targetNode": "5",
-                    "targetPort": "5_in"
-                },
-                {
                     "id": "port_0_to_port_11",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -52,18 +40,6 @@
                     "sourcePort": "11_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
-                },
-                {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_12",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "12",
-                    "targetPort": "12_in"
                 },
                 {
                     "id": "port_12_to_port_8",
@@ -108,17 +84,41 @@
                 {
                     "conditions": [
                         {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_10_to_port_21",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "21",
+                    "targetPort": "21_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_21_to_port_22",
+                    "sourceNode": "21",
+                    "sourcePort": "21_out",
+                    "targetNode": "22",
+                    "targetPort": "22_in"
+                },
+                {
+                    "conditions": [
+                        {
                             "index": 1
                         }
                     ],
-                    "id": "port_5_to_port_20",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "20",
-                    "targetPort": "20_in"
+                    "id": "port_21_to_port_12",
+                    "sourceNode": "21",
+                    "sourcePort": "21_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
                 }
             ],
-            "hash": "b4f0a85a40b9e7b0093a3546bde466e34e483521",
+            "hash": "7816b4c1629cf2f280ffdc225290e452af894e00",
             "nodes": {
                 "0": {
                     "data": {
@@ -138,7 +138,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 219.99999999999983
+                    "y": 219.99999999999977
                 },
                 "1": {
                     "data": {
@@ -191,7 +191,7 @@
                     "type": "filter",
                     "warnings": {},
                     "x": 1040,
-                    "y": 620
+                    "y": 580
                 },
                 "11": {
                     "data": {
@@ -384,8 +384,8 @@
                         "functionName": "format_1",
                         "id": "12",
                         "parameters": [
-                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_by_countries_list:condition_2:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_by_countries_list:condition_2:my_geolocate:action_result.data.*.country_name"
                         ],
                         "template": "%%\nIP: {0} is from: {1}\n%%",
                         "type": "format"
@@ -395,7 +395,7 @@
                     "type": "format",
                     "warnings": {},
                     "x": 740,
-                    "y": 860
+                    "y": 880
                 },
                 "16": {
                     "data": {
@@ -408,13 +408,13 @@
                         "inputs": {
                             "countries": {
                                 "datapaths": [
-                                    "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name"
+                                    "filtered-data:filter_by_countries_list:condition_2:my_geolocate:action_result.data.*.country_name"
                                 ],
                                 "deduplicate": false
                             },
                             "ips": {
                                 "datapaths": [
-                                    "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.parameter.ip"
+                                    "filtered-data:filter_by_countries_list:condition_2:my_geolocate:action_result.parameter.ip"
                                 ],
                                 "deduplicate": false
                             },
@@ -659,15 +659,61 @@
                     "x": 980,
                     "y": 420
                 },
-                "20": {
+                "21": {
                     "data": {
                         "advanced": {
-                            "join": [],
-                            "refreshNotableData": true
+                            "customName": "filter by countries list",
+                            "customNameId": 0,
+                            "join": []
                         },
-                        "functionId": 8,
-                        "functionName": "set_label_8",
-                        "id": "20",
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "in",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "value": "custom_list:countries"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "In our list",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "not in",
+                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
+                                        "value": "custom_list:countries"
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "customName": "not in list",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "filter_by_countries_list",
+                        "id": "21",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "21",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 720
+                },
+                "22": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "pin_2",
+                        "id": "22",
                         "loop": {
                             "enabled": false,
                             "exitAfterUnit": "m",
@@ -681,17 +727,57 @@
                         "tab": "apis",
                         "type": "utility",
                         "utilities": {
-                            "set_label": {
+                            "pin": {
                                 "description": "",
                                 "fields": [
                                     {
-                                        "choices": "notableLabels",
                                         "description": "",
-                                        "label": "label",
-                                        "name": "label",
-                                        "placeholder": "Select a label",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
                                         "renderType": "dropdown",
-                                        "required": true
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "blue",
+                                            "red"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
                                     },
                                     {
                                         "hidden": true,
@@ -700,32 +786,47 @@
                                     },
                                     {
                                         "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
                                         "name": "trace",
                                         "required": false
                                     }
                                 ],
-                                "label": "set label",
-                                "name": "set_label",
-                                "refreshNotableData": true
+                                "label": "pin",
+                                "name": "pin"
                             }
                         },
                         "utilityType": "api",
                         "values": {
-                            "set_label": {
+                            "pin": {
                                 "_internal": [
                                     "container",
+                                    "author",
+                                    "truncate",
                                     "trace"
                                 ],
-                                "label": "lowsev"
+                                "data": "filtered-data:filter_by_countries_list:condition_1:my_geolocate:action_result.parameter.ip",
+                                "message": "filtered-data:filter_by_countries_list:condition_1:my_geolocate:action_result.data.*.country_name",
+                                "name": null,
+                                "pin_style": "blue",
+                                "pin_type": "card"
                             }
                         }
                     },
                     "errors": {},
-                    "id": "20",
+                    "id": "22",
                     "type": "utility",
                     "warnings": {},
                     "x": 1440,
-                    "y": 1020
+                    "y": 900
                 },
                 "4": {
                     "data": {
@@ -913,55 +1014,6 @@
                     "x": 1300,
                     "y": 540
                 },
-                "5": {
-                    "data": {
-                        "advanced": {
-                            "join": []
-                        },
-                        "conditions": [
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "not in",
-                                        "param": "filtered-data:filter_out_none:condition_1:my_geolocate:action_result.data.*.country_name",
-                                        "value": "custom_list:countries"
-                                    }
-                                ],
-                                "conditionIndex": 0,
-                                "customName": "IPs NOT from our list",
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            },
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 1,
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 1,
-                                "customName": "IPs is in our list",
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
-                            }
-                        ],
-                        "functionId": 1,
-                        "functionName": "decision_1",
-                        "id": "5",
-                        "type": "decision"
-                    },
-                    "errors": {},
-                    "id": "5",
-                    "type": "decision",
-                    "warnings": {},
-                    "x": 1060,
-                    "y": 820
-                },
                 "8": {
                     "data": {
                         "advanced": {
@@ -1054,7 +1106,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-11-01T16:24:32.961626+00:00",
+    "create_time": "2024-11-01T16:47:39.997963+00:00",
     "draft_mode": false,
     "labels": [
         "*"
