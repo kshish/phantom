@@ -152,6 +152,8 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
 
     container = phantom.get_container(container.get('id', None))
 
+    add_comment_add_note_5(container=container)
+
     return
 
 
@@ -319,6 +321,30 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_add_note_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_add_note_5() called")
+
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data"], action_results=results)
+
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="chris was here")
+    phantom.add_note(container=container, content=my_geolocate_result_item_0, note_format="markdown", note_type="general", title="this is a note title")
 
     return
 
