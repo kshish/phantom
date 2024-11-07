@@ -42,17 +42,36 @@
                 {
                     "conditions": [
                         {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_8_to_port_11",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_12",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "conditions": [
+                        {
                             "index": 0
                         }
                     ],
-                    "id": "port_8_to_port_10",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
+                    "id": "port_12_to_port_10",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
                 }
             ],
-            "hash": "7e0264381a98bf8fbb3fb26713f1be3e13998c94",
+            "hash": "8806e6c20b90fe57ed4faf272f7234986edcab8a",
             "nodes": {
                 "0": {
                     "data": {
@@ -84,8 +103,8 @@
                     "type": "end",
                     "userCode": "    phantom.debug(\"Chris made it to the end\")\n    # Write your custom code here...\n\n",
                     "warnings": {},
-                    "x": 20,
-                    "y": 860
+                    "x": 240,
+                    "y": 840
                 },
                 "10": {
                     "data": {
@@ -149,7 +168,81 @@
                     "type": "utility",
                     "warnings": {},
                     "x": -260,
-                    "y": 500
+                    "y": 840
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "11",
+                        "message": "Container {0} with severity {1} has IPs outside our list.\n\nIP: {2} is from {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "required": true,
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": -260,
+                    "y": 480
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "said yes ",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "12",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": -180,
+                    "y": 640
                 },
                 "4": {
                     "data": {
@@ -521,7 +614,7 @@
         "schema": "5.0.15",
         "version": "6.3.0.709"
     },
-    "create_time": "2024-11-07T21:09:20.748734+00:00",
+    "create_time": "2024-11-07T21:24:13.071100+00:00",
     "draft_mode": false,
     "labels": [
         "*"
