@@ -400,7 +400,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["filtered-data:filter_1:condition_2:my_geolocate:action_result.data.*.country_name", "in", "custom_list:countries"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "in", "custom_list:countries"]
         ],
         name="filter_2:condition_1",
         delimiter=None)
@@ -413,7 +413,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     matched_artifacts_2, matched_results_2 = phantom.condition(
         container=container,
         conditions=[
-            ["filtered-data:filter_1:condition_2:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
         ],
         name="filter_2:condition_2",
         delimiter=None)
