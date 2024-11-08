@@ -429,7 +429,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:my_geolocate:action_result.data.*.country_name","filtered-data:filter_2:condition_2:my_geolocate:action_result.parameter.ip"])
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_name","filtered-data:filter_2:condition_1:my_geolocate:action_result.parameter.ip"])
 
     filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
     filtered_result_0_parameter_ip = [item[1] for item in filtered_result_0_data_filter_2]
