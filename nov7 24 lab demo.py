@@ -125,7 +125,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    call_api_8(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_8(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -290,17 +290,17 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
 def playbook_nov8_2024_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_nov8_2024_child_pb_1() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
-        "reason_for_high_severity": prompt_1_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
+        "reason_for_high_severity": prompt_1_summary_responses_1,
     }
 
     ################################################################################
@@ -384,8 +384,8 @@ def add_note_7(action=None, success=None, container=None, results=None, handle=N
 
 
 @phantom.playbook_block()
-def call_api_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("call_api_8() called")
+def set_label_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_8() called")
 
     ################################################################################
     ## Custom Code Start
@@ -396,6 +396,10 @@ def call_api_8(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
     ## Custom Code End
     ################################################################################
+
+    phantom.set_label(container=container, label="lowseverity")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
