@@ -445,7 +445,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message=filtered_result_0_parameter_ip)
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message=filtered_result_0_parameter_ip, pin_style="blue", pin_type="card")
 
     return
 
