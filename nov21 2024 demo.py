@@ -222,6 +222,19 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     if matched_artifacts_1 or matched_results_1:
         filter_by_countries_in_our_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "==", ""]
+        ],
+        name="filter_1:condition_2",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_5(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
     return
 
 
@@ -354,7 +367,7 @@ def filter_by_countries_in_our_list(action=None, success=None, container=None, r
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        pin_set_severity_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        pin_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     # collect filtered artifact ids and results for 'if' condition 2
     matched_artifacts_2, matched_results_2 = phantom.condition(
@@ -373,8 +386,8 @@ def filter_by_countries_in_our_list(action=None, success=None, container=None, r
 
 
 @phantom.playbook_block()
-def pin_set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("pin_set_severity_2() called")
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_2() called")
 
     filtered_result_0_data_filter_by_countries_in_our_list = phantom.collect2(container=container, datapath=["filtered-data:filter_by_countries_in_our_list:condition_1:geolocate_ip_1:action_result.data.*.country_name","filtered-data:filter_by_countries_in_our_list:condition_1:geolocate_ip_1:action_result.parameter.ip"])
 
@@ -392,9 +405,29 @@ def pin_set_severity_2(action=None, success=None, container=None, results=None, 
     ################################################################################
 
     phantom.pin(container=container, data=filtered_result_0_data___country_name, message=filtered_result_0_parameter_ip, pin_style="blue", pin_type="card")
-    phantom.set_severity(container=container, severity="low")
 
-    container = phantom.get_container(container.get('id', None))
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_2:geolocate_ip_1:action_result.parameter.ip"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Private IP", pin_style="grey", pin_type="card")
 
     return
 
