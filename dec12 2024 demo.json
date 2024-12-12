@@ -45,14 +45,33 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_5_to_port_7",
+                    "id": "port_5_to_port_8",
                     "sourceNode": "5",
                     "sourcePort": "5_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "id": "port_8_to_port_9",
+                    "sourceNode": "8",
+                    "sourcePort": "8_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_9_to_port_7",
+                    "sourceNode": "9",
+                    "sourcePort": "9_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
                 }
             ],
-            "hash": "a5281304cddf51b8bbc056eaf10c14c5fd0c3a04",
+            "hash": "1224c03975f55eadc9e799f654a114e2749b01c8",
             "nodes": {
                 "0": {
                     "data": {
@@ -92,7 +111,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 1360
+                    "y": 1460
                 },
                 "3": {
                     "data": {
@@ -394,7 +413,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 784.5
+                    "y": 800
                 },
                 "6": {
                     "data": {
@@ -522,8 +541,93 @@
                     "id": "7",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1220,
-                    "y": 984.5
+                    "x": 1300,
+                    "y": 1400
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "8",
+                        "message": "IP(s) not all from our list.\nContainer: {0} with severity: {1}\n\nWith IP: {2} is from: {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 1380,
+                    "y": 980
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "9",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 1380,
+                    "y": 1180
                 }
             },
             "notes": ""
@@ -536,7 +640,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-12-12T21:03:44.250493+00:00",
+    "create_time": "2024-12-12T21:13:45.118880+00:00",
     "draft_mode": false,
     "labels": [
         "*"
