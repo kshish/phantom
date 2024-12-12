@@ -169,6 +169,8 @@ def high_severity(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
+    phantom.set_severity(container=container, severity="high")
+
     container = phantom.get_container(container.get('id', None))
 
     return
