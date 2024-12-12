@@ -125,18 +125,18 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    high_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_2() called")
+def low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("low_severity() called")
 
     ################################################################################
     ## Custom Code Start
@@ -156,8 +156,8 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 
 
 @phantom.playbook_block()
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_3() called")
+def high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("high_severity() called")
 
     ################################################################################
     ## Custom Code Start
@@ -168,8 +168,6 @@ def set_severity_3(action=None, success=None, container=None, results=None, hand
     ################################################################################
     ## Custom Code End
     ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
