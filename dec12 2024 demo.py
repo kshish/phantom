@@ -155,27 +155,6 @@ def low_severity(action=None, success=None, container=None, results=None, handle
 
 
 @phantom.playbook_block()
-def high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-@phantom.playbook_block()
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("prompt_1() called")
 
@@ -203,6 +182,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -225,7 +210,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_dec13_2024_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -316,6 +301,63 @@ def format_ip_and_country_list(action=None, success=None, container=None, result
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_and_country_list")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def playbook_dec13_2024_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_dec13_2024_child_pb_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_to_keep_rows_with_countries = phantom.collect2(container=container, datapath=["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_to_keep_rows_with_countries]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_to_keep_rows_with_countries]
+
+    inputs = {
+        "reason_for_high_severity": prompt_1_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    # call playbook "chris/dec13 2024 child pb", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/dec13 2024 child pb", container=container, name="playbook_dec13_2024_child_pb_1", callback=add_note_5, inputs=inputs)
+
+    return
+
+
+@phantom.playbook_block()
+def add_note_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_note_5() called")
+
+    name_value = container.get("name", None)
+    playbook_dec13_2024_child_pb_1_output_thoughts = phantom.collect2(container=container, datapath=["playbook_dec13_2024_child_pb_1:playbook_output:thoughts"])
+
+    playbook_dec13_2024_child_pb_1_output_thoughts_values = [item[0] for item in playbook_dec13_2024_child_pb_1_output_thoughts]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.add_note(container=container, content=playbook_dec13_2024_child_pb_1_output_thoughts_values, note_format="markdown", note_type="general", title=name_value)
 
     return
 
