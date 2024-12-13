@@ -26,18 +26,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_5_to_port_8",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
                     "id": "port_8_to_port_9",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
@@ -55,13 +43,6 @@
                     "sourcePort": "9_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
-                },
-                {
-                    "id": "port_7_to_port_10",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
                 },
                 {
                     "id": "port_0_to_port_11",
@@ -95,9 +76,28 @@
                     "sourcePort": "12_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_5_to_port_13",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "id": "port_13_to_port_8",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
                 }
             ],
-            "hash": "4177e791dff73325baba9938e974dd2629933741",
+            "hash": "fd99017145677dc38a7dc7d2a5971d63d960143d",
             "nodes": {
                 "0": {
                     "data": {
@@ -138,50 +138,6 @@
                     },
                     "x": 1000,
                     "y": 1460
-                },
-                "10": {
-                    "data": {
-                        "advanced": {
-                            "join": []
-                        },
-                        "customDatapaths": {
-                            "my_geolocate": {
-                                "action_result.data.*.csv": {
-                                    "contains": [],
-                                    "isCustomDatapath": true,
-                                    "isDatapathArray": true,
-                                    "label": "action_result.data.*.csv",
-                                    "value": "my_geolocate:action_result.data.*.csv"
-                                },
-                                "action_result.data.*.csv.*.field1": {
-                                    "contains": [],
-                                    "isCustomDatapath": true,
-                                    "label": "action_result.data.*.csv.*.field1",
-                                    "value": "my_geolocate:action_result.data.*.csv.*.field1"
-                                },
-                                "action_result.data.*.notableid": {
-                                    "contains": [],
-                                    "isCustomDatapath": true,
-                                    "label": "action_result.data.*.notableid",
-                                    "value": "my_geolocate:action_result.data.*.notableid"
-                                }
-                            }
-                        },
-                        "functionId": 1,
-                        "functionName": "format_1",
-                        "id": "10",
-                        "parameters": [
-                            "my_geolocate:action_result.data.*.csv.*.field1"
-                        ],
-                        "template": "{0}\n",
-                        "type": "format"
-                    },
-                    "errors": {},
-                    "id": "10",
-                    "type": "format",
-                    "warnings": {},
-                    "x": 1300,
-                    "y": 1564.5
                 },
                 "11": {
                     "data": {
@@ -398,6 +354,30 @@
                     "warnings": {},
                     "x": 1040,
                     "y": 584.5
+                },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "customName": "format ip and country list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "format_ip_and_country_list",
+                        "id": "13",
+                        "parameters": [
+                            "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1280,
+                    "y": 804.5
                 },
                 "3": {
                     "data": {
@@ -843,12 +823,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "8",
-                        "message": "IP(s) not all from our list.\nContainer: {0} with severity: {1}\n\nWith IP: {2} is from: {3}",
+                        "message": "IP(s) not all from our list.\nContainer: {0} with severity: {1}\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name"
+                            "format_ip_and_country_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -929,7 +908,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2024-12-13T18:00:45.176410+00:00",
+    "create_time": "2024-12-13T18:04:58.723018+00:00",
     "draft_mode": false,
     "labels": [
         "*"
