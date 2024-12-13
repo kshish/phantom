@@ -59,7 +59,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_to_keep_rows_with_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -114,11 +114,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Thailand"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "India"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Poland"]
+            ["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Thailand"],
+            ["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"],
+            ["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "India"],
+            ["filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Poland"]
         ],
         delimiter=None)
 
@@ -191,8 +191,8 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_to_keep_rows_with_countries:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     # responses
@@ -296,6 +296,26 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_to_keep_rows_with_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_to_keep_rows_with_countries() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", ""]
+        ],
+        name="filter_to_keep_rows_with_countries:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
