@@ -4,7 +4,7 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
-            "description": "",
+            "description": "this will be a comment in the  code",
             "edges": [
                 {
                     "id": "port_0_to_port_4",
@@ -12,8 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_0_to_port_6",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
+            "hash": "90145ceedc6c7437ef92bdcd6b076b16b0381739",
             "nodes": {
                 "0": {
                     "data": {
@@ -33,7 +41,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 420
                 },
                 "1": {
                     "data": {
@@ -53,14 +61,16 @@
                             "Connect block to playbook flow."
                         ]
                     },
-                    "x": 940,
-                    "y": 800
+                    "x": 1040,
+                    "y": 1080
                 },
                 "4": {
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -70,7 +80,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "4",
                         "loop": {
                             "enabled": false,
@@ -99,6 +109,49 @@
                     "warnings": {},
                     "x": 980,
                     "y": 580
+                },
+                "6": {
+                    "data": {
+                        "action": "lookup domain",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "DNS",
+                        "connectorConfigs": [
+                            "google_dns"
+                        ],
+                        "connectorId": "876ab991-313e-48e7-bccd-e8c9650c239c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "lookup_domain_1",
+                        "id": "6",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "domain": "artifact:*.cef.sourceDnsDomain"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "domain"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "6",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 1340,
+                    "y": 580
                 }
             },
             "notes": ""
@@ -111,12 +164,15 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-01-27T19:03:30.598201+00:00",
+    "create_time": "2025-01-27T19:39:55.476101+00:00",
     "draft_mode": false,
     "labels": [
         "malware",
         "malware-adware",
         "events"
     ],
-    "tags": []
+    "tags": [
+        "message_restore",
+        "domain"
+    ]
 }
