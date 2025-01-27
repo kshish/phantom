@@ -25,17 +25,14 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    description_value = container.get("description", None)
 
     parameters = []
 
-    # build parameters list for 'my_geolocate' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
-            parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
-            })
+    if description_value is not None:
+        parameters.append({
+            "ip": description_value,
+        })
 
     ################################################################################
     ## Custom Code Start
