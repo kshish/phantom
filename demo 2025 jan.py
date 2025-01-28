@@ -184,7 +184,19 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_1)
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=prompt_1_callback)
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_1_callback() called")
+
+    
+    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
 
     return
 
@@ -226,6 +238,46 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def debug_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("debug_4() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status","prompt_1:action_result.summary.responses.0","prompt_1:action_result.parameter.message","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
+
+    prompt_1_result_item_0 = [item[0] for item in prompt_1_result_data]
+    prompt_1_summary_responses_0 = [item[1] for item in prompt_1_result_data]
+    prompt_1_parameter_message = [item[2] for item in prompt_1_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": prompt_1_result_item_0,
+        "input_2": prompt_1_summary_responses_0,
+        "input_3": prompt_1_parameter_message,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_4")
 
     return
 
