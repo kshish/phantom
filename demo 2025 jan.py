@@ -134,10 +134,6 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("set_severity_to_low() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
-
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
-
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -148,8 +144,7 @@ def set_severity_to_low(action=None, success=None, container=None, results=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
-    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="changed to low severity", pin_style="blue", pin_type="card")
+    phantom.set_label(container=container, label="lowsev")
 
     container = phantom.get_container(container.get('id', None))
 
@@ -363,16 +358,16 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 def playbook_2025_jan_child_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_2025_jan_child_demo_1() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
-        "reason": prompt_1_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
+        "reason": prompt_1_summary_responses_1,
         "countries": filtered_result_0_data___country_name,
     }
 
