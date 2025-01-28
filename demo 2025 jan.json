@@ -21,13 +21,6 @@
                     "targetPort": "9_in"
                 },
                 {
-                    "id": "port_4_to_port_10",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
-                },
-                {
                     "conditions": [
                         {
                             "index": 1
@@ -76,9 +69,28 @@
                     "sourcePort": "12_out",
                     "targetNode": "15",
                     "targetPort": "15_in"
+                },
+                {
+                    "id": "port_4_to_port_16",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_16_to_port_10",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "1bed7c243dfe361e7b098b5f67e1a2d70c34c447",
+            "hash": "1c63c5792c2228f9aadbc9764f6606c1543c6629",
             "nodes": {
                 "0": {
                     "data": {
@@ -98,7 +110,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 419.99999999999966
+                    "y": 280
                 },
                 "1": {
                     "data": {
@@ -132,19 +144,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Germany"
                                     }
                                 ],
@@ -180,7 +192,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": 1060,
-                    "y": 784.5
+                    "y": 780
                 },
                 "11": {
                     "data": {
@@ -262,8 +274,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -564,6 +576,37 @@
                     "x": 1680,
                     "y": 1084.5
                 },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "None"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "16",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 600
+                },
                 "4": {
                     "data": {
                         "action": "geolocate ip",
@@ -608,7 +651,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 580
+                    "y": 460
                 },
                 "9": {
                     "data": {
@@ -793,8 +836,8 @@
                     "id": "9",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1420,
-                    "y": 700
+                    "x": 1400,
+                    "y": 560
                 }
             },
             "notes": ""
@@ -807,7 +850,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-01-28T17:37:03.882850+00:00",
+    "create_time": "2025-01-28T17:45:55.142862+00:00",
     "draft_mode": false,
     "labels": [
         "malware",
