@@ -133,9 +133,16 @@
                     "sourcePort": "22_out",
                     "targetNode": "24",
                     "targetPort": "24_in"
+                },
+                {
+                    "id": "port_23_to_port_25",
+                    "sourceNode": "23",
+                    "sourcePort": "23_out",
+                    "targetNode": "25",
+                    "targetPort": "25_in"
                 }
             ],
-            "hash": "be8cb88249e815b07f63bfb2969c0d16985db61f",
+            "hash": "4e13e123ca47da25ad4de497cce657f493c1583e",
             "nodes": {
                 "0": {
                     "data": {
@@ -242,14 +249,14 @@
                 "11": {
                     "data": {
                         "advanced": {
-                            "customName": "set severity to low",
+                            "customName": "set label lowsev",
                             "customNameId": 0,
                             "join": [],
                             "refreshNotableData": true
                         },
                         "customFunction": null,
                         "functionId": 2,
-                        "functionName": "set_severity_to_low",
+                        "functionName": "set_label_lowsev",
                         "id": "11",
                         "loop": {
                             "enabled": false,
@@ -1143,6 +1150,85 @@
                     "x": 1080,
                     "y": 1784.5
                 },
+                "25": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 3,
+                        "functionName": "promote_to_case_3",
+                        "id": "25",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "promote": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": [
+                                            "NIST 800-61",
+                                            "Response Template 1",
+                                            "Account Compromise",
+                                            "Data Breach",
+                                            "Network Indicator Enrichment",
+                                            "Risk Investigation",
+                                            "Risk Response",
+                                            "Self-Replicating Malware",
+                                            "Suspicious Email",
+                                            "Vulnerability Disclosure"
+                                        ],
+                                        "description": "",
+                                        "label": "template",
+                                        "name": "template",
+                                        "placeholder": "Select a template",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "promote to case",
+                                "name": "promote",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "promote": {
+                                "_internal": [
+                                    "container",
+                                    "trace"
+                                ],
+                                "template": "Data Breach"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "25",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1600,
+                    "y": 1984.5
+                },
                 "4": {
                     "data": {
                         "action": "geolocate ip",
@@ -1386,7 +1472,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-01-28T19:14:58.120641+00:00",
+    "create_time": "2025-01-28T19:26:20.406373+00:00",
     "draft_mode": false,
     "labels": [
         "malware",

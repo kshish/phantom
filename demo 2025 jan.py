@@ -125,14 +125,14 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_lowsev(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_to_low() called")
+def set_label_lowsev(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_lowsev() called")
 
     ################################################################################
     ## Custom Code Start
@@ -431,6 +431,8 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
 
     phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
 
+    promote_to_case_3(container=container)
+
     return
 
 
@@ -455,6 +457,27 @@ def pin_8(action=None, success=None, container=None, results=None, handle=None, 
     ################################################################################
 
     phantom.pin(container=container, data=playbook_2025_jan_child_demo_1_output_risk_score_values, message=playbook_2025_jan_child_demo_1_output_thoughts_values, pin_style="grey", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("promote_to_case_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Data Breach")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
