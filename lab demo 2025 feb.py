@@ -264,8 +264,9 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         logical_operator="or",
         conditions=[
             ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
-            ["prompt_1:action_result.status", "==", "Failed"]
+            ["prompt_1:action_result.status", "==", "failed"]
         ],
+        case_sensitive=False,
         delimiter=None)
 
     # call connected blocks if condition 1 matched
