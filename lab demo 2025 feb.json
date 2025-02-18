@@ -12,9 +12,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "2",
                     "targetPort": "2_in"
+                },
+                {
+                    "id": "port_0_to_port_3",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
                 }
             ],
-            "hash": "3dbb5ae2a0fb598f164535ea0a42f0d5d013270e",
+            "hash": "f06f8ea63d1a60f4eb7fde6d8912be10f549fbe5",
             "nodes": {
                 "0": {
                     "data": {
@@ -28,9 +35,13 @@
                     "errors": {},
                     "id": "0",
                     "type": "start",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1000,
-                    "y": 419.9999999999999
+                    "y": 419.9999999999998
                 },
                 "1": {
                     "data": {
@@ -44,7 +55,11 @@
                     "errors": {},
                     "id": "1",
                     "type": "end",
-                    "warnings": {},
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1000,
                     "y": 1000
                 },
@@ -89,7 +104,50 @@
                     "type": "action",
                     "warnings": {},
                     "x": 980,
-                    "y": 604.5
+                    "y": 620
+                },
+                "3": {
+                    "data": {
+                        "action": "lookup ip",
+                        "actionType": "investigate",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "DNS",
+                        "connectorConfigs": [
+                            "google_dns"
+                        ],
+                        "connectorId": "876ab991-313e-48e7-bccd-e8c9650c239c",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "lookup_ip_1",
+                        "id": "3",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "ip": "artifact:*.cef.sourceAddress"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "ip"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "3",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 660,
+                    "y": 624.5
                 }
             },
             "notes": ""
@@ -102,7 +160,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-02-18T18:48:59.206202+00:00",
+    "create_time": "2025-02-18T19:01:44.427322+00:00",
     "draft_mode": false,
     "labels": [
         "events"
