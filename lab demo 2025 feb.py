@@ -29,7 +29,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     # This block retrieves public IP addr info
     ################################################################################
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.deviceAddress","artifact:*.id"])
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
 
     parameters = []
 
@@ -51,7 +51,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=execute_program_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"])
 
     return
 
@@ -85,33 +85,6 @@ def lookup_ip_1(action=None, success=None, container=None, results=None, handle=
     ################################################################################
 
     phantom.act("lookup ip", parameters=parameters, name="lookup_ip_1", assets=["google_dns"])
-
-    return
-
-
-@phantom.playbook_block()
-def execute_program_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("execute_program_1() called")
-
-    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
-
-    parameters = []
-
-    parameters.append({
-        "ip_hostname": "127.0.0.1",
-    })
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.act("execute program", parameters=parameters, name="execute_program_1", assets=["instructorsoarinstance"])
 
     return
 
