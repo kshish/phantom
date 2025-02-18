@@ -19,9 +19,16 @@
                     "sourcePort": "0_out",
                     "targetNode": "3",
                     "targetPort": "3_in"
+                },
+                {
+                    "id": "port_2_to_port_4",
+                    "sourceNode": "2",
+                    "sourcePort": "2_out",
+                    "targetNode": "4",
+                    "targetPort": "4_in"
                 }
             ],
-            "hash": "9591500fff259c8f4f21b89394724b6666c160ba",
+            "hash": "8f1a3c17be8d7f23ec093c18b7d999f70f99f382",
             "nodes": {
                 "0": {
                     "data": {
@@ -41,7 +48,7 @@
                         ]
                     },
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 420
                 },
                 "1": {
                     "data": {
@@ -69,6 +76,9 @@
                         "action": "geolocate ip",
                         "actionType": "investigate",
                         "advanced": {
+                            "customName": "my geolocate",
+                            "customNameId": 0,
+                            "description": "This block retrieves public IP addr info",
                             "join": []
                         },
                         "connector": "MaxMind",
@@ -78,7 +88,7 @@
                         "connectorId": "c566e153-3118-4033-abda-14dd9748c91a",
                         "connectorVersion": "v1",
                         "functionId": 1,
-                        "functionName": "geolocate_ip_1",
+                        "functionName": "my_geolocate",
                         "id": "2",
                         "loop": {
                             "enabled": false,
@@ -90,7 +100,7 @@
                             "pauseValue": 2
                         },
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "artifact:*.cef.deviceAddress"
                         },
                         "requiredParameters": [
                             {
@@ -149,6 +159,49 @@
                     "warnings": {},
                     "x": 660,
                     "y": 624.5
+                },
+                "4": {
+                    "data": {
+                        "action": "execute program",
+                        "actionType": "generic",
+                        "advanced": {
+                            "join": []
+                        },
+                        "connector": "SSH",
+                        "connectorConfigs": [
+                            "instructorsoarinstance"
+                        ],
+                        "connectorId": "d37aa7fe-c973-44ee-a164-2ca5bf321b1f",
+                        "connectorVersion": "v1",
+                        "functionId": 1,
+                        "functionName": "execute_program_1",
+                        "id": "4",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "parameters": {
+                            "ip_hostname": "127.0.0.1"
+                        },
+                        "requiredParameters": [
+                            {
+                                "data_type": "string",
+                                "field": "ip_hostname"
+                            }
+                        ],
+                        "type": "action"
+                    },
+                    "errors": {},
+                    "id": "4",
+                    "type": "action",
+                    "warnings": {},
+                    "x": 960,
+                    "y": 844.5
                 }
             },
             "notes": ""
@@ -161,7 +214,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-02-18T19:02:18.128344+00:00",
+    "create_time": "2025-02-18T19:35:42.219203+00:00",
     "draft_mode": false,
     "labels": [
         "events"
