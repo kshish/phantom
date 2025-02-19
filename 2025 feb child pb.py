@@ -64,6 +64,7 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
 
     prompt_1(container=container)
     promote_to_case_3(container=container)
+    set_severity_4(container=container)
 
     return
 
@@ -116,6 +117,27 @@ def promote_to_case_3(action=None, success=None, container=None, results=None, h
     ################################################################################
 
     phantom.promote(container=container, template="Data Breach")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def set_severity_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_4() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
