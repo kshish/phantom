@@ -160,7 +160,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
     parameters = [
         "container:name",
         "container:severity",
-        "format_1:formatted_data"
+        "format_1:formatted_data.*"
     ]
 
     # responses
