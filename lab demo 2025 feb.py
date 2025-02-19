@@ -48,7 +48,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_out_none_countries)
 
     return
 
@@ -94,29 +94,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
-
-    return
-
-
-@phantom.playbook_block()
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_1() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
-        ],
-        delimiter=None)
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_1(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    set_label_11(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -237,8 +214,8 @@ def debug_5(action=None, success=None, container=None, results=None, handle=None
 
 
 @phantom.playbook_block()
-def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("filter_1() called")
+def filter_out_none_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_out_none_countries() called")
 
     # collect filtered artifact ids and results for 'if' condition 1
     matched_artifacts_1, matched_results_1 = phantom.condition(
@@ -246,12 +223,12 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
         conditions=[
             ["my_geolocate:action_result.data.*.country_name", "!=", None]
         ],
-        name="filter_1:condition_1",
+        name="filter_out_none_countries:condition_1",
         delimiter=None)
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_countries_according_to_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -305,8 +282,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_countries_according_to_list:condition_2:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_countries_according_to_list:condition_2:my_geolocate:action_result.data.*.country_name"
     ]
 
     ################################################################################
@@ -330,18 +307,18 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 def playbook_2025_feb_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_2025_feb_child_pb_1() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_countries_according_to_list = phantom.collect2(container=container, datapath=["filtered-data:filter_countries_according_to_list:condition_2:my_geolocate:action_result.parameter.ip","filtered-data:filter_countries_according_to_list:condition_2:my_geolocate:action_result.data.*.country_name"])
     format_1 = phantom.get_format_data(name="format_1")
 
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
-    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_countries_according_to_list]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_countries_according_to_list]
 
     inputs = {
+        "reason_for_high_severity": prompt_1_summary_responses_1,
         "ips": filtered_result_0_parameter_ip,
         "countries": filtered_result_0_data___country_name,
-        "reason_for_high_severity": prompt_1_summary_responses_1,
         "formatted_list_of_ips_and_countries": format_1,
     }
 
@@ -428,8 +405,45 @@ def add_comment_10(action=None, success=None, container=None, results=None, hand
 
 
 @phantom.playbook_block()
-def set_label_11(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_label_11() called")
+def filter_countries_according_to_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_countries_according_to_list() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_out_none_countries:condition_1:my_geolocate:action_result.data.*.country_name", "in", "custom_list:countries"]
+        ],
+        name="filter_countries_according_to_list:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        pin_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_out_none_countries:condition_1:my_geolocate:action_result.data.*.country_name", "not in", "custom_list:countries"]
+        ],
+        name="filter_countries_according_to_list:condition_2",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        format_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_2() called")
+
+    filtered_result_0_data_filter_countries_according_to_list = phantom.collect2(container=container, datapath=["filtered-data:filter_countries_according_to_list:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_countries_according_to_list]
 
     ################################################################################
     ## Custom Code Start
@@ -441,9 +455,7 @@ def set_label_11(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.set_label(container=container, label="setlowsev")
-
-    container = phantom.get_container(container.get('id', None))
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP(s) in our list", pin_style="blue", pin_type="card")
 
     return
 
