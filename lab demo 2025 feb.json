@@ -14,18 +14,6 @@
                     "targetPort": "10_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_10_to_port_11",
-                    "sourceNode": "10",
-                    "sourcePort": "10_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
                     "id": "port_9_to_port_12",
                     "sourceNode": "9",
                     "sourcePort": "9_out",
@@ -109,14 +97,45 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_6_to_port_17",
-                    "sourceNode": "6",
-                    "sourcePort": "6_out",
-                    "targetNode": "17",
-                    "targetPort": "17_in"
+                    "id": "port_10_to_port_18",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
+                },
+                {
+                    "id": "port_18_to_port_20",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_20_to_port_21",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "21",
+                    "targetPort": "21_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_20_to_port_22",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "22",
+                    "targetPort": "22_in"
                 }
             ],
-            "hash": "4290764cf7e2a7a86664c6363893e7c593d0be3b",
+            "hash": "14ffc8af7948a84bdbb31ddc27c7c8df0fea3a58",
             "nodes": {
                 "0": {
                     "data": {
@@ -199,70 +218,6 @@
                     "warnings": {},
                     "x": 320,
                     "y": 1100
-                },
-                "11": {
-                    "data": {
-                        "advanced": {
-                            "customName": "Set severity to High",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 4,
-                        "functionName": "set_severity_to_high",
-                        "id": "11",
-                        "loop": {
-                            "enabled": false,
-                            "exitAfterUnit": "m",
-                            "exitAfterValue": 10,
-                            "exitConditionEnabled": false,
-                            "exitLoopAfter": 2,
-                            "pauseUnit": "m",
-                            "pauseValue": 2
-                        },
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "11",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 400,
-                    "y": 1260
                 },
                 "12": {
                     "data": {
@@ -801,14 +756,40 @@
                     "x": -280,
                     "y": 804.5
                 },
-                "17": {
+                "18": {
                     "data": {
                         "advanced": {
                             "join": []
                         },
-                        "functionId": 7,
-                        "functionName": "pin_7",
-                        "id": "17",
+                        "functionId": 1,
+                        "functionName": "playbook_2025_feb_child_pb_1",
+                        "id": "18",
+                        "inputs": {
+                            "countries": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "formatted list of ips and countries": {
+                                "datapaths": [
+                                    "format_1:formatted_data"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ips": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            },
+                            "reason_for_high_severity": {
+                                "datapaths": [
+                                    "prompt_1:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
                         "loop": {
                             "enabled": false,
                             "exitAfterUnit": "m",
@@ -818,110 +799,19 @@
                             "pauseUnit": "m",
                             "pauseValue": 2
                         },
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "pin": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "description": "",
-                                        "label": "message",
-                                        "name": "message",
-                                        "placeholder": "Enter a message",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "data",
-                                        "name": "data",
-                                        "placeholder": "Enter a value",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "card",
-                                            "data"
-                                        ],
-                                        "description": "",
-                                        "label": "pin type",
-                                        "name": "pin_type",
-                                        "placeholder": "Select pin type",
-                                        "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "grey",
-                                            "blue",
-                                            "red"
-                                        ],
-                                        "description": "",
-                                        "label": "pin color",
-                                        "name": "pin_style",
-                                        "placeholder": "Select pin color",
-                                        "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "name",
-                                        "name": "name",
-                                        "placeholder": "Use a named pin",
-                                        "renderType": "input",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "author",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "truncate",
-                                        "required": false
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "trace",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "pin",
-                                "name": "pin"
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "pin": {
-                                "_internal": [
-                                    "container",
-                                    "author",
-                                    "truncate",
-                                    "trace"
-                                ],
-                                "data": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
-                                "message": "IP is not in our list",
-                                "name": null,
-                                "pin_style": "red",
-                                "pin_type": "card"
-                            }
-                        }
+                        "playbookName": "2025 feb child pb",
+                        "playbookRepo": 4,
+                        "playbookRepoName": "Chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
                     },
                     "errors": {},
-                    "id": "17",
-                    "type": "utility",
+                    "id": "18",
+                    "type": "playbook",
                     "warnings": {},
-                    "x": 660,
-                    "y": 604.5
+                    "x": 220,
+                    "y": 1280
                 },
                 "2": {
                     "data": {
@@ -968,6 +858,275 @@
                     "warnings": {},
                     "x": 0,
                     "y": 148
+                },
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": ">",
+                                        "param": "playbook_2025_feb_child_pb_1:playbook_output:risk_score",
+                                        "value": "155"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "20",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "20",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 280,
+                    "y": 1484.5
+                },
+                "21": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 9,
+                        "functionName": "add_comment_add_note_9",
+                        "id": "21",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "add_note": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "title",
+                                        "name": "title",
+                                        "placeholder": "Enter a note title",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "content",
+                                        "name": "content",
+                                        "placeholder": "Enter the note content",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "markdown",
+                                            "html"
+                                        ],
+                                        "default": "markdown",
+                                        "description": "",
+                                        "label": "note format",
+                                        "name": "note_format",
+                                        "placeholder": "Enter the note content",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "default": "general",
+                                        "hidden": true,
+                                        "name": "note_type",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "event_id",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "task_id",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add note",
+                                "name": "add_note"
+                            },
+                            "comment": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "comment",
+                                        "name": "comment",
+                                        "placeholder": "Enter a comment",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add comment",
+                                "name": "comment"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "add_note": {
+                                "_internal": [
+                                    "container",
+                                    "note_type",
+                                    "author",
+                                    "event_id",
+                                    "task_id",
+                                    "trace"
+                                ],
+                                "content": "playbook_2025_feb_child_pb_1:playbook_output:risk_score",
+                                "note_format": "markdown",
+                                "note_type": "general",
+                                "title": "high risk"
+                            },
+                            "comment": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "trace"
+                                ],
+                                "comment": "High risk"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "21",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 720,
+                    "y": 1644.5
+                },
+                "22": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 10,
+                        "functionName": "add_comment_10",
+                        "id": "22",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "comment": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "comment",
+                                        "name": "comment",
+                                        "placeholder": "Enter a comment",
+                                        "renderType": "datapath",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "add comment",
+                                "name": "comment"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "comment": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "trace"
+                                ],
+                                "comment": "low risk"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "22",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": -280,
+                    "y": 1644.5
                 },
                 "5": {
                     "data": {
@@ -1322,6 +1481,10 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -1344,7 +1507,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-02-19T18:14:50.267648+00:00",
+    "create_time": "2025-02-19T19:34:11.711286+00:00",
     "draft_mode": false,
     "labels": [
         "events"
