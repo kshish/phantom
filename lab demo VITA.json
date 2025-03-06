@@ -40,18 +40,6 @@
                     "targetPort": "5_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_4_to_port_7",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_7_to_port_8",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
@@ -76,9 +64,28 @@
                     "sourcePort": "8_out",
                     "targetNode": "10",
                     "targetPort": "10_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_4_to_port_11",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "id": "port_11_to_port_7",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "d1c68bf039837070fc83efe76ce5d4cfe5e6a7fd",
+            "hash": "5fd9068075cc0a1b18f7594a3395904c2e1f3d11",
             "nodes": {
                 "0": {
                     "data": {
@@ -184,6 +191,28 @@
                     "warnings": {},
                     "x": 480,
                     "y": 1344.5
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "11",
+                        "parameters": [
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 620,
+                    "y": 724.5
                 },
                 "2": {
                     "customCode": null,
@@ -552,12 +581,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "7",
-                        "message": "The container {0} with severity {1} has IP(s) outside our list.\n\nIP: {2} is from: {3}\n",
+                        "message": "The container {0} with severity {1} has IP(s) outside our list.\n\n{2}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -810,7 +838,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-03-06T20:18:57.420246+00:00",
+    "create_time": "2025-03-06T20:22:40.389788+00:00",
     "draft_mode": false,
     "labels": [
         "*"
