@@ -59,14 +59,17 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     phantom.debug("debug_1() called")
 
     name_value = container.get("name", None)
-    artifact_count_value = container.get("artifact_count", None)
+    vita_value = container.get("vita", None)
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
 
     parameters = []
 
     parameters.append({
         "input_1": name_value,
-        "input_2": artifact_count_value,
-        "input_3": None,
+        "input_2": vita_value,
+        "input_3": my_geolocate_result_item_0,
         "input_4": None,
         "input_5": None,
         "input_6": None,
