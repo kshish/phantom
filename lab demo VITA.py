@@ -61,8 +61,12 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     name_value = container.get("name", None)
     vita_value = container.get("vita", None)
     my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_name","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.rm/f","artifact:*.cef.123","artifact:*.cef.some field with spaces","artifact:*.id"])
 
     my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+    container_artifact_cef_item_2 = [item[2] for item in container_artifact_data]
 
     parameters = []
 
@@ -70,9 +74,9 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
         "input_1": name_value,
         "input_2": vita_value,
         "input_3": my_geolocate_result_item_0,
-        "input_4": None,
-        "input_5": None,
-        "input_6": None,
+        "input_4": container_artifact_cef_item_0,
+        "input_5": container_artifact_cef_item_1,
+        "input_6": container_artifact_cef_item_2,
         "input_7": None,
         "input_8": None,
         "input_9": None,
