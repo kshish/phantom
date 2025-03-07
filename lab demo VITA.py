@@ -293,8 +293,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name"
     ]
 
     ################################################################################
