@@ -59,7 +59,7 @@ def my_geolocate_callback(action=None, success=None, container=None, results=Non
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_out_internal_ips(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -118,8 +118,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Canada"]
+            ["filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Canada"]
         ],
         delimiter=None)
 
@@ -350,6 +350,26 @@ def list_merge_3(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_3", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_out_internal_ips(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_out_internal_ips() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", None]
+        ],
+        name="filter_out_internal_ips:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
