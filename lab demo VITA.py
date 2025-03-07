@@ -282,6 +282,8 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
 
     container = phantom.get_container(container.get('id', None))
 
+    promote_to_case_6(container=container)
+
     return
 
 
@@ -370,6 +372,27 @@ def filter_out_internal_ips(action=None, success=None, container=None, results=N
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("promote_to_case_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote(container=container, template="Risk Investigation")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
