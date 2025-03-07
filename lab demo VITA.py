@@ -183,6 +183,12 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+            },
         }
     ]
 
@@ -219,7 +225,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_vita_child_pb_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -260,29 +266,6 @@ def debug_4(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_4")
-
-    return
-
-
-@phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    promote_to_case_6(container=container)
 
     return
 
@@ -377,8 +360,21 @@ def filter_out_internal_ips(action=None, success=None, container=None, results=N
 
 
 @phantom.playbook_block()
-def promote_to_case_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("promote_to_case_6() called")
+def playbook_vita_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_vita_child_pb_1() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_out_internal_ips = phantom.collect2(container=container, datapath=["filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_out_internal_ips:condition_1:my_geolocate:action_result.data.*.country_name"])
+
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_out_internal_ips]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_out_internal_ips]
+
+    inputs = {
+        "reason_for_high_severity": prompt_1_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -390,9 +386,114 @@ def promote_to_case_6(action=None, success=None, container=None, results=None, h
     ## Custom Code End
     ################################################################################
 
-    phantom.promote(container=container, template="Risk Investigation")
+    # call playbook "chris/vita child pb", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("chris/vita child pb", container=container, name="playbook_vita_child_pb_1", callback=playbook_vita_child_pb_1_callback, inputs=inputs)
 
-    container = phantom.get_container(container.get('id', None))
+    return
+
+
+@phantom.playbook_block()
+def playbook_vita_child_pb_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_vita_child_pb_1_callback() called")
+
+    
+    decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    add_comment_7(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
+
+    return
+
+
+@phantom.playbook_block()
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_3() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_vita_child_pb_1:playbook_output:risk_score", ">", 150]
+        ],
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        add_comment_8(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'elif' condition 2
+    found_match_2 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_vita_child_pb_1:playbook_output:risk_score", ">", 100]
+        ],
+        delimiter=None)
+
+    # call connected blocks if condition 2 matched
+    if found_match_2:
+        add_comment_9(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_7() called")
+
+    playbook_vita_child_pb_1_output_risk_score = phantom.collect2(container=container, datapath=["playbook_vita_child_pb_1:playbook_output:risk_score"])
+
+    playbook_vita_child_pb_1_output_risk_score_values = [item[0] for item in playbook_vita_child_pb_1_output_risk_score]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment=playbook_vita_child_pb_1_output_risk_score_values)
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="high risk score!!!!")
+
+    return
+
+
+@phantom.playbook_block()
+def add_comment_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_comment_9() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.comment(container=container, comment="medium risk")
 
     return
 
