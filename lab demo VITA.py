@@ -418,7 +418,6 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        add_comment_8(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'elif' condition 2
@@ -431,7 +430,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 2 matched
     if found_match_2:
-        add_comment_9(action=action, success=success, container=container, results=results, handle=handle)
+        format_3(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -464,6 +463,8 @@ def add_comment_7(action=None, success=None, container=None, results=None, handl
 def add_comment_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("add_comment_8() called")
 
+    format_3 = phantom.get_format_data(name="format_3")
+
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -474,14 +475,21 @@ def add_comment_8(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment="high risk score!!!!")
+    phantom.comment(container=container, comment=format_3)
 
     return
 
 
 @phantom.playbook_block()
-def add_comment_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("add_comment_9() called")
+def format_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_3() called")
+
+    template = """High Risk score!!!\n\nRisk: {0}\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "playbook_vita_child_pb_1:playbook_output:risk_score"
+    ]
 
     ################################################################################
     ## Custom Code Start
@@ -493,7 +501,9 @@ def add_comment_9(action=None, success=None, container=None, results=None, handl
     ## Custom Code End
     ################################################################################
 
-    phantom.comment(container=container, comment="medium risk")
+    phantom.format(container=container, template=template, parameters=parameters, name="format_3")
+
+    add_comment_8(container=container)
 
     return
 
