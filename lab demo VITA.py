@@ -129,28 +129,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_low_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
+    set_label_5(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -504,6 +483,27 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_3")
 
     add_comment_8(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_5() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="lowseverity")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
