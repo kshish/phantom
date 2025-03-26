@@ -122,15 +122,18 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
         return
+
+    # check for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_2() called")
+def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_to_low() called")
 
     ################################################################################
     ## Custom Code Start
@@ -143,6 +146,136 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
     ################################################################################
 
     phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set user and message variables for phantom.prompt call
+
+    user = None
+    role = "Administrator"
+    message = """The container {0} with severity {1} has IPs from outside our list.\n\nIP: {2} is from: {3}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "my_geolocate_ip:action_result.parameter.ip",
+        "my_geolocate_ip:action_result.data.*.country_name"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to change severity to High?",
+            "options": {
+                "type": "list",
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=prompt_1_callback)
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_1_callback() called")
+
+    
+    decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
+
+    return
+
+
+@phantom.playbook_block()
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_3() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ],
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_to_highg(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+@phantom.playbook_block()
+def debug_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("debug_3() called")
+
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.0","prompt_1:action_result.status","prompt_1:action_result.parameter.message","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
+
+    prompt_1_summary_responses_0 = [item[0] for item in prompt_1_result_data]
+    prompt_1_result_item_1 = [item[1] for item in prompt_1_result_data]
+    prompt_1_parameter_message = [item[2] for item in prompt_1_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": prompt_1_summary_responses_0,
+        "input_2": prompt_1_result_item_1,
+        "input_3": prompt_1_parameter_message,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_3")
+
+    return
+
+
+@phantom.playbook_block()
+def set_severity_to_highg(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_to_highg() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
 
