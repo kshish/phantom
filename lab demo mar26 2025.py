@@ -122,11 +122,11 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-    format_ip_and_country_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
