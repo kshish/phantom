@@ -56,30 +56,6 @@
                     "targetPort": "20_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_20_to_port_8",
-                    "sourceNode": "20",
-                    "sourcePort": "20_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
-                    "conditions": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_8_to_port_21",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "21",
-                    "targetPort": "21_in"
-                },
-                {
                     "id": "port_21_to_port_10",
                     "sourceNode": "21",
                     "sourcePort": "21_out",
@@ -139,17 +115,17 @@
                 {
                     "conditions": [
                         {
-                            "index": 1
+                            "index": 0
                         }
                     ],
-                    "id": "port_8_to_port_31",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "31",
-                    "targetPort": "31_in"
+                    "id": "port_20_to_port_32",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "32",
+                    "targetPort": "32_in"
                 }
             ],
-            "hash": "d61a3d4d4eb09621b6656c25bff5a1369628b4b7",
+            "hash": "ed91b6cb3066ec0b4a7110472dec346fadf0a728",
             "nodes": {
                 "0": {
                     "data": {
@@ -465,7 +441,11 @@
                     "errors": {},
                     "id": "12",
                     "type": "utility",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath."
+                        ]
+                    },
                     "x": 1700,
                     "y": 1200
                 },
@@ -830,7 +810,14 @@
                     "errors": {},
                     "id": "21",
                     "type": "format",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath."
+                        ],
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
                     "x": 1280,
                     "y": 960
                 },
@@ -881,7 +868,11 @@
                     "errors": {},
                     "id": "26",
                     "type": "playbook",
-                    "warnings": {},
+                    "warnings": {
+                        "config": [
+                            "Reconfigure invalid datapath."
+                        ]
+                    },
                     "x": 1280,
                     "y": 1444.5
                 },
@@ -1217,9 +1208,56 @@
                     "errors": {},
                     "id": "31",
                     "type": "utility",
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
+                    "x": 460,
+                    "y": 1260
+                },
+                "32": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "in",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate_ip:action_result.data.*.country_name",
+                                        "value": "custom_list:countries"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "customName": "In our list",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "not in",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate_ip:action_result.data.*.country_name",
+                                        "value": "custom_list:countries"
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "filter_2",
+                        "id": "32",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "32",
+                    "type": "filter",
                     "warnings": {},
-                    "x": 640,
-                    "y": 984.5
+                    "x": 1040,
+                    "y": 840
                 },
                 "7": {
                     "data": {
@@ -1409,55 +1447,6 @@
                     "x": 1680,
                     "y": 680
                 },
-                "8": {
-                    "data": {
-                        "advanced": {
-                            "join": []
-                        },
-                        "conditions": [
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "not in",
-                                        "param": "filtered-data:filter_1:condition_1:my_geolocate_ip:action_result.data.*.country_name",
-                                        "value": "custom_list:countries"
-                                    }
-                                ],
-                                "conditionIndex": 0,
-                                "customName": "IP is NOT in our list",
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            },
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 1,
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 1,
-                                "customName": "IP is in our list",
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
-                            }
-                        ],
-                        "functionId": 2,
-                        "functionName": "decision_2",
-                        "id": "8",
-                        "type": "decision"
-                    },
-                    "errors": {},
-                    "id": "8",
-                    "type": "decision",
-                    "warnings": {},
-                    "x": 1060,
-                    "y": 840
-                },
                 "9": {
                     "data": {
                         "advanced": {
@@ -1537,7 +1526,7 @@
         "schema": "5.0.12",
         "version": "6.2.2.123"
     },
-    "create_time": "2025-03-27T19:08:48.722556+00:00",
+    "create_time": "2025-03-27T19:19:20.115389+00:00",
     "draft_mode": false,
     "labels": [
         "events"
