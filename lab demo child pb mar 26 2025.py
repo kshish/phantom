@@ -60,7 +60,7 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=playbook_input_countries_values, message=playbook_input_ips_values, pin_style="red", pin_type="data")
+    phantom.pin(container=container, data=playbook_input_countries_values, message=playbook_input_ips_values, pin_style="red", pin_type="card")
 
     add_comment_3(container=container)
 
