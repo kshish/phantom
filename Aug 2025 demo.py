@@ -261,10 +261,10 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_to_set_high_severity:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_to_set_high_severity:action_result.summary.responses.0", "!=", "No"]
         ],
         conditions_dps=[
-            ["prompt_to_set_high_severity:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_to_set_high_severity:action_result.summary.responses.0", "!=", "No"]
         ],
         name="decision_2:condition_1",
         case_sensitive=False,
