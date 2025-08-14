@@ -106,9 +106,16 @@
                     "sourcePort": "15_out",
                     "targetNode": "6",
                     "targetPort": "6_in"
+                },
+                {
+                    "id": "port_10_to_port_16",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
                 }
             ],
-            "hash": "305530b3b56dba54a604cdee27f8474ffa068a69",
+            "hash": "f5ec59bf21301a9ac8942e5b03e82fb81ae0545f",
             "nodes": {
                 "0": {
                     "data": {
@@ -479,7 +486,7 @@
                             "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
                             "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                         ],
-                        "template": "%%\nIP: {0} is from: {1}\n%%",
+                        "template": "%%\nIP: {0} is from country {1}\n%%",
                         "type": "format"
                     },
                     "errors": {},
@@ -487,7 +494,7 @@
                     "type": "format",
                     "warnings": {},
                     "x": 280,
-                    "y": 604.5
+                    "y": 600
                 },
                 "15": {
                     "data": {
@@ -520,6 +527,136 @@
                     "warnings": {},
                     "x": 60,
                     "y": 160
+                },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 5,
+                        "functionName": "pin_5",
+                        "id": "16",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "pin": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "message",
+                                        "name": "message",
+                                        "placeholder": "Enter a message",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "data",
+                                        "name": "data",
+                                        "placeholder": "Enter a value",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "card",
+                                            "data"
+                                        ],
+                                        "description": "",
+                                        "label": "pin type",
+                                        "name": "pin_type",
+                                        "placeholder": "Select pin type",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "grey",
+                                            "green",
+                                            "blue",
+                                            "violet",
+                                            "coral",
+                                            "red",
+                                            "pink",
+                                            "crimson",
+                                            "orange",
+                                            "dark orange",
+                                            "topaz"
+                                        ],
+                                        "description": "",
+                                        "label": "pin color",
+                                        "name": "pin_style",
+                                        "placeholder": "Select pin color",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "name",
+                                        "name": "name",
+                                        "placeholder": "Use a named pin",
+                                        "renderType": "input",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "author",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "truncate",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "pin",
+                                "name": "pin"
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "pin": {
+                                "_internal": [
+                                    "container",
+                                    "author",
+                                    "truncate",
+                                    "trace"
+                                ],
+                                "data": "format_1:formatted_data",
+                                "message": "There are IPs outside of our Countries list",
+                                "name": null,
+                                "pin_style": "red",
+                                "pin_type": "card"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 280,
+                    "y": 1304.5
                 },
                 "5": {
                     "data": {
@@ -940,7 +1077,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-08-14T14:17:13.763581+00:00",
+    "create_time": "2025-08-14T14:27:08.035608+00:00",
     "draft_mode": false,
     "labels": [
         "*"

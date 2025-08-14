@@ -211,6 +211,8 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
 
     container = phantom.get_container(container.get('id', None))
 
+    pin_5(container=container)
+
     return
 
 
@@ -320,7 +322,7 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
 def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("format_1() called")
 
-    template = """%%\nIP: {0} is from: {1}\n%%"""
+    template = """%%\nIP: {0} is from country {1}\n%%"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -364,6 +366,27 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    format_1 = phantom.get_format_data(name="format_1")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=format_1, message="There are IPs outside of our Countries list", pin_style="red", pin_type="card")
 
     return
 
