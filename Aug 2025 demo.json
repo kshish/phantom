@@ -41,19 +41,6 @@
                     "targetPort": "12_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_12_to_port_10",
-                    "sourceNode": "12",
-                    "sourcePort": "12_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
-                },
-                {
                     "id": "port_0_to_port_13",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -108,14 +95,53 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "id": "port_10_to_port_16",
-                    "sourceNode": "10",
-                    "sourcePort": "10_out",
-                    "targetNode": "16",
-                    "targetPort": "16_in"
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_12_to_port_17",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
+                },
+                {
+                    "id": "port_17_to_port_18",
+                    "sourceNode": "17",
+                    "sourcePort": "17_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_18_to_port_19",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "19",
+                    "targetPort": "19_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_26",
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_18_to_port_20",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
                 }
             ],
-            "hash": "f5ec59bf21301a9ac8942e5b03e82fb81ae0545f",
+            "hash": "f3d7ad1699e6c6237e022dd4dee9dd85e94cb5cd",
             "nodes": {
                 "0": {
                     "data": {
@@ -150,70 +176,6 @@
                     "x": 640,
                     "y": 880
                 },
-                "10": {
-                    "data": {
-                        "advanced": {
-                            "customName": "Set High Severity",
-                            "customNameId": 0,
-                            "join": [],
-                            "refreshNotableData": true
-                        },
-                        "functionId": 3,
-                        "functionName": "set_high_severity",
-                        "id": "10",
-                        "loop": {
-                            "enabled": false,
-                            "exitAfterUnit": "m",
-                            "exitAfterValue": 10,
-                            "exitConditionEnabled": false,
-                            "exitLoopAfter": 2,
-                            "pauseUnit": "m",
-                            "pauseValue": 2
-                        },
-                        "selectMore": false,
-                        "tab": "apis",
-                        "type": "utility",
-                        "utilities": {
-                            "set_severity": {
-                                "description": "",
-                                "fields": [
-                                    {
-                                        "choices": "notableSeverity",
-                                        "description": "",
-                                        "label": "severity",
-                                        "name": "severity",
-                                        "placeholder": "Select severity",
-                                        "renderType": "dropdown",
-                                        "required": true
-                                    },
-                                    {
-                                        "hidden": true,
-                                        "name": "container",
-                                        "required": false
-                                    }
-                                ],
-                                "label": "set severity",
-                                "name": "set_severity",
-                                "refreshNotableData": true
-                            }
-                        },
-                        "utilityType": "api",
-                        "values": {
-                            "set_severity": {
-                                "_internal": [
-                                    "container"
-                                ],
-                                "severity": "high"
-                            }
-                        }
-                    },
-                    "errors": {},
-                    "id": "10",
-                    "type": "utility",
-                    "warnings": {},
-                    "x": 280,
-                    "y": 1155.5
-                },
                 "11": {
                     "data": {
                         "advanced": {
@@ -244,6 +206,11 @@
                                 ],
                                 "responsePrompt": "Would you like to change severity to High?",
                                 "responseType": "yes/no"
+                            },
+                            {
+                                "required": true,
+                                "responsePrompt": "Please provide a reason",
+                                "responseType": "message"
                             }
                         ],
                         "type": "prompt"
@@ -528,14 +495,116 @@
                     "x": 60,
                     "y": 160
                 },
-                "16": {
+                "17": {
                     "data": {
                         "advanced": {
                             "join": []
                         },
-                        "functionId": 5,
-                        "functionName": "pin_5",
-                        "id": "16",
+                        "functionId": 1,
+                        "functionName": "playbook_aug_2025_child_pb_demo_1",
+                        "id": "17",
+                        "inputs": {
+                            "Reason for high severity": {
+                                "datapaths": [
+                                    "prompt_to_set_high_severity:action_result.summary.responses.1"
+                                ],
+                                "deduplicate": false
+                            },
+                            "country": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
+                                ],
+                                "deduplicate": false
+                            },
+                            "ip": {
+                                "datapaths": [
+                                    "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip"
+                                ],
+                                "deduplicate": false
+                            }
+                        },
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "playbookName": "aug 2025 child pb demo",
+                        "playbookRepo": 4,
+                        "playbookRepoName": "chris",
+                        "playbookType": "data",
+                        "synchronous": true,
+                        "type": "playbook"
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "playbook",
+                    "warnings": {},
+                    "x": 280,
+                    "y": 1120
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": ">",
+                                        "param": "playbook_aug_2025_child_pb_demo_1:playbook_output:risk_score",
+                                        "value": "99"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "conditionKey": "condition_key_26",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "18",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 360,
+                    "y": 1240
+                },
+                "19": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "customFunction": null,
+                        "functionId": 6,
+                        "functionName": "promote_to_case_6",
+                        "id": "19",
                         "loop": {
                             "enabled": false,
                             "exitAfterUnit": "m",
@@ -549,64 +618,16 @@
                         "tab": "apis",
                         "type": "utility",
                         "utilities": {
-                            "pin": {
+                            "promote": {
                                 "description": "",
                                 "fields": [
                                     {
+                                        "choices": "templates",
                                         "description": "",
-                                        "label": "message",
-                                        "name": "message",
-                                        "placeholder": "Enter a message",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "data",
-                                        "name": "data",
-                                        "placeholder": "Enter a value",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "card",
-                                            "data"
-                                        ],
-                                        "description": "",
-                                        "label": "pin type",
-                                        "name": "pin_type",
-                                        "placeholder": "Select pin type",
+                                        "label": "template",
+                                        "name": "template",
+                                        "placeholder": "Select a template",
                                         "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "choices": [
-                                            "grey",
-                                            "green",
-                                            "blue",
-                                            "violet",
-                                            "coral",
-                                            "red",
-                                            "pink",
-                                            "crimson",
-                                            "orange",
-                                            "dark orange",
-                                            "topaz"
-                                        ],
-                                        "description": "",
-                                        "label": "pin color",
-                                        "name": "pin_style",
-                                        "placeholder": "Select pin color",
-                                        "renderType": "dropdown",
-                                        "required": false
-                                    },
-                                    {
-                                        "description": "",
-                                        "label": "name",
-                                        "name": "name",
-                                        "placeholder": "Use a named pin",
-                                        "renderType": "input",
                                         "required": false
                                     },
                                     {
@@ -616,12 +637,108 @@
                                     },
                                     {
                                         "hidden": true,
+                                        "name": "trace",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "promote to case",
+                                "name": "promote",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "promote": {
+                                "template": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "19",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 140,
+                    "y": 1400
+                },
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "customFunction": null,
+                        "functionId": 7,
+                        "functionName": "add_note_7",
+                        "id": "20",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "add_note": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "description": "",
+                                        "label": "title",
+                                        "name": "title",
+                                        "placeholder": "Enter a note title",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "description": "",
+                                        "label": "content",
+                                        "name": "content",
+                                        "placeholder": "Enter the note content",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "choices": [
+                                            "markdown",
+                                            "html"
+                                        ],
+                                        "default": "markdown",
+                                        "description": "",
+                                        "label": "note format",
+                                        "name": "note_format",
+                                        "placeholder": "Enter the note content",
+                                        "renderType": "dropdown",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    },
+                                    {
+                                        "default": "general",
+                                        "hidden": true,
+                                        "name": "note_type",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
                                         "name": "author",
                                         "required": false
                                     },
                                     {
                                         "hidden": true,
-                                        "name": "truncate",
+                                        "name": "event_id",
+                                        "required": false
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "task_id",
                                         "required": false
                                     },
                                     {
@@ -630,33 +747,34 @@
                                         "required": false
                                     }
                                 ],
-                                "label": "pin",
-                                "name": "pin"
+                                "label": "add note",
+                                "name": "add_note"
                             }
                         },
                         "utilityType": "api",
                         "values": {
-                            "pin": {
+                            "add_note": {
                                 "_internal": [
                                     "container",
+                                    "note_type",
                                     "author",
-                                    "truncate",
+                                    "event_id",
+                                    "task_id",
                                     "trace"
                                 ],
-                                "data": "format_1:formatted_data",
-                                "message": "There are IPs outside of our Countries list",
-                                "name": null,
-                                "pin_style": "red",
-                                "pin_type": "card"
+                                "content": "playbook_aug_2025_child_pb_demo_1:playbook_output:risk_score",
+                                "note_format": "markdown",
+                                "note_type": "general",
+                                "title": "Risk Score"
                             }
                         }
                     },
                     "errors": {},
-                    "id": "16",
+                    "id": "20",
                     "type": "utility",
                     "warnings": {},
-                    "x": 280,
-                    "y": 1304.5
+                    "x": 500,
+                    "y": 1400
                 },
                 "5": {
                     "data": {
@@ -1077,7 +1195,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-08-14T14:27:08.035608+00:00",
+    "create_time": "2025-08-14T15:43:54.372516+00:00",
     "draft_mode": false,
     "labels": [
         "*"
