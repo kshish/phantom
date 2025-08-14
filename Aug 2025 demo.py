@@ -509,7 +509,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=container_artifact_cef_item_0)
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=container_artifact_cef_item_0, pin_style="red", pin_type="card")
 
     return
 
