@@ -41,19 +41,6 @@
                     "targetPort": "9_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_11",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "11",
-                    "targetPort": "11_in"
-                },
-                {
                     "id": "port_11_to_port_12",
                     "sourceNode": "11",
                     "sourcePort": "11_out",
@@ -86,9 +73,29 @@
                     "sourcePort": "13_out",
                     "targetNode": "5",
                     "targetPort": "5_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_21",
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_14",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "14",
+                    "targetPort": "14_in"
+                },
+                {
+                    "id": "port_14_to_port_11",
+                    "sourceNode": "14",
+                    "sourcePort": "14_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "14e3edce840cc62d1dad68431ea99f8de43df22a",
+            "hash": "30f8483f29d7c9ce6ced898bbcde8da97ed1aed0",
             "nodes": {
                 "0": {
                     "data": {
@@ -184,8 +191,8 @@
                     "id": "10",
                     "type": "utility",
                     "warnings": {},
-                    "x": 220,
-                    "y": 960
+                    "x": 280,
+                    "y": 1155.5
                 },
                 "11": {
                     "data": {
@@ -201,12 +208,11 @@
                         "functionId": 1,
                         "functionName": "prompt_to_set_high_severity",
                         "id": "11",
-                        "message": "The event {0} with severity {1} has IPs not in our list.\n\nIP: {2} is from {3}\n\n",
+                        "message": "The event {0} with severity {1} has IPs not in our list.\n\n{2}\n\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "geolocate_ip_1:action_result.parameter.ip",
-                            "geolocate_ip_1:action_result.data.*.country_name"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -226,8 +232,8 @@
                     "id": "11",
                     "type": "prompt",
                     "warnings": {},
-                    "x": 220,
-                    "y": 604.5
+                    "x": 280,
+                    "y": 800
                 },
                 "12": {
                     "data": {
@@ -262,8 +268,8 @@
                     "id": "12",
                     "type": "decision",
                     "warnings": {},
-                    "x": 300,
-                    "y": 740
+                    "x": 360,
+                    "y": 935.5
                 },
                 "13": {
                     "data": {
@@ -447,6 +453,28 @@
                     "warnings": {},
                     "x": 0,
                     "y": 24.5
+                },
+                "14": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "14",
+                        "parameters": [
+                            "geolocate_ip_1:action_result.parameter.ip",
+                            "geolocate_ip_1:action_result.data.*.country_name"
+                        ],
+                        "template": "IP: {0} is from: {1}\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "14",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 280,
+                    "y": 604.5
                 },
                 "5": {
                     "data": {
@@ -867,7 +895,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-08-14T14:00:04.883658+00:00",
+    "create_time": "2025-08-14T14:10:13.131020+00:00",
     "draft_mode": false,
     "labels": [
         "*"
