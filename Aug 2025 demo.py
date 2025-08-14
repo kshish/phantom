@@ -493,11 +493,10 @@ def pin_2(action=None, success=None, container=None, results=None, handle=None, 
 def pin_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("pin_3() called")
 
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:geolocate_ip_1:action_result.parameter.ip"])
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.act"])
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_2:geolocate_ip_1:action_result.parameter.ip","filtered-data:filter_2:condition_2:geolocate_ip_1:action_result.data.*.country_name"])
 
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
-    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_2]
 
     ################################################################################
     ## Custom Code Start
@@ -509,7 +508,7 @@ def pin_3(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=container_artifact_cef_item_0, pin_style="red", pin_type="card")
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
 
     return
 
