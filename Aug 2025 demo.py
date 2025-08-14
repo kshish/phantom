@@ -44,7 +44,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=send_email_1)
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=filter_1)
 
     return
 
@@ -106,16 +106,16 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Croatia"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Japan"],
-            ["geolocate_ip_1:action_result.data.*.continent_name", "!=", "United Kingdom"]
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Croatia"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Japan"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United Kingdom"]
         ],
         conditions_dps=[
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Croatia"],
-            ["geolocate_ip_1:action_result.data.*.country_name", "!=", "Japan"],
-            ["geolocate_ip_1:action_result.data.*.continent_name", "!=", "United Kingdom"]
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Croatia"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "Japan"],
+            ["filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name", "!=", "United Kingdom"]
         ],
         name="decision_1:condition_1",
         delimiter=None)
@@ -324,8 +324,8 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "geolocate_ip_1:action_result.parameter.ip",
-        "geolocate_ip_1:action_result.data.*.country_name"
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
     ]
 
     ################################################################################
@@ -341,6 +341,29 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_to_set_high_severity(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None]
+        ],
+        conditions_dps=[
+            ["geolocate_ip_1:action_result.data.*.country_name", "!=", None]
+        ],
+        name="filter_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        send_email_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 

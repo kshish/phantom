@@ -7,13 +7,6 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_5_to_port_6",
-                    "sourceNode": "5",
-                    "sourcePort": "5_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
-                },
-                {
                     "id": "port_6_to_port_7",
                     "sourceNode": "6",
                     "sourcePort": "6_out",
@@ -93,9 +86,29 @@
                     "sourcePort": "14_out",
                     "targetNode": "11",
                     "targetPort": "11_in"
+                },
+                {
+                    "id": "port_5_to_port_15",
+                    "sourceNode": "5",
+                    "sourcePort": "5_out",
+                    "targetNode": "15",
+                    "targetPort": "15_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_15_to_port_6",
+                    "sourceNode": "15",
+                    "sourcePort": "15_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "18d35c43ff3c8ea0920abf423c6caa807ffd1394",
+            "hash": "305530b3b56dba54a604cdee27f8474ffa068a69",
             "nodes": {
                 "0": {
                     "data": {
@@ -111,7 +124,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 20,
-                    "y": -100
+                    "y": -160
                 },
                 "1": {
                     "data": {
@@ -452,7 +465,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 0,
-                    "y": 24.5
+                    "y": -35.5
                 },
                 "14": {
                     "data": {
@@ -463,8 +476,8 @@
                         "functionName": "format_1",
                         "id": "14",
                         "parameters": [
-                            "geolocate_ip_1:action_result.parameter.ip",
-                            "geolocate_ip_1:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name"
                         ],
                         "template": "%%\nIP: {0} is from: {1}\n%%",
                         "type": "format"
@@ -475,6 +488,38 @@
                     "warnings": {},
                     "x": 280,
                     "y": 604.5
+                },
+                "15": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "value": "None"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "15",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "15",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 60,
+                    "y": 160
                 },
                 "5": {
                     "data": {
@@ -518,7 +563,7 @@
                     "type": "action",
                     "warnings": {},
                     "x": 0,
-                    "y": 140
+                    "y": 80
                 },
                 "6": {
                     "data": {
@@ -580,25 +625,25 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Croatia"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "Japan"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "geolocate_ip_1:action_result.data.*.continent_name",
+                                        "param": "filtered-data:filter_1:condition_1:geolocate_ip_1:action_result.data.*.country_name",
                                         "value": "United Kingdom"
                                     }
                                 ],
@@ -895,7 +940,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-08-14T14:11:49.193548+00:00",
+    "create_time": "2025-08-14T14:17:13.763581+00:00",
     "draft_mode": false,
     "labels": [
         "*"
