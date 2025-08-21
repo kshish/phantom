@@ -170,13 +170,13 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "yes"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "no"]
         ],
         conditions_dps=[
-            ["prompt_1:action_result.summary.responses.0", "==", "yes"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "no"]
         ],
         name="decision_3:condition_1",
-        case_sensitive=False,
+        case_sensitive=True,
         delimiter=None)
 
     # call connected blocks if condition 1 matched
