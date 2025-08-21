@@ -73,11 +73,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
