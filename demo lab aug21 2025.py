@@ -1,5 +1,5 @@
 """
-
+This is a comment in the python code
 """
 
 
@@ -12,14 +12,14 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate_action' block
+    my_geolocate_action(container=container)
 
     return
 
 @phantom.playbook_block()
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("geolocate_ip_1() called")
+def my_geolocate_action(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("my_geolocate_action() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -27,7 +27,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     parameters = []
 
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate_action' call
     for container_artifact_item in container_artifact_data:
         if container_artifact_item[0] is not None:
             parameters.append({
@@ -45,7 +45,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=debug_3)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_action", assets=["maxmind"], callback=debug_3)
 
     return
 
@@ -95,7 +95,7 @@ def on_finish(container, summary):
     ################################################################################
     ## Custom Code Start
     ################################################################################
-
+    phantom.debug("Chris was here")
     # Write your custom code here...
 
     ################################################################################
