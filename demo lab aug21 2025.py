@@ -291,19 +291,76 @@ def playbook_aug_22_2025_child_pb_demo_1(action=None, success=None, container=No
     ################################################################################
 
     # call playbook "Chris/aug 22 2025 child pb demo", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("Chris/aug 22 2025 child pb demo", container=container, name="playbook_aug_22_2025_child_pb_demo_1", callback=playbook_aug_22_2025_child_pb_demo_1_callback, inputs=inputs)
+    playbook_run_id = phantom.playbook("Chris/aug 22 2025 child pb demo", container=container, name="playbook_aug_22_2025_child_pb_demo_1", callback=decision_4, inputs=inputs)
 
     return
 
 
 @phantom.playbook_block()
-def playbook_aug_22_2025_child_pb_demo_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("playbook_aug_22_2025_child_pb_demo_1_callback() called")
+def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_4() called")
 
-    
-    # Downstream End block cannot be called directly, since execution will call on_finish automatically.
-    # Using placeholder callback function so child playbook is run synchronously.
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_aug_22_2025_child_pb_demo_1:playbook_output:risk_score", ">", 75]
+        ],
+        conditions_dps=[
+            ["playbook_aug_22_2025_child_pb_demo_1:playbook_output:risk_score", ">", 75]
+        ],
+        name="decision_4:condition_1",
+        delimiter=None)
 
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_sensitivity_8(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    set_sensitivity_9(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+@phantom.playbook_block()
+def set_sensitivity_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_sensitivity_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="red")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def set_sensitivity_9(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_sensitivity_9() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_sensitivity(container=container, sensitivity="white")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
