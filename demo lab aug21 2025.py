@@ -131,12 +131,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The event {0} with severity {1}\n\n"""
+    message = """The event {0} with severity {1}\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
-        "container:severity"
+        "container:severity",
+        "format_1:formatted_data"
     ]
 
     # responses
