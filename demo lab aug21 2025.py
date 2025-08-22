@@ -103,27 +103,6 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
 
 
 @phantom.playbook_block()
-def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_high_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="high")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-@phantom.playbook_block()
 def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("prompt_1() called")
 
@@ -152,6 +131,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                     "No"
                 ],
             },
+        },
+        {
+            "prompt": "Please provide a reason",
+            "options": {
+                "type": "message",
+                "required": True,
+            },
         }
     ]
 
@@ -179,7 +165,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        pin_7(action=action, success=success, container=container, results=results, handle=handle)
+        playbook_aug_22_2025_child_pb_demo_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
@@ -278,13 +264,21 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
 
 
 @phantom.playbook_block()
-def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("pin_7() called")
+def playbook_aug_22_2025_child_pb_demo_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_aug_22_2025_child_pb_demo_1() called")
 
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
     filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip","filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"])
 
+    prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
     filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
     filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
+
+    inputs = {
+        "reason_for_high_severity": prompt_1_summary_responses_1,
+        "ips": filtered_result_0_parameter_ip,
+        "countries": filtered_result_0_data___country_name,
+    }
 
     ################################################################################
     ## Custom Code Start
@@ -296,9 +290,20 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message=filtered_result_0_data___country_name, pin_style="red", pin_type="card")
+    # call playbook "Chris/aug 22 2025 child pb demo", returns the playbook_run_id
+    playbook_run_id = phantom.playbook("Chris/aug 22 2025 child pb demo", container=container, name="playbook_aug_22_2025_child_pb_demo_1", callback=playbook_aug_22_2025_child_pb_demo_1_callback, inputs=inputs)
 
-    set_high_severity(container=container)
+    return
+
+
+@phantom.playbook_block()
+def playbook_aug_22_2025_child_pb_demo_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("playbook_aug_22_2025_child_pb_demo_1_callback() called")
+
+    
+    # Downstream End block cannot be called directly, since execution will call on_finish automatically.
+    # Using placeholder callback function so child playbook is run synchronously.
+
 
     return
 
