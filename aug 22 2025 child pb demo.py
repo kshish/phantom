@@ -73,7 +73,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     # set approver and message variables for phantom.prompt call
 
-    user = "admin"
+    user = "soar_local_admin"
     role = None
     message = """Here's the reason: {0}"""
 
