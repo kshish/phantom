@@ -75,12 +75,11 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = "admin"
     role = None
-    message = """Here's the reason: {0}{1}"""
+    message = """Here's the reason: {0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "playbook_input:reason_for_high_severity",
-        ""
+        "playbook_input:reason_for_high_severity"
     ]
 
     # responses
