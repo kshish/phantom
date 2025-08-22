@@ -44,7 +44,7 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=decision_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=filter_1)
 
     return
 
@@ -58,14 +58,14 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Portugal"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Portugal"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"]
         ],
         conditions_dps=[
-            ["my_geolocate:action_result.data.*.country_name", "!=", "United States"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Portugal"],
-            ["my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "United States"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Portugal"],
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name", "!=", "Saudi Arabia"]
         ],
         name="decision_1:condition_1",
         delimiter=None)
@@ -222,6 +222,29 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=my_geolocate)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", None]
+        ],
+        conditions_dps=[
+            ["my_geolocate:action_result.data.*.country_name", "!=", None]
+        ],
+        name="filter_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
