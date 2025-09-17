@@ -4,6 +4,7 @@
     "category": "Uncategorized",
     "coa": {
         "data": {
+            "customCode": null,
             "description": "",
             "edges": [
                 {
@@ -12,9 +13,49 @@
                     "sourcePort": "0_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_7",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
+                },
+                {
+                    "id": "port_4_to_port_8",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "8",
+                    "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_7_to_port_9",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_13",
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_10",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "7c7e1d3c3d8a0ac0fdbe1aacfea76dcb6940285f",
+            "hash": "f3813f22221c590217c5e6de49919fd1396ece58",
             "nodes": {
                 "0": {
                     "data": {
@@ -30,7 +71,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 419.9999999999998
+                    "y": 419.99999999999966
                 },
                 "1": {
                     "data": {
@@ -47,9 +88,72 @@
                     "userCode": "    phantom.debug(\"Chris wuz here\")\n    # Write your custom code here...\n\n",
                     "warnings": {},
                     "x": 1000,
-                    "y": 900
+                    "y": 1160
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 3,
+                        "functionName": "set_severity_3",
+                        "id": "10",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1220,
+                    "y": 964.5
                 },
                 "4": {
+                    "customCode": null,
                     "data": {
                         "action": "geolocate ip",
                         "actionType": "investigate",
@@ -79,7 +183,7 @@
                             "pauseValue": 2
                         },
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "container:description"
                         },
                         "requiredParameters": [
                             {
@@ -93,9 +197,316 @@
                     "errors": {},
                     "id": "4",
                     "type": "action",
+                    "userCode": null,
                     "warnings": {},
                     "x": 980,
                     "y": 604.5
+                },
+                "7": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "United States"
+                                    },
+                                    {
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "United Kingdom"
+                                    },
+                                    {
+                                        "op": "==",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "Canada"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "customName": "IP is in our list",
+                                "display": "If",
+                                "logic": "or",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "conditionKey": "condition_key_13",
+                                "customName": "IP is not in our list",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "decision_1",
+                        "id": "7",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "7",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 1060,
+                    "y": 804.5
+                },
+                "8": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "debug",
+                            "repoName": "community"
+                        },
+                        "functionId": 1,
+                        "functionName": "debug_1",
+                        "id": "8",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "debug": {
+                                "description": "Print debug messages with the type and value of 0-10 different inputs. This is useful for checking the values of input data or the outputs of other playbook blocks.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "debug",
+                                "name": "debug"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "debug": {
+                                "input_1": [
+                                    "my_geolocate:action_result.data.*.country_name"
+                                ],
+                                "input_10": null,
+                                "input_2": [
+                                    "container:name"
+                                ],
+                                "input_3": [
+                                    "container:label"
+                                ],
+                                "input_4": [
+                                    "my_geolocate:action_result.parameter.ip"
+                                ],
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "8",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 1280,
+                    "y": 804.5
+                },
+                "9": {
+                    "data": {
+                        "advanced": {
+                            "join": [],
+                            "refreshNotableData": true
+                        },
+                        "functionId": 2,
+                        "functionName": "set_severity_2",
+                        "id": "9",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "tab": "apis",
+                        "type": "utility",
+                        "utilities": {
+                            "set_severity": {
+                                "description": "",
+                                "fields": [
+                                    {
+                                        "choices": "notableSeverity",
+                                        "description": "",
+                                        "label": "severity",
+                                        "name": "severity",
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
+                                    },
+                                    {
+                                        "hidden": true,
+                                        "name": "container",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
+                            }
+                        },
+                        "utilityType": "api",
+                        "values": {
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "low"
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "9",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 740,
+                    "y": 964.5
                 }
             },
             "notes": ""
@@ -108,7 +519,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-09-17T19:00:37.830697+00:00",
+    "create_time": "2025-09-17T20:00:33.004854+00:00",
     "draft_mode": true,
     "labels": [
         "*"
