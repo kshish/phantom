@@ -189,14 +189,15 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = "soardev"
     role = None
-    message = """The {0} with severity {1} has IP(s) outside of our list\n\nIP: {2} is from: {3}"""
+    message = """The {0} with severity {1} has IP(s) outside of our list\n\nIP: {2} is from: {3}\n{4}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
         "my_geolocate:action_result.parameter.ip",
-        "my_geolocate:action_result.data.*.country_name"
+        "my_geolocate:action_result.data.*.country_name",
+        ""
     ]
 
     # responses
