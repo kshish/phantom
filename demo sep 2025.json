@@ -8,13 +8,6 @@
             "description": "",
             "edges": [
                 {
-                    "id": "port_4_to_port_7",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "7",
-                    "targetPort": "7_in"
-                },
-                {
                     "id": "port_4_to_port_8",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
@@ -87,9 +80,29 @@
                     "sourcePort": "17_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "id": "port_4_to_port_18",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "18",
+                    "targetPort": "18_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_18_to_port_7",
+                    "sourceNode": "18",
+                    "sourcePort": "18_out",
+                    "targetNode": "7",
+                    "targetPort": "7_in"
                 }
             ],
-            "hash": "68a7471143eaf9a9ca36c56b4d13071df4628f92",
+            "hash": "f98aedd38f2d2a06bbd92d08066f734b828f0fec",
             "nodes": {
                 "0": {
                     "data": {
@@ -105,7 +118,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 380
+                    "y": 280
                 },
                 "1": {
                     "data": {
@@ -204,8 +217,8 @@
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "my_geolocate:action_result.parameter.ip",
-                            "my_geolocate:action_result.data.*.country_name"
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -623,7 +636,39 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 980,
-                    "y": 504.5
+                    "y": 380
+                },
+                "18": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "!=",
+                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "value": "None"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 1,
+                        "functionName": "filter_1",
+                        "id": "18",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "18",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 1040,
+                    "y": 620
                 },
                 "4": {
                     "customCode": null,
@@ -696,7 +741,7 @@
                     "userCode": null,
                     "warnings": {},
                     "x": 980,
-                    "y": 600
+                    "y": 475.5
                 },
                 "7": {
                     "data": {
@@ -709,19 +754,19 @@
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United States"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "United Kingdom"
                                     },
                                     {
                                         "conditionIndex": 0,
                                         "op": "!=",
-                                        "param": "my_geolocate:action_result.data.*.country_name",
+                                        "param": "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
                                         "value": "Canada"
                                     }
                                 ],
@@ -944,8 +989,8 @@
                     "id": "8",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1280,
-                    "y": 804.5
+                    "x": 1500,
+                    "y": 615.5
                 },
                 "9": {
                     "data": {
@@ -1009,7 +1054,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 740,
-                    "y": 964.5
+                    "y": 980
                 }
             },
             "notes": ""
@@ -1022,7 +1067,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-09-18T17:14:28.001027+00:00",
+    "create_time": "2025-09-18T17:22:44.829576+00:00",
     "draft_mode": false,
     "labels": [
         "*"
