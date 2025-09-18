@@ -189,7 +189,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = "soardev"
     role = None
-    message = """The {0} with severity {1} has IP(s) outside of our list\n\nIP: {2} is from: {3}\n{4}\n{5}"""
+    message = """The {0} with severity {1} has IP(s) outside of our list\n\nIP: {2} is from: {3}\n"""
 
     # parameter list for template variable replacement
     parameters = [
@@ -214,7 +214,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         }
     ]
 
-    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
 
     return
 
