@@ -197,7 +197,7 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
         "container:severity",
         "my_geolocate:action_result.parameter.ip",
         "my_geolocate:action_result.data.*.country_name",
-        "asdf"
+        "asdf.d.d.d"
     ]
 
     # responses
