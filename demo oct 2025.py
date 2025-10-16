@@ -129,12 +129,11 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_low(action=action, success=success, container=container, results=results, handle=handle)
-        add_comment_5(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+    add_comment_5(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -196,6 +195,8 @@ def add_comment_5(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment="set sev to low")
+
+    set_severity_to_low(container=container)
 
     return
 
