@@ -56,24 +56,22 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 
     name_value = container.get("name", None)
     label_value = container.get("label", None)
-    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.data.*.country_iso_code","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
-    my_geolocate_blagh_result_data = phantom.collect2(container=container, datapath=["my_geolocate_blagh:action_result.data.*.country_name","my_geolocate_blagh:action_result.parameter.context.artifact_id"], action_results=results)
+    my_geolocate_blagh_result_data = phantom.collect2(container=container, datapath=["my_geolocate_blagh:action_result.parameter.ip","my_geolocate_blagh:action_result.data.*.country_name","my_geolocate_blagh:action_result.data.*.country_iso_code","my_geolocate_blagh:action_result.parameter.context.artifact_id"], action_results=results)
 
-    geolocate_ip_1_parameter_ip = [item[0] for item in geolocate_ip_1_result_data]
-    geolocate_ip_1_result_item_1 = [item[1] for item in geolocate_ip_1_result_data]
-    geolocate_ip_1_result_item_2 = [item[2] for item in geolocate_ip_1_result_data]
-    my_geolocate_blagh_result_item_0 = [item[0] for item in my_geolocate_blagh_result_data]
+    my_geolocate_blagh_parameter_ip = [item[0] for item in my_geolocate_blagh_result_data]
+    my_geolocate_blagh_result_item_1 = [item[1] for item in my_geolocate_blagh_result_data]
+    my_geolocate_blagh_result_item_2 = [item[2] for item in my_geolocate_blagh_result_data]
 
     parameters = []
 
     parameters.append({
         "input_1": ["Chris was here"],
-        "input_2": geolocate_ip_1_parameter_ip,
-        "input_3": geolocate_ip_1_result_item_1,
-        "input_4": geolocate_ip_1_result_item_2,
+        "input_2": my_geolocate_blagh_parameter_ip,
+        "input_3": my_geolocate_blagh_result_item_1,
+        "input_4": my_geolocate_blagh_result_item_2,
         "input_5": name_value,
         "input_6": label_value,
-        "input_7": my_geolocate_blagh_result_item_0,
+        "input_7": my_geolocate_blagh_result_item_1,
         "input_8": None,
         "input_9": None,
         "input_10": None,
