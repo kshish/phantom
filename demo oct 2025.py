@@ -65,7 +65,7 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     parameters = []
 
     parameters.append({
-        "input_1": None,
+        "input_1": ["Chris was here"],
         "input_2": geolocate_ip_1_parameter_ip,
         "input_3": geolocate_ip_1_result_item_1,
         "input_4": geolocate_ip_1_result_item_2,
