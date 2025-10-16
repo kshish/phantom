@@ -1,5 +1,5 @@
 """
-
+This ends being comments in the code
 """
 
 
@@ -12,14 +12,14 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'my_geolocate_blagh' block
+    my_geolocate_blagh(container=container)
 
     return
 
 @phantom.playbook_block()
-def geolocate_ip_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("geolocate_ip_1() called")
+def my_geolocate_blagh(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("my_geolocate_blagh() called")
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
@@ -27,7 +27,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     parameters = []
 
-    # build parameters list for 'geolocate_ip_1' call
+    # build parameters list for 'my_geolocate_blagh' call
     for container_artifact_item in container_artifact_data:
         if container_artifact_item[0] is not None:
             parameters.append({
@@ -45,7 +45,7 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=debug_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_blagh", assets=["maxmind"], callback=debug_1)
 
     return
 
@@ -57,10 +57,12 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     name_value = container.get("name", None)
     label_value = container.get("label", None)
     geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.data.*.country_iso_code","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
+    my_geolocate_blagh_result_data = phantom.collect2(container=container, datapath=["my_geolocate_blagh:action_result.data.*.country_name","my_geolocate_blagh:action_result.parameter.context.artifact_id"], action_results=results)
 
     geolocate_ip_1_parameter_ip = [item[0] for item in geolocate_ip_1_result_data]
     geolocate_ip_1_result_item_1 = [item[1] for item in geolocate_ip_1_result_data]
     geolocate_ip_1_result_item_2 = [item[2] for item in geolocate_ip_1_result_data]
+    my_geolocate_blagh_result_item_0 = [item[0] for item in my_geolocate_blagh_result_data]
 
     parameters = []
 
@@ -71,7 +73,7 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
         "input_4": geolocate_ip_1_result_item_2,
         "input_5": name_value,
         "input_6": label_value,
-        "input_7": None,
+        "input_7": my_geolocate_blagh_result_item_0,
         "input_8": None,
         "input_9": None,
         "input_10": None,
