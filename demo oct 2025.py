@@ -115,12 +115,14 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         conditions=[
             ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "US"],
             ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "TD"]
+            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "TD"],
+            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "DE"]
         ],
         conditions_dps=[
             ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "US"],
             ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "TD"]
+            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "TD"],
+            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "==", "DE"]
         ],
         name="decision_2:condition_1",
         delimiter=None)
