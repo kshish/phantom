@@ -30,19 +30,6 @@
                 {
                     "conditions": [
                         {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_9",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
-                    "conditions": [
-                        {
                             "conditionKey": "condition_key_13",
                             "index": 1
                         }
@@ -59,9 +46,42 @@
                     "sourcePort": "11_out",
                     "targetNode": "8",
                     "targetPort": "8_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_7_to_port_12",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "12",
+                    "targetPort": "12_in"
+                },
+                {
+                    "id": "port_12_to_port_13",
+                    "sourceNode": "12",
+                    "sourcePort": "12_out",
+                    "targetNode": "13",
+                    "targetPort": "13_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_13_to_port_9",
+                    "sourceNode": "13",
+                    "sourcePort": "13_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
                 }
             ],
-            "hash": "338d27d2ea909ab884e068ba78d8a6f7453db94d",
+            "hash": "adcdc1680cf0d1a1ea1aa29a96b8335370f82946",
             "nodes": {
                 "0": {
                     "data": {
@@ -94,7 +114,7 @@
                     "userCode": "    phantom.debug(\"Chris was here at the end block\")\n    # Write your custom code here...\n\n",
                     "warnings": {},
                     "x": 1000,
-                    "y": 1120
+                    "y": 1220
                 },
                 "11": {
                     "data": {
@@ -166,6 +186,80 @@
                     "warnings": {},
                     "x": 740,
                     "y": 860
+                },
+                "12": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "user",
+                            "value": "soardev"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "12",
+                        "message": "The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3}",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate_blagh:action_result.parameter.ip",
+                            "my_geolocate_blagh:action_result.data.*.continent_name"
+                        ],
+                        "responseTime": 30,
+                        "responses": [
+                            {
+                                "required": true,
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "12",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 1240,
+                    "y": 864.5
+                },
+                "13": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "13",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "13",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 1320,
+                    "y": 1004.5
                 },
                 "3": {
                     "data": {
@@ -598,7 +692,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": 1240,
-                    "y": 860
+                    "y": 1160
                 }
             },
             "notes": "this ends up being visible in the pb manager"
@@ -611,7 +705,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-10-16T20:16:33.362352+00:00",
+    "create_time": "2025-10-16T20:23:49.200491+00:00",
     "draft_mode": false,
     "labels": [
         "*"

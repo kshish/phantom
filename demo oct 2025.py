@@ -129,7 +129,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -197,6 +197,68 @@ def add_comment_5(action=None, success=None, container=None, results=None, handl
     phantom.comment(container=container, comment="set sev to low")
 
     set_severity_to_low(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set approver and message variables for phantom.prompt call
+
+    user = "soardev"
+    role = None
+    message = """The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3}"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "container:name",
+        "container:severity",
+        "my_geolocate_blagh:action_result.parameter.ip",
+        "my_geolocate_blagh:action_result.data.*.continent_name"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to change severity to High?",
+            "options": {
+                "type": "list",
+                "required": True,
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=30, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_3)
+
+    return
+
+
+@phantom.playbook_block()
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_3() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ],
+        conditions_dps=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ],
+        name="decision_3:condition_1",
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_to_high(action=action, success=success, container=container, results=results, handle=handle)
+        return
 
     return
 
