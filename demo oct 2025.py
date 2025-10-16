@@ -45,7 +45,49 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"])
+    phantom.act("geolocate ip", parameters=parameters, name="geolocate_ip_1", assets=["maxmind"], callback=debug_1)
+
+    return
+
+
+@phantom.playbook_block()
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    name_value = container.get("name", None)
+    label_value = container.get("label", None)
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.parameter.ip","geolocate_ip_1:action_result.data.*.country_name","geolocate_ip_1:action_result.data.*.country_iso_code","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
+
+    geolocate_ip_1_parameter_ip = [item[0] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_result_item_1 = [item[1] for item in geolocate_ip_1_result_data]
+    geolocate_ip_1_result_item_2 = [item[2] for item in geolocate_ip_1_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": None,
+        "input_2": geolocate_ip_1_parameter_ip,
+        "input_3": geolocate_ip_1_result_item_1,
+        "input_4": geolocate_ip_1_result_item_2,
+        "input_5": name_value,
+        "input_6": label_value,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
 
     return
 
