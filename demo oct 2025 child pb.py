@@ -117,6 +117,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
                 "min": 50,
                 "max": 150,
             },
+        },
+        {
+            "prompt": "Notes",
+            "options": {
+                "type": "message",
+                "required": True,
+            },
         }
     ]
 
@@ -129,12 +136,14 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 def on_finish(container, summary):
     phantom.debug("on_finish() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.0"])
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.0","prompt_1:action_result.summary.responses.1"])
 
     prompt_1_summary_responses_0 = [item[0] for item in prompt_1_result_data]
+    prompt_1_summary_responses_1 = [item[1] for item in prompt_1_result_data]
 
     output = {
         "risk_score": prompt_1_summary_responses_0,
+        "notes": prompt_1_summary_responses_1,
     }
 
     ################################################################################
