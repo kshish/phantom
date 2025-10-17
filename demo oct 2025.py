@@ -176,6 +176,8 @@ def set_severity_to_high(action=None, success=None, container=None, results=None
 
     container = phantom.get_container(container.get('id', None))
 
+    promote_to_case_8(container=container)
+
     return
 
 
@@ -403,6 +405,27 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     phantom.format(container=container, template=template, parameters=parameters, name="format_1")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def promote_to_case_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("promote_to_case_8() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.promote()
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
