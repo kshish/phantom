@@ -132,49 +132,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    add_comment_5(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def set_severity_to_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_to_low() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
-
-    return
-
-
-@phantom.playbook_block()
-def add_comment_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("add_comment_5() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.comment(container=container, comment="set sev to low")
-
-    set_severity_to_low(container=container)
+    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -498,6 +456,27 @@ def add_note_11(action=None, success=None, container=None, results=None, handle=
     ################################################################################
 
     phantom.add_note(container=container, content=playbook_demo_oct_2025_child_pb_1_output_notes_values, note_format="markdown", note_type="general", title=format_high_risk_score_msg)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="setlowsev")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
