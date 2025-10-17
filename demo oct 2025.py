@@ -56,7 +56,7 @@ def my_geolocate_blagh_callback(action=None, success=None, container=None, resul
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -113,16 +113,16 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "TD"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "DE"]
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "TD"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "DE"]
         ],
         conditions_dps=[
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "TD"],
-            ["my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "DE"]
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "TD"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code", "!=", "DE"]
         ],
         name="decision_2:condition_1",
         delimiter=None)
@@ -209,14 +209,15 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = "soardev"
     role = None
-    message = """The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3}"""
+    message = """The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3} ISO: {4}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate_blagh:action_result.parameter.ip",
-        "my_geolocate_blagh:action_result.data.*.country_name"
+        "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code"
     ]
 
     # responses
@@ -312,6 +313,29 @@ def debug_6(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_6")
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate_blagh:action_result.data.*.country_name", "!=", None]
+        ],
+        conditions_dps=[
+            ["my_geolocate_blagh:action_result.data.*.country_name", "!=", None]
+        ],
+        name="filter_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
