@@ -7,13 +7,6 @@
             "description": "This ends being comments in the code",
             "edges": [
                 {
-                    "id": "port_0_to_port_3",
-                    "sourceNode": "0",
-                    "sourcePort": "0_out",
-                    "targetNode": "3",
-                    "targetPort": "3_in"
-                },
-                {
                     "id": "port_3_to_port_4",
                     "sourceNode": "3",
                     "sourcePort": "3_out",
@@ -99,9 +92,23 @@
                     "sourcePort": "16_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
+                },
+                {
+                    "id": "port_0_to_port_17",
+                    "sourceNode": "0",
+                    "sourcePort": "0_out",
+                    "targetNode": "17",
+                    "targetPort": "17_in"
+                },
+                {
+                    "id": "port_17_to_port_3",
+                    "sourceNode": "17",
+                    "sourcePort": "17_out",
+                    "targetNode": "3",
+                    "targetPort": "3_in"
                 }
             ],
-            "hash": "6944dc78675204883ebd0e8aa16eb4f0ce8783bb",
+            "hash": "3d0f4dd4d1b97603f482c11a12a79f025961169a",
             "nodes": {
                 "0": {
                     "data": {
@@ -117,7 +124,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 1000,
-                    "y": 299.9999999999998
+                    "y": 220
                 },
                 "1": {
                     "data": {
@@ -213,19 +220,36 @@
                             "join": []
                         },
                         "approver": {
-                            "type": "user",
-                            "value": "soardev"
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "customDatapaths": {
+                            "artifacts": {
+                                "artifact:*.cef.ClientAplication": {
+                                    "contains": [],
+                                    "isCustomDatapath": true,
+                                    "label": "artifact:*.cef.ClientAplication",
+                                    "value": "artifact:*.cef.ClientAplication"
+                                },
+                                "artifact:*.cef.ClientAplication.destinationAddress": {
+                                    "contains": [],
+                                    "isCustomDatapath": true,
+                                    "label": "artifact:*.cef.ClientAplication.destinationAddress",
+                                    "value": "artifact:*.cef.ClientAplication.destinationAddress"
+                                }
+                            }
                         },
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "12",
-                        "message": "The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3} ISO: {4}",
+                        "message": "The event {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3} ISO: {4}{5}\n",
                         "parameters": [
                             "container:name",
                             "container:severity",
                             "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.parameter.ip",
                             "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_name",
-                            "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code"
+                            "filtered-data:filter_1:condition_1:my_geolocate_blagh:action_result.data.*.country_iso_code",
+                            ""
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -501,6 +525,190 @@
                     "x": 1040,
                     "y": 560
                 },
+                "17": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Merge bunch of IP fields",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "customFunction": {
+                            "draftMode": false,
+                            "name": "list_merge",
+                            "repoName": "community"
+                        },
+                        "functionId": 7,
+                        "functionName": "merge_bunch_of_ip_fields",
+                        "id": "17",
+                        "loop": {
+                            "enabled": false,
+                            "exitAfterUnit": "m",
+                            "exitAfterValue": 10,
+                            "exitConditionEnabled": false,
+                            "exitLoopAfter": 2,
+                            "pauseUnit": "m",
+                            "pauseValue": 2
+                        },
+                        "selectMore": false,
+                        "type": "utility",
+                        "utilities": {
+                            "list_merge": {
+                                "description": "Merge 2-10 different data paths into a single output data path. For example, if IP addresses are stored in the fields sourceAddress, destinationAddress, and deviceAddress, then those three fields could be merged together to form a single list of IP addresses.",
+                                "fields": [
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_1",
+                                        "name": "input_1",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_2",
+                                        "name": "input_2",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_3",
+                                        "name": "input_3",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_4",
+                                        "name": "input_4",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_5",
+                                        "name": "input_5",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_6",
+                                        "name": "input_6",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_7",
+                                        "name": "input_7",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_8",
+                                        "name": "input_8",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_9",
+                                        "name": "input_9",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    },
+                                    {
+                                        "dataTypes": [
+                                            "*"
+                                        ],
+                                        "description": "",
+                                        "inputType": "list",
+                                        "label": "input_10",
+                                        "name": "input_10",
+                                        "placeholder": "",
+                                        "renderType": "datapath",
+                                        "required": false
+                                    }
+                                ],
+                                "label": "list_merge",
+                                "name": "list_merge"
+                            }
+                        },
+                        "utilityType": "custom_function",
+                        "values": {
+                            "list_merge": {
+                                "input_1": [
+                                    "artifact:*.cef.destinationAddress"
+                                ],
+                                "input_10": null,
+                                "input_2": [
+                                    "artifact:*.cef.deviceAddress"
+                                ],
+                                "input_3": [
+                                    "artifact:*.cef.sourceAddress"
+                                ],
+                                "input_4": null,
+                                "input_5": null,
+                                "input_6": null,
+                                "input_7": null,
+                                "input_8": null,
+                                "input_9": null
+                            }
+                        }
+                    },
+                    "errors": {},
+                    "id": "17",
+                    "type": "utility",
+                    "warnings": {},
+                    "x": 980,
+                    "y": 324.5
+                },
                 "3": {
                     "data": {
                         "action": "geolocate ip",
@@ -520,6 +728,23 @@
                         "functionName": "my_geolocate_blagh",
                         "id": "3",
                         "loop": {
+                            "conditions": [
+                                {
+                                    "comparisons": [
+                                        {
+                                            "conditionIndex": 0,
+                                            "op": "==",
+                                            "param": "",
+                                            "value": ""
+                                        }
+                                    ],
+                                    "conditionIndex": 0,
+                                    "conditionKey": "condition_key_0",
+                                    "display": "If",
+                                    "logic": "and",
+                                    "type": "if"
+                                }
+                            ],
                             "enabled": false,
                             "exitAfterUnit": "m",
                             "exitAfterValue": 10,
@@ -529,7 +754,7 @@
                             "pauseValue": 2
                         },
                         "parameters": {
-                            "ip": "artifact:*.cef.sourceAddress"
+                            "ip": "merge_bunch_of_ip_fields:custom_function_result.data.item"
                         },
                         "requiredParameters": [
                             {
@@ -945,7 +1170,7 @@
         "schema": "5.0.20",
         "version": "6.4.1.361"
     },
-    "create_time": "2025-10-17T16:26:59.745210+00:00",
+    "create_time": "2025-10-17T17:02:11.712782+00:00",
     "draft_mode": false,
     "labels": [
         "*"
