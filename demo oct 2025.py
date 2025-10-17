@@ -232,10 +232,10 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     matched_artifacts_1, matched_results_1 = phantom.condition(
         container=container,
         conditions=[
-            ["my_geolocate_blagh:action_result.data.*.country_name", "!=", None]
+            ["my_geolocate_blagh:action_result.data.*.country_name", "not in", None]
         ],
         conditions_dps=[
-            ["my_geolocate_blagh:action_result.data.*.country_name", "!=", None]
+            ["my_geolocate_blagh:action_result.data.*.country_name", "not in", None]
         ],
         name="filter_1:condition_1",
         delimiter=None)
@@ -243,6 +243,22 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         filter_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate_blagh:action_result.data.*.country_name", "in", ""]
+        ],
+        conditions_dps=[
+            ["my_geolocate_blagh:action_result.data.*.country_name", "in", ""]
+        ],
+        name="filter_1:condition_2",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        pin_8(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
@@ -508,6 +524,29 @@ def set_label_5(action=None, success=None, container=None, results=None, handle=
     phantom.set_label(container=container, label="setlowsev")
 
     container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def pin_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_8() called")
+
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_2:my_geolocate_blagh:action_result.parameter.ip"])
+
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_parameter_ip, message="Internal IPs", pin_style="grey", pin_type="card")
 
     return
 
