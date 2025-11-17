@@ -61,29 +61,29 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "MX"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "DE"]
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "MX"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "DE"]
         ],
         conditions_dps=[
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "MX"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate:action_result.data.*.country_iso_code", "==", "DE"]
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "MX"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "!=", "DE"]
         ],
         name="decision_1:condition_1",
         delimiter=None)
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
+    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
