@@ -40,14 +40,34 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_7_to_port_9",
+                    "id": "port_7_to_port_10",
                     "sourceNode": "7",
                     "sourcePort": "7_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "id": "port_10_to_port_11",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_11_to_port_9",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
                 }
             ],
-            "hash": "0c88235d370672ac4d8ea3b30e6222bd9e5f610e",
+            "hash": "a14b230e77a12ebdb6c38a64b3f7d8fed12df269",
             "nodes": {
                 "0": {
                     "data": {
@@ -79,8 +99,99 @@
                     "type": "end",
                     "userCode": "    phantom.debug(\"Chris was here\")\n    \n    \n    # Write your custom code here...\n\n",
                     "warnings": {},
-                    "x": 320,
-                    "y": -6.394884621840902e-14
+                    "x": 100,
+                    "y": 840
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "10",
+                        "message": "The Event {0} with current severity {1} has IP(s) not in our list.\n\nIP: {2} is from: {3} (ISO Code: {4})",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name",
+                            "my_geolocate:action_result.data.*.country_iso_code"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "required": true,
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": -180,
+                    "y": 420
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "customName": "Said Yes",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "==",
+                                        "param": "",
+                                        "value": ""
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "conditionKey": "condition_key_13",
+                                "display": "Else",
+                                "logic": "and",
+                                "type": "else"
+                            }
+                        ],
+                        "functionId": 2,
+                        "functionName": "decision_2",
+                        "id": "11",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": -100,
+                    "y": 560
                 },
                 "6": {
                     "data": {
@@ -340,8 +451,8 @@
                     "id": "9",
                     "type": "utility",
                     "warnings": {},
-                    "x": -120,
-                    "y": 424.4999999999999
+                    "x": -180,
+                    "y": 740
                 }
             },
             "notes": ""
@@ -354,7 +465,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2025-11-17T20:45:49.773512+00:00",
+    "create_time": "2025-11-17T20:54:30.894701+00:00",
     "draft_mode": false,
     "labels": [
         "*"
