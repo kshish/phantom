@@ -72,18 +72,11 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "MX"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "DE"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
         ],
         conditions_dps=[
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "MX"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "DE"]
+            ["filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
         ],
         name="decision_1:condition_1",
         delimiter=None)
