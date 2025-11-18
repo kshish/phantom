@@ -113,7 +113,7 @@ def set_label(action=None, success=None, container=None, results=None, handle=No
     ## Custom Code End
     ################################################################################
 
-    phantom.set_label()
+    phantom.set_label(container=container, label="lowsev")
 
     container = phantom.get_container(container.get('id', None))
 
