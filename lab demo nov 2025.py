@@ -374,19 +374,80 @@ def playbook_lab_demo_nov_2025_child_pb_1(action=None, success=None, container=N
     ################################################################################
 
     # call playbook "chris/lab demo nov 2025 child pb", returns the playbook_run_id
-    playbook_run_id = phantom.playbook("chris/lab demo nov 2025 child pb", container=container, name="playbook_lab_demo_nov_2025_child_pb_1", callback=playbook_lab_demo_nov_2025_child_pb_1_callback, inputs=inputs)
+    playbook_run_id = phantom.playbook("chris/lab demo nov 2025 child pb", container=container, name="playbook_lab_demo_nov_2025_child_pb_1", callback=decision_3, inputs=inputs)
 
     return
 
 
 @phantom.playbook_block()
-def playbook_lab_demo_nov_2025_child_pb_1_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("playbook_lab_demo_nov_2025_child_pb_1_callback() called")
+def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_3() called")
 
-    
-    # Downstream End block cannot be called directly, since execution will call on_finish automatically.
-    # Using placeholder callback function so child playbook is run synchronously.
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["playbook_lab_demo_nov_2025_child_pb_1:playbook_output:risk_score", ">", 100]
+        ],
+        conditions_dps=[
+            ["playbook_lab_demo_nov_2025_child_pb_1:playbook_output:risk_score", ">", 100]
+        ],
+        name="decision_3:condition_1",
+        delimiter=None)
 
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        add_note_7(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    add_note_8(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+@phantom.playbook_block()
+def add_note_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_note_7() called")
+
+    playbook_lab_demo_nov_2025_child_pb_1_output_risk_score = phantom.collect2(container=container, datapath=["playbook_lab_demo_nov_2025_child_pb_1:playbook_output:risk_score"])
+
+    playbook_lab_demo_nov_2025_child_pb_1_output_risk_score_values = [item[0] for item in playbook_lab_demo_nov_2025_child_pb_1_output_risk_score]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.add_note(container=container, content=playbook_lab_demo_nov_2025_child_pb_1_output_risk_score_values, note_format="markdown", note_type="general", title="High risk score")
+
+    return
+
+
+@phantom.playbook_block()
+def add_note_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("add_note_8() called")
+
+    playbook_lab_demo_nov_2025_child_pb_1_output_risk_score = phantom.collect2(container=container, datapath=["playbook_lab_demo_nov_2025_child_pb_1:playbook_output:risk_score"])
+
+    playbook_lab_demo_nov_2025_child_pb_1_output_risk_score_values = [item[0] for item in playbook_lab_demo_nov_2025_child_pb_1_output_risk_score]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.add_note(container=container, content=playbook_lab_demo_nov_2025_child_pb_1_output_risk_score_values, note_format="markdown", note_type="general", title="Low risk score")
 
     return
 
