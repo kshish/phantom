@@ -20,19 +20,6 @@
                     "targetPort": "8_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_7_to_port_10",
-                    "sourceNode": "7",
-                    "sourcePort": "7_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
-                },
-                {
                     "id": "port_10_to_port_11",
                     "sourceNode": "10",
                     "sourcePort": "10_out",
@@ -92,9 +79,29 @@
                     "sourcePort": "19_out",
                     "targetNode": "7",
                     "targetPort": "7_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_13",
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_7_to_port_20",
+                    "sourceNode": "7",
+                    "sourcePort": "7_out",
+                    "targetNode": "20",
+                    "targetPort": "20_in"
+                },
+                {
+                    "id": "port_20_to_port_10",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
                 }
             ],
-            "hash": "2588347e3ccb8a152070a14968bed5a2ea5c715e",
+            "hash": "91d85ea02870a44ab28f7040d063c6da504725d3",
             "nodes": {
                 "0": {
                     "data": {
@@ -141,13 +148,11 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "10",
-                        "message": "The Event {0} with current severity {1} has IP(s) not in our list.\n\nIP: {2} is from: {3} (ISO Code: {4})",
+                        "message": "The Event {0} with current severity {1} has IP(s) not in our list.\n\n{2}",
                         "parameters": [
                             "container:name",
                             "container:severity",
-                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
-                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code"
+                            "format_1:formatted_data"
                         ],
                         "responseTime": 5,
                         "responses": [
@@ -168,7 +173,7 @@
                     "type": "prompt",
                     "warnings": {},
                     "x": -180,
-                    "y": 420
+                    "y": 540
                 },
                 "11": {
                     "data": {
@@ -204,7 +209,7 @@
                     "type": "decision",
                     "warnings": {},
                     "x": -100,
-                    "y": 560
+                    "y": 680
                 },
                 "16": {
                     "data": {
@@ -599,6 +604,29 @@
                     "x": 60,
                     "y": 160
                 },
+                "20": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "functionId": 1,
+                        "functionName": "format_1",
+                        "id": "20",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_name",
+                            "filtered-data:filter_1:condition_1:my_geolocate:action_result.data.*.country_iso_code"
+                        ],
+                        "template": "IP: {0} is from {1} (ISO {2})\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "20",
+                    "type": "format",
+                    "warnings": {},
+                    "x": -180,
+                    "y": 424.4999999999999
+                },
                 "6": {
                     "data": {
                         "action": "geolocate ip",
@@ -858,7 +886,7 @@
                     "type": "utility",
                     "warnings": {},
                     "x": -180,
-                    "y": 740
+                    "y": 860
                 }
             },
             "notes": ""
@@ -871,7 +899,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2025-11-18T17:47:22.678826+00:00",
+    "create_time": "2025-11-18T17:51:48.187458+00:00",
     "draft_mode": false,
     "labels": [
         "*"
