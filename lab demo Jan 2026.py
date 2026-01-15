@@ -111,20 +111,20 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "DE"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "SA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "MX"]
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         conditions_dps=[
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "DE"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "SA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "==", "MX"]
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         name="decision_3:condition_1",
         delimiter=None)
