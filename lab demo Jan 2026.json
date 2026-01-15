@@ -47,14 +47,14 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_8_to_port_10",
+                    "id": "port_8_to_port_11",
                     "sourceNode": "8",
                     "sourcePort": "8_out",
-                    "targetNode": "10",
-                    "targetPort": "10_in"
+                    "targetNode": "11",
+                    "targetPort": "11_in"
                 }
             ],
-            "hash": "e96e8ae2206006c9e533f7c73906398ee54a5924",
+            "hash": "b986f8a67e58e9f8c21f208eda5fb428b2b32ca3",
             "nodes": {
                 "0": {
                     "data": {
@@ -149,9 +149,44 @@
                     "errors": {},
                     "id": "10",
                     "type": "utility",
+                    "warnings": {
+                        "context": [
+                            "Connect block to playbook flow."
+                        ]
+                    },
+                    "x": 1220,
+                    "y": 1180
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "11",
+                        "message": "Container: {0} with severity {1}\n\nIP is not in our list of countries.\n\nIP: {2} is from: {3} (ISO Code: {4})",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geo_locate_ip:action_result.parameter.ip",
+                            "my_geo_locate_ip:action_result.data.*.country_name",
+                            "my_geo_locate_ip:action_result.data.*.country_iso_code"
+                        ],
+                        "responseTime": 30,
+                        "responses": [],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "prompt",
                     "warnings": {},
-                    "x": 1200,
-                    "y": 940
+                    "x": 1220,
+                    "y": 944.5
                 },
                 "4": {
                     "data": {
@@ -534,7 +569,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2026-01-15T20:51:06.953185+00:00",
+    "create_time": "2026-01-15T21:01:50.890270+00:00",
     "draft_mode": false,
     "labels": [
         "*"
