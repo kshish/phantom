@@ -226,7 +226,7 @@ def prompt_1_callback(action=None, success=None, container=None, results=None, h
     phantom.debug("prompt_1_callback() called")
 
     
-    decision_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decide_what_the_response_was(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
     debug_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
@@ -234,8 +234,8 @@ def prompt_1_callback(action=None, success=None, container=None, results=None, h
 
 
 @phantom.playbook_block()
-def decision_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_4() called")
+def decide_what_the_response_was(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_what_the_response_was() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -246,7 +246,7 @@ def decision_4(action=None, success=None, container=None, results=None, handle=N
         conditions_dps=[
             ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
         ],
-        name="decision_4:condition_1",
+        name="decide_what_the_response_was:condition_1",
         case_sensitive=True,
         delimiter=None)
 
