@@ -241,10 +241,10 @@ def decide_what_the_response_was(action=None, success=None, container=None, resu
     found_match_1 = phantom.decision(
         container=container,
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
         ],
         conditions_dps=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_1:action_result.summary.responses.0", "!=", "No"]
         ],
         name="decide_what_the_response_was:condition_1",
         case_sensitive=True,
@@ -262,15 +262,16 @@ def decide_what_the_response_was(action=None, success=None, container=None, resu
 def debug_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("debug_4() called")
 
-    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.0","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
+    prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.0","prompt_1:action_result.status","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
 
     prompt_1_summary_responses_0 = [item[0] for item in prompt_1_result_data]
+    prompt_1_result_item_1 = [item[1] for item in prompt_1_result_data]
 
     parameters = []
 
     parameters.append({
         "input_1": prompt_1_summary_responses_0,
-        "input_2": None,
+        "input_2": prompt_1_result_item_1,
         "input_3": None,
         "input_4": None,
         "input_5": None,
