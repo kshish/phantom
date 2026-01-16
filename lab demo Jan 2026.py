@@ -135,14 +135,14 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_sev_low(action=action, success=success, container=container, results=results, handle=handle)
+    set_label(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_sev_low(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_sev_low() called")
+def set_label(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label() called")
 
     ################################################################################
     ## Custom Code Start
@@ -154,7 +154,7 @@ def set_sev_low(action=None, success=None, container=None, results=None, handle=
     ## Custom Code End
     ################################################################################
 
-    phantom.set_severity(container=container, severity="low")
+    phantom.set_label(container=container, label="malware")
 
     container = phantom.get_container(container.get('id', None))
 
