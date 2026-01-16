@@ -14,19 +14,6 @@
                     "targetPort": "6_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_16",
-                            "index": 1
-                        }
-                    ],
-                    "id": "port_8_to_port_9",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "9",
-                    "targetPort": "9_in"
-                },
-                {
                     "id": "port_11_to_port_12",
                     "sourceNode": "11",
                     "sourcePort": "11_out",
@@ -60,32 +47,6 @@
                     "sourcePort": "4_out",
                     "targetNode": "20",
                     "targetPort": "20_in"
-                },
-                {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_20_to_port_8",
-                    "sourceNode": "20",
-                    "sourcePort": "20_out",
-                    "targetNode": "8",
-                    "targetPort": "8_in"
-                },
-                {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_8_to_port_21",
-                    "sourceNode": "8",
-                    "sourcePort": "8_out",
-                    "targetNode": "21",
-                    "targetPort": "21_in"
                 },
                 {
                     "id": "port_21_to_port_11",
@@ -160,9 +121,48 @@
                     "sourcePort": "28_out",
                     "targetNode": "32",
                     "targetPort": "32_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_20_to_port_33",
+                    "sourceNode": "20",
+                    "sourcePort": "20_out",
+                    "targetNode": "33",
+                    "targetPort": "33_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_33_to_port_9",
+                    "sourceNode": "33",
+                    "sourcePort": "33_out",
+                    "targetNode": "9",
+                    "targetPort": "9_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_18",
+                            "index": 1
+                        }
+                    ],
+                    "id": "port_33_to_port_21",
+                    "sourceNode": "33",
+                    "sourcePort": "33_out",
+                    "targetNode": "21",
+                    "targetPort": "21_in"
                 }
             ],
-            "hash": "2258359eb42575bde1359659c4290b178edb0bf3",
+            "hash": "54dceb16078fe69f04fa75b4e48738eee2f95e76",
             "nodes": {
                 "0": {
                     "data": {
@@ -178,7 +178,7 @@
                     "type": "start",
                     "warnings": {},
                     "x": 160,
-                    "y": -1.2789769243681803e-13
+                    "y": -1.9184653865522705e-13
                 },
                 "1": {
                     "data": {
@@ -683,9 +683,9 @@
                         "functionName": "format_3",
                         "id": "21",
                         "parameters": [
-                            "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name",
-                            "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code"
+                            "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.parameter.ip",
+                            "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name",
+                            "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_iso_code"
                         ],
                         "template": "%%\nIP: {0} is from: {1} (ISO Code: {2})\n%%",
                         "type": "format"
@@ -694,8 +694,8 @@
                     "id": "21",
                     "type": "format",
                     "warnings": {},
-                    "x": 460,
-                    "y": 800
+                    "x": 500,
+                    "y": 820
                 },
                 "23": {
                     "data": {
@@ -812,7 +812,7 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name",
+                                "data": "filtered-data:filter_3:condition_1:my_geo_locate_ip:action_result.data.*.country_name",
                                 "message": "IPs in our list",
                                 "name": null,
                                 "pin_style": "blue",
@@ -942,7 +942,7 @@
                                     "truncate",
                                     "trace"
                                 ],
-                                "data": "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name",
+                                "data": "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name",
                                 "message": "IPs not in our list",
                                 "name": null,
                                 "pin_style": "red",
@@ -968,7 +968,7 @@
                         "inputs": {
                             "IPs": {
                                 "datapaths": [
-                                    "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.parameter.ip"
+                                    "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.parameter.ip"
                                 ],
                                 "deduplicate": false
                             },
@@ -980,7 +980,7 @@
                             },
                             "countries": {
                                 "datapaths": [
-                                    "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name"
+                                    "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name"
                                 ],
                                 "deduplicate": false
                             },
@@ -1316,6 +1316,53 @@
                     "x": -40,
                     "y": 1824.5
                 },
+                "33": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "in",
+                                        "param": "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code",
+                                        "value": "custom_list:country ISO codes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "customName": "in our list",
+                                "logic": "and"
+                            },
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 1,
+                                        "op": "not in",
+                                        "param": "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code",
+                                        "value": "custom_list:country ISO codes"
+                                    }
+                                ],
+                                "conditionIndex": 1,
+                                "conditionKey": "condition_key_18",
+                                "customName": "not in our list",
+                                "logic": "and"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "filter_3",
+                        "id": "33",
+                        "type": "filter"
+                    },
+                    "errors": {},
+                    "id": "33",
+                    "type": "filter",
+                    "warnings": {},
+                    "x": 340,
+                    "y": 600
+                },
                 "4": {
                     "data": {
                         "action": "geolocate ip",
@@ -1566,57 +1613,6 @@
                     "x": 0,
                     "y": 460
                 },
-                "8": {
-                    "data": {
-                        "advanced": {
-                            "join": []
-                        },
-                        "conditions": [
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 0,
-                                        "op": "not in",
-                                        "param": "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code",
-                                        "value": "custom_list:country ISO codes"
-                                    }
-                                ],
-                                "conditionIndex": 0,
-                                "conditionKey": "condition_key_0",
-                                "customName": "not in our list",
-                                "display": "If",
-                                "logic": "and",
-                                "type": "if"
-                            },
-                            {
-                                "comparisons": [
-                                    {
-                                        "conditionIndex": 1,
-                                        "op": "==",
-                                        "param": "",
-                                        "value": ""
-                                    }
-                                ],
-                                "conditionIndex": 1,
-                                "conditionKey": "condition_key_16",
-                                "customName": "is in our list",
-                                "display": "Else",
-                                "logic": "and",
-                                "type": "else"
-                            }
-                        ],
-                        "functionId": 3,
-                        "functionName": "decision_3",
-                        "id": "8",
-                        "type": "decision"
-                    },
-                    "errors": {},
-                    "id": "8",
-                    "type": "decision",
-                    "warnings": {},
-                    "x": 360,
-                    "y": 624
-                },
                 "9": {
                     "data": {
                         "advanced": {
@@ -1699,7 +1695,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2026-01-16T20:36:12.539011+00:00",
+    "create_time": "2026-01-16T20:54:16.746037+00:00",
     "draft_mode": false,
     "labels": [
         "*"

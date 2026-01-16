@@ -105,33 +105,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 
 
 @phantom.playbook_block()
-def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_3() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
-        ],
-        conditions_dps=[
-            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
-        ],
-        name="decision_3:condition_1",
-        delimiter=None)
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_3(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    set_label(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
 def set_label(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("set_label() called")
 
@@ -332,7 +305,7 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -345,9 +318,9 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code"
+        "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.parameter.ip",
+        "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name",
+        "filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_iso_code"
     ]
 
     ################################################################################
@@ -372,9 +345,9 @@ def format_3(action=None, success=None, container=None, results=None, handle=Non
 def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("pin_5() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_3 = phantom.collect2(container=container, datapath=["filtered-data:filter_3:condition_1:my_geo_locate_ip:action_result.data.*.country_name"])
 
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_3]
 
     ################################################################################
     ## Custom Code Start
@@ -395,9 +368,9 @@ def pin_5(action=None, success=None, container=None, results=None, handle=None, 
 def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("pin_7() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_3 = phantom.collect2(container=container, datapath=["filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name"])
 
-    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_3]
 
     ################################################################################
     ## Custom Code Start
@@ -418,18 +391,18 @@ def pin_7(action=None, success=None, container=None, results=None, handle=None, 
 def playbook_lab_demo_jan_2026_child_pb_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_lab_demo_jan_2026_child_pb_1() called")
 
-    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.parameter.ip","filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_name"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
+    filtered_result_0_data_filter_3 = phantom.collect2(container=container, datapath=["filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.data.*.country_name","filtered-data:filter_3:condition_2:my_geo_locate_ip:action_result.parameter.ip"])
     format_3 = phantom.get_format_data(name="format_3")
 
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_1]
-    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_1]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_3]
+    filtered_result_0_parameter_ip = [item[1] for item in filtered_result_0_data_filter_3]
 
     inputs = {
-        "ips": filtered_result_0_parameter_ip,
         "comment": prompt_1_summary_responses_1,
         "countries": filtered_result_0_data___country_name,
+        "ips": filtered_result_0_parameter_ip,
         "formatted_list": format_3,
     }
 
@@ -544,6 +517,45 @@ def add_note_11(action=None, success=None, container=None, results=None, handle=
     ################################################################################
 
     phantom.add_note(container=container, content=playbook_lab_demo_jan_2026_child_pb_1_output_risk_score_values, note_format="markdown", note_type="general", title="Low risk score")
+
+    return
+
+
+@phantom.playbook_block()
+def filter_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_3() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "in", "custom_list:country ISO codes"]
+        ],
+        conditions_dps=[
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "in", "custom_list:country ISO codes"]
+        ],
+        name="filter_3:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        set_label(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
+        ],
+        conditions_dps=[
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:country ISO codes"]
+        ],
+        name="filter_3:condition_2",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        format_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
 
     return
 
