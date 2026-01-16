@@ -55,7 +55,7 @@ def my_geo_locate_ip_callback(action=None, success=None, container=None, results
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    filter_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -113,18 +113,18 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         conditions_dps=[
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "DE"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_1:condition_1:my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         name="decision_3:condition_1",
         delimiter=None)
@@ -333,6 +333,29 @@ def list_merge_6(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_6", callback=my_geo_locate_ip)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        conditions_dps=[
+            ["my_geo_locate_ip:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        name="filter_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
