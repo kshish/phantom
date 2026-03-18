@@ -36,6 +36,7 @@ def set_severity_1(action=None, success=None, container=None, results=None, hand
     container = phantom.get_container(container.get('id', None))
 
     add_comment_2(container=container)
+    filter_1(container=container)
 
     return
 
@@ -55,6 +56,15 @@ def add_comment_2(action=None, success=None, container=None, results=None, handl
     ################################################################################
 
     phantom.comment(container=container, comment="this is from the active pb")
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+
 
     return
 
