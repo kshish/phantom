@@ -206,17 +206,20 @@ def debug_3(action=None, success=None, container=None, results=None, handle=None
     phantom.debug("debug_3() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status","prompt_1:action_result.summary.responses.0","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
+    my_geolocate_ip_result_data = phantom.collect2(container=container, datapath=["my_geolocate_ip:action_result.parameter.ip","my_geolocate_ip:action_result.data","my_geolocate_ip:action_result.parameter.context.artifact_id"], action_results=results)
 
     prompt_1_result_item_0 = [item[0] for item in prompt_1_result_data]
     prompt_1_summary_responses_0 = [item[1] for item in prompt_1_result_data]
+    my_geolocate_ip_parameter_ip = [item[0] for item in my_geolocate_ip_result_data]
+    my_geolocate_ip_result_item_1 = [item[1] for item in my_geolocate_ip_result_data]
 
     parameters = []
 
     parameters.append({
         "input_1": prompt_1_result_item_0,
         "input_2": prompt_1_summary_responses_0,
-        "input_3": None,
-        "input_4": None,
+        "input_3": my_geolocate_ip_parameter_ip,
+        "input_4": my_geolocate_ip_result_item_1,
         "input_5": None,
         "input_6": None,
         "input_7": None,
