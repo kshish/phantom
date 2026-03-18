@@ -57,16 +57,16 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "MX"]
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         conditions_dps=[
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "US"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "CA"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "MX"]
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         name="decide_if_ip_is_in_our_list_of_countries:condition_1",
         case_sensitive=False,
@@ -74,18 +74,18 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
 
 @phantom.playbook_block()
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_2() called")
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_low_severity() called")
 
     ################################################################################
     ## Custom Code Start
@@ -105,8 +105,8 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 
 
 @phantom.playbook_block()
-def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_1() called")
+def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_high_severity() called")
 
     ################################################################################
     ## Custom Code Start
