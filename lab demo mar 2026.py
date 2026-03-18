@@ -45,14 +45,14 @@ def my_geolocate_ip(action=None, success=None, container=None, results=None, han
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_ip", assets=["maxmind"], callback=decision_1)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_ip", assets=["maxmind"], callback=decide_if_ip_is_in_our_list_of_countries)
 
     return
 
 
 @phantom.playbook_block()
-def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_1() called")
+def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_if_ip_is_in_our_list_of_countries() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -68,7 +68,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
             ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "CA"],
             ["my_geolocate_ip:action_result.data.*.country_iso_code", "==", "MX"]
         ],
-        name="decision_1:condition_1",
+        name="decide_if_ip_is_in_our_list_of_countries:condition_1",
         case_sensitive=False,
         delimiter=None)
 
