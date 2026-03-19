@@ -56,16 +56,11 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
         ],
         conditions_dps=[
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
         ],
         name="decide_if_ip_is_in_our_list_of_countries:condition_1",
         case_sensitive=False,
@@ -462,16 +457,16 @@ def artifact_create_1(action=None, success=None, container=None, results=None, h
     # build parameters list for 'artifact_create_1' call
     for my_geolocate_ip_result_item in my_geolocate_ip_result_data:
         parameters.append({
-            "container": None,
             "name": None,
+            "tags": None,
             "label": None,
             "severity": None,
             "cef_field": "app",
             "cef_value": my_geolocate_ip_result_item[0],
-            "cef_data_type": None,
-            "tags": None,
-            "run_automation": None,
+            "container": None,
             "input_json": None,
+            "cef_data_type": None,
+            "run_automation": None,
         })
 
     ################################################################################
