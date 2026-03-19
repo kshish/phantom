@@ -73,11 +73,11 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+    format_ip_country_and_code_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -132,15 +132,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The event {0} with current severity {1} has IP(s) not in our list.\n\nIP: {2} is from {3} (ISO Code:{4})"""
+    message = """The event {0} with current severity {1} has IP(s) not in our list.\n\n{2}\n"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "my_geolocate_ip:action_result.parameter.ip",
-        "my_geolocate_ip:action_result.data.*.country_name",
-        "my_geolocate_ip:action_result.data.*.country_iso_code"
+        "format_ip_country_and_code_list:formatted_data"
     ]
 
     # responses
@@ -278,6 +276,36 @@ def list_merge_4(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_4", callback=my_geolocate_ip)
+
+    return
+
+
+@phantom.playbook_block()
+def format_ip_country_and_code_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_ip_country_and_code_list() called")
+
+    template = """IP: {0} is from {1} (ISO Code: {2} )\n """
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geolocate_ip:action_result.parameter.ip",
+        "my_geolocate_ip:action_result.data.*.country_name",
+        "my_geolocate_ip:action_result.data.*.country_iso_code"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_ip_country_and_code_list")
+
+    prompt_1(container=container)
 
     return
 
