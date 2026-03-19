@@ -306,6 +306,7 @@ def format_ip_country_and_code_list(action=None, success=None, container=None, r
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_country_and_code_list")
 
     prompt_1(container=container)
+    pin_6(container=container)
 
     return
 
@@ -329,6 +330,30 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_if_ip_is_in_our_list_of_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_6() called")
+
+    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_name","filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.parameter.ip"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_2]
+    filtered_result_0_parameter_ip = [item[1] for item in filtered_result_0_data_filter_2]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message=filtered_result_0_parameter_ip, pin_style="pink", pin_type="card")
 
     return
 
