@@ -73,11 +73,11 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        format_ip_country_and_code_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-    format_ip_country_and_code_list(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
