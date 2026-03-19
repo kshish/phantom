@@ -77,7 +77,7 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
         return
 
     # check for 'else' condition 2
-    set_lowsev_label(action=action, success=success, container=container, results=results, handle=handle)
+    artifact_create_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -447,6 +447,44 @@ def add_note_9(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
 
     phantom.add_note(container=container, content=playbook_lab_demo_child_pb_mar_2026_1_output_risk_score_values, note_format="markdown", note_type="general", title="Not as high risk score")
+
+    return
+
+
+@phantom.playbook_block()
+def artifact_create_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("artifact_create_1() called")
+
+    my_geolocate_ip_result_data = phantom.collect2(container=container, datapath=["my_geolocate_ip:action_result.data.*.country_iso_code","my_geolocate_ip:action_result.parameter.context.artifact_id"], action_results=results)
+
+    parameters = []
+
+    # build parameters list for 'artifact_create_1' call
+    for my_geolocate_ip_result_item in my_geolocate_ip_result_data:
+        parameters.append({
+            "container": None,
+            "name": None,
+            "label": None,
+            "severity": None,
+            "cef_field": "app",
+            "cef_value": my_geolocate_ip_result_item[0],
+            "cef_data_type": None,
+            "tags": None,
+            "run_automation": None,
+            "input_json": None,
+        })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/artifact_create", parameters=parameters, name="artifact_create_1", callback=set_lowsev_label)
 
     return
 
