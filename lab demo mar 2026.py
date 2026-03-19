@@ -50,34 +50,6 @@ def my_geolocate_ip(action=None, success=None, container=None, results=None, han
 
 
 @phantom.playbook_block()
-def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decide_if_ip_is_in_our_list_of_countries() called")
-
-    # check for 'if' condition 1
-    found_match_1 = phantom.decision(
-        container=container,
-        conditions=[
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
-        ],
-        conditions_dps=[
-            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
-        ],
-        name="decide_if_ip_is_in_our_list_of_countries:condition_1",
-        case_sensitive=False,
-        delimiter=None)
-
-    # call connected blocks if condition 1 matched
-    if found_match_1:
-        format_ip_country_and_code_list(action=action, success=success, container=container, results=results, handle=handle)
-        return
-
-    # check for 'else' condition 2
-    artifact_create_1(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
 def set_lowsev_label(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("set_lowsev_label() called")
 
@@ -269,9 +241,9 @@ def format_ip_country_and_code_list(action=None, success=None, container=None, r
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.parameter.ip",
-        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_name",
-        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code"
+        "filtered-data:filter_in_or_our_of_list:condition_2:my_geolocate_ip:action_result.parameter.ip",
+        "filtered-data:filter_in_or_our_of_list:condition_2:my_geolocate_ip:action_result.data.*.country_name",
+        "filtered-data:filter_in_or_our_of_list:condition_2:my_geolocate_ip:action_result.data.*.country_iso_code"
     ]
 
     ################################################################################
@@ -309,7 +281,7 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
-        decide_if_ip_is_in_our_list_of_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+        filter_in_or_our_of_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
@@ -318,11 +290,11 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
 def playbook_lab_demo_child_pb_mar_2026_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("playbook_lab_demo_child_pb_mar_2026_1() called")
 
-    filtered_result_0_data_filter_2 = phantom.collect2(container=container, datapath=["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.parameter.ip","filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_name"])
+    filtered_result_0_data_filter_in_or_our_of_list = phantom.collect2(container=container, datapath=["filtered-data:filter_in_or_our_of_list:condition_2:my_geolocate_ip:action_result.parameter.ip","filtered-data:filter_in_or_our_of_list:condition_2:my_geolocate_ip:action_result.data.*.country_name"])
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.summary.responses.1"], action_results=results)
 
-    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_2]
-    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_2]
+    filtered_result_0_parameter_ip = [item[0] for item in filtered_result_0_data_filter_in_or_our_of_list]
+    filtered_result_0_data___country_name = [item[1] for item in filtered_result_0_data_filter_in_or_our_of_list]
     prompt_1_summary_responses_1 = [item[0] for item in prompt_1_result_data]
 
     inputs = {
@@ -447,27 +419,52 @@ def add_note_9(action=None, success=None, container=None, results=None, handle=N
 
 
 @phantom.playbook_block()
-def artifact_create_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("artifact_create_1() called")
+def filter_in_or_our_of_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_in_or_our_of_list() called")
 
-    my_geolocate_ip_result_data = phantom.collect2(container=container, datapath=["my_geolocate_ip:action_result.data.*.country_iso_code","my_geolocate_ip:action_result.parameter.context.artifact_id"], action_results=results)
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "in", "custom_list:countries iso codes"]
+        ],
+        conditions_dps=[
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "in", "custom_list:countries iso codes"]
+        ],
+        name="filter_in_or_our_of_list:condition_1",
+        delimiter=None)
 
-    parameters = []
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        pin_5(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
-    # build parameters list for 'artifact_create_1' call
-    for my_geolocate_ip_result_item in my_geolocate_ip_result_data:
-        parameters.append({
-            "name": None,
-            "tags": None,
-            "label": None,
-            "severity": None,
-            "cef_field": "app",
-            "cef_value": my_geolocate_ip_result_item[0],
-            "container": None,
-            "input_json": None,
-            "cef_data_type": None,
-            "run_automation": None,
-        })
+    # collect filtered artifact ids and results for 'if' condition 2
+    matched_artifacts_2, matched_results_2 = phantom.condition(
+        container=container,
+        conditions=[
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
+        ],
+        conditions_dps=[
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "not in", "custom_list:countries iso codes"]
+        ],
+        name="filter_in_or_our_of_list:condition_2",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_2 or matched_results_2:
+        format_ip_country_and_code_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_2, filtered_results=matched_results_2)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_5(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_5() called")
+
+    filtered_result_0_data_filter_in_or_our_of_list = phantom.collect2(container=container, datapath=["filtered-data:filter_in_or_our_of_list:condition_1:my_geolocate_ip:action_result.data.*.country_name","filtered-data:filter_in_or_our_of_list:condition_1:my_geolocate_ip:action_result.parameter.ip"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_in_or_our_of_list]
+    filtered_result_0_parameter_ip = [item[1] for item in filtered_result_0_data_filter_in_or_our_of_list]
 
     ################################################################################
     ## Custom Code Start
@@ -479,7 +476,9 @@ def artifact_create_1(action=None, success=None, container=None, results=None, h
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/artifact_create", parameters=parameters, name="artifact_create_1", callback=set_lowsev_label)
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message=filtered_result_0_parameter_ip, pin_style="blue", pin_type="card")
+
+    set_lowsev_label(container=container)
 
     return
 
