@@ -44,7 +44,7 @@ def my_geolocate_ip(action=None, success=None, container=None, results=None, han
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_ip", assets=["maxmind"], callback=decide_if_ip_is_in_our_list_of_countries)
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_ip", assets=["maxmind"], callback=filter_2)
 
     return
 
@@ -58,14 +58,14 @@ def decide_if_ip_is_in_our_list_of_countries(action=None, success=None, containe
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         conditions_dps=[
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
-            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "CA"],
+            ["filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code", "!=", "MX"]
         ],
         name="decide_if_ip_is_in_our_list_of_countries:condition_1",
         case_sensitive=False,
@@ -288,9 +288,9 @@ def format_ip_country_and_code_list(action=None, success=None, container=None, r
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate_ip:action_result.parameter.ip",
-        "my_geolocate_ip:action_result.data.*.country_name",
-        "my_geolocate_ip:action_result.data.*.country_iso_code"
+        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.parameter.ip",
+        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_name",
+        "filtered-data:filter_2:condition_1:my_geolocate_ip:action_result.data.*.country_iso_code"
     ]
 
     ################################################################################
@@ -306,6 +306,29 @@ def format_ip_country_and_code_list(action=None, success=None, container=None, r
     phantom.format(container=container, template=template, parameters=parameters, name="format_ip_country_and_code_list")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_2() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        conditions_dps=[
+            ["my_geolocate_ip:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        name="filter_2:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decide_if_ip_is_in_our_list_of_countries(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
