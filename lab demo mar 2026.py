@@ -383,6 +383,8 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 def add_note_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("add_note_8() called")
 
+    format_risk_score = phantom.get_format_data(name="format_risk_score")
+
     ################################################################################
     ## Custom Code Start
     ################################################################################
@@ -393,7 +395,7 @@ def add_note_8(action=None, success=None, container=None, results=None, handle=N
     ## Custom Code End
     ################################################################################
 
-    phantom.add_note(container=container, note_format="markdown", note_type="general", title="High Risk score")
+    phantom.add_note(container=container, content=format_risk_score, note_format="markdown", note_type="general", title="High Risk score")
 
     return
 
