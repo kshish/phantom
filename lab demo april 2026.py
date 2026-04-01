@@ -87,11 +87,11 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+    set_high_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -137,8 +137,8 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 
 
 @phantom.playbook_block()
-def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_2() called")
+def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_low_severity() called")
 
     ################################################################################
     ## Custom Code Start
@@ -158,8 +158,8 @@ def set_severity_2(action=None, success=None, container=None, results=None, hand
 
 
 @phantom.playbook_block()
-def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_severity_3() called")
+def set_high_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_high_severity() called")
 
     ################################################################################
     ## Custom Code Start
