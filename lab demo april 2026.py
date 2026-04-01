@@ -45,7 +45,135 @@ def my_geolocate(action=None, success=None, container=None, results=None, handle
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"])
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate", assets=["maxmind"], callback=my_geolocate_callback)
+
+    return
+
+
+@phantom.playbook_block()
+def my_geolocate_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("my_geolocate_callback() called")
+
+    
+    decide_where_ip_is_from(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+
+
+    return
+
+
+@phantom.playbook_block()
+def decide_where_ip_is_from(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_where_ip_is_from() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="or",
+        conditions=[
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "US"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CR"],
+            ["", "==", "SA"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CA"]
+        ],
+        conditions_dps=[
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "US"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CR"],
+            ["", "==", "SA"],
+            ["my_geolocate:action_result.data.*.country_iso_code", "==", "CA"]
+        ],
+        name="decide_where_ip_is_from:condition_1",
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    set_severity_3(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+@phantom.playbook_block()
+def debug_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("debug_1() called")
+
+    my_geolocate_result_data = phantom.collect2(container=container, datapath=["my_geolocate:action_result.data.*.country_iso_code","my_geolocate:action_result.data.*.country_name","my_geolocate:action_result.status","my_geolocate:action_result.parameter.context.artifact_id"], action_results=results)
+
+    my_geolocate_result_item_0 = [item[0] for item in my_geolocate_result_data]
+    my_geolocate_result_item_1 = [item[1] for item in my_geolocate_result_data]
+    my_geolocate_result_item_2 = [item[2] for item in my_geolocate_result_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": my_geolocate_result_item_0,
+        "input_2": my_geolocate_result_item_1,
+        "input_3": my_geolocate_result_item_2,
+        "input_4": None,
+        "input_5": None,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
+
+    return
+
+
+@phantom.playbook_block()
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
+
+    return
+
+
+@phantom.playbook_block()
+def set_severity_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_severity(container=container, severity="high")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
