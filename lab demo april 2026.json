@@ -47,14 +47,34 @@
                             "index": 0
                         }
                     ],
-                    "id": "port_4_to_port_9",
+                    "id": "port_4_to_port_10",
                     "sourceNode": "4",
                     "sourcePort": "4_out",
+                    "targetNode": "10",
+                    "targetPort": "10_in"
+                },
+                {
+                    "id": "port_10_to_port_11",
+                    "sourceNode": "10",
+                    "sourcePort": "10_out",
+                    "targetNode": "11",
+                    "targetPort": "11_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_11_to_port_9",
+                    "sourceNode": "11",
+                    "sourcePort": "11_out",
                     "targetNode": "9",
                     "targetPort": "9_in"
                 }
             ],
-            "hash": "5b94d1b2bac28a8ab2badf7ef02e532c590ce4f3",
+            "hash": "fb44c22a12e6e9f05302429b94e49ab10014ebdb",
             "nodes": {
                 "0": {
                     "data": {
@@ -86,8 +106,85 @@
                     "type": "end",
                     "userCode": "    phantom.debug(\"Chris was here\")\n    # Write your custom code here...\n\n",
                     "warnings": {},
-                    "x": 1000,
-                    "y": 1140
+                    "x": 1020,
+                    "y": 1220
+                },
+                "10": {
+                    "data": {
+                        "advanced": {
+                            "join": []
+                        },
+                        "approver": {
+                            "type": "role",
+                            "value": "Administrator"
+                        },
+                        "functionId": 1,
+                        "functionName": "prompt_1",
+                        "id": "10",
+                        "message": "The event {0} with severity {1} has one or more IPs outside of our list of countries.\n\nIP: {2} is from {3} (ISO code: {4})",
+                        "parameters": [
+                            "container:name",
+                            "container:severity",
+                            "my_geolocate:action_result.parameter.ip",
+                            "my_geolocate:action_result.data.*.country_name",
+                            "my_geolocate:action_result.data.*.country_iso_code"
+                        ],
+                        "responseTime": 1,
+                        "responses": [
+                            {
+                                "required": true,
+                                "responseOptions": [
+                                    "Yes",
+                                    "No"
+                                ],
+                                "responsePrompt": "Would you like to change severity to High?",
+                                "responseType": "yes/no"
+                            }
+                        ],
+                        "type": "prompt"
+                    },
+                    "errors": {},
+                    "id": "10",
+                    "type": "prompt",
+                    "warnings": {},
+                    "x": 1300,
+                    "y": 904.5
+                },
+                "11": {
+                    "data": {
+                        "advanced": {
+                            "case_sensitive": false,
+                            "join": []
+                        },
+                        "conditions": [
+                            {
+                                "comparisons": [
+                                    {
+                                        "conditionIndex": 0,
+                                        "op": "==",
+                                        "param": "prompt_1:action_result.summary.responses.0",
+                                        "value": "Yes"
+                                    }
+                                ],
+                                "conditionIndex": 0,
+                                "conditionKey": "condition_key_0",
+                                "customName": "said yes",
+                                "display": "If",
+                                "logic": "and",
+                                "type": "if"
+                            }
+                        ],
+                        "functionId": 3,
+                        "functionName": "decision_3",
+                        "id": "11",
+                        "type": "decision"
+                    },
+                    "errors": {},
+                    "id": "11",
+                    "type": "decision",
+                    "warnings": {},
+                    "x": 1380,
+                    "y": 1040
                 },
                 "3": {
                     "data": {
@@ -529,8 +626,8 @@
                     "id": "9",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1240,
-                    "y": 880
+                    "x": 1300,
+                    "y": 1200
                 }
             },
             "notes": ""
@@ -543,7 +640,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2026-04-01T19:39:01.946775+00:00",
+    "create_time": "2026-04-01T19:55:13.286162+00:00",
     "draft_mode": false,
     "labels": [
         "*"
