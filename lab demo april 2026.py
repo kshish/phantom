@@ -495,7 +495,7 @@ def set_label_3(action=None, success=None, container=None, results=None, handle=
     ## Custom Code End
     ################################################################################
 
-    phantom.set_label(container=container, label="false positive")
+    phantom.set_label(container=container, label="fp")
 
     container = phantom.get_container(container.get('id', None))
 
