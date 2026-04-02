@@ -86,11 +86,11 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+    format_1(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -185,15 +185,13 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = None
     role = "Administrator"
-    message = """The event {0} with severity {1} has one or more IPs outside of our list of countries.\n\nIP: {2} is from {3} (ISO code: {4})"""
+    message = """The event {0} with severity {1} has one or more IPs outside of our list of countries.\n\n{2}"""
 
     # parameter list for template variable replacement
     parameters = [
         "container:name",
         "container:severity",
-        "filtered-data:filter_2:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_name",
-        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code"
+        "format_1:formatted_data"
     ]
 
     # responses
@@ -352,6 +350,36 @@ def filter_2(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decide_where_ip_is_from(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def format_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_1() called")
+
+    template = """IP: {0} is from {1} (ISO Code: {2})\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_2:condition_1:my_geolocate:action_result.parameter.ip",
+        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.continent_name",
+        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_1")
+
+    prompt_1(container=container)
 
     return
 
