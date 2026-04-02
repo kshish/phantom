@@ -363,7 +363,7 @@ def format_1(action=None, success=None, container=None, results=None, handle=Non
     # parameter list for template variable replacement
     parameters = [
         "filtered-data:filter_2:condition_1:my_geolocate:action_result.parameter.ip",
-        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.continent_name",
+        "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_name",
         "filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code"
     ]
 
