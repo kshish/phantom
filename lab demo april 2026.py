@@ -68,18 +68,11 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="and",
         conditions=[
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CR"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "SA"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"]
+            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "not in", "custom_list:country codes"]
         ],
         conditions_dps=[
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "US"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CR"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "SA"],
-            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "!=", "CA"]
+            ["filtered-data:filter_2:condition_1:my_geolocate:action_result.data.*.country_iso_code", "not in", "custom_list:country codes"]
         ],
         name="decide_where_ip_is_from:condition_1",
         delimiter=None)
