@@ -90,7 +90,7 @@ def decide_where_ip_is_from(action=None, success=None, container=None, results=N
         return
 
     # check for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+    set_label_3(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -131,27 +131,6 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
     ################################################################################
 
     phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_1")
-
-    return
-
-
-@phantom.playbook_block()
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_low_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-
-    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -498,6 +477,27 @@ def add_note_8(action=None, success=None, container=None, results=None, handle=N
     ################################################################################
 
     phantom.add_note(container=container, content=playbook_lab_demo_april_2026_child_pb_1_output_risk_score_values, note_format="markdown", note_type="general", title="Not as high risk score!!!")
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_3() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="false positive")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
