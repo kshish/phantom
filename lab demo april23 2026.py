@@ -56,7 +56,7 @@ def geolocate_ip_1_callback(action=None, success=None, container=None, results=N
 
     
     debug_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    decision_2(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decide_if_ips_are_in_our_list(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
@@ -105,8 +105,8 @@ def debug_1(action=None, success=None, container=None, results=None, handle=None
 
 
 @phantom.playbook_block()
-def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_2() called")
+def decide_if_ips_are_in_our_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_if_ips_are_in_our_list() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -122,7 +122,7 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
             ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "SA"],
             ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "CA"]
         ],
-        name="decision_2:condition_1",
+        name="decide_if_ips_are_in_our_list:condition_1",
         delimiter=None)
 
     # call connected blocks if condition 1 matched
@@ -222,16 +222,16 @@ def prompt_1_callback(action=None, success=None, container=None, results=None, h
     phantom.debug("prompt_1_callback() called")
 
     
-    decision_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    debug_4(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    decide_on_prompt_response(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
+    debug_prompt_response(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
 
 
     return
 
 
 @phantom.playbook_block()
-def decision_3(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("decision_3() called")
+def decide_on_prompt_response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decide_on_prompt_response() called")
 
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
@@ -242,7 +242,7 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
         conditions_dps=[
             ["prompt_1:action_result.summary.responses.0", "==", "YES"]
         ],
-        name="decision_3:condition_1",
+        name="decide_on_prompt_response:condition_1",
         case_sensitive=False,
         delimiter=None)
 
@@ -255,8 +255,8 @@ def decision_3(action=None, success=None, container=None, results=None, handle=N
 
 
 @phantom.playbook_block()
-def debug_4(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("debug_4() called")
+def debug_prompt_response(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("debug_prompt_response() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status","prompt_1:action_result.summary.responses.0","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
 
@@ -268,7 +268,7 @@ def debug_4(action=None, success=None, container=None, results=None, handle=None
     parameters.append({
         "input_1": prompt_1_result_item_0,
         "input_2": prompt_1_summary_responses_0,
-        "input_3": None,
+        "input_3": ["Users are slow"],
         "input_4": None,
         "input_5": None,
         "input_6": None,
@@ -288,7 +288,7 @@ def debug_4(action=None, success=None, container=None, results=None, handle=None
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_4")
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_prompt_response")
 
     return
 
