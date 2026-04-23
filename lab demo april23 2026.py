@@ -111,27 +111,27 @@ def decide_if_ips_are_in_our_list(action=None, success=None, container=None, res
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
-        logical_operator="or",
+        logical_operator="and",
         conditions=[
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "US"],
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "SA"],
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "CA"]
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "US"],
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "CA"]
         ],
         conditions_dps=[
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "US"],
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "SA"],
-            ["geolocate_ip_1:action_result.data.*.country_iso_code", "==", "CA"]
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "US"],
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "SA"],
+            ["geolocate_ip_1:action_result.data.*.country_iso_code", "!=", "CA"]
         ],
         name="decide_if_ips_are_in_our_list:condition_1",
         delimiter=None)
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
+        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
-    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
