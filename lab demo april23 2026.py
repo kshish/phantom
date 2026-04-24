@@ -12,8 +12,8 @@ from datetime import datetime, timedelta
 def on_start(container):
     phantom.debug('on_start() called')
 
-    # call 'geolocate_ip_1' block
-    geolocate_ip_1(container=container)
+    # call 'list_merge_6' block
+    list_merge_6(container=container)
 
     return
 
@@ -23,16 +23,15 @@ def geolocate_ip_1(action=None, success=None, container=None, results=None, hand
 
     # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
 
-    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.sourceAddress","artifact:*.id"])
+    list_merge_6__result = phantom.collect2(container=container, datapath=["list_merge_6:custom_function_result.data.item"])
 
     parameters = []
 
     # build parameters list for 'geolocate_ip_1' call
-    for container_artifact_item in container_artifact_data:
-        if container_artifact_item[0] is not None:
+    for list_merge_6__result_item in list_merge_6__result:
+        if list_merge_6__result_item[0] is not None:
             parameters.append({
-                "ip": container_artifact_item[0],
-                "context": {'artifact_id': container_artifact_item[1]},
+                "ip": list_merge_6__result_item[0],
             })
 
     ################################################################################
@@ -259,9 +258,13 @@ def debug_prompt_response(action=None, success=None, container=None, results=Non
     phantom.debug("debug_prompt_response() called")
 
     prompt_1_result_data = phantom.collect2(container=container, datapath=["prompt_1:action_result.status","prompt_1:action_result.summary.responses.0","prompt_1:action_result.parameter.context.artifact_id"], action_results=results)
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.act.someother","artifact:*.id"])
+    geolocate_ip_1_result_data = phantom.collect2(container=container, datapath=["geolocate_ip_1:action_result.data","geolocate_ip_1:action_result.parameter.context.artifact_id"], action_results=results)
 
     prompt_1_result_item_0 = [item[0] for item in prompt_1_result_data]
     prompt_1_summary_responses_0 = [item[1] for item in prompt_1_result_data]
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    geolocate_ip_1_result_item_0 = [item[0] for item in geolocate_ip_1_result_data]
 
     parameters = []
 
@@ -269,6 +272,73 @@ def debug_prompt_response(action=None, success=None, container=None, results=Non
         "input_1": prompt_1_result_item_0,
         "input_2": prompt_1_summary_responses_0,
         "input_3": ["Users are slow"],
+        "input_4": container_artifact_cef_item_0,
+        "input_5": geolocate_ip_1_result_item_0,
+        "input_6": None,
+        "input_7": None,
+        "input_8": None,
+        "input_9": None,
+        "input_10": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_prompt_response")
+
+    return
+
+
+@phantom.playbook_block()
+def lookup_domain_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("lookup_domain_1() called")
+
+    # phantom.debug('Action: {0} {1}'.format(action['name'], ('SUCCEEDED' if success else 'FAILED')))
+
+    parameters = []
+
+    parameters.append({
+        "domain": "",
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.act("lookup domain", parameters=parameters, name="lookup_domain_1", assets=["google_dns"])
+
+    return
+
+
+@phantom.playbook_block()
+def list_merge_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("list_merge_6() called")
+
+    container_artifact_data = phantom.collect2(container=container, datapath=["artifact:*.cef.destinationAddress","artifact:*.cef.deviceAddress","artifact:*.cef.sourceAddress","artifact:*.id"])
+
+    container_artifact_cef_item_0 = [item[0] for item in container_artifact_data]
+    container_artifact_cef_item_1 = [item[1] for item in container_artifact_data]
+    container_artifact_cef_item_2 = [item[2] for item in container_artifact_data]
+
+    parameters = []
+
+    parameters.append({
+        "input_1": container_artifact_cef_item_0,
+        "input_2": container_artifact_cef_item_1,
+        "input_3": container_artifact_cef_item_2,
         "input_4": None,
         "input_5": None,
         "input_6": None,
@@ -288,7 +358,7 @@ def debug_prompt_response(action=None, success=None, container=None, results=Non
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/debug", parameters=parameters, name="debug_prompt_response")
+    phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_6", callback=geolocate_ip_1)
 
     return
 
