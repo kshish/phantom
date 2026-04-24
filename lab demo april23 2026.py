@@ -412,7 +412,7 @@ def add_comment_7(action=None, success=None, container=None, results=None, handl
 def format_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
     phantom.debug("format_2() called")
 
-    template = """IP: {0} is from: {1} (ISO Code: {2})\n"""
+    template = """%%\nIP: {0} is from: {1} (ISO Code: {2})\n%%"""
 
     # parameter list for template variable replacement
     parameters = [
