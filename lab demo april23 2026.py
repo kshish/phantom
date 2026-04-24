@@ -126,11 +126,11 @@ def decide_if_ips_are_in_our_list(action=None, success=None, container=None, res
 
     # call connected blocks if condition 1 matched
     if found_match_1:
+        format_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
     set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-    format_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
