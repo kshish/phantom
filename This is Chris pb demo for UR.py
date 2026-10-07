@@ -49,7 +49,166 @@ def my_geolocate_action(action=None, success=None, container=None, results=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_action", assets=["maxmind"])
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_action", assets=["maxmind"], callback=decision_1)
+
+    return
+
+
+@phantom.playbook_block()
+def decision_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_1() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        logical_operator="or",
+        conditions=[
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "==", "US"],
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "==", "CA"]
+        ],
+        conditions_dps=[
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "==", "US"],
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "==", "CA"]
+        ],
+        name="decision_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        container_update_1(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    # check for 'else' condition 2
+    prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+
+    return
+
+
+@phantom.playbook_block()
+def container_update_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("container_update_1() called")
+
+    parameters = []
+
+    parameters.append({
+        "container_input": None,
+        "name": None,
+        "description": None,
+        "label": None,
+        "owner": None,
+        "sensitivity": None,
+        "severity": "low",
+        "status": None,
+        "tags": None,
+        "input_json": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/container_update", parameters=parameters, name="container_update_1")
+
+    return
+
+
+@phantom.playbook_block()
+def prompt_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("prompt_1() called")
+
+    # set approver and message variables for phantom.prompt call
+
+    user = "soardev"
+    role = None
+    message = """IP is not in our list.\n\nIP: {0} is from {1} ({2})"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "my_geolocate_action:action_result.parameter.ip",
+        "my_geolocate_action:action_result.data.*.country_name",
+        "my_geolocate_action:action_result.data.*.country_iso_code"
+    ]
+
+    # responses
+    response_types = [
+        {
+            "prompt": "Would you like to set severity to High?",
+            "options": {
+                "type": "list",
+                "required": True,
+                "choices": [
+                    "Yes",
+                    "No"
+                ],
+            },
+        }
+    ]
+
+    phantom.prompt2(container=container, user=user, role=role, message=message, respond_in_mins=1, name="prompt_1", parameters=parameters, response_types=response_types, callback=decision_2)
+
+    return
+
+
+@phantom.playbook_block()
+def decision_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("decision_2() called")
+
+    # check for 'if' condition 1
+    found_match_1 = phantom.decision(
+        container=container,
+        conditions=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ],
+        conditions_dps=[
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+        ],
+        name="decision_2:condition_1",
+        delimiter=None)
+
+    # call connected blocks if condition 1 matched
+    if found_match_1:
+        container_update_2(action=action, success=success, container=container, results=results, handle=handle)
+        return
+
+    return
+
+
+@phantom.playbook_block()
+def container_update_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("container_update_2() called")
+
+    parameters = []
+
+    parameters.append({
+        "container_input": None,
+        "name": None,
+        "description": None,
+        "label": None,
+        "owner": None,
+        "sensitivity": None,
+        "severity": "high",
+        "status": None,
+        "tags": None,
+        "input_json": None,
+    })
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.custom_function(custom_function="community/container_update", parameters=parameters, name="container_update_2")
 
     return
 
