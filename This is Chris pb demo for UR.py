@@ -173,11 +173,14 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
     # check for 'if' condition 1
     found_match_1 = phantom.decision(
         container=container,
+        logical_operator="or",
         conditions=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_1:action_result.status", "==", "failed"]
         ],
         conditions_dps=[
-            ["prompt_1:action_result.summary.responses.0", "==", "Yes"]
+            ["prompt_1:action_result.summary.responses.0", "==", "Yes"],
+            ["prompt_1:action_result.status", "==", "failed"]
         ],
         name="decision_2:condition_1",
         delimiter=None)
