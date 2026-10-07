@@ -67,7 +67,7 @@
                     "targetPort": "8_in"
                 }
             ],
-            "hash": "b30be39928ee1ad35965ad5cefb9ecfce6559f9f",
+            "hash": "6dd96e04f833ee5291c75fb785423379588f2d0f",
             "nodes": {
                 "0": {
                     "data": {
@@ -215,13 +215,9 @@
                             "join": [],
                             "refreshNotableData": true
                         },
-                        "customFunction": {
-                            "draftMode": false,
-                            "name": "container_update",
-                            "repoName": "community"
-                        },
+                        "customFunction": null,
                         "functionId": 1,
-                        "functionName": "container_update_1",
+                        "functionName": "set_severity_1",
                         "id": "5",
                         "loop": {
                             "enabled": false,
@@ -233,134 +229,39 @@
                             "pauseValue": 2
                         },
                         "selectMore": false,
-                        "tab": "customFunctions",
+                        "tab": "apis",
                         "type": "utility",
                         "utilities": {
-                            "container_update": {
-                                "description": "Allows updating various attributes of a container in a single custom function. Any attributes of a container not listed can be updated via the input_json parameter. ",
+                            "set_severity": {
+                                "description": "",
                                 "fields": [
                                     {
-                                        "dataTypes": [
-                                            "phantom container id"
-                                        ],
-                                        "description": "Supports a container id or container dictionary",
-                                        "inputType": "item",
-                                        "label": "container_input",
-                                        "name": "container_input",
-                                        "placeholder": "container:id",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change container name",
-                                        "inputType": "item",
-                                        "label": "name",
-                                        "name": "name",
-                                        "placeholder": "My Container Name",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container description",
-                                        "inputType": "item",
-                                        "label": "description",
-                                        "name": "description",
-                                        "placeholder": "My Container Description",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [
-                                            "phantom container label"
-                                        ],
-                                        "description": "Optional parameter to change the container label",
-                                        "inputType": "item",
-                                        "label": "label",
-                                        "name": "label",
-                                        "placeholder": "my_label",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container owner. Accepts a username or role name or keyword \"current\" to set the currently running playbook user as the owner.",
-                                        "inputType": "item",
-                                        "label": "owner",
-                                        "name": "owner",
-                                        "placeholder": "admin",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container sensitivity. ",
-                                        "inputType": "item",
-                                        "label": "sensitivity",
-                                        "name": "sensitivity",
-                                        "placeholder": "amber",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container severity.",
-                                        "inputType": "item",
+                                        "choices": "notableSeverity",
+                                        "description": "",
                                         "label": "severity",
                                         "name": "severity",
-                                        "placeholder": "medium",
-                                        "renderType": "datapath",
-                                        "required": false
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
                                     },
                                     {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container status.",
-                                        "inputType": "item",
-                                        "label": "status",
-                                        "name": "status",
-                                        "placeholder": "open",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container tags. Must be in the format of a comma separated list.",
-                                        "inputType": "item",
-                                        "label": "tags",
-                                        "name": "tags",
-                                        "placeholder": "tag1, tag2",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to modify any extra attributes of a container. Input_json will be merged with other inputs. In the event of a conflict, input_json will take precedence.",
-                                        "inputType": "item",
-                                        "label": "input_json",
-                                        "name": "input_json",
-                                        "placeholder": "{\"custom_fields\": {\"field_name\": \"field_value\"}}",
-                                        "renderType": "datapath",
+                                        "hidden": true,
+                                        "name": "container",
                                         "required": false
                                     }
                                 ],
-                                "label": "container_update",
-                                "name": "container_update"
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
                             }
                         },
-                        "utilityType": "custom_function",
+                        "utilityType": "api",
                         "values": {
-                            "container_update": {
-                                "container_input": null,
-                                "description": null,
-                                "input_json": null,
-                                "label": null,
-                                "name": null,
-                                "owner": null,
-                                "sensitivity": null,
-                                "severity": "low",
-                                "status": null,
-                                "tags": null
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "low"
                             }
                         }
                     },
@@ -448,15 +349,12 @@
                 "8": {
                     "data": {
                         "advanced": {
-                            "join": []
+                            "join": [],
+                            "refreshNotableData": true
                         },
-                        "customFunction": {
-                            "draftMode": false,
-                            "name": "container_update",
-                            "repoName": "community"
-                        },
+                        "customFunction": null,
                         "functionId": 2,
-                        "functionName": "container_update_2",
+                        "functionName": "set_severity_2",
                         "id": "8",
                         "loop": {
                             "enabled": false,
@@ -468,133 +366,39 @@
                             "pauseValue": 2
                         },
                         "selectMore": false,
+                        "tab": "apis",
                         "type": "utility",
                         "utilities": {
-                            "container_update": {
-                                "description": "Allows updating various attributes of a container in a single custom function. Any attributes of a container not listed can be updated via the input_json parameter. ",
+                            "set_severity": {
+                                "description": "",
                                 "fields": [
                                     {
-                                        "dataTypes": [
-                                            "phantom container id"
-                                        ],
-                                        "description": "Supports a container id or container dictionary",
-                                        "inputType": "item",
-                                        "label": "container_input",
-                                        "name": "container_input",
-                                        "placeholder": "container:id",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change container name",
-                                        "inputType": "item",
-                                        "label": "name",
-                                        "name": "name",
-                                        "placeholder": "My Container Name",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container description",
-                                        "inputType": "item",
-                                        "label": "description",
-                                        "name": "description",
-                                        "placeholder": "My Container Description",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [
-                                            "phantom container label"
-                                        ],
-                                        "description": "Optional parameter to change the container label",
-                                        "inputType": "item",
-                                        "label": "label",
-                                        "name": "label",
-                                        "placeholder": "my_label",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container owner. Accepts a username or role name or keyword \"current\" to set the currently running playbook user as the owner.",
-                                        "inputType": "item",
-                                        "label": "owner",
-                                        "name": "owner",
-                                        "placeholder": "admin",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container sensitivity. ",
-                                        "inputType": "item",
-                                        "label": "sensitivity",
-                                        "name": "sensitivity",
-                                        "placeholder": "amber",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container severity.",
-                                        "inputType": "item",
+                                        "choices": "notableSeverity",
+                                        "description": "",
                                         "label": "severity",
                                         "name": "severity",
-                                        "placeholder": "medium",
-                                        "renderType": "datapath",
-                                        "required": false
+                                        "placeholder": "Select severity",
+                                        "renderType": "dropdown",
+                                        "required": true
                                     },
                                     {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container status.",
-                                        "inputType": "item",
-                                        "label": "status",
-                                        "name": "status",
-                                        "placeholder": "open",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to change the container tags. Must be in the format of a comma separated list.",
-                                        "inputType": "item",
-                                        "label": "tags",
-                                        "name": "tags",
-                                        "placeholder": "tag1, tag2",
-                                        "renderType": "datapath",
-                                        "required": false
-                                    },
-                                    {
-                                        "dataTypes": [],
-                                        "description": "Optional parameter to modify any extra attributes of a container. Input_json will be merged with other inputs. In the event of a conflict, input_json will take precedence.",
-                                        "inputType": "item",
-                                        "label": "input_json",
-                                        "name": "input_json",
-                                        "placeholder": "{\"custom_fields\": {\"field_name\": \"field_value\"}}",
-                                        "renderType": "datapath",
+                                        "hidden": true,
+                                        "name": "container",
                                         "required": false
                                     }
                                 ],
-                                "label": "container_update",
-                                "name": "container_update"
+                                "label": "set severity",
+                                "name": "set_severity",
+                                "refreshNotableData": true
                             }
                         },
-                        "utilityType": "custom_function",
+                        "utilityType": "api",
                         "values": {
-                            "container_update": {
-                                "container_input": null,
-                                "description": null,
-                                "input_json": null,
-                                "label": null,
-                                "name": null,
-                                "owner": null,
-                                "sensitivity": null,
-                                "severity": "high",
-                                "status": null,
-                                "tags": null
+                            "set_severity": {
+                                "_internal": [
+                                    "container"
+                                ],
+                                "severity": "high"
                             }
                         }
                     },
@@ -616,7 +420,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2026-10-07T18:54:13.871438+00:00",
+    "create_time": "2026-10-07T18:58:26.949866+00:00",
     "draft_mode": false,
     "labels": [
         "*"

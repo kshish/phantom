@@ -75,7 +75,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        container_update_1(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_1(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -85,23 +85,8 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
 
 @phantom.playbook_block()
-def container_update_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("container_update_1() called")
-
-    parameters = []
-
-    parameters.append({
-        "container_input": None,
-        "name": None,
-        "description": None,
-        "label": None,
-        "owner": None,
-        "sensitivity": None,
-        "severity": "low",
-        "status": None,
-        "tags": None,
-        "input_json": None,
-    })
+def set_severity_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_1() called")
 
     ################################################################################
     ## Custom Code Start
@@ -113,7 +98,9 @@ def container_update_1(action=None, success=None, container=None, results=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/container_update", parameters=parameters, name="container_update_1")
+    phantom.set_severity(container=container, severity="low")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
@@ -173,30 +160,15 @@ def decision_2(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        container_update_2(action=action, success=success, container=container, results=results, handle=handle)
+        set_severity_2(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     return
 
 
 @phantom.playbook_block()
-def container_update_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("container_update_2() called")
-
-    parameters = []
-
-    parameters.append({
-        "container_input": None,
-        "name": None,
-        "description": None,
-        "label": None,
-        "owner": None,
-        "sensitivity": None,
-        "severity": "high",
-        "status": None,
-        "tags": None,
-        "input_json": None,
-    })
+def set_severity_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_severity_2() called")
 
     ################################################################################
     ## Custom Code Start
@@ -208,7 +180,9 @@ def container_update_2(action=None, success=None, container=None, results=None, 
     ## Custom Code End
     ################################################################################
 
-    phantom.custom_function(custom_function="community/container_update", parameters=parameters, name="container_update_2")
+    phantom.set_severity(container=container, severity="high")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
