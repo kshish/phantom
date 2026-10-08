@@ -74,7 +74,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
 
     # call connected blocks if condition 1 matched
     if found_match_1:
-        prompt_1(action=action, success=success, container=container, results=results, handle=handle)
+        format_list(action=action, success=success, container=container, results=results, handle=handle)
         return
 
     # check for 'else' condition 2
@@ -112,13 +112,11 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     user = "soardev"
     role = None
-    message = """IP is not in our list.\n\nIP: {0} is from {1} ({2})"""
+    message = """IP is not in our list.\n\n{0}"""
 
     # parameter list for template variable replacement
     parameters = [
-        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.parameter.ip",
-        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name",
-        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code"
+        "format_list:formatted_data"
     ]
 
     # responses
@@ -347,6 +345,36 @@ def filter_1(action=None, success=None, container=None, results=None, handle=Non
     # call connected blocks if filtered artifacts or results
     if matched_artifacts_1 or matched_results_1:
         decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
+
+    return
+
+
+@phantom.playbook_block()
+def format_list(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("format_list() called")
+
+    template = """IP: {0} is from {1} ({2})\n"""
+
+    # parameter list for template variable replacement
+    parameters = [
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code"
+    ]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.format(container=container, template=template, parameters=parameters, name="format_list")
+
+    prompt_1(container=container)
 
     return
 

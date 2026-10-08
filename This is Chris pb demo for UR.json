@@ -47,19 +47,6 @@
                     "targetPort": "10_in"
                 },
                 {
-                    "conditions": [
-                        {
-                            "conditionKey": "condition_key_0",
-                            "index": 0
-                        }
-                    ],
-                    "id": "port_4_to_port_6",
-                    "sourceNode": "4",
-                    "sourcePort": "4_out",
-                    "targetNode": "6",
-                    "targetPort": "6_in"
-                },
-                {
                     "id": "port_0_to_port_14",
                     "sourceNode": "0",
                     "sourcePort": "0_out",
@@ -92,9 +79,29 @@
                     "sourcePort": "15_out",
                     "targetNode": "4",
                     "targetPort": "4_in"
+                },
+                {
+                    "conditions": [
+                        {
+                            "conditionKey": "condition_key_0",
+                            "index": 0
+                        }
+                    ],
+                    "id": "port_4_to_port_16",
+                    "sourceNode": "4",
+                    "sourcePort": "4_out",
+                    "targetNode": "16",
+                    "targetPort": "16_in"
+                },
+                {
+                    "id": "port_16_to_port_6",
+                    "sourceNode": "16",
+                    "sourcePort": "16_out",
+                    "targetNode": "6",
+                    "targetPort": "6_in"
                 }
             ],
-            "hash": "e85372ba29c71882568533a40eb86be123095084",
+            "hash": "ac297d2b375dcf4726a853bd73106d09fc616d10",
             "nodes": {
                 "0": {
                     "data": {
@@ -316,8 +323,8 @@
                     "id": "10",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1450,
-                    "y": 1133.5
+                    "x": 1640,
+                    "y": 1280
                 },
                 "14": {
                     "data": {
@@ -540,6 +547,31 @@
                     "x": 1340,
                     "y": 580
                 },
+                "16": {
+                    "data": {
+                        "advanced": {
+                            "customName": "Format list",
+                            "customNameId": 0,
+                            "join": []
+                        },
+                        "functionId": 2,
+                        "functionName": "format_list",
+                        "id": "16",
+                        "parameters": [
+                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.parameter.ip",
+                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name",
+                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code"
+                        ],
+                        "template": "IP: {0} is from {1} ({2})\n",
+                        "type": "format"
+                    },
+                    "errors": {},
+                    "id": "16",
+                    "type": "format",
+                    "warnings": {},
+                    "x": 1480,
+                    "y": 964.5
+                },
                 "3": {
                     "customCode": null,
                     "data": {
@@ -742,11 +774,9 @@
                         "functionId": 1,
                         "functionName": "prompt_1",
                         "id": "6",
-                        "message": "IP is not in our list.\n\nIP: {0} is from {1} ({2})",
+                        "message": "IP is not in our list.\n\n{0}",
                         "parameters": [
-                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.parameter.ip",
-                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name",
-                            "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code"
+                            "format_list:formatted_data"
                         ],
                         "responseTime": 1,
                         "responses": [
@@ -766,8 +796,8 @@
                     "id": "6",
                     "type": "prompt",
                     "warnings": {},
-                    "x": 1320,
-                    "y": 960
+                    "x": 1500,
+                    "y": 1100
                 },
                 "7": {
                     "data": {
@@ -807,8 +837,8 @@
                     "id": "7",
                     "type": "decision",
                     "warnings": {},
-                    "x": 1270,
-                    "y": 1118
+                    "x": 1450,
+                    "y": 1258
                 },
                 "8": {
                     "data": {
@@ -872,8 +902,8 @@
                     "id": "8",
                     "type": "utility",
                     "warnings": {},
-                    "x": 1190,
-                    "y": 1298
+                    "x": 1380,
+                    "y": 1440
                 },
                 "9": {
                     "data": {
@@ -1075,7 +1105,7 @@
         "schema": "5.0.22",
         "version": "7.0.0.198"
     },
-    "create_time": "2026-10-08T16:05:07.626219+00:00",
+    "create_time": "2026-10-08T16:09:37.732970+00:00",
     "draft_mode": false,
     "labels": [
         "*"
