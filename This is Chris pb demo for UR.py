@@ -78,32 +78,7 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         return
 
     # check for 'else' condition 2
-    set_low_severity(action=action, success=success, container=container, results=results, handle=handle)
-
-    return
-
-
-@phantom.playbook_block()
-def set_low_severity(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("set_low_severity() called")
-
-    ################################################################################
-    ## Custom Code Start
-    ################################################################################
-
-    # Write your custom code here...
-
-    ################################################################################
-    ## Custom Code End
-    ################################################################################
-
-    phantom.set_severity(container=container, severity="low")
-    phantom.set_sensitivity(container=container, sensitivity="amber")
-    phantom.set_status(container=container, status="open")
-
-    container = phantom.get_container(container.get('id', None))
-
-    set_status_6(container=container)
+    set_label_2(action=action, success=success, container=container, results=results, handle=handle)
 
     return
 
@@ -541,6 +516,27 @@ def add_comment_10(action=None, success=None, container=None, results=None, hand
     ################################################################################
 
     phantom.comment(container=container, comment=playbook_child_demo_ur_1_output_risk_score_values)
+
+    return
+
+
+@phantom.playbook_block()
+def set_label_2(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_label_2() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_label(container=container, label="in our list")
+
+    container = phantom.get_container(container.get('id', None))
 
     return
 
