@@ -116,9 +116,9 @@ def prompt_1(action=None, success=None, container=None, results=None, handle=Non
 
     # parameter list for template variable replacement
     parameters = [
-        "my_geolocate_action:action_result.parameter.ip",
-        "my_geolocate_action:action_result.data.*.country_name",
-        "my_geolocate_action:action_result.data.*.country_iso_code"
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.parameter.ip",
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name",
+        "filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code"
     ]
 
     # responses
