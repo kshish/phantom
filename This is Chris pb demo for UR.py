@@ -48,19 +48,7 @@ def my_geolocate_action(action=None, success=None, container=None, results=None,
     ## Custom Code End
     ################################################################################
 
-    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_action", assets=["maxmind"], callback=my_geolocate_action_callback)
-
-    return
-
-
-@phantom.playbook_block()
-def my_geolocate_action_callback(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
-    phantom.debug("my_geolocate_action_callback() called")
-
-    
-    decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-    debug_3(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=filtered_artifacts, filtered_results=filtered_results)
-
+    phantom.act("geolocate ip", parameters=parameters, name="my_geolocate_action", assets=["maxmind"], callback=filter_1)
 
     return
 
@@ -74,12 +62,12 @@ def decision_1(action=None, success=None, container=None, results=None, handle=N
         container=container,
         logical_operator="and",
         conditions=[
-            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", "CA"]
+            ["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code", "!=", "CA"]
         ],
         conditions_dps=[
-            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", "US"],
-            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", "CA"]
+            ["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code", "!=", "US"],
+            ["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_iso_code", "!=", "CA"]
         ],
         name="decision_1:condition_1",
         delimiter=None)
@@ -336,6 +324,29 @@ def list_merge_5(action=None, success=None, container=None, results=None, handle
     ################################################################################
 
     phantom.custom_function(custom_function="community/list_merge", parameters=parameters, name="list_merge_5", callback=my_geolocate_action)
+
+    return
+
+
+@phantom.playbook_block()
+def filter_1(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("filter_1() called")
+
+    # collect filtered artifact ids and results for 'if' condition 1
+    matched_artifacts_1, matched_results_1 = phantom.condition(
+        container=container,
+        conditions=[
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        conditions_dps=[
+            ["my_geolocate_action:action_result.data.*.country_iso_code", "!=", None]
+        ],
+        name="filter_1:condition_1",
+        delimiter=None)
+
+    # call connected blocks if filtered artifacts or results
+    if matched_artifacts_1 or matched_results_1:
+        decision_1(action=action, success=success, container=container, results=results, handle=handle, filtered_artifacts=matched_artifacts_1, filtered_results=matched_results_1)
 
     return
 
