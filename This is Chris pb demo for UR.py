@@ -98,8 +98,12 @@ def set_low_severity(action=None, success=None, container=None, results=None, ha
     ################################################################################
 
     phantom.set_severity(container=container, severity="low")
+    phantom.set_sensitivity(container=container, sensitivity="amber")
+    phantom.set_status(container=container, status="open")
 
     container = phantom.get_container(container.get('id', None))
+
+    set_status_6(container=container)
 
     return
 
@@ -195,6 +199,8 @@ def set_high_severity(action=None, success=None, container=None, results=None, h
     phantom.set_severity(container=container, severity="high")
 
     container = phantom.get_container(container.get('id', None))
+
+    pin_7(container=container)
 
     return
 
@@ -375,6 +381,75 @@ def format_list(action=None, success=None, container=None, results=None, handle=
     phantom.format(container=container, template=template, parameters=parameters, name="format_list")
 
     prompt_1(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def set_status_6(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("set_status_6() called")
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.set_status(container=container, status="open")
+
+    container = phantom.get_container(container.get('id', None))
+
+    pin_8(container=container)
+
+    return
+
+
+@phantom.playbook_block()
+def pin_7(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_7() called")
+
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IPs not in our list", pin_style="red", pin_type="card")
+
+    return
+
+
+@phantom.playbook_block()
+def pin_8(action=None, success=None, container=None, results=None, handle=None, filtered_artifacts=None, filtered_results=None, custom_function=None, loop_state_json=None, **kwargs):
+    phantom.debug("pin_8() called")
+
+    filtered_result_0_data_filter_1 = phantom.collect2(container=container, datapath=["filtered-data:filter_1:condition_1:my_geolocate_action:action_result.data.*.country_name"])
+
+    filtered_result_0_data___country_name = [item[0] for item in filtered_result_0_data_filter_1]
+
+    ################################################################################
+    ## Custom Code Start
+    ################################################################################
+
+    # Write your custom code here...
+
+    ################################################################################
+    ## Custom Code End
+    ################################################################################
+
+    phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP is in our list", pin_style="blue", pin_type="card")
 
     return
 
