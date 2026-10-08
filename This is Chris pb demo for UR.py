@@ -336,6 +336,8 @@ def pin_8(action=None, success=None, container=None, results=None, handle=None, 
 
     phantom.pin(container=container, data=filtered_result_0_data___country_name, message="IP is in our list", pin_style="blue", pin_type="card")
 
+    set_label_2(container=container)
+
     return
 
 
